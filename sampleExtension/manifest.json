@@ -32,6 +32,18 @@
     }
   ],
 
-  "permissions": ["tabs"]
+  "permissions": [
+    "tabs",
+    "webRequest",
+    "webRequestBlocking",
+    "*://www.facebook.com/*",
+    "*://twitter.com/*",
+    "*://www.instagram.com/*",
+//  "*://www.youtube.com/*",
+    "*://9gag.com/*",
+    "*://9gag.tv/*",
+    "*://www.twitch.tv/*",
+    "*://www.reddit.com/*"
+  ]
 
 }
