@@ -1,37 +1,43 @@
 <!doctype html>
-<!--
- This page is shown when the extension button is clicked, because the
- "browser_action" field in manifest.json contains the "default_popup" key with
- value "popup.html".
- -->
+
 <html>
   <head>
-    <title>Getting Started Extension's Popup</title>
+    <title>Options page for The Distraction Shield</title>
     <style>
       body {
         font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
         font-size: 100%;
       }
-      #status {
-        /* avoid an excessively wide status text */
-        white-space: pre;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 400px;
-      }
     </style>
-
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-     -->
-    Options section could go here
   </head>
-  <body>
-    <div id="status"></div>
-    <img id="image-result" hidden>
+
+  <body style="background-color:#F9F9F9;">
+
+    <div id="description"> 
+      <p> 
+        Modify the extension to suit your needs here. 
+        Also have a look at some of the statistics.
+      </p> 
+    </div>
+
+    <div id="intercepts"> 
+      <p> The times you were intercepted today: </p> 
+    </div>
+
+    <div id="siteList"; style = "width: 100%;" >
+      <p>
+        <b>Websites you should be intercepted from:</b><br>
+        <select name="blockedWebsites"; size="7"; style="background-color:#000000; width:600px">
+          <option> www.faceboook.com </option>
+          <option> www.twitter.com </option>
+          <option> www.youtube.com </option>
+        </select>
+        <button title="Change the list of webpages"; type="button">Edit</button>
+      </p>
+    </div>
+
+    <div id="saveSettings"; style="width: 100%;">
+      <button type="button"; title="Save your changes"; style="width:70px; height:25px; margin-left:530px;"> Save </button>
+    </div>
   </body>
 </html>
-
