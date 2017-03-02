@@ -27,17 +27,21 @@
     <div id="siteList"; style = "width: 100%;" >
       <p>
         <b>Websites you should be intercepted from:</b><br>
-        <select name="blockedWebsites"; size="7"; style="background-color:#000000; width:600px">
-          <option> www.faceboook.com </option>
-          <option> www.twitter.com </option>
-          <option> www.youtube.com </option>
+        <select id="blacklist" name="blockedWebsites"; size="7"; style="background-color:#fff; width:600px">
         </select>
-        <button title="Change the list of webpages"; type="button">Edit</button>
       </p>
     </div>
-
-    <div id="saveSettings"; style="width: 100%;">
-      <button type="button"; title="Save your changes"; style="width:70px; height:25px; margin-left:530px;"> Save </button>
+    <div>
+        Enter the url you want to block:
+        <input type="text" id="text" />
+        <button id="save">Save</button>
+        <button id="delete">Delete</button>
     </div>
+
+    <!--<div id="saveSettings"; style="width: 100%;">-->
+      <!--<button type="button"; title="Save your changes"; style="width:70px; height:25px; margin-left:530px;"> Save </button>-->
+    <!--</div>-->
+    <script src="blacklist.js"></script>
+    <script src="jquery-3.1.2.min.js"></script>
   </body>
 </html>

@@ -35,6 +35,7 @@
   "permissions": [
     "tabs",
     "webRequest",
+    "storage",
     "webRequestBlocking",
     "*://www.facebook.com/*",
     "*://twitter.com/*",
