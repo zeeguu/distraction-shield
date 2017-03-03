@@ -11,7 +11,7 @@ var background = {
 		chrome.browserAction.onClicked.addListener(function(tab) {
 
             // Shortcut to reload the extension.
-			chrome.runtime.reload();
+            chrome.runtime.reload();
 
 			// chrome.tabs.create({"url": "//popup.html"});
 		});
@@ -25,13 +25,13 @@ var background = {
 
         //First receive the blacklist from the local storage, and then create a onBeforeRequest listener using this list.
         this.retrieveBlacklist(function(){
-            if(background.blockedSites != null){
-
+            if(background.blockedSites != null && background.blockedSites.length > 0){
                 // Function that intercepts incoming url requests and redirects them if they match any
                 // of the blacklist URL's
                 chrome.webRequest.onBeforeRequest.addListener(
                     function(details) {
                         // Whenever one of the URLs matches, call the intercept method.
+                        console.log("redirect");
                         return background["intercept"]();
                     },
                     {
