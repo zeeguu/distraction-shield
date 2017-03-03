@@ -23,8 +23,7 @@ var background = {
 		});
 
 
-        //First receive the blacklist from the local storage, and then create a onBeforeRequest listener with this list.
-
+        //First receive the blacklist from the local storage, and then create a onBeforeRequest listener using this list.
         this.retrieveBlacklist(function(){
             if(background.blockedSites != null){
 
@@ -61,8 +60,9 @@ var background = {
 
     },
 
+    // Something like a counter or something would be added here i think.
     intercept: function(){
-        //Target URL, RickRoll placeholder of course
+        //Target URL, RickRoll placeholder of course.
         return {redirectUrl: "https://www.google.com"};
     }
 
