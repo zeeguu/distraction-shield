@@ -14,8 +14,10 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, updatedTab) {
 //of the specified URL's 
 chrome.webRequest.onBeforeRequest.addListener(
 	function(details) {
-		//Target URL, RickRoll placeholder of course 
-		return {redirectUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"};
+		//Target URL, RickRoll placeholder of course
+        //alert("I am an alert box!");
+		//  here insert iframe script is going to be run
+		return {redirectUrl: "https://zeeguu.unibe.ch/"};
 	},
 	{
 		//Url's to be intercepted
