@@ -17,7 +17,9 @@ chrome.webRequest.onBeforeRequest.addListener(
 		//Target URL, RickRoll placeholder of course
         //alert("I am an alert box!");
 		//  here insert iframe script is going to be run
-		return {redirectUrl: chrome.extension.getURL("iframePopup.html")};
+
+
+		// return {redirectUrl: chrome.extension.getURL("iframePopup.html")};
 	},
 	{
 		//Url's to be intercepted
