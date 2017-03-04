@@ -1,13 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+          rel = "stylesheet">
+    <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Iframe popup</title>
+    <script type = "text/javascript">
+        $(function () {
+            $('#dialogMsg').dialog(
+                { width : 900,
+                    height: 650 }
+            );
+        });
+    </script>
 </head>
 <body>
 
-<div data-role="popup" id="popupExercise" data-overlay-theme="b" data-theme="a" data-tolerance="15,15" class="ui-content">
-        <iframe src=" http://zeeguu.herokuapp.com/get-ex" width="700" height="530" seamless=""></iframe>
+<div data-role="popup" id="dialogMsg" >
+    <iframe src=" http://zeeguu.herokuapp.com/get-ex" width="800" height="600" seamless=""></iframe>
 </div>
 
 </body>
