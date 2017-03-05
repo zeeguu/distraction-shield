@@ -28,14 +28,7 @@
 
   "content_scripts": [
     {
-      "matches": ["*://www.facebook.com/*",
-        "*://twitter.com/*",
-        "*://www.instagram.com/*",
-        //			"*://www.youtube.com/*",
-        "*://9gag.com/*",
-        "*://9gag.tv/*",
-        "*://www.twitch.tv/*",
-        "*://www.reddit.com/*"],
+      "matches": ["<all_urls>"],
       "css": ["iframe/jquery-ui.css"],
       "js": ["iframe/jquery-1.10.2.js","iframe/jquery-ui.js", "insertIframe.js","iframe.js"]
     }
@@ -46,7 +39,6 @@
     "storage",
     "webRequest",
     "webRequestBlocking",
-
     "<all_urls>"
   ],
 

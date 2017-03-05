@@ -1176,3 +1176,9 @@ body .ui-tooltip {
     filter: Alpha(Opacity=20);
     border-radius: 5px;
 }
+
+
+/* own defined */
+.no-close .ui-dialog-titlebar-close {
+    display: none;
+}
