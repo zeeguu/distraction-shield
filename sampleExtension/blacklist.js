@@ -10,9 +10,9 @@ function Blacklist () {
     this.deleteButton = $('#delete');
 
     this.init = function() { 
-        chrome.storage.local.get("blacklist", function(output) {
+        chrome.storage.sync.get("blacklist", function(output) {
             if (output.blacklist == null) {
-                chrome.storage.local.set({"blacklist" : []}, function() {
+                chrome.storage.sync.set({"blacklist" : []}, function() {
                     if(chrome.runtime.error) {
                         console.log("Runtime error.");
                     }
@@ -32,41 +32,44 @@ function Blacklist () {
     this.saveButton.click(function(){
 
         var newurl = $('#text').val();
-        chrome.storage.local.get("blacklist", function (output) {
+        chrome.storage.sync.get("blacklist", function (output) {
 
             links = output.blacklist;
      
-            // Add the url to the local storage.
+            // Add the url to the sync storage.
             links.push("*://"+newurl+"/*");
-            chrome.storage.local.set({"blacklist" : links }, function() {
+            chrome.storage.sync.set({"blacklist" : links }, function() {
                 if(chrome.runtime.error) {
                     console.log("Runtime error.");
                 }
-                $('#blacklist').append($("<option></option>").text("*://"+newurl+"/*"));
+                $('#blacklist').append($("<option></option>").attr("key", links.length).text("*://"+newurl+"/*"));
 
                 // Empty the input box.
                 $('#text').val('');
-                this.init();
+                var bg = chrome.extension.getBackgroundPage().background;
+                bg.retrieveBlacklist(bg.addWebRequestListener);
             });
         });
     });
 
     this.deleteButton.click(function() {
         var urltodelete = $("#blacklist option:selected");
-        var urlkey = urltodelete.attr("key");
+        
 
-        chrome.storage.local.get("blacklist", function (output) {
+        chrome.storage.sync.get("blacklist", function (output) {
             links = output.blacklist;
-
-            // Remove the url from the local storage.
+            var urlkey = links.indexOf(urltodelete.val());
+            // Remove the url from the sync storage.
             links.splice(urlkey, 1);
-            chrome.storage.local.set({"blacklist" : links }, function() {
+            chrome.storage.sync.set({"blacklist" : links }, function() {
                 if(chrome.runtime.error) {
                     console.log("Runtime error.");
                 }
 
                 // Remove the url from the list.
                 urltodelete.remove();
+                var bg = chrome.extension.getBackgroundPage().background;
+                bg.retrieveBlacklist(bg.addWebRequestListener);
             });
         });
     });

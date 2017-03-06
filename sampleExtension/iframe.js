@@ -7,8 +7,8 @@ $(function () {
           	resizable: false,
           	modal: true,
           	draggable: false,
-          	closeOnEscape: false,
-          	dialogClass: "no-close"
+          	closeOnEscape: false
+          	//dialogClass: "no-close"
       	}
     );
 });
