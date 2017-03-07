@@ -1,0 +1,10 @@
+body {
+    font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 100%;
+    background-color: #FFFBED;
+}
+
+#blacklistedSites {
+    background-color: #ffffff;
+    width:600px;
+}

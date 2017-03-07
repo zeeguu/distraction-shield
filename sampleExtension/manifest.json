@@ -9,16 +9,17 @@
   "offline_enabled": false,
 
   //what pops up once we hit the options
-  "options_page": "popup.html",
+  "options_page": "optionsPage/options.html",
   "options_ui": {
     "chrome_style": true,
-    "page": "popup.html"
+    "page": "optionsPage/options.html"
   },
 
   //Icon in the browser specification
   "browser_action": {
     "default_icon": "icon.png",
-    "default_title": "Distraction Shield Settings"
+    "default_title": "Distraction Shield Settings",
+    "default_popup": "optionsPage/options.html"
   },
 
   "background": {
@@ -28,22 +29,19 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["jquery-3.1.2.min.js", "content.js"]
+      "css": ["jquery/jquery-ui.css"],
+      "js": ["jquery/jquery-1.10.2.js","jquery/jquery-ui.js", "iframe/insertIframe.js","iframe/iframe.js"]
     }
   ],
 
   "permissions": [
     "tabs",
+    "storage",
     "webRequest",
     "webRequestBlocking",
-    "*://www.facebook.com/*",
-    "*://twitter.com/*",
-    "*://www.instagram.com/*",
-//  "*://www.youtube.com/*",
-    "*://9gag.com/*",
-    "*://9gag.tv/*",
-    "*://www.twitch.tv/*",
-    "*://www.reddit.com/*"
-  ]
+    "<all_urls>"
+  ],
+
+  "web_accessible_resources": ["iframe/iframe.js","jquery/jquery-1.10.2.js","jquery/jquery-ui.css","jquery/jquery-ui.js"]
 
 }
