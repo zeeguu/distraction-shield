@@ -4,28 +4,26 @@ var console = chrome.extension.getBackgroundPage().console;
 
 var html_blacklist = $('#blacklistedSites');
 var html_txtFld = $('#textFld');
+var html_intCnt = $('#iCounter');
 //Local variable that holds the list of links that we are blacklisting.
 var links = [];
+var interceptCounter = 0;
 
 //Initialize HTML elements and set the local variables
 setLinksAndBlacklistList = function() {
     chrome.storage.sync.get("blacklist", function(output) {
-
-    //Should be run upon install of extension, to have the blacklist be initialized at all times
-        if (output.blacklist == null) {
-            chrome.storage.sync.set({"blacklist" : []}, function() {
-                if(chrome.runtime.error) {
-                    console.log("Runtime error.");
-                }
-            });
-        }
-    // ------------------------------------------------------------------------------------- //
         links = output.blacklist;
         if (!chrome.runtime.error) {
             //For every element in the array append it to the html blacklist
             $.each(links, function(key, value) {
                 html_blacklist.append($("<option></option>").text(value));
             });
+        }
+    });
+    chrome.storage.sync.get("interceptCounter", function(output) {
+        interceptCounter = output.interceptCounter;
+        if (!chrome.runtime.error) {
+            html_intCnt.text(interceptCounter);
         }
     });
 };
@@ -46,7 +44,7 @@ saveButtonClick = function() {
         // Empty the input box.
         html_txtFld.val('');
         var bg = chrome.extension.getBackgroundPage();
-        bg.updateBlockedSites(bg.addWebRequestListener);
+        bg.updateBlockedSites(bg.replaceListener);
     });
 };
 
@@ -62,7 +60,7 @@ deleteButtonClick = function() {
         // Remove the url from the list.
         urltodelete.remove();
         var bg = chrome.extension.getBackgroundPage();
-        bg.updateBlockedSites(bg.addWebRequestListener);
+        bg.updateBlockedSites(bg.replaceListener);
     });
 };
 

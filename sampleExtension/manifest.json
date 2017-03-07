@@ -9,17 +9,17 @@
   "offline_enabled": false,
 
   //what pops up once we hit the options
-  "options_page": "options.html",
+  "options_page": "optionsPage/options.html",
   "options_ui": {
     "chrome_style": true,
-    "page": "options.html"
+    "page": "optionsPage/options.html"
   },
 
   //Icon in the browser specification
   "browser_action": {
     "default_icon": "icon.png",
     "default_title": "Distraction Shield Settings",
-    "default_popup": "options.html"
+    "default_popup": "optionsPage/options.html"
   },
 
   "background": {
@@ -30,7 +30,7 @@
     {
       "matches": ["<all_urls>"],
       "css": ["jquery/jquery-ui.css"],
-      "js": ["jquery/jquery-1.10.2.js","jquery/jquery-ui.js", "insertIframe.js","iframe.js"]
+      "js": ["jquery/jquery-1.10.2.js","jquery/jquery-ui.js", "iframe/insertIframe.js","iframe/iframe.js"]
     }
   ],
 
@@ -42,6 +42,6 @@
     "<all_urls>"
   ],
 
-  "web_accessible_resources": ["iframe.js","jquery/jquery-1.10.2.js","jquery/jquery-ui.css","jquery/jquery-ui.js"]
+  "web_accessible_resources": ["iframe/iframe.js","jquery/jquery-1.10.2.js","jquery/jquery-ui.css","jquery/jquery-ui.js"]
 
 }
