@@ -15,10 +15,10 @@ replaceListener = function() {
 messageListener = function(request, sender, sendResponse) {
     if(request.message == 'loaded') {
         var check = 0;
+        var sendUrl = sender.tab.url.split(['//'])[1].split(['/'])[0];
         for (var i = 0; i < blockedSites.length; i++) {
-            var x = sender.tab.url.split(['//'])[1].split(['/'])[0];
-            var y = blockedSites[i].split(['//'])[1].split(['/'])[0];
-            if (x == y) {
+            var blockedUrl = blockedSites[i].split(['//'])[1].split(['/'])[0];
+            if (sendUrl == blockedUrl) {
                 check = 1;
                 incrementInterceptionCounter();
             }

@@ -40,8 +40,6 @@
     "webRequest",
     "webRequestBlocking",
     "<all_urls>"
-  ],
-
-  "web_accessible_resources": ["iframe/iframe.js","jquery/jquery-1.10.2.js","jquery/jquery-ui.css","jquery/jquery-ui.js"]
+  ]
 
 }
