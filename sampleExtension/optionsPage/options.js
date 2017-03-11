@@ -7,12 +7,12 @@ var html_txtFld = $('#textFld');
 var html_intCnt = $('#iCounter');
 //Local variable that holds the list of links that we are blacklisting.
 var links = [];
-var interceptCounter = 0;
+var interceptionCounter = 0;
 
 //Initialize HTML elements and set the local variables
 setLinksAndBlacklistList = function() {
-    chrome.storage.sync.get("blacklist", function(output) {
-        links = output.blacklist;
+    chrome.storage.sync.get("tds_blacklist", function(output) {
+        links = output.tds_blacklist;
         if (!chrome.runtime.error) {
             //For every element in the array append it to the html blacklist
             $.each(links, function(key, value) {
@@ -20,10 +20,10 @@ setLinksAndBlacklistList = function() {
             });
         }
     });
-    chrome.storage.sync.get("interceptCounter", function(output) {
-        interceptCounter = output.interceptCounter;
+    chrome.storage.sync.get("tds_interceptCounter", function(output) {
+        interceptionCounter = output.tds_interceptCounter;
         if (!chrome.runtime.error) {
-            html_intCnt.text(interceptCounter);
+            html_intCnt.text(interceptionCounter);
         }
     });
 };
@@ -35,7 +35,7 @@ saveButtonClick = function() {
     var newurl = html_txtFld.val();
     // Add the url to the sync storage.
     links.push("*://"+newurl+"/*");
-    chrome.storage.sync.set({"blacklist" : links }, function() {
+    chrome.storage.sync.set({"tds_blacklist" : links }, function() {
         if(chrome.runtime.error) {
             console.log("Runtime error.");
         }
@@ -53,7 +53,7 @@ deleteButtonClick = function() {
     var urlkey = links.indexOf(urltodelete.val());
     // Remove the url from the sync storage.
     links.splice(urlkey, 1);
-    chrome.storage.sync.set({"blacklist" : links}, function() {
+    chrome.storage.sync.set({"tds_blacklist" : links}, function() {
         if(chrome.runtime.error) {
             console.log("Runtime error.");
         }

@@ -18,8 +18,7 @@
   //Icon in the browser specification
   "browser_action": {
     "default_icon": "icon.png",
-    "default_title": "Distraction Shield Settings",
-    "default_popup": "optionsPage/options.html"
+    "default_title": "Distraction Shield Settings"
   },
 
   "background": {
@@ -30,7 +29,7 @@
     {
       "matches": ["<all_urls>"],
       "css": ["jquery/jquery-ui.css"],
-      "js": ["jquery/jquery-1.10.2.js","jquery/jquery-ui.js", "iframe/insertIframe.js","iframe/iframe.js"]
+      "js": ["jquery/jquery-1.10.2.js"]
     }
   ],
 
