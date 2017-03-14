@@ -15,8 +15,8 @@ setLinksAndBlacklistList = function() {
         links = output.tds_blacklist;
         if (!chrome.runtime.error) {
             //For every element in the array append it to the html blacklist
-            $.each(links, function(key, value) {
-                html_blacklist.append($("<option></option>").text(value));
+            $.each(links, function (key, value) {
+                html_blacklist.append($("<option></option>").text(trimURL(value)));
             });
         }
     });
@@ -30,9 +30,10 @@ setLinksAndBlacklistList = function() {
 
 
 /* -------------------- Logic for the html buttons -------------------- */
-
+//TODO check validity of URL & if list already contains -> do nothing
 saveButtonClick = function() {
-    var newurl = html_txtFld.val();
+    var tempurl = html_txtFld.val();
+    var newurl = createURI(tempurl);
     // Add the url to the sync storage.
     links.push("*://"+newurl+"/*");
     chrome.storage.sync.set({"tds_blacklist" : links }, function() {
@@ -40,7 +41,7 @@ saveButtonClick = function() {
             console.log("Runtime error.");
         }
         //Append element to the html blacklist
-        html_blacklist.append($("<option></option>").text("*://"+newurl+"/*"));
+        html_blacklist.append($("<option></option>").text(newurl));
         // Empty the input box.
         html_txtFld.val('');
         var bg = chrome.extension.getBackgroundPage();
@@ -74,7 +75,25 @@ connectButtons = function() {
 
 /* -------------------- -------------------------- -------------------- */
 
+// since urls are stored in format *:// +url+ /*, we can nicely display them by trimming the string
+trimURL = function (str) {
+    return str.substring(4, str.length - 2);
+}
 
+
+// this returns a string containing only the hostname of the website.
+createURI = function (str) {
+    if (!/^https?:\/\//i.test(str)) {
+        str = 'http://' + str;
+    }
+    var uri = new URI();
+    uri = URI.parse(str);
+    return uri.hostname;
+}
+
+getFavIcon = function (url) {
+    return "http://www.google.com/s2/favicons?domain=" + url;
+}
 
 //Run this when the page is loaded.
 document.addEventListener("DOMContentLoaded", function(){
