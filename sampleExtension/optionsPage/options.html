@@ -1,0 +1,38 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>Options page for The Distraction Shield</title>
+    <link rel="stylesheet" type="text/css" href="options.css">
+  </head>
+
+  <body>
+
+    <div id="description"> <p>
+        Modify the extension to suit your needs here. 
+        Also have a look at some of the statistics.
+    </p> </div>
+
+    <div id="intercepts"> 
+      <p> The times you were intercepted: <span id="iCounter"></span> </p>
+    </div>
+
+    <div id="list_div"> <p>
+        <b>Websites you should be intercepted from:</b><br>
+        <select id="blacklistedSites" name="blockedWebsites" size="7">
+        </select>
+    </p> </div>
+
+    <div>
+        Enter the url you want to block:
+        <input  id="textFld" type="text"/>
+        <button id="saveBtn"> Save </button>
+        <button id="deleteBtn"> Delete </button>
+    </div>
+
+    <script src="../jquery/jquery-1.10.2.js"></script>
+    <script src="../syncStorage.js"></script>
+    <script src="options.js"></script>
+
+  </body>
+</html>

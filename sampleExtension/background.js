@@ -1,74 +1,83 @@
 
-// Log console messages to the background page console instead of the content page.
-var console = chrome.extension.getBackgroundPage().console;
+//Set that holds the urls to be intercepted
+var blockedSites = [];
 
-var background = {
-	blockedSites: null,
+/* --------------- ------ update list of BlockedSites ------ ---------------*/
 
-	init: function (){
-
-		// Called when the user clicks on the extension icon.
-		chrome.browserAction.onClicked.addListener(function(tab) {
-
-            // Shortcut to reload the extension.
-            chrome.runtime.reload();
-
-			// chrome.tabs.create({"url": "//popup.html"});
-		});
-
-		chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, updatedTab) {
-			if (changeInfo.url) {
-				console.log(updatedTab.url);
-			}
-		});
-
-
-        //First receive the blacklist from the local storage, and then create a onBeforeRequest listener using this list.
-        this.retrieveBlacklist(function(){
-            if(background.blockedSites != null && background.blockedSites.length > 0){
-                // Function that intercepts incoming url requests and redirects them if they match any
-                // of the blacklist URL's
-                chrome.webRequest.onBeforeRequest.addListener(
-                    function(details) {
-                        // Whenever one of the URLs matches, call the intercept method.
-                        console.log("redirect");
-                        return background["intercept"]();
-                    },
-                    {
-                        //Url's to be intercepted
-                        urls: background.blockedSites,
-
-                        //Copied this from somewhere, ought to do some research in to what it stands for
-                        //I guess these are the kind of things where we can filter on logging in to facebook
-                        //should be redirected or not
-                        types: ["main_frame", "sub_frame", "stylesheet", "script", "image", "object", "xmlhttprequest", "other"]
-                    },
-                    ["blocking"]
-                );
-            }
-        });
-	},
-
-    // This method receives the blacklist from the local storage.
-    retrieveBlacklist: function(callback){
-        chrome.storage.local.get("blacklist", function (items) {
-            if (!chrome.runtime.error) {
-                background.blockedSites = items.blacklist;
-                return callback();
-            }
-        });
-
-    },
-
-    // Something like a counter or something would be added here i think.
-    intercept: function(){
-        //Target URL, RickRoll placeholder of course.
-        return {redirectUrl: "https://www.google.com"};
-    }
-
+updateStorage = function() {
+    setStorageBlacklist(blockedSites);
 };
 
-background.init();
+// This function receives the blacklist from the sync storage.
+updateBlockedSites = function(callback){
+    getStorageBlacklist(function(result) {
+        blockedSites = result;
+        return callback();
+    });
+};
+
+// This function adds one url to the blacklist
+addToBlockedSites = function(urlToAdd) {
+    var formattedUrl = formatUrl(urlToAdd);
+    blockedSites.push(formattedUrl);
+    updateStorage();
+};
+
+formatUrl = function(url) {
+    result = url.split(['//'])[1];
+    result = result.split("").reverse().join("");
+    result = result.split(['/'])[1];
+    result = result.split("").reverse().join("");
+    return '*://' + result + '/*';
+};
+
+/* --------------- ------ Listener functions ------ ---------------*/
+
+replaceListener = function() {
+    chrome.webRequest.onBeforeRequest.removeListener(intercept);
+    addWebRequestListener();
+};
+
+addWebRequestListener = function() {
+    if(blockedSites != null && blockedSites.length > 0) {
+        chrome.webRequest.onBeforeRequest.addListener(
+            intercept,
+            {
+                //Url's to be intercepted
+                urls: blockedSites,
+                types: ["main_frame"]
+            },
+            ["blocking"]
+        );
+    }
+};
+
+intercept = function() {
+    incrementInterceptionCounter();
+    return {redirectUrl: "https://zeeguu.herokuapp.com/getex"};
+};
+
+/* --------------- ------ ------------------ ------ ---------------*/
+
+addBrowserActionListener = function() {
+    chrome.browserAction.onClicked.addListener(function () {
+        chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
+            // since only one tab should be active and in the current window at once
+            // the return variable should only have one entry
+            var activeTab = arrayOfTabs[0];
+            var activeTabUrl = activeTab.url;
+            addToBlockedSites(activeTabUrl);
+
+        });
+    });
+};
+
+
+
+
+
+
+
 
 
 
