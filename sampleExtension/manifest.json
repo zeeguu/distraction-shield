@@ -22,7 +22,7 @@
   },
 
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["syncStorage.js", "background.js", "init.js"]
   },
 
   "content_scripts": [
