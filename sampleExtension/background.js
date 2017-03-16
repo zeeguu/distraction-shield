@@ -52,10 +52,19 @@ addWebRequestListener = function() {
     }
 };
 
-intercept = function() {
+intercept = function(details) {
     incrementInterceptionCounter();
-    return {redirectUrl: "https://zeeguu.herokuapp.com/getex"};
+    storeCurrentPage(details.url);
+
+    return {redirectUrl: redirectLink};
 };
+/* ------------Store the current URL-------- ------ ---------------*/
+
+storeCurrentPage = function (url) {
+   chrome.storage.sync.set({"reredirecturl" : url}, function() {
+       handleRuntimeError();
+   });
+}
 
 /* --------------- ------ ------------------ ------ ---------------*/
 

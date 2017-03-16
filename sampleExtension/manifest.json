@@ -22,7 +22,7 @@
   },
 
   "background": {
-    "scripts": ["syncStorage.js", "background.js", "init.js"]
+    "scripts": ["constants.js","syncStorage.js", "background.js", "init.js"]
   },
 
   "content_scripts": [
@@ -30,6 +30,10 @@
       "matches": ["<all_urls>"],
       "css": ["jquery/jquery-ui.css"],
       "js": ["jquery/jquery-1.10.2.js"]
+    },
+    {
+      "matches" : ["https://zeeguu.herokuapp.com/get-ex"],
+      "js" : ["constants.js", "inject.js"]
     }
   ],
 
