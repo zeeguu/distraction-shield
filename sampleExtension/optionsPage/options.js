@@ -1,13 +1,14 @@
 
 // Log console messages to the background page console instead of the content page.
-var console = chrome.extension.getBackgroundPage().console;
+//var console = chrome.extension.getBackgroundPage().console;
 
 //Local variables that hold the html elements
 var html_blacklist = $('#blacklistedSites');
+var html_table = $('#blacklistTable');
 var html_txtFld = $('#textFld');
 var html_intCnt = $('#iCounter');
 
-//Local variables that holds the list of links and interceptCounter.
+//Local variables that holds the list of links and interceptCoun and variables ter.
 var links = [];
 var interceptionCounter = 0;
 
@@ -19,51 +20,90 @@ initOptionsPage = function() {
     chrome.storage.sync.get(["tds_blacklist", "tds_interceptCounter"], function(output) {
         if (handleRuntimeError()) {
             setLocalVariables(output);
-            html_intCnt.text(interceptionCounter);
-            setHtmlBlacklist(links);
+            setHtmlElements();
         }
     });
 };
 
-setLocalVariables = function(output) {
-    links = output.tds_blacklist;
-    interceptionCounter = output.tds_interceptCounter;
-};
+/* -------------------- Manipulate storage ------------------- */
 
-setHtmlBlacklist = function(list) {
-    $.each(list, function(key, value) {
-        html_blacklist.append($("<option></option>").text(value));
-    });
+updateStorageBlacklist = function() {
+    setStorageBlacklistWithCallback(links, updateBackgroundPage);
 };
 
 
-/* -------------------- Manipulate storage and variables ------------------- */
+/* -------------------- Manipulate background ------------------- */
 
 updateBackgroundPage = function() {
     var bg = chrome.extension.getBackgroundPage();
     bg.updateBlockedSites(bg.replaceListener);
 };
 
-updateStorageBlacklist = function() {
-    setStorageBlacklistWithCallback(links, updateBackgroundPage);
+/* -------------------- Manipulate Html elements ------------------- */
+
+generateHtmlTableRow = function(blockedSite) {
+    return $("<tr class='table-row' >" +
+                "<td>"+blockedSite.icon+"</td>" +
+                "<td>"+blockedSite.name+"</td>" +
+                "<td>"+ "<input type=\"checkbox\" name=\"state\" checked=\"" + blockedSite.checkboxVal + "\">" + "</td>" +
+             "</tr>");
 };
 
-removeFromAll = function(html_item) {
-    removeFromLinks(html_item);
-    //update html_blacklist
+generateHtmlListOption = function(blockedSite) {
+    return $("<option></option>").text(blockedSite.name);
+};
+
+removeFromHtml = function(html_item) {
     html_item.remove();
-    updateStorageBlacklist();
 };
 
-removeFromLinks = function(html_item) {
+setHtmlElements = function() {
+    html_intCnt.text(interceptionCounter);
+    setHtmlBlacklist(links);
+};
+
+setHtmlBlacklist = function(list) {
+    $.each(list, function(key, value) {
+        appendHtmlItemTo(generateHtmlTableRow(value), html_table);
+        appendHtmlItemTo(generateHtmlListOption(value), html_blacklist);
+    });
+};
+
+appendHtmlItemTo = function(html_child, html_parent) {
+    html_parent.append(html_child);
+};
+
+/* -------------------- Manipulate local variables ------------------- */
+
+//TODO duplicate name removal will result in problems
+removeFromLocalLinks = function(html_item) {
     var urlkey = links.indexOf(html_item.val());
     links.splice(urlkey, 1);
 };
 
-addToAll = function(item) {
-    var stringVal = "*://"+item+"/*";
-    links.push(stringVal);
-    html_blacklist.append($("<option></option>").text(stringVal));
+
+setLocalVariables = function(storage_output) {
+    links = storage_output.tds_blacklist;
+    interceptionCounter = storage_output.tds_interceptCounter;
+};
+
+addUrlToLocal = function(blockedSite) {
+    links.push(blockedSite);
+};
+
+/* -------------------- general manipulation functions ------------------- */
+
+removeLinkFromAll = function(html_item) {
+    removeFromLocalLinks(html_item);
+    removeFromHtml(html_item);
+    updateStorageBlacklist();
+};
+
+addLinkToAll = function(newUrl) {
+    newItem = new BlockedSite(newUrl);
+    addUrlToLocal(newItem);
+    appendHtmlItemTo(generateHtmlTableRow(newItem), html_table);
+    appendHtmlItemTo(generateHtmlListOption(newItem), html_blacklist);
     updateStorageBlacklist();
 };
 
@@ -72,13 +112,13 @@ addToAll = function(item) {
 
 saveButtonClick = function() {
     var newurl = html_txtFld.val();
-    addToAll(newurl);
+    addLinkToAll(newurl);
     html_txtFld.val('');
 };
 
 deleteButtonClick = function() {
     var urlToDelete = html_blacklist.find('option:selected');
-    removeFromAll(urlToDelete)
+    removeLinkFromAll(urlToDelete)
 };
 
 //Connect functions to HTML elements
@@ -96,5 +136,3 @@ document.addEventListener("DOMContentLoaded", function(){
     connectButtons();
     initOptionsPage();
 });
-
-

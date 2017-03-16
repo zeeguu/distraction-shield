@@ -29,7 +29,9 @@ initInterceptCounter = function(counter) {
 
 initBlacklist = function(list) {
     if (list == null) {
-        setStorageBlacklist([]);
+        chrome.storage.sync.set({"tds_blacklist": []}, function () {
+            handleRuntimeError();
+        });
     }
 };
 
