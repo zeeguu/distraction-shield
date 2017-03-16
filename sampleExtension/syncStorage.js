@@ -17,9 +17,9 @@ handleRuntimeError = function() {
 /* --------------- ---- Getter functions ---- ---------------*/
 
 getStorageBlacklist = function(callback) {
-    chrome.storage.sync.get("tds_blacklist", function (items) {
+    chrome.storage.sync.get("tds_blacklist", function (output) {
         if(handleRuntimeError()) {
-            return callback(items.tds_blacklist);
+            return callback(output.tds_blacklist);
         }
     });
 };
