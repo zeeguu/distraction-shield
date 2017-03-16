@@ -52,8 +52,8 @@ addWebRequestListener = function() {
     }
 };
 
-intercept = function() {
-    incrementInterceptionCounter();
+intercept = function(details) {
+    incrementInterceptionCounter(details.url);
     return {redirectUrl: "https://zeeguu.herokuapp.com/getex"};
 };
 

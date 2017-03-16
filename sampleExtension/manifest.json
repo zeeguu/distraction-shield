@@ -18,7 +18,8 @@
   //Icon in the browser specification
   "browser_action": {
     "default_icon": "icon.png",
-    "default_title": "Distraction Shield Settings"
+    "default_title": "Distraction Shield Settings",
+    "default_popup": "tooltipPage/tooltip.html"        // optional
   },
 
   "background": {

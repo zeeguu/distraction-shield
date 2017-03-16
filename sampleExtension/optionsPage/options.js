@@ -69,6 +69,10 @@ addToAll = function(item) {
 
 
 /* -------------------- Logic for the html buttons -------------------- */
+redirectToStatistics = function() {
+    chrome.tabs.create({'url': chrome.runtime.getURL('statisticsPage/statistics.html')});
+    //return {redirectUrl: "://statisticsPage/statistics.html/"};
+};
 
 saveButtonClick = function() {
     var newurl = html_txtFld.val();
@@ -87,6 +91,8 @@ connectButtons = function() {
     saveButton.on('click', saveButtonClick);
     var deleteButton = $('#deleteBtn');
     deleteButton.on('click', deleteButtonClick);
+    var redirectStatsButton = $('#redirectStatsBtn');
+    redirectStatsButton.on('click', redirectToStatistics);
 };
 
 /* -------------------- -------------------------- -------------------- */

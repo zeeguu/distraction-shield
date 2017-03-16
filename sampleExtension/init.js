@@ -21,7 +21,7 @@ chrome.runtime.onInstalled.addListener(function() {
 
 initInterceptCounter = function(counter) {
     if (counter == null) {
-        chrome.storage.sync.set({"tds_interceptCounter": 0}, function () {
+        chrome.storage.sync.set({"tds_interceptCounter": []}, function () {
             handleRuntimeError();
         });
     }

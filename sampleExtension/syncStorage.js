@@ -39,11 +39,11 @@ setStorageBlacklistWithCallback = function(list, callback) {
     });
 };
 
-            /* ------ Statistics functions ------ */
+/* ------ Statistics functions ------ */
 
-incrementInterceptionCounter = function() {
+incrementInterceptionCounter = function(urlAddress) {
     chrome.storage.sync.get("tds_interceptCounter", function(output) {
-        var counter = output.tds_interceptCounter;
+        var counter = output.tds_interceptCounter.count;
         counter++;
         chrome.storage.sync.set({"tds_interceptCounter": counter}, function () {
             handleRuntimeError();
