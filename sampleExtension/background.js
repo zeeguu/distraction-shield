@@ -45,7 +45,11 @@ addWebRequestListener = function() {
             intercept,
             {
                 //Url's to be intercepted
-                urls: blockedSites.map(function(a) {return a.url;}),
+                urls: blockedSites
+                                // this is extremely slow!
+                                //.filter(function (a) { return a.checkboxVal == true; })
+                                .map(function (a) { return a.url; })
+                    ,
                 types: ["main_frame"]
             },
             ["blocking"]

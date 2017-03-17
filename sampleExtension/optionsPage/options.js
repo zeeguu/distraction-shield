@@ -121,6 +121,7 @@ deleteButtonClick = function() {
     removeLinkFromAll(urlToDelete)
 };
 
+// TODO fix deleting
 deleteButtonClick_Table = function () {
     var urlToDelete = html_table.find(".selected");
     removeLinkFromAll(urlToDelete);
@@ -135,11 +136,21 @@ connectButtons = function() {
     deleteButton.on('click', deleteButtonClick_Table);
 };
 
+
+// this function makes the table single selection only
 initTableSelection = function () {
     html_table.on('click', 'tr', function () {
         $(this).addClass('selected').siblings().removeClass('selected');
     });
 };
+
+// TODO change blockedSite status to unchecked/checked.
+initCheckBoxes = function () {
+    var urlToCheck = html_table.on('change', 'input[type="checkbox"]', function () {
+        //urlToCheck.checkboxVal = false;
+        console.log("Success!");
+    })
+}
 
 /* -------------------- -------------------------- -------------------- */
 
@@ -147,5 +158,6 @@ initTableSelection = function () {
 document.addEventListener("DOMContentLoaded", function(){
     connectButtons();
     initTableSelection();
+    initCheckBoxes();
     initOptionsPage();
 });
