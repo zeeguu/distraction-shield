@@ -19,10 +19,9 @@
 
     <div id="list_div"> <p>
         <b>Websites you should be intercepted from:</b><br>
-        <select id="blacklistedSites" name="blockedWebsites" size="7">
-        </select>
+        <select id="blacklistedSites" name="blockedWebsites" size="7"> </select>
+        <table id="blacklistTable" size="7"> </table>
     </p> </div>
-
     <div>
         Enter the url you want to block:
         <input  id="textFld" type="text"/>
@@ -31,6 +30,8 @@
     </div>
 
     <script src="../jquery/jquery-1.10.2.js"></script>
+    <script src="../syncStorage.js"></script>
+    <script src="../blockedSite.js"></script>
     <script src="../URI.js"></script>
     <script src="options.js"></script>
 

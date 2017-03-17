@@ -2,32 +2,34 @@
 //Set that holds the urls to be intercepted
 var blockedSites = [];
 
-initExtension = function () {
-    //First receive the blacklist from the sync storage, and then create a onBeforeRequest listener using this list.
-    updateBlockedSites(replaceListener);
-    addBrowserActionListener();
+/* --------------- ------ update list of BlockedSites ------ ---------------*/
+
+updateStorage = function() {
+    setStorageBlacklist(blockedSites);
 };
 
 // This function receives the blacklist from the sync storage.
 updateBlockedSites = function(callback){
-    chrome.storage.sync.get("tds_blacklist", function (items) {
-        if (!chrome.runtime.error) {
-            blockedSites = items.tds_blacklist;
-            return callback();
-        }
+    getStorageBlacklist(function(blacklist) {
+        blockedSites = blacklist;
+        return callback();
     });
 };
 
 // This function adds one url to the blacklist
 addToBlockedSites = function(urlToAdd) {
-    var formatUrl = urlToAdd.split(['//'])[1];
-    formatUrl = '*://' + formatUrl + '*';
-    blockedSites.push(formatUrl);
-    chrome.storage.sync.set({"tds_blacklist" : blockedSites }, function() {
-        if(chrome.runtime.error) {
-            console.log("Runtime error.");
-        }
-    });
+    var blockedSiteItem = new BlockedSite(formatUrl(urlToAdd));
+    blockedSites.push(blockedSiteItem);
+    updateStorage();
+    replaceListener();
+};
+
+formatUrl = function(url) {
+    result = url.split(['//'])[1];
+    result = result.split("").reverse().join("");
+    result = result.split(['/'])[1];
+    result = result.split("").reverse().join("");
+    return result;
 };
 
 /* --------------- ------ Listener functions ------ ---------------*/
@@ -40,11 +42,11 @@ replaceListener = function() {
 addWebRequestListener = function() {
     if(blockedSites != null && blockedSites.length > 0) {
         chrome.webRequest.onBeforeRequest.addListener(
-                intercept,
-                {
-                    //Url's to be intercepted
-                    urls: blockedSites,
-                    types: ["main_frame"]
+            intercept,
+            {
+                //Url's to be intercepted
+                urls: blockedSites.map(function(a) {return a.url;}),
+                types: ["main_frame"]
             },
             ["blocking"]
         );
@@ -53,8 +55,7 @@ addWebRequestListener = function() {
 
 intercept = function() {
     incrementInterceptionCounter();
-    return {redirectUrl: "https://zeeguu.herokuapp.com/getex"};
-    //return {redirectUrl: "https://zeeguu.herokuapp.com/getex"};
+    return {redirectUrl: "https://zeeguu.herokuapp.com/get-ex"};
 };
 
 /* --------------- ------ ------------------ ------ ---------------*/
@@ -72,45 +73,8 @@ addBrowserActionListener = function() {
     });
 };
 
-/* --------------- ------ Statistics functions ------ ---------------*/
-
-incrementInterceptionCounter = function() {
-    chrome.storage.sync.get("tds_interceptCounter", function(output) {
-        var counter = output.tds_interceptCounter;
-        counter++;
-        chrome.storage.sync.set({"tds_interceptCounter": counter}, function () {
-            if (chrome.runtime.error) {
-                console.log("Runtime error.");
-            }
-        });
-    });
-};
 
 
-/* --------------- ---- Run upon installation ---- ---------------*/
-
-chrome.runtime.onInstalled.addListener(function() {
-    chrome.storage.sync.get("tds_blacklist", function(output) {
-        if (output.tds_blacklist == null) {
-            chrome.storage.sync.set({"tds_blacklist": []}, function () {
-                if (chrome.runtime.error) {
-                    console.log("Runtime error.");
-                }
-            });
-        }
-    });
-    chrome.storage.sync.get("tds_interceptCounter", function(output) {
-        if (output.tds_interceptCounter == null) {
-            chrome.storage.sync.set({"tds_interceptCounter": 0}, function () {
-                if (chrome.runtime.error) {
-                    console.log("Runtime error.");
-                }
-            });
-        }
-    });
-});
-
-initExtension();
 
 
 
