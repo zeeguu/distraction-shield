@@ -42,11 +42,17 @@ updateBackgroundPage = function() {
 /* -------------------- Manipulate Html elements ------------------- */
 
 generateHtmlTableRow = function(blockedSite) {
-    return $("<tr class='table-row' >" +
-                "<td>"+blockedSite.icon+"</td>" +
-                "<td>"+blockedSite.name+"</td>" +
-                "<td>"+ "<input type=\"checkbox\" name=\"state\" checked=\"" + blockedSite.checkboxVal + "\">" + "</td>" +
-             "</tr>");
+    var tableRow =
+        $("<tr class='table-row' >" +
+            "<td>"+blockedSite.icon+"</td>" +
+            "<td>"+blockedSite.name+"</td>" +
+            "<td>"+ "<input class='checkbox-toggle' type=\"checkbox\" name=\"state\">" + "</td>" +
+        "</tr>");
+    //set the checkbox value
+    tableRow.find('.checkbox-toggle').prop('checked', blockedSite.checkboxVal);
+    //add the actual object to the html_element
+    tableRow.data('blockedSite', blockedSite);
+    return tableRow;
 };
 
 generateHtmlListOption = function(blockedSite) {
@@ -75,9 +81,8 @@ appendHtmlItemTo = function(html_child, html_parent) {
 
 /* -------------------- Manipulate local variables ------------------- */
 
-//TODO duplicate name removal will result in problems
 removeFromLocalLinks = function(html_item) {
-    var urlkey = links.indexOf(html_item.val());
+    var urlkey = links.indexOf(html_item.data('blockedSite'));
     links.splice(urlkey, 1);
 };
 
@@ -121,7 +126,6 @@ deleteButtonClick = function() {
     removeLinkFromAll(urlToDelete)
 };
 
-// TODO fix deleting
 deleteButtonClick_Table = function () {
     var urlToDelete = html_table.find(".selected");
     removeLinkFromAll(urlToDelete);
@@ -144,13 +148,16 @@ initTableSelection = function () {
     });
 };
 
-// TODO change blockedSite status to unchecked/checked.
 initCheckBoxes = function () {
-    var urlToCheck = html_table.on('change', 'input[type="checkbox"]', function () {
-        //urlToCheck.checkboxVal = false;
-        console.log("Success!");
-    })
-}
+     var urlToCheck = html_table.on('change', 'input[type="checkbox"]', function () {
+         //Clicking the checkbox automatically selects the row, so we use this to our advantage
+         var selected_row = urlToCheck.find('.selected');
+         var selected_blockedSite = selected_row.data('blockedSite');
+         selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
+         //no need to set links cause it holds pointers so they get updated automatically
+         updateStorageBlacklist();
+     });
+};
 
 /* -------------------- -------------------------- -------------------- */
 

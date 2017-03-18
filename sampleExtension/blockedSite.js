@@ -7,9 +7,8 @@ function BlockedSite (input) {
         return "*://"+input+"/*";
     };
 
-    /*this.getName = function(input) {
-        console.log(input);
-        var result = extractDomain(input)
+    this.getName = function(input) {
+        var result = extractDomain(input);
         var splitup = result.split(['.']);
         if (splitup.length <= 2) {
             result = splitup[0];
@@ -17,17 +16,16 @@ function BlockedSite (input) {
             result = splitup[1];
         }
         return result;
-    }; */
-    this.getName = function (str) {
-        if (!/^https?:\/\//i.test(str)) {
-            str = 'http://' + str;
-        }
-        var uri = new URI();
-        uri = URI.parse(str);
-        return uri.hostname;
     };
 
-
+    // this.getName = function (str) {
+    //     if (!/^https?:\/\//i.test(str)) {
+    //         str = 'http://' + str;
+    //     }
+    //     var uri = new URI();
+    //     uri = URI.parse(str);
+    //     return uri.hostname;
+    // };
 
     this.getIcon = function(input) {
         return "<img style=\"-webkit-user-select: none\" src=\"https://www.google.com/s2/favicons?domain="+input+"\">"

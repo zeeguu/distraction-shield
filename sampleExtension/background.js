@@ -42,17 +42,15 @@ replaceListener = function() {
 addWebRequestListener = function() {
     if(blockedSites != null && blockedSites.length > 0) {
         chrome.webRequest.onBeforeRequest.addListener(
-            intercept,
-            {
+            intercept
+            ,{
                 //Url's to be intercepted
                 urls: blockedSites
-                                // this is extremely slow!
-                                //.filter(function (a) { return a.checkboxVal == true; })
-                                .map(function (a) { return a.url; })
-                    ,
-                types: ["main_frame"]
-            },
-            ["blocking"]
+                                .filter(function (a) {return a.checkboxVal == true;})
+                                .map(function (a) {return a.url;})
+                ,types: ["main_frame"]
+            }
+            ,["blocking"]
         );
     }
 };
