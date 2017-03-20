@@ -11,6 +11,7 @@ saveCurrentPageToBlacklist = function() {
         var activeTab = arrayOfTabs[0];
         var activeTabUrl = activeTab.url;
         bg.addToBlockedSites(activeTabUrl);
+        bg.replaceListener();
 
     });
 }
