@@ -22,7 +22,7 @@
   },
 
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["jquery/jquery-1.10.2.js", "blockedSite.js", "syncStorage.js", "background.js", "init.js"]
   },
 
   "content_scripts": [
