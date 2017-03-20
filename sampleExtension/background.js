@@ -40,14 +40,14 @@ replaceListener = function() {
 };
 
 addWebRequestListener = function() {
-    if(blockedSites != null && blockedSites.length > 0) {
+    var urlList = blockedSites.filter(function (a) {return a.checkboxVal == true;});
+
+    if(blockedSites != null && blockedSites.length > 0 && urlList.length > 0) {
         chrome.webRequest.onBeforeRequest.addListener(
             intercept
             ,{
                 //Url's to be intercepted
-                urls: blockedSites
-                                .filter(function (a) {return a.checkboxVal == true;})
-                                .map(function (a) {return a.url;})
+                urls: urlList.map(function (a) {return a.url;})
                 ,types: ["main_frame"]
             }
             ,["blocking"]

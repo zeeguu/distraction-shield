@@ -36,7 +36,7 @@ initCheckBoxes = function () {
         //Clicking the checkbox automatically selects the row, so we use this to our advantage
         var selected_row = urlToCheck.find('.selected');
         var selected_blockedSite = selected_row.data('blockedSite');
-        selected_blockedSite.toggleCheckbox();
+        selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
         //no need to set links cause it holds pointers so they get updated automatically
         updateStorageBlacklist();
     });

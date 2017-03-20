@@ -37,10 +37,6 @@ function BlockedSite (input) {
     this.lastVisited = new Date();
     this.checkboxVal = true;
 
-
-    this.toggleCheckbox = function() {
-        this.checkboxVal = !this.checkboxVal;
-    };
 }
 
 function extractDomain(url) {
