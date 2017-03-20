@@ -9,6 +9,7 @@ function BlockedSite (input) {
 
     this.getName = function(input) {
         var result = extractDomain(input);
+
         var splitup = result.split(['.']);
         if (splitup.length <= 2) {
             result = splitup[0];
@@ -32,7 +33,9 @@ function BlockedSite (input) {
     };
 
     this.url = this.getUrl(input);
+
     this.name = this.getName(input);
+
     this.icon = this.getIcon(input);
     this.lastVisited = new Date();
     this.checkboxVal = true;
@@ -53,3 +56,4 @@ function extractDomain(url) {
 
     return domain;
 }
+

@@ -1,6 +1,6 @@
 
 // Log console messages to the background page console instead of the content page.
-var console = chrome.extension.getBackgroundPage().console;
+//var console = chrome.extension.getBackgroundPage().console;
 
 //Local variables that hold the html elements
 var html_table = $('#blacklistTable');
@@ -95,6 +95,7 @@ appendHtmlItemTo = function(html_child, html_parent) {
 
 removeFromLocalLinks = function(html_item) {
     var urlkey = links.indexOf(html_item.data('blockedSite'));
+
     links.splice(urlkey, 1);
 };
 
