@@ -4,11 +4,6 @@ body {
     background-color: #FFFBED;
 }
 
-#blacklistedSites {
-    background-color: #ffffff;
-    width:600px;
-}
-
 #blacklistTable {
     width: 600px;
 }

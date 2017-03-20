@@ -3,7 +3,6 @@
 var console = chrome.extension.getBackgroundPage().console;
 
 //Local variables that hold the html elements
-var html_blacklist = $('#blacklistedSites');
 var html_table = $('#blacklistTable');
 var html_txtFld = $('#textFld');
 var html_intCnt = $('#iCounter');
@@ -22,6 +21,24 @@ initOptionsPage = function() {
             setLocalVariables(output);
             setHtmlElements();
         }
+    });
+};
+
+// this function makes the table single selection only
+initTableSelection = function () {
+    html_table.on('click', 'tr', function () {
+        $(this).addClass('selected').siblings().removeClass('selected');
+    });
+};
+
+initCheckBoxes = function () {
+    var urlToCheck = html_table.on('change', 'input[type="checkbox"]', function () {
+        //Clicking the checkbox automatically selects the row, so we use this to our advantage
+        var selected_row = urlToCheck.find('.selected');
+        var selected_blockedSite = selected_row.data('blockedSite');
+        selected_blockedSite.toggleCheckbox();
+        //no need to set links cause it holds pointers so they get updated automatically
+        updateStorageBlacklist();
     });
 };
 
@@ -55,10 +72,6 @@ generateHtmlTableRow = function(blockedSite) {
     return tableRow;
 };
 
-generateHtmlListOption = function(blockedSite) {
-    return $("<option></option>").text(blockedSite.name);
-};
-
 removeFromHtml = function(html_item) {
     html_item.remove();
 };
@@ -71,7 +84,6 @@ setHtmlElements = function() {
 setHtmlBlacklist = function(list) {
     $.each(list, function(key, value) {
         appendHtmlItemTo(generateHtmlTableRow(value), html_table);
-        appendHtmlItemTo(generateHtmlListOption(value), html_blacklist);
     });
 };
 
@@ -108,7 +120,6 @@ addLinkToAll = function(newUrl) {
     newItem = new BlockedSite(newUrl);
     addUrlToLocal(newItem);
     appendHtmlItemTo(generateHtmlTableRow(newItem), html_table);
-    appendHtmlItemTo(generateHtmlListOption(newItem), html_blacklist);
     updateStorageBlacklist();
 };
 
@@ -121,12 +132,7 @@ saveButtonClick = function() {
     html_txtFld.val('');
 };
 
-deleteButtonClick = function() {
-    var urlToDelete = html_blacklist.find('option:selected');
-    removeLinkFromAll(urlToDelete)
-};
-
-deleteButtonClick_Table = function () {
+deleteButtonClick = function () {
     var urlToDelete = html_table.find(".selected");
     removeLinkFromAll(urlToDelete);
 };
@@ -136,27 +142,7 @@ connectButtons = function() {
     var saveButton = $('#saveBtn');
     saveButton.on('click', saveButtonClick);
     var deleteButton = $('#deleteBtn');
-    // deleteButton.on('click', deleteButtonClick);
-    deleteButton.on('click', deleteButtonClick_Table);
-};
-
-
-// this function makes the table single selection only
-initTableSelection = function () {
-    html_table.on('click', 'tr', function () {
-        $(this).addClass('selected').siblings().removeClass('selected');
-    });
-};
-
-initCheckBoxes = function () {
-     var urlToCheck = html_table.on('change', 'input[type="checkbox"]', function () {
-         //Clicking the checkbox automatically selects the row, so we use this to our advantage
-         var selected_row = urlToCheck.find('.selected');
-         var selected_blockedSite = selected_row.data('blockedSite');
-         selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
-         //no need to set links cause it holds pointers so they get updated automatically
-         updateStorageBlacklist();
-     });
+    deleteButton.on('click', deleteButtonClick);
 };
 
 /* -------------------- -------------------------- -------------------- */
