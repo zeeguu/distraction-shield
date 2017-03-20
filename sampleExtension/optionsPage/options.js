@@ -3,7 +3,6 @@
 //var console = chrome.extension.getBackgroundPage().console;
 
 //Local variables that hold the html elements
-var html_blacklist = $('#blacklistedSites');
 var html_table = $('#blacklistTable');
 var html_txtFld = $('#textFld');
 var html_intCnt = $('#iCounter');
@@ -25,6 +24,24 @@ initOptionsPage = function() {
     });
 };
 
+// this function makes the table single selection only
+initTableSelection = function () {
+    html_table.on('click', 'tr', function () {
+        $(this).addClass('selected').siblings().removeClass('selected');
+    });
+};
+
+initCheckBoxes = function () {
+    var urlToCheck = html_table.on('change', 'input[type="checkbox"]', function () {
+        //Clicking the checkbox automatically selects the row, so we use this to our advantage
+        var selected_row = urlToCheck.find('.selected');
+        var selected_blockedSite = selected_row.data('blockedSite');
+        selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
+        //no need to set links cause it holds pointers so they get updated automatically
+        updateStorageBlacklist();
+    });
+};
+
 /* -------------------- Manipulate storage ------------------- */
 
 updateStorageBlacklist = function() {
@@ -42,15 +59,17 @@ updateBackgroundPage = function() {
 /* -------------------- Manipulate Html elements ------------------- */
 
 generateHtmlTableRow = function(blockedSite) {
-    return $("<tr class='table-row' >" +
-                "<td>"+blockedSite.icon+"</td>" +
-                "<td>"+blockedSite.name+"</td>" +
-                "<td>"+ "<input type=\"checkbox\" name=\"state\" checked=\"" + blockedSite.checkboxVal + "\">" + "</td>" +
-             "</tr>");
-};
-
-generateHtmlListOption = function(blockedSite) {
-    return $("<option></option>").text(blockedSite.name);
+    var tableRow =
+        $("<tr class='table-row' >" +
+            "<td>"+blockedSite.icon+"</td>" +
+            "<td>"+blockedSite.name+"</td>" +
+            "<td>"+ "<input class='checkbox-toggle' type=\"checkbox\" name=\"state\">" + "</td>" +
+        "</tr>");
+    //set the checkbox value
+    tableRow.find('.checkbox-toggle').prop('checked', blockedSite.checkboxVal);
+    //add the actual object to the html_element
+    tableRow.data('blockedSite', blockedSite);
+    return tableRow;
 };
 
 removeFromHtml = function(html_item) {
@@ -65,7 +84,6 @@ setHtmlElements = function() {
 setHtmlBlacklist = function(list) {
     $.each(list, function(key, value) {
         appendHtmlItemTo(generateHtmlTableRow(value), html_table);
-        appendHtmlItemTo(generateHtmlListOption(value), html_blacklist);
     });
 };
 
@@ -75,9 +93,9 @@ appendHtmlItemTo = function(html_child, html_parent) {
 
 /* -------------------- Manipulate local variables ------------------- */
 
-//TODO duplicate name removal will result in problems
 removeFromLocalLinks = function(html_item) {
-    var urlkey = links.indexOf(html_item.val());
+    var urlkey = links.indexOf(html_item.data('blockedSite'));
+
     links.splice(urlkey, 1);
 };
 
@@ -103,7 +121,6 @@ addLinkToAll = function(newUrl) {
     newItem = new BlockedSite(newUrl);
     addUrlToLocal(newItem);
     appendHtmlItemTo(generateHtmlTableRow(newItem), html_table);
-    appendHtmlItemTo(generateHtmlListOption(newItem), html_blacklist);
     updateStorageBlacklist();
 };
 
@@ -116,9 +133,9 @@ saveButtonClick = function() {
     html_txtFld.val('');
 };
 
-deleteButtonClick = function() {
-    var urlToDelete = html_blacklist.find('option:selected');
-    removeLinkFromAll(urlToDelete)
+deleteButtonClick = function () {
+    var urlToDelete = html_table.find(".selected");
+    removeLinkFromAll(urlToDelete);
 };
 
 //Connect functions to HTML elements
@@ -134,5 +151,7 @@ connectButtons = function() {
 //Run this when the page is loaded.
 document.addEventListener("DOMContentLoaded", function(){
     connectButtons();
+    initTableSelection();
+    initCheckBoxes();
     initOptionsPage();
 });

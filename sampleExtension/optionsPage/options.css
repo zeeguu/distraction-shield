@@ -4,19 +4,16 @@ body {
     background-color: #FFFBED;
 }
 
-#blacklistedSites {
-    background-color: #ffffff;
-    width:600px;
-}
 
 #blacklistTable {
-    width: 100%;
+    width: 600px;
 }
+
 table {
     border: 1px solid black;
 }
 
 .selected {
-    background-color: brown;
+    background-color: #3297FD;
     color: #FFF;
 }
