@@ -64,7 +64,7 @@ intercept = function(details) {
 
         return {redirectUrl: redirectLink};
     } else {
-        console.log("doIntercept is false");
+        console.log("doIntercept is false");//TODO remove
     }
 };
 /* ------------Store the current URL-------- ------ ---------------*/
@@ -94,14 +94,12 @@ addBrowserActionListener = function() {
 };
 
 addSkipMessageListener = function() {
-    chrome.runtime.onMessage.addListener(
-        function(request, sender) {
-            if (request.message == "goToOriginalDestination") {
-                console.log("message received: " + "goToOriginalDestination");
-                doIntercept = false;
-                chrome.tabs.update(sender.tab.id, {url: request.destination});
-            }
-        });
+    chrome.runtime.onMessage.addListener(function(request, sender) {
+        if (request.message == "goToOriginalDestination") {
+            doIntercept = false;
+            chrome.tabs.update(sender.tab.id, {url: request.destination});
+        }
+    });
 }
 
 
