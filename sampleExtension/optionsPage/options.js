@@ -1,6 +1,6 @@
 
 // Log console messages to the background page console instead of the content page.
-//var console = chrome.extension.getBackgroundPage().console;
+var console = chrome.extension.getBackgroundPage().console;
 
 //Local variables that hold the html elements
 var html_table = $('#blacklistTable');
@@ -39,6 +39,7 @@ initCheckBoxes = function () {
         selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
         //no need to set links cause it holds pointers so they get updated automatically
         updateStorageBlacklist();
+        sortHtmlOnChecked();
     });
 };
 
@@ -76,9 +77,10 @@ removeFromHtml = function(html_item) {
     html_item.remove();
 };
 
-setHtmlElements = function() {
+setHtmlElements = function () {
     html_intCnt.text(interceptionCounter);
     setHtmlBlacklist(links);
+    sortHtmlOnChecked();
 };
 
 setHtmlBlacklist = function(list) {
@@ -95,7 +97,6 @@ appendHtmlItemTo = function(html_child, html_parent) {
 
 removeFromLocalLinks = function(html_item) {
     var urlkey = links.indexOf(html_item.data('blockedSite'));
-
     links.splice(urlkey, 1);
 };
 
@@ -136,6 +137,23 @@ saveButtonClick = function() {
 deleteButtonClick = function () {
     var urlToDelete = html_table.find(".selected");
     removeLinkFromAll(urlToDelete);
+};
+
+sortHtmlOnChecked = function () {
+    var rows = html_table.find('tr').get();
+    rows.sort(function (a, b) {
+        var keyA = $(a).find('.checkbox-toggle')["0"].checked;
+        var keyB = $(b).find('.checkbox-toggle')["0"].checked;
+        console.log(keyA);
+        if (keyA && !keyB)
+            return -1;
+        if (!keyA && keyB)
+            return 1;
+        return 0;
+    });
+    $.each(rows, function (index, row) {
+        html_table.append(row);
+    });
 };
 
 //Connect functions to HTML elements
