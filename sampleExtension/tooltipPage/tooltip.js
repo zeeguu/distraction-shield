@@ -12,12 +12,32 @@ saveCurrentPageToBlacklist = function() {
         var activeTabUrl = activeTab.url;
         bg.addToBlockedSites(activeTabUrl);
         bg.replaceListener();
-
+        console.log("test");
     });
-}
+};
 
-var saveButton = $('#saveBtn');
-saveButton.on('click', saveCurrentPageToBlacklist);
+redirectToStatistics = function() {
+    chrome.tabs.create({'url': chrome.runtime.getURL('statisticsPage/statistics.html')});
+    //return {redirectUrl: "://statisticsPage/statistics.html/"};
+};
+
+openOptionsPage = function() {
+    chrome.runtime.openOptionsPage();
+};
+
+//Connect functions to HTML elements
+connectButtons = function() {
+    var saveButton = $('#saveBtn');
+    saveButton.on('click', saveCurrentPageToBlacklist);
+    var optionsButton = $('#optionsBtn');
+    optionsButton.on('click', openOptionsPage);
+    var statisticsButton = $('#statisticsBtn');
+    statisticsButton.on('click', redirectToStatistics);
+};
+
+connectButtons();
+
+
 
 
 
