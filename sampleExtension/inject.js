@@ -2,28 +2,12 @@
  * Created by Eli Ionescu on 3/16/2017.
  */
 console.log("YO");
-var skipButton = "<button id='skip' class=\"ui-button ui-corner-all ui-widget\"\> I'm lazy and I want to skip</button>";
+var skipButton = $("<button id='skip' class=\"ui-button ui-corner-all ui-widget\"\> I'm lazy and I want to skip</button>");
+skipButton.on("click", getStorageReredirectURL)
 $(".home-body").prepend(skipButton);
 
-document.getElementById("skip").addEventListener("click", goToPage);
-
-var reredirectURL;
-
-getStorageReredirectURL = function(callback) {
-    chrome.storage.sync.get("reredirecturl", function (ulr) {
-        if(handleRuntimeError()) {
-           console.out("get reredirect link error")
-        }
-        reredirectURL = url;
+getStorageReredirectURL = function() {
+    chrome.storage.sync.get("reredirecturl", function (url) {
+        chrome.runtime.sendMessage({message: "goToOriginalDestination", destination: url.reredirecturl});
     });
-
 };
-
-
-
-
-function goToPage(){
-    getStorageReredirectURL();
-    window.location.href = reredirectLink; // a link from the constatns.js
-    // window.location.href = reredirectURL;
-}

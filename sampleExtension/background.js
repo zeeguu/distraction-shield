@@ -1,7 +1,7 @@
 
 //Set that holds the urls to be intercepted
 var blockedSites = [];
-
+var doIntercept = true;
 /* --------------- ------ update list of BlockedSites ------ ---------------*/
 
 updateStorage = function() {
@@ -55,16 +55,26 @@ addWebRequestListener = function() {
 };
 
 intercept = function(details) {
-    incrementInterceptionCounter();
-    storeCurrentPage(details.url);
+    if (doIntercept) {
+        console.log("details of intercept: ");//TODO remove
+        console.log(JSON.stringify(details,null,4));//TODO remove
+        incrementInterceptionCounter();
+        console.log("sending " + details.url + " to sync");//TODO remove
+        storeCurrentPage(details.url);
 
-    return {redirectUrl: redirectLink};
+        return {redirectUrl: redirectLink};
+    } else {
+        console.log("doIntercept is false");
+    }
 };
 /* ------------Store the current URL-------- ------ ---------------*/
 
 storeCurrentPage = function (url) {
-   chrome.storage.sync.set({"reredirecturl" : url}, function() {
+    console.log("entered storeCurrentPage, received: " + url);//TODO remove
+
+   chrome.storage.sync.set({"reredirecturl" : url}, function(url) {
        handleRuntimeError();
+       // console.log("\tset reredirecturl to: " + url);//TODO remove
    });
 }
 
@@ -82,6 +92,18 @@ addBrowserActionListener = function() {
         });
     });
 };
+
+addSkipMessageListener = function() {
+    chrome.runtime.onMessage.addListener(
+        function(request, sender) {
+            if (request.message == "goToOriginalDestination") {
+                console.log("message received: " + "goToOriginalDestination");
+                doIntercept = false;
+                chrome.tabs.update(sender.tab.id, {url: request.destination});
+            }
+        });
+}
+
 
 
 
