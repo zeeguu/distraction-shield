@@ -12,6 +12,7 @@ var links = [];
 var interceptionCounter = 0;
 
 
+
 /* -------------------- Initialization of options --------------------- */
 
 //Initialize HTML elements and set the local variables
@@ -77,7 +78,7 @@ removeFromHtml = function(html_item) {
     html_item.remove();
 };
 
-setHtmlElements = function () {
+setHtmlElements = function() {
     html_intCnt.text(interceptionCounter);
     setHtmlBlacklist(links);
     sortHtmlOnChecked();
@@ -91,6 +92,22 @@ setHtmlBlacklist = function(list) {
 
 appendHtmlItemTo = function(html_child, html_parent) {
     html_parent.append(html_child);
+};
+
+sortHtmlOnChecked = function () {
+    var rows = html_table.find('tr').get();
+    rows.sort(function (a, b) {
+        var keyA = $(a).find('.checkbox-toggle')["0"].checked;
+        var keyB = $(b).find('.checkbox-toggle')["0"].checked;
+        if (keyA && !keyB)
+            return -1;
+        if (!keyA && keyB)
+            return 1;
+        return 0;
+    });
+    $.each(rows, function (index, row) {
+        html_table.append(row);
+    });
 };
 
 /* -------------------- Manipulate local variables ------------------- */
@@ -139,27 +156,26 @@ deleteButtonClick = function () {
     removeLinkFromAll(urlToDelete);
 };
 
-sortHtmlOnChecked = function () {
-    var rows = html_table.find('tr').get();
-    rows.sort(function (a, b) {
-        var keyA = $(a).find('.checkbox-toggle')["0"].checked;
-        var keyB = $(b).find('.checkbox-toggle')["0"].checked;
-        console.log(keyA);
-        if (keyA && !keyB)
-            return -1;
-        if (!keyA && keyB)
-            return 1;
-        return 0;
-    });
-    $.each(rows, function (index, row) {
-        html_table.append(row);
-    });
+// still work in progress, might be possible in combination with url checker
+getHtmlInfo = function (url) {
+    $.get(url, logData);
 };
+
+logData = function (data) {
+    var title = data.match("<title>(.*?)</title>")[1];
+    console.log(title);
+};
+
 
 //Connect functions to HTML elements
 connectButtons = function() {
     var saveButton = $('#saveBtn');
     saveButton.on('click', saveButtonClick);
+    html_txtFld.keyup(function (event) {
+        if (event.keyCode == 13) {
+            saveButton.click();
+        }
+    });
     var deleteButton = $('#deleteBtn');
     deleteButton.on('click', deleteButtonClick);
 };
