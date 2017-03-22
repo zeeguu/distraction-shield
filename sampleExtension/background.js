@@ -2,6 +2,13 @@
 //Set that holds the urls to be intercepted
 var blockedSites = [];
 var doIntercept = true;
+
+
+/*----------------------- Timer Mode vars -----------------------------------*/
+var timer = 1 * Math.pow(10, 6); // 15 minutes timer
+var interceptTime =  new Date().getTime();
+
+
 /* --------------- ------ update list of BlockedSites ------ ---------------*/
 
 updateStorage = function() {
@@ -61,20 +68,19 @@ intercept = function(details) {
         incrementInterceptionCounter();
         console.log("sending " + details.url + " to sync");//TODO remove
         storeCurrentPage(details.url);
-
         return {redirectUrl: redirectLink};
-    } else {
-        console.log("doIntercept is false");//TODO remove
+    }else{
+        /* We do not redirect if the interception is made in the case
+         * when we just want to go back to the original destination  */
+        doIntercept = true;
     }
 };
-/* ------------Store the current URL-------- ------ ---------------*/
+/* --------------------Store the current URL---------------------------------*/
 
 storeCurrentPage = function (url) {
     console.log("entered storeCurrentPage, received: " + url);//TODO remove
-
-   chrome.storage.sync.set({"reredirecturl" : url}, function(url) {
+   chrome.storage.sync.set({"originalDestination" : url}, function(url) {
        handleRuntimeError();
-       // console.log("\tset reredirecturl to: " + url);//TODO remove
    });
 }
 
@@ -100,11 +106,21 @@ addSkipMessageListener = function() {
             chrome.tabs.update(sender.tab.id, {url: request.destination});
         }
     });
-}
+};
 
+/*-----------------------Compute time elapsed----------------------------------*/
 
-
-
+isInterceptionTime = function () {
+    var currentTime = new Date();
+    if(currentTime - timer < interceptTime){
+        return true;
+    }
+    console.log("cT - timer : ");
+    console.log( currentTime - timer);
+    console.log("interceptTime : ");
+    console.log(interceptTime);
+    return false;
+};
 
 
 
