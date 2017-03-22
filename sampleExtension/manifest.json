@@ -23,7 +23,7 @@
   },
 
   "background": {
-    "scripts": ["jquery/jquery-1.10.2.js", "blockedSite.js", "syncStorage.js", "background.js", "init.js"]
+    "scripts": ["jquery/jquery-1.10.2.js", "blockedSite.js", "syncStorage.js", "background.js", "init.js", "tracker.js"]
   },
 
   "content_scripts": [
@@ -39,6 +39,7 @@
     "storage",
     "webRequest",
     "webRequestBlocking",
+    "idle",
     "<all_urls>"
   ]
 
