@@ -62,23 +62,26 @@ addWebRequestListener = function() {
 };
 
 intercept = function(details) {
+    console.log("intercept is " + doIntercept);
     if (doIntercept) {
         console.log("details of intercept: ");//TODO remove
-        console.log(JSON.stringify(details,null,4));//TODO remove
         incrementInterceptionCounter();
-        console.log("sending " + details.url + " to sync");//TODO remove
+        // console.log("sending " + details.url + " to sync");//TODO remove
         storeCurrentPage(details.url);
         return {redirectUrl: redirectLink};
     }else{
         /* We do not redirect if the interception is made in the case
          * when we just want to go back to the original destination  */
+        // asynchSetTrue();
         doIntercept = true;
+        // console.log("intercept set to " + doIntercept);
     }
 };
+
 /* --------------------Store the current URL---------------------------------*/
 
 storeCurrentPage = function (url) {
-    console.log("entered storeCurrentPage, received: " + url);//TODO remove
+    // console.log("entered storeCurrentPage, received: " + url);//TODO remove
    chrome.storage.sync.set({"originalDestination" : url}, function(url) {
        handleRuntimeError();
    });
@@ -100,10 +103,12 @@ addBrowserActionListener = function() {
 };
 
 addSkipMessageListener = function() {
+    console.log("message received");
     chrome.runtime.onMessage.addListener(function(request, sender) {
         if (request.message == "goToOriginalDestination") {
             doIntercept = false;
-            chrome.tabs.update(sender.tab.id, {url: request.destination});
+            console.log("intercept set to " + doIntercept + ", going to" + request.destination);
+            chrome.tabs.update(sender.tab.id, {url: request.destination}, function() { console.log("now we are at the original destination");});
         }
     });
 };
