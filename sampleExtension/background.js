@@ -65,18 +65,31 @@ intercept = function(details) {
     console.log("intercept is " + doIntercept);
     if (doIntercept) {
         console.log("details of intercept: ");//TODO remove
+        console.log(JSON.stringify(details, null, 4));
         incrementInterceptionCounter();
-        // console.log("sending " + details.url + " to sync");//TODO remove
+        console.log("sending " + details.url + " to sync");//TODO remove
         storeCurrentPage(details.url);
+        asynchSetDoIntercept(false);
         return {redirectUrl: redirectLink};
     }else{
         /* We do not redirect if the interception is made in the case
-         * when we just want to go back to the original destination  */
-        // asynchSetTrue();
-        doIntercept = true;
+         * when we just want to go back to the original destination
+         * At this point different modes (timeouts etc) will be
+         * (in part) implemented */
+
+        asynchSetDoIntercept(true);
+
+        // doIntercept = true;
         // console.log("intercept set to " + doIntercept);
     }
 };
+
+function asynchSetDoIntercept(val) {
+    setTimeout(function () {
+        doIntercept = val;
+    }, 2000);
+}
+
 
 /* --------------------Store the current URL---------------------------------*/
 
@@ -103,10 +116,9 @@ addBrowserActionListener = function() {
 };
 
 addSkipMessageListener = function() {
-    console.log("message received");
     chrome.runtime.onMessage.addListener(function(request, sender) {
         if (request.message == "goToOriginalDestination") {
-            doIntercept = false;
+            console.log("message received");
             console.log("intercept set to " + doIntercept + ", going to" + request.destination);
             chrome.tabs.update(sender.tab.id, {url: request.destination}, function() { console.log("now we are at the original destination");});
         }
