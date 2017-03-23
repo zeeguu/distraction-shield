@@ -6,24 +6,27 @@ var TrackerStorage = new function() {
         self.loadDummyData(50);
     };
 
+
+    // Loads dummy data in the previous day list for demonstration purposes.
     this.loadDummyData = function(amount){
         var dummyList = [];
         for(var i = amount; i > 0; i--){
             var date = new Date();
             date = new Date(date.setDate(date.getDate()-i));
-            console.log(date);
             dummyList.push({'date': ((date.getDate())+"/"+(date.getMonth()+1)+"/"+date.getFullYear()), 'timespent': Math.floor((Math.random()*100)+1)});
         }
         self.setDayStatisticsList(dummyList);
     };
 
 
+    // Increments the counter for time spent on exercises today with 'amount'.
+    // When there is no currentDateStatistic in the storage yet, create one.
+    // And when the currentDateStatistic does not correspond with the actual current date,
+    // this currentDataStatistic is added to the list of previous day statistics.
     this.incrementDayStat = function(amount){
         self.getCurrentDayStatistic().then(function(response){
             var today = self.getToday();
             var responseObject = response.tds_currentDayStatistic;
-            //console.log(responseObject);
-
             if(responseObject == null){
                 self.setCurrentDayStatistic({'date': today, 'timespent': 0});
             } else if(responseObject.date != today){
@@ -36,6 +39,7 @@ var TrackerStorage = new function() {
         });
     };
 
+    // This function adds the previous day to the list of day statistics.
     this.addPreviousDayToStatsList = function(dayStats){
         console.log("Adding previous day to dayStats "+dayStats.date+" - "+dayStats.timespent);
         self.getDayStatisticsList().then(function(response){
@@ -48,6 +52,8 @@ var TrackerStorage = new function() {
         });
     };
 
+
+    // Get the list containing information about time spent on exercises. For the previous days, and the current day.
     this.getCompleteDayStatList = function(){
         return new Promise(function(resolve, reject){
             self.getDayStatisticsList().then(function(response){
@@ -60,22 +66,27 @@ var TrackerStorage = new function() {
         })
     };
 
+    // Set the list dict containing information about how much time is spent on exercises each previous day.
     this.setDayStatisticsList = function(statList){
         self.setStorage("tds_dayStatistics", statList);
     };
 
+    // Get the list containing information about how much time is spent on exercises each previous day.
     this.getDayStatisticsList = function(){
         return self.getStorage("tds_dayStatistics");
     };
 
+    // Set the data dict containing information about how much time is spent on exercises today.
     this.setCurrentDayStatistic = function(dayStats){
         self.setStorage("tds_currentDayStatistic", dayStats);
     };
 
+    // Get the data dict containing information about how much time is spent on exercises today.
     this.getCurrentDayStatistic = function(){
         return self.getStorage("tds_currentDayStatistic");
     };
 
+    // General function which is used to set items stored in the storage of the chrome api.
     this.setStorage = function(ind, data) {
         var newObj= {};
         newObj[ind] = data;
@@ -84,6 +95,9 @@ var TrackerStorage = new function() {
         })
     };
 
+    // General function which is used to retrieve items stored in the storage of the chrome api.
+    // This function returns a Promise, to account for possible delays which might exist between the requesting of
+    // the things in the storage and the actual retrieving of it.
     this.getStorage = function(index){
         return new Promise(function (resolve, reject) {
             chrome.storage.sync.get(index, function (output) {
@@ -96,6 +110,7 @@ var TrackerStorage = new function() {
         });
     };
 
+    // Function which returns the current date, formatted in the correct format.
     this.getToday = function(){
         var dateObject = new Date();
         return (dateObject.getDate())+"/"+(dateObject.getMonth()+1)+"/"+dateObject.getFullYear();
