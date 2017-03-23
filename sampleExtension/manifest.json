@@ -28,13 +28,9 @@
   //TODO update to current state of extension
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "css": ["jquery/jquery-ui.css"],
-      "js": ["jquery/jquery-1.10.2.js"]
-    },
-    {
       "matches" : ["https://zeeguu.herokuapp.com/get-ex"],
-      "js" : ["constants.js","syncStorage.js", "intercept/inject.js"]
+      "css": ["jquery/jquery-ui.css"],
+      "js" : ["jquery/jquery-1.10.2.js","constants.js","syncStorage.js", "intercept/inject.js"]
     }
   ],
 
