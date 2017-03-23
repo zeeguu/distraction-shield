@@ -22,7 +22,7 @@
   },
 
   "background": {
-    "scripts": ["constants.js","syncStorage.js", "background.js", "init.js"]
+    "scripts": ["jquery/jquery-1.10.2.js","blockedSite.js","constants.js","syncStorage.js", "background.js", "init.js"]
   },
 
   //TODO update to current state of extension
