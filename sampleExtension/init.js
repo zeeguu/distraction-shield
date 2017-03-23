@@ -9,6 +9,7 @@ initExtension = function () {
     updateBlockedSites(replaceListener);
     updateInterceptDateList();
     addBrowserActionListener();
+    addSkipMessageListener();
 };
 
 /* --------------- ---- Run upon installation ---- ---------------*/
