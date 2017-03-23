@@ -36,6 +36,15 @@ getStorageMode= function(callback) {
     });
 };
 
+getStorageSettings = function(callback) {
+    chrome.storage.sync.get("tds_settings", function (output) {
+        if(handleRuntimeError()) {
+            var deserializedSettings = settings_deserialize(output.tds_settings);
+            return callback(deserializedSettings);
+        }
+    });
+};
+
 /* --------------- ---- Setter functions ---- ---------------*/
 
 /* ------ Blacklist functions ------ */
@@ -75,6 +84,14 @@ incrementInterceptionCounter = function() {
 
 setStorageMode= function(mode) {
     chrome.storage.sync.set({"tds_mode": mode}, function() {
+        handleRuntimeError();
+    });
+};
+
+setStorageSettings = function(settingsObject) {
+    var serializedSettings = settings_serialize(settingsObject);
+    chrome.storage.sync.set({"tds_settings" : serializedSettings}, function() {
+        console.log("called");
         handleRuntimeError();
     });
 };

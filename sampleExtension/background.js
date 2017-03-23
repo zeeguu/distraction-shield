@@ -1,11 +1,21 @@
 
 //Set that holds the urls to be intercepted
 var blockedSites = [];
+var localSettings = null;
 
 /* --------------- ------ update list of BlockedSites ------ ---------------*/
 
 updateStorage = function() {
     setStorageBlacklist(blockedSites);
+};
+
+
+// This function receives the settings from the sync storage.
+updateSettings = function(callback, param) {
+    getStorageSettings(function(settingsObject) {
+        localSettings = settingsObject;
+        return callback(param);
+    });
 };
 
 // This function receives the blacklist from the sync storage.
@@ -35,12 +45,17 @@ formatUrl = function(url) {
 /* --------------- ------ Listener functions ------ ---------------*/
 
 replaceListener = function() {
-    chrome.webRequest.onBeforeRequest.removeListener(intercept);
+    removeWebRequestListener();
     addWebRequestListener();
 };
 
+removeWebRequestListener = function() {
+    chrome.webRequest.onBeforeRequest.removeListener(intercept);
+};
+
+
 addWebRequestListener = function() {
-    if(blockedSites.length > 0) {
+    if(settings_getState(localSettings) == "On" && blockedSites.length > 0) {
         var urlList = blockedSites.filter(function (a) {return a.checkboxVal == true;});
         if (urlList.length > 0) {
             chrome.webRequest.onBeforeRequest.addListener(
@@ -75,14 +90,4 @@ addBrowserActionListener = function() {
         });
     });
 };
-
-
-
-
-
-
-
-
-
-
 
