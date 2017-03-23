@@ -1,6 +1,13 @@
 
 //Set that holds the urls to be intercepted
 var blockedSites = [];
+var doIntercept = true;
+
+
+/*----------------------- Timer Mode vars -----------------------------------*/
+var timer = Math.pow(10, 6); // 15 minutes timer
+var interceptTime =  new Date().getTime();
+
 
 /* --------------- ------ update list of BlockedSites ------ ---------------*/
 
@@ -56,9 +63,33 @@ addWebRequestListener = function() {
     }
 };
 
-intercept = function() {
-    incrementInterceptionCounter();
-    return {redirectUrl: "https://zeeguu.herokuapp.com/get-ex"};
+intercept = function(details) {
+    if (doIntercept) {
+        incrementInterceptionCounter();
+        storeCurrentPage(details.url);
+        asynchSetDoIntercept(false);
+        return {redirectUrl: redirectLink};
+    }else{
+        /* We do not redirect if the interception is made in the case
+         * when we just want to go back to the original destination
+         * At this point different modes (timeouts etc) will be
+         * (in part) implemented */
+        asynchSetDoIntercept(true);
+    }
+};
+
+function asynchSetDoIntercept(val) {
+    setTimeout(function () {
+        doIntercept = val;
+    }, 2000);
+}
+
+/* --------------------Store the current URL---------------------------------*/
+
+storeCurrentPage = function (url) {
+   chrome.storage.sync.set({"originalDestination" : url}, function() {
+       handleRuntimeError();
+   });
 };
 
 /* --------------- ------ ------------------ ------ ---------------*/
@@ -76,8 +107,14 @@ addBrowserActionListener = function() {
     });
 };
 
-
-
+addSkipMessageListener = function() {
+    chrome.runtime.onMessage.addListener(function(request, sender) {
+        if (request.message == "goToOriginalDestination") {
+            console.log("intercept set to " + doIntercept + ", going to" + request.destination);
+            chrome.tabs.update(sender.tab.id, {url: request.destination});
+        }
+    });
+};
 
 
 

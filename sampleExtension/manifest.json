@@ -22,15 +22,15 @@
   },
 
   "background": {
-    "scripts": ["jquery/jquery-1.10.2.js", "blockedSite.js", "syncStorage.js", "background.js", "init.js"]
+    "scripts": ["jquery/jquery-1.10.2.js","blockedSite.js","constants.js","syncStorage.js", "background.js", "init.js"]
   },
 
   //TODO update to current state of extension
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches" : ["https://zeeguu.herokuapp.com/get-ex"],
       "css": ["jquery/jquery-ui.css"],
-      "js": ["jquery/jquery-1.10.2.js"]
+      "js" : ["jquery/jquery-1.10.2.js","constants.js","syncStorage.js", "intercept/inject.js"]
     }
   ],
 
@@ -40,6 +40,10 @@
     "webRequest",
     "webRequestBlocking",
     "<all_urls>"
+  ],
+
+  "web_accessible_resources": [
+    "intercept/bindEvents.js"
   ]
 
 }

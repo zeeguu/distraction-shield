@@ -8,6 +8,7 @@ initSession = function () {
     //First receive the blacklist from the sync storage, and then create a onBeforeRequest listener using this list.
     updateBlockedSites(replaceListener);
     addBrowserActionListener();
+    addSkipMessageListener();
 };
 
 /* --------------- ---- Run upon installation ---- ---------------*/
