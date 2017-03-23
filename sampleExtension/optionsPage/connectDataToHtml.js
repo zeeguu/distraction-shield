@@ -16,7 +16,7 @@ loadHtmlMode = function(extensionMode) {
 };
 
 loadHtmlInterceptCounter = function(count) {
-    html_intCnt = count;
+    html_intCnt.text(count);
 };
 
 connectLocalDataToHtml = function() {
