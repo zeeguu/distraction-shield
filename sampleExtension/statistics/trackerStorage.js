@@ -1,27 +1,20 @@
 
 var TrackerStorage = new function() {
     var self = this;
-    self.dayStatList = null;
 
     this.init = function(){
-        self.setCurrentDayStatistic(null);
-        self.setDayStatisticsList([]);
+        // self.setCurrentDayStatistic(null);
+        // self.setDayStatisticsList([]);
 
 
-        setInterval(self.tester, 5000);
+        // setInterval(self.tester, 5000);
     };
 
-    this.tester = function() {
-        //self.incrementDayStat(1);
-        // self.getCurrentDayStatistic().then(function (response) {
-        //     console.log(response.tds_currentDayStatistic);
-        //     //console.log(self.currentDayStat.date);
-        // });
-
-        self.getCompleteDayStatList().then(function(response){
-            console.log(response);
-        });
-    };
+    // this.tester = function() {
+    //     self.getCompleteDayStatList().then(function(response){
+    //         console.log(response);
+    //     });
+    // };
 
     this.incrementDayStat = function(amount){
         self.getCurrentDayStatistic().then(function(response){
