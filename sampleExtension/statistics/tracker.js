@@ -39,7 +39,6 @@ var Tracker = new function() {
         } else if(idleState == 'idle'){
             self.idle = true;
         }
-        console.log("State changed. Current state: "+idleState);
     };
 
     // Gets the current tab.
