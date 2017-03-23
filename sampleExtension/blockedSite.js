@@ -33,12 +33,12 @@ function BlockedSite (input) {
     };
 
     this.url = this.getUrl(input);
-
     this.name = this.getName(input);
 
     this.icon = this.getIcon(input);
     this.lastVisited = new Date();
     this.checkboxVal = true;
+    this.counter=0;
 
 }
 

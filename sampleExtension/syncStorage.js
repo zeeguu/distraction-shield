@@ -42,6 +42,13 @@ setStorageBlacklistWithCallback = function(list, callback) {
 /* ------ Statistics functions ------ */
 
 incrementInterceptionCounter = function(urlAddress) {
+    var name=new BlockedSite(urlAddress).name;
+    for (var i=0; i<blockedSites.length; i++) {
+        if (blockedSites[i].name==name){
+            blockedSites[i].counter++;
+        }
+    }
+    setStorageBlacklist (blockedSites);
     chrome.storage.sync.get("tds_interceptCounter", function(output) {
         var counter = output.tds_interceptCounter.count;
         counter++;
