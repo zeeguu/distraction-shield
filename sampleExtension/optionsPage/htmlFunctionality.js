@@ -108,12 +108,12 @@ sortHtmlOnChecked = function () {
 setCheckboxFunction = function (html_selectable) {
     html_selectable.on('change', 'input[type="checkbox"]', function () {
         //Clicking the checkbox automatically selects the row, so we use this to our advantage
-        var selected_row = html_item.find('.selected');
+        var selected_row = html_selectable.find('.selected');
         var selected_blockedSite = selected_row.data('blockedSite');
         selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
         //no need to set links cause it holds pointers so they get updated automatically
         updateStorageBlacklist();
-        sortHtmlOnChecked(html_table);
+        sortHtmlOnChecked(html_selectable);
     });
 };
 
