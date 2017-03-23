@@ -33,7 +33,7 @@
     },
     {
       "matches" : ["https://zeeguu.herokuapp.com/get-ex"],
-      "js" : ["constants.js", "inject.js"]
+      "js" : ["constants.js","syncStorage.js", "intercept/inject.js"]
     }
   ],
 
@@ -46,7 +46,7 @@
   ],
 
   "web_accessible_resources": [
-    "bindEvents.js"
+    "intercept/bindEvents.js"
   ]
 
 }

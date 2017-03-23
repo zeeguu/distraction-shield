@@ -5,7 +5,7 @@ var doIntercept = true;
 
 
 /*----------------------- Timer Mode vars -----------------------------------*/
-var timer = 1 * Math.pow(10, 6); // 15 minutes timer
+var timer = Math.pow(10, 6); // 15 minutes timer
 var interceptTime =  new Date().getTime();
 
 
@@ -62,12 +62,8 @@ addWebRequestListener = function() {
 };
 
 intercept = function(details) {
-    console.log("intercept is " + doIntercept);
     if (doIntercept) {
-        console.log("details of intercept: ");//TODO remove
-        console.log(JSON.stringify(details, null, 4));
         incrementInterceptionCounter();
-        console.log("sending " + details.url + " to sync");//TODO remove
         storeCurrentPage(details.url);
         asynchSetDoIntercept(false);
         return {redirectUrl: redirectLink};
@@ -76,11 +72,7 @@ intercept = function(details) {
          * when we just want to go back to the original destination
          * At this point different modes (timeouts etc) will be
          * (in part) implemented */
-
         asynchSetDoIntercept(true);
-
-        // doIntercept = true;
-        // console.log("intercept set to " + doIntercept);
     }
 };
 
@@ -90,15 +82,13 @@ function asynchSetDoIntercept(val) {
     }, 2000);
 }
 
-
 /* --------------------Store the current URL---------------------------------*/
 
 storeCurrentPage = function (url) {
-    // console.log("entered storeCurrentPage, received: " + url);//TODO remove
-   chrome.storage.sync.set({"originalDestination" : url}, function(url) {
+   chrome.storage.sync.set({"originalDestination" : url}, function() {
        handleRuntimeError();
    });
-}
+};
 
 /* --------------- ------ ------------------ ------ ---------------*/
 
@@ -118,25 +108,10 @@ addBrowserActionListener = function() {
 addSkipMessageListener = function() {
     chrome.runtime.onMessage.addListener(function(request, sender) {
         if (request.message == "goToOriginalDestination") {
-            console.log("message received");
             console.log("intercept set to " + doIntercept + ", going to" + request.destination);
-            chrome.tabs.update(sender.tab.id, {url: request.destination}, function() { console.log("now we are at the original destination");});
+            chrome.tabs.update(sender.tab.id, {url: request.destination});
         }
     });
-};
-
-/*-----------------------Compute time elapsed----------------------------------*/
-
-isInterceptionTime = function () {
-    var currentTime = new Date();
-    if(currentTime - timer < interceptTime){
-        return true;
-    }
-    console.log("cT - timer : ");
-    console.log( currentTime - timer);
-    console.log("interceptTime : ");
-    console.log(interceptTime);
-    return false;
 };
 
 
