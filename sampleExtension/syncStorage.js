@@ -18,6 +18,8 @@ handleRuntimeError = function() {
 
 /* --------------- ---- Getter functions ---- ---------------*/
 
+/* ------ Blacklist functions ------ */
+
 getStorageBlacklist = function(callback) {
     chrome.storage.sync.get("tds_blacklist", function (output) {
         if(handleRuntimeError()) {
@@ -42,7 +44,19 @@ getInterceptDateList = function(callback) {
     });
 };
 
+/* ------ Settings functions ------ */
+
+getStorageMode= function(callback) {
+    chrome.storage.sync.get("tds_mode", function (output) {
+        if(handleRuntimeError()) {
+            return callback(output.tds_mode);
+        }
+    });
+};
+
 /* --------------- ---- Setter functions ---- ---------------*/
+
+/* ------ Blacklist functions ------ */
 
 setStorageBlacklist = function(list) {
     chrome.storage.sync.set({"tds_blacklist" : list}, function() {
@@ -57,8 +71,10 @@ setStorageBlacklistWithCallback = function(list, callback) {
     });
 };
 
-setInterceptDateList = function(list) {
-    chrome.storage.sync.set({"tds_interceptDateList" : list}, function() {
+
+/* ------ Statistics functions ------ */
+setInterceptionCounter = function(number) {
+    chrome.storage.sync.set({"tds_interceptCounter": number}, function () {
         handleRuntimeError();
     });
 };
@@ -86,5 +102,13 @@ incrementInterceptionCounter = function(urlAddress) {
         chrome.storage.sync.set({"tds_interceptCounter": counter}, function () {
             handleRuntimeError();
         });
+    });
+};
+
+/* ------ Settings functions ------ */
+
+setStorageMode= function(mode) {
+    chrome.storage.sync.set({"tds_mode": mode}, function() {
+        handleRuntimeError();
     });
 };

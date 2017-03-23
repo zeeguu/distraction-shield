@@ -7,7 +7,7 @@ var doIntercept = true;
 
 
 /*----------------------- Timer Mode vars -----------------------------------*/
-var timer = 1 * Math.pow(10, 6); // 15 minutes timer
+var timer = Math.pow(10, 6); // 15 minutes timer
 var interceptTime =  new Date().getTime();
 
 /* --------------- ------ update list of BlockedSites ------ ---------------*/
@@ -19,8 +19,8 @@ updateStorage = function() {
 
 // This function receives the blacklist from the sync storage.
 updateBlockedSites = function(callback){
-    getStorageBlacklist(function(result) {
-        blockedSites = result;
+    getStorageBlacklist(function(blacklist) {
+        blockedSites = blacklist;
         return callback();
     });
 };
@@ -42,9 +42,10 @@ updateInterceptCounter = function(callback) {
 
 // This function adds one url to the blacklist
 addToBlockedSites = function(urlToAdd) {
-    var formattedUrl = formatUrl(urlToAdd);
-    blockedSites.push(formattedUrl);
+    var blockedSiteItem = new BlockedSite(formatUrl(urlToAdd));
+    blockedSites.push(blockedSiteItem);
     updateStorage();
+    replaceListener();
 };
 
 // This function adds the current time+date to the saved time+date list
@@ -63,7 +64,7 @@ formatUrl = function(url) {
     result = result.split("").reverse().join("");
     result = result.split(['/'])[1];
     result = result.split("").reverse().join("");
-    return '*://' + result + '/*';
+    return result;
 };
 
 /* --------------- ------ Listener functions ------ ---------------*/
@@ -74,21 +75,19 @@ replaceListener = function() {
 };
 
 addWebRequestListener = function() {
-    if(blockedSites != null) {
-        var urlList = blockedSites.filter(function (a) {
-            return a.checkboxVal == true;
-        });
-    }
-    if(blockedSites != null && blockedSites.length > 0 && urlList.length > 0) {
-        chrome.webRequest.onBeforeRequest.addListener(
-            intercept
-            ,{
-                //Url's to be intercepted
-                urls: urlList.map(function (a) {return a.url;})
-                ,types: ["main_frame"]
-            }
-            ,["blocking"]
-        );
+    if(blockedSites.length > 0) {
+        var urlList = blockedSites.filter(function (a) {return a.checkboxVal == true;});
+        if (urlList.length > 0) {
+            chrome.webRequest.onBeforeRequest.addListener(
+                intercept
+                ,{
+                    //Url's to be intercepted
+                    urls: urlList.map(function (a) {return a.url;})
+                    ,types: ["main_frame"]
+                }
+                ,["blocking"]
+            );
+        }
     }
 };
 
@@ -97,22 +96,30 @@ addWebRequestListener = function() {
 
 intercept = function(details) {
     if (doIntercept) {
-        storeCurrentPage(details.url);
         incrementInterceptionCounter(details.url);
         addToInterceptDateList();
+        storeCurrentPage(details.url);
+        asynchSetDoIntercept(false);
         return {redirectUrl: redirectLink};
     }else{
         /* We do not redirect if the interception is made in the case
-         * when we just want to go back to the original destination  */
-        // asynchSetTrue();
-        doIntercept = true;
+         * when we just want to go back to the original destination
+         * At this point different modes (timeouts etc) will be
+         * (in part) implemented */
+        asynchSetDoIntercept(true);
     }
 };
+
+function asynchSetDoIntercept(val) {
+    setTimeout(function () {
+        doIntercept = val;
+    }, 2000);
+}
 
 /* --------------------Store the current URL---------------------------------*/
 
 storeCurrentPage = function (url) {
-   chrome.storage.sync.set({"originalDestination" : url}, function(url) {
+   chrome.storage.sync.set({"originalDestination" : url}, function() {
        handleRuntimeError();
    });
 };
@@ -135,22 +142,11 @@ addBrowserActionListener = function() {
 addSkipMessageListener = function() {
     chrome.runtime.onMessage.addListener(function(request, sender) {
         if (request.message == "goToOriginalDestination") {
-            doIntercept = false;
-            chrome.tabs.update(sender.tab.id, {url: request.destination}, function() { console.log("now we are at the original destination");});
+            console.log("intercept set to " + doIntercept + ", going to" + request.destination);
+            chrome.tabs.update(sender.tab.id, {url: request.destination});
         }
     });
 };
-
-/*-----------------------Compute time elapsed----------------------------------*/
-
-isInterceptionTime = function () {
-    var currentTime = new Date();
-    if(currentTime - timer < interceptTime){
-        return true;
-    }
-    return false;
-};
-
 
 
 

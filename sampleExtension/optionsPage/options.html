@@ -16,8 +16,20 @@
     <div id="intercepts"> 
       <p> The times you were intercepted: <span id="iCounter"></span> </p>
     </div>
+
+    <div id="modeDiv">
+        Pick a mode:
+        <form id="modeSelector" name="modePicker">
+            <input type="radio" name="modeOptions" value="lazy" checked> Lazy<br>
+            <input type="radio" name="modeOptions" value="pro"> Pro
+        </form>
+    </div></p>
+
+    <div id="tableTitle">
+        <b>Websites you should be intercepted from:</b>
+    </div>
+
     <div id="list_div"> <p>
-        <b>Websites you should be intercepted from:</b><br>
         <table id="blacklistTable"> </table>
     </p> </div>
     <div>
@@ -30,7 +42,8 @@
     <script src="../jquery/jquery-1.10.2.js"></script>
     <script src="../syncStorage.js"></script>
     <script src="../blockedSite.js"></script>
-    <script src="../URI.js"></script>
+    <script src="htmlFunctionality.js"></script>
+    <script src="connectDataToHtml.js"></script>
     <script src="options.js"></script>
 
   </body>

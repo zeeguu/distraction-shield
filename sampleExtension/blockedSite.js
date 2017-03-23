@@ -1,6 +1,3 @@
-/**
- * Created by edser on 3/16/17.
- */
 
 function BlockedSite (input) {
     this.getUrl = function(input) {
@@ -18,15 +15,6 @@ function BlockedSite (input) {
         }
         return result;
     };
-
-    // this.getName = function (str) {
-    //     if (!/^https?:\/\//i.test(str)) {
-    //         str = 'http://' + str;
-    //     }
-    //     var uri = new URI();
-    //     uri = URI.parse(str);
-    //     return uri.hostname;
-    // };
 
     this.getIcon = function(input) {
         return "<img style=\"-webkit-user-select: none\" src=\"https://www.google.com/s2/favicons?domain="+input+"\">"

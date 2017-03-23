@@ -1,3 +1,4 @@
-sampleExtension/.idea/
-.idea/
+.gitignore
 
+sampleExtension/.idea
+.idea/
