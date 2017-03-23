@@ -25,6 +25,7 @@
     "scripts": ["constants.js","syncStorage.js", "background.js", "init.js"]
   },
 
+  //TODO update to current state of extension
   "content_scripts": [
     {
       "matches": ["<all_urls>"],

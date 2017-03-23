@@ -2,9 +2,9 @@
  * Created by edser on 3/15/17.
  */
 
-/* --------------- ---- Run upon Start of session ---- ---------------*/
+/* --------------- ---- Session initializer ---- ---------------*/
 
-initExtension = function () {
+initSession = function () {
     //First receive the blacklist from the sync storage, and then create a onBeforeRequest listener using this list.
     updateBlockedSites(replaceListener);
     addBrowserActionListener();
@@ -14,29 +14,33 @@ initExtension = function () {
 /* --------------- ---- Run upon installation ---- ---------------*/
 
 chrome.runtime.onInstalled.addListener(function() {
-    chrome.storage.sync.get(["tds_blacklist", "tds_interceptCounter"], function(output) {
+    chrome.storage.sync.get(["tds_blacklist", "tds_interceptCounter", "tds_mode"], function(output) {
         initBlacklist(output.tds_blacklist);
         initInterceptCounter(output.tds_interceptCounter);
+        initMode(output.tds_mode);
     });
 });
 
 initInterceptCounter = function(counter) {
     if (counter == null) {
-        chrome.storage.sync.set({"tds_interceptCounter": 0}, function () {
-            handleRuntimeError();
-        });
+        setInterceptionCounter(0);
     }
 };
 
 initBlacklist = function(list) {
     if (list == null) {
-        chrome.storage.sync.set({"tds_blacklist": []}, function () {
-            handleRuntimeError();
-        });
+        setStorageBlacklist([]);
     }
 };
 
-/* --------------- ---- --------------------- ---- ---------------*/
+
+initMode = function(mode) {
+    if (mode == null || mode == "") {
+        setStorageMode("lazy");
+    }
+};
 
 
-initExtension();
+/* --------------- ---- Run upon Start of session ---- ---------------*/
+
+initSession();
