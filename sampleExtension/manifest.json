@@ -25,6 +25,7 @@
   "background": {
     "scripts": [
       "jquery/jquery-1.10.2.js",
+      "constants.js",
       "blockedSite.js",
       "syncStorage.js",
       "background.js",
@@ -39,6 +40,10 @@
       "matches": ["<all_urls>"],
       "css": ["jquery/jquery-ui.css"],
       "js": ["jquery/jquery-1.10.2.js"]
+    },
+    {
+      "matches" : ["https://zeeguu.herokuapp.com/get-ex"],
+      "js" : ["constants.js", "inject.js"]
     }
   ],
 
@@ -49,6 +54,10 @@
     "webRequestBlocking",
     "idle",
     "<all_urls>"
+  ],
+
+  "web_accessible_resources": [
+    "bindEvents.js"
   ]
 
 }

@@ -8,6 +8,7 @@ var bg = chrome.extension.getBackgroundPage();
 var links = [];
 var interceptionCounter = 0;
 
+var html_table = $('#interceptTable');
 var html_intCnt = $('#iCounter');
 
 saveCurrentPageToBlacklist = function() {
@@ -17,20 +18,38 @@ saveCurrentPageToBlacklist = function() {
         var activeTab = arrayOfTabs[0];
         var activeTabUrl = activeTab.url;
         bg.addToBlockedSites(activeTabUrl);
-
     });
 }
 
+generateHtmlTableRow = function(site) {
+    var row =
+        $("<tr class='table-row' >" +
+            "<td>"+site.icon+"</td>" +
+            "<td>"+site.name+"</td>" +
+            "<td>"+site.counter+"</td>" +
+        "</tr>");
+    //add the actual object to the html_element
+    row.data('site', site);
+    return row;
+};
+
 var saveButton = $('#saveBtn');
 
-
+createHtmlTable = function (){
+    html_intCnt.text(interceptionCounter);
+    console.log (interceptionCounter);
+    console.log (html_intCnt);
+    $.each(links, function(k, site) {
+        html_table.append(generateHtmlTableRow(site));
+    });
+}
 
 //Initialize HTML elements and set the local variables
 initStatisticsPage = function() {
-    chrome.storage.sync.get(["tds_blacklist", "tds_interceptCounter"], function(output) {
+    chrome.storage.sync.get(["tds_interceptCounter"], function(output) {
         if (bg.handleRuntimeError()) {
             setLocalVariables(output);
-            html_intCnt.text(interceptionCounter);
+            createHtmlTable();
         }
     });
 
@@ -45,6 +64,7 @@ appendHtmlItemTo = function(html_child, html_parent) {
 
 setLocalVariables = function(output) {
     interceptionCounter = output.tds_interceptCounter;
+    links = bg.blockedSites;
 };
 
 connectButtons = function(){
