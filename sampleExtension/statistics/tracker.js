@@ -4,9 +4,7 @@
 // If this url corresponds with the zeeguu url, the time spent on exercises counter is incremented.
 var Tracker = new function() {
     var self = this;
-
     this.idle = false;
-
     this.tabActive = null;
     this.zeeguuRegex = "https://zeeguu.herokuapp.com/.*";
 

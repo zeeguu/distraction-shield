@@ -1,10 +1,4 @@
-/**
- * Created by edser on 3/15/17.
- */
-
 /* --------------- ---- Error handler ---- ---------------*/
-
-//var console = chrome.extension.getBackgroundPage().console;
 
 //Check for a runtime error
 handleRuntimeError = function() {
