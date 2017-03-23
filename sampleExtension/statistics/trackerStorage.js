@@ -3,7 +3,7 @@ var TrackerStorage = new function() {
     var self = this;
 
     this.init = function(){
-        self.loadDummyData(50);
+        self.loadDummyData(10);
     };
 
 
