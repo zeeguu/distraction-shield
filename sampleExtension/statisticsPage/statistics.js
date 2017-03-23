@@ -33,6 +33,14 @@ initStatisticsPage = function() {
             html_intCnt.text(interceptionCounter);
         }
     });
+
+    bg.TrackerStorage.getCompleteDayStatList().then(function(response){
+       setDayStatisticsHtml(response);
+    });
+};
+
+appendHtmlItemTo = function(html_child, html_parent) {
+    html_parent.append(html_child);
 };
 
 setLocalVariables = function(output) {
@@ -41,10 +49,29 @@ setLocalVariables = function(output) {
 
 connectButtons = function(){
     saveButton.on('click', saveCurrentPageToBlacklist);
-}
+};
+
+generateDayStatisticHtmlRow = function(dayStatistic) {
+    var tableRow =
+        $("<tr>" +
+            "<td>"+dayStatistic.date+"</td>" +
+            "<td>"+dayStatistic.timespent+"</td>" +
+            "</tr>");
+    //add the actual object to the html_element
+    return tableRow;
+};
+
+setDayStatisticsHtml = function(list) {
+    $.each(list, function(key, value) {
+        if(value != null){
+            appendHtmlItemTo(generateDayStatisticHtmlRow(value), $('#exerciseTime'));
+        }
+    });
+};
 
 //Run this when the page is loaded.
 document.addEventListener("DOMContentLoaded", function(){
     connectButtons();
     initStatisticsPage();
 });
+
