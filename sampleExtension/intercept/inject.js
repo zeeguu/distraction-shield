@@ -22,7 +22,7 @@ function mainFlow() {
 
 function initBasis(mode) {
     var message;
-    console.log("initBasis " + mode);
+    
     if (mode == "pro" || mode == undefined) {
         message = proMessage;
     } else if(mode == "lazy"){
