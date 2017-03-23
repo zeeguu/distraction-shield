@@ -9,6 +9,12 @@ body {
     width: 600px;
 }
 
+#listDiv {
+    height: 200px;
+    width: 100%;
+    overflow: auto;
+}
+
 table {
     border: 1px solid black;
 }
