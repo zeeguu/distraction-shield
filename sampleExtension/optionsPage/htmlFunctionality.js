@@ -53,7 +53,7 @@ deleteButtonClick = function () {
 submitWithEnter = function(html_elem) {
     html_elem.keyup(function (event) {
         if (event.keyCode == 13) {
-            saveButton.click();
+            saveButtonClick();
         }
     });
 };
