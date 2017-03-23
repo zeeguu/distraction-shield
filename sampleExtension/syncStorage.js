@@ -72,7 +72,7 @@ setInterceptCounter = function(counter) {
 /* ------ Statistics functions ------ */
 
 
-incrementInterceptionCounter = function() {
+incrementInterceptionCounter = function(urlAddress) {
     var name=new BlockedSite(urlAddress).name;
     for (var i=0; i<blockedSites.length; i++) {
         if (blockedSites[i].name==name){

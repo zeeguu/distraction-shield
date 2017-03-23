@@ -102,7 +102,7 @@ removeFromLocalLinks = function(html_item) {
 
 setLocalVariables = function(storage_output) {
     links = storage_output.tds_blacklist;
-    interceptionCounter = storage_output.tds_interceptCounter;//new Date(storage_output.tds_interceptDateList.pop());
+    interceptionCounter = storage_output.tds_interceptCounter;
 };
 
 addUrlToLocal = function(blockedSite) {

@@ -14,6 +14,9 @@ var date31 = 0;
 
 var html_table = $('#interceptTable');
 var html_intCnt = $('#iCounter');
+var html_date24 = $('#date24');
+var html_date7 = $('#date7');
+var html_date31 = $('#date31');
 
 saveCurrentPageToBlacklist = function() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
@@ -41,8 +44,9 @@ var saveButton = $('#saveBtn');
 
 createHtmlTable = function (){
     html_intCnt.text(interceptionCounter);
-    console.log (interceptionCounter);
-    console.log (html_intCnt);
+    html_date24.text(date24);
+    html_date7.text(date7);
+    html_date31.text(date31);
     $.each(links, function(k, site) {
         html_table.append(generateHtmlTableRow(site));
     });
@@ -50,11 +54,11 @@ createHtmlTable = function (){
 
 //Initialize HTML elements and set the local variables
 initStatisticsPage = function() {
-    chrome.storage.sync.get(["tds_interceptCounter"], function(output) {
+    chrome.storage.sync.get(["tds_interceptCounter", "tds_interceptDateList"], function(output) {
         if (bg.handleRuntimeError()) {
             setLocalVariables(output);
-            createHtmlTable();
             calcInterceptData();
+            createHtmlTable();
         }
     });
 
