@@ -1,11 +1,14 @@
 
 //Set that holds the urls to be intercepted
 var blockedSites = [];
+var interceptDateList = [];
+var interceptCounter = 0;
 
 /* --------------- ------ update list of BlockedSites ------ ---------------*/
 
 updateStorage = function() {
     setStorageBlacklist(blockedSites);
+    //setInterceptDateList(interceptDateList);
 };
 
 // This function receives the blacklist from the sync storage.
@@ -16,12 +19,34 @@ updateBlockedSites = function(callback){
     });
 };
 
+//Loads the intercept time+date list from storage
+updateInterceptDateList = function() {
+    getInterceptDateList(function(dateList) {
+        interceptDateList = dateList;
+    });
+};
+
+//Loads the intercept counter from storage
+updateInterceptCounter = function(callback) {
+    getInterceptCounter(function(counter) {
+        interceptCounter = counter;
+        return callback();
+    });
+};
+
 // This function adds one url to the blacklist
 addToBlockedSites = function(urlToAdd) {
     var blockedSiteItem = new BlockedSite(formatUrl(urlToAdd));
     blockedSites.push(blockedSiteItem);
     updateStorage();
     replaceListener();
+};
+
+// This function adds the current time+date to the saved time+date list
+addToInterceptDateList = function() {
+    var newDate = new Date().toDateString();
+    interceptDateList.push(newDate);
+    setInterceptDateList(interceptDateList);
 };
 
 formatUrl = function(url) {
@@ -57,6 +82,7 @@ addWebRequestListener = function() {
 
 
 intercept = function() {
+    addToInterceptDateList();
     incrementInterceptionCounter();
     return {redirectUrl: "https://zeeguu.herokuapp.com/get-ex"};
 };
