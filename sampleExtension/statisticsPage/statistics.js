@@ -82,6 +82,7 @@ generateDayStatisticHtmlRow = function(dayStatistic) {
 };
 
 setDayStatisticsHtml = function(list) {
+    list = list.reverse();
     $.each(list, function(key, value) {
         if(value != null){
             appendHtmlItemTo(generateDayStatisticHtmlRow(value), $('#exerciseTime'));

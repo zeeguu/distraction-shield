@@ -3,18 +3,20 @@ var TrackerStorage = new function() {
     var self = this;
 
     this.init = function(){
-        // self.setCurrentDayStatistic(null);
-        // self.setDayStatisticsList([]);
-
-
-        // setInterval(self.tester, 5000);
+        self.loadDummyData(50);
     };
 
-    // this.tester = function() {
-    //     self.getCompleteDayStatList().then(function(response){
-    //         console.log(response);
-    //     });
-    // };
+    this.loadDummyData = function(amount){
+        var dummyList = [];
+        for(var i = amount; i > 0; i--){
+            var date = new Date();
+            date = new Date(date.setDate(date.getDate()-i));
+            console.log(date);
+            dummyList.push({'date': ((date.getDate())+"/"+(date.getMonth()+1)+"/"+date.getFullYear()), 'timespent': Math.floor((Math.random()*100)+1)});
+        }
+        self.setDayStatisticsList(dummyList);
+    };
+
 
     this.incrementDayStat = function(amount){
         self.getCurrentDayStatistic().then(function(response){
@@ -75,7 +77,6 @@ var TrackerStorage = new function() {
     };
 
     this.setStorage = function(ind, data) {
-        //console.log("Setting storage :"+ind+" data: "+data);
         var newObj= {};
         newObj[ind] = data;
         chrome.storage.sync.set(newObj, function() {
@@ -84,21 +85,19 @@ var TrackerStorage = new function() {
     };
 
     this.getStorage = function(index){
-        //console.log("Getting storage :"+index);
-        var storagePromise = new Promise(function(resolve, reject){
-            chrome.storage.sync.get(index, function(output){
-                if(handleRuntimeError()){
+        return new Promise(function (resolve, reject) {
+            chrome.storage.sync.get(index, function (output) {
+                if (handleRuntimeError()) {
                     resolve(output);
                 } else {
                     reject(Error("Statistics cannot be found."));
                 }
             })
         });
-        return storagePromise;
-    }
+    };
 
     this.getToday = function(){
         var dateObject = new Date();
-        return (dateObject.getDay())+"/"+dateObject.getMonth()+"/"+dateObject.getFullYear();
+        return (dateObject.getDate())+"/"+(dateObject.getMonth()+1)+"/"+dateObject.getFullYear();
     }
 };
