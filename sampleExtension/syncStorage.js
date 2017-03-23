@@ -4,7 +4,7 @@
 
 /* --------------- ---- Error handler ---- ---------------*/
 
-var console = chrome.extension.getBackgroundPage().console;
+//var console = chrome.extension.getBackgroundPage().console;
 
 //Check for a runtime error
 handleRuntimeError = function() {
@@ -85,7 +85,11 @@ setInterceptCounter = function(counter) {
     });
 };
 
-/* ------ Statistics functions ------ */
+setInterceptDateList = function(list) {
+    chrome.storage.sync.set({"tds_interceptDateList" : list}, function() {
+        handleRuntimeError();
+    });
+};
 
 
 incrementInterceptionCounter = function(urlAddress) {
@@ -95,7 +99,7 @@ incrementInterceptionCounter = function(urlAddress) {
             blockedSites[i].counter++;
         }
     }
-    setStorageBlacklist (blockedSites);
+    setStorageBlacklist(blockedSites);
     chrome.storage.sync.get("tds_interceptCounter", function(output) {
         var counter = output.tds_interceptCounter;
         counter++;

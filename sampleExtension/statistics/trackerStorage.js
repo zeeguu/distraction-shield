@@ -3,7 +3,12 @@ var TrackerStorage = new function() {
     var self = this;
 
     this.init = function(){
+        // Create new dummydata.
+        self.setDayStatisticsList([]);
         self.loadDummyData(10);
+
+        // Make sure there is a record for the current day by calling this method.
+        self.incrementDayStat(0);
     };
 
 

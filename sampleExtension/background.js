@@ -99,21 +99,21 @@ intercept = function(details) {
         incrementInterceptionCounter(details.url);
         addToInterceptDateList();
         storeCurrentPage(details.url);
-        asynchSetDoIntercept(false);
+        asynchSetDoIntercept(false, 2000);
         return {redirectUrl: redirectLink};
     }else{
         /* We do not redirect if the interception is made in the case
          * when we just want to go back to the original destination
          * At this point different modes (timeouts etc) will be
          * (in part) implemented */
-        asynchSetDoIntercept(true);
+        asynchSetDoIntercept(true, (900000));
     }
 };
 
-function asynchSetDoIntercept(val) {
+function asynchSetDoIntercept(val, time) {
     setTimeout(function () {
         doIntercept = val;
-    }, 2000);
+    }, time);
 }
 
 /* --------------------Store the current URL---------------------------------*/
@@ -142,7 +142,6 @@ addBrowserActionListener = function() {
 addSkipMessageListener = function() {
     chrome.runtime.onMessage.addListener(function(request, sender) {
         if (request.message == "goToOriginalDestination") {
-            console.log("intercept set to " + doIntercept + ", going to" + request.destination);
             chrome.tabs.update(sender.tab.id, {url: request.destination});
         }
     });
