@@ -17,17 +17,18 @@ updateStorage = function() {
 
 // This function receives the blacklist from the sync storage.
 updateBlockedSites = function(callback){
-    getStorageBlacklist(function(result) {
-        blockedSites = result;
+    getStorageBlacklist(function(blacklist) {
+        blockedSites = blacklist;
         return callback();
     });
 };
 
 // This function adds one url to the blacklist
 addToBlockedSites = function(urlToAdd) {
-    var formattedUrl = formatUrl(urlToAdd);
-    blockedSites.push(formattedUrl);
+    var blockedSiteItem = new BlockedSite(formatUrl(urlToAdd));
+    blockedSites.push(blockedSiteItem);
     updateStorage();
+    replaceListener();
 };
 
 formatUrl = function(url) {
@@ -35,7 +36,7 @@ formatUrl = function(url) {
     result = result.split("").reverse().join("");
     result = result.split(['/'])[1];
     result = result.split("").reverse().join("");
-    return '*://' + result + '/*';
+    return result;
 };
 
 /* --------------- ------ Listener functions ------ ---------------*/
