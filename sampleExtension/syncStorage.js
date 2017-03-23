@@ -1,7 +1,3 @@
-/**
- * Created by edser on 3/15/17.
- */
-
 /* --------------- ---- Error handler ---- ---------------*/
 
 //Check for a runtime error
@@ -22,6 +18,22 @@ getStorageBlacklist = function(callback) {
     chrome.storage.sync.get("tds_blacklist", function (output) {
         if(handleRuntimeError()) {
             return callback(output.tds_blacklist);
+        }
+    });
+};
+
+getInterceptCounter = function(callback) {
+    chrome.storage.sync.get("tds_interceptCounter", function (output) {
+        if(handleRuntimeError()) {
+            return callback(output.tds_interceptCounter);
+        }
+    });
+};
+
+getInterceptDateList = function(callback) {
+    chrome.storage.sync.get("tds_interceptDateList", function (output) {
+        if(handleRuntimeError()) {
+            return callback(output.tds_interceptDateList);
         }
     });
 };
@@ -53,15 +65,35 @@ setStorageBlacklistWithCallback = function(list, callback) {
     });
 };
 
-/* ------ Statistics functions ------ */
 
+/* ------ Statistics functions ------ */
 setInterceptionCounter = function(number) {
     chrome.storage.sync.set({"tds_interceptCounter": number}, function () {
         handleRuntimeError();
     });
 };
 
-incrementInterceptionCounter = function() {
+setInterceptCounter = function(counter) {
+    chrome.storage.sync.set({"tds_interceptCounter" : counter}, function() {
+        handleRuntimeError();
+    });
+};
+
+setInterceptDateList = function(list) {
+    chrome.storage.sync.set({"tds_interceptDateList" : list}, function() {
+        handleRuntimeError();
+    });
+};
+
+
+incrementInterceptionCounter = function(urlAddress) {
+    var name=new BlockedSite(urlAddress).name;
+    for (var i=0; i<blockedSites.length; i++) {
+        if (blockedSites[i].name==name){
+            blockedSites[i].counter++;
+        }
+    }
+    setStorageBlacklist(blockedSites);
     chrome.storage.sync.get("tds_interceptCounter", function(output) {
         var counter = output.tds_interceptCounter;
         counter++;

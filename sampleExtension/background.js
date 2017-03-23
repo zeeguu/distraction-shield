@@ -1,6 +1,8 @@
 
 //Set that holds the urls to be intercepted
 var blockedSites = [];
+var interceptDateList = [];
+var interceptCounter = 0;
 var doIntercept = true;
 
 
@@ -8,11 +10,11 @@ var doIntercept = true;
 var timer = Math.pow(10, 6); // 15 minutes timer
 var interceptTime =  new Date().getTime();
 
-
 /* --------------- ------ update list of BlockedSites ------ ---------------*/
 
 updateStorage = function() {
     setStorageBlacklist(blockedSites);
+    return {redirectUrl: "https://zeeguu.herokuapp.com/get-ex"};
 };
 
 // This function receives the blacklist from the sync storage.
@@ -23,12 +25,38 @@ updateBlockedSites = function(callback){
     });
 };
 
+//Loads the intercept time+date list from storage
+updateInterceptDateList = function() {
+    getInterceptDateList(function(dateList) {
+        interceptDateList = dateList;
+    });
+};
+
+//Loads the intercept counter from storage
+updateInterceptCounter = function(callback) {
+    getInterceptCounter(function(counter) {
+        interceptCounter = counter;
+        return callback();
+    });
+};
+
 // This function adds one url to the blacklist
 addToBlockedSites = function(urlToAdd) {
     var blockedSiteItem = new BlockedSite(formatUrl(urlToAdd));
     blockedSites.push(blockedSiteItem);
     updateStorage();
     replaceListener();
+};
+
+// This function adds the current time+date to the saved time+date list
+addToInterceptDateList = function() {
+    var newDate = new Date().toDateString();
+    if (interceptDateList == null) {
+        interceptDateList = [newDate];
+    } else {
+        interceptDateList.push(newDate);
+    }
+    setInterceptDateList(interceptDateList);
 };
 
 formatUrl = function(url) {
@@ -63,25 +91,29 @@ addWebRequestListener = function() {
     }
 };
 
+
+
+
 intercept = function(details) {
     if (doIntercept) {
-        incrementInterceptionCounter();
+        incrementInterceptionCounter(details.url);
+        addToInterceptDateList();
         storeCurrentPage(details.url);
-        asynchSetDoIntercept(false);
+        asynchSetDoIntercept(false, 2000);
         return {redirectUrl: redirectLink};
     }else{
         /* We do not redirect if the interception is made in the case
          * when we just want to go back to the original destination
          * At this point different modes (timeouts etc) will be
          * (in part) implemented */
-        asynchSetDoIntercept(true);
+        asynchSetDoIntercept(true, (900000));
     }
 };
 
-function asynchSetDoIntercept(val) {
+function asynchSetDoIntercept(val, time) {
     setTimeout(function () {
         doIntercept = val;
-    }, 2000);
+    }, time);
 }
 
 /* --------------------Store the current URL---------------------------------*/
@@ -110,12 +142,10 @@ addBrowserActionListener = function() {
 addSkipMessageListener = function() {
     chrome.runtime.onMessage.addListener(function(request, sender) {
         if (request.message == "goToOriginalDestination") {
-            console.log("intercept set to " + doIntercept + ", going to" + request.destination);
             chrome.tabs.update(sender.tab.id, {url: request.destination});
         }
     });
 };
-
 
 
 
