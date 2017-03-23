@@ -42,6 +42,7 @@ replaceListener = function() {
 addWebRequestListener = function() {
     if(blockedSites.length > 0) {
         var urlList = blockedSites.filter(function (a) {return a.checkboxVal == true;});
+    }
     if (urlList.length > 0) {
         chrome.webRequest.onBeforeRequest.addListener(
             intercept
