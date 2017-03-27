@@ -1,14 +1,10 @@
 
 //Set that holds the urls to be intercepted
 var blockedSites = [];
-var interceptDateList = [];
 var interceptCounter = 0;
-var doIntercept = true;
-
-
-/*----------------------- Timer Mode vars -----------------------------------*/
-var timer = Math.pow(10, 6); // 15 minutes timer
-var interceptTime =  new Date().getTime();
+var interceptDateList = [];
+//Boolean that determines whether we should be redirecting or not
+var interceptionEnabled = true;
 
 /* --------------- ------ update list of BlockedSites ------ ---------------*/
 
@@ -18,7 +14,7 @@ updateStorage = function() {
 };
 
 // This function receives the blacklist from the sync storage.
-updateBlockedSites = function(callback){
+retrieveBlockedSites = function(callback){
     getStorageBlacklist(function(blacklist) {
         blockedSites = blacklist;
         return callback();
@@ -26,14 +22,14 @@ updateBlockedSites = function(callback){
 };
 
 //Loads the intercept time+date list from storage
-updateInterceptDateList = function() {
+retrieveInterceptDateList = function() {
     getInterceptDateList(function(dateList) {
         interceptDateList = dateList;
     });
 };
 
 //Loads the intercept counter from storage
-updateInterceptCounter = function(callback) {
+retrieveInterceptCounter = function(callback) {
     getInterceptCounter(function(counter) {
         interceptCounter = counter;
         return callback();
@@ -59,6 +55,7 @@ addToInterceptDateList = function() {
     setInterceptDateList(interceptDateList);
 };
 
+//TODO fix in interation 3 for url-handling module
 formatUrl = function(url) {
     result = url.split(['//'])[1];
     result = result.split("").reverse().join("");
@@ -70,58 +67,51 @@ formatUrl = function(url) {
 /* --------------- ------ Listener functions ------ ---------------*/
 
 replaceListener = function() {
-    chrome.webRequest.onBeforeRequest.removeListener(intercept);
-    addWebRequestListener();
-};
-
-addWebRequestListener = function() {
-    if(blockedSites.length > 0) {
-        var urlList = blockedSites.filter(function (a) {return a.checkboxVal == true;});
-        if (urlList.length > 0) {
-            chrome.webRequest.onBeforeRequest.addListener(
-                intercept
-                ,{
-                    //Url's to be intercepted
-                    urls: urlList.map(function (a) {return a.url;})
-                    ,types: ["main_frame"]
-                }
-                ,["blocking"]
-            );
-        }
+    chrome.webRequest.onBeforeRequest.removeListener(handleInterception);
+    urlList = filterBlockedSitesOnChecked();
+    if (urlList.length > 0) {
+        addWebRequestListener(urlList);
     }
 };
 
+filterBlockedSitesOnChecked = function() {
+    if(blockedSites.length > 0) {
+        return blockedSites.filter(function (a) {return a.checkboxVal == true;});
+    }
+    return [];
+};
 
-
+addWebRequestListener = function(urlList) {
+    chrome.webRequest.onBeforeRequest.addListener(
+        handleInterception
+        ,{
+            urls: urlList.map(function (a) {return a.url;})
+            ,types: ["main_frame"]
+        }
+        ,["blocking"]
+    );
+};
 
 intercept = function(details) {
-    if (doIntercept) {
-        incrementInterceptionCounter(details.url);
-        addToInterceptDateList();
-        storeCurrentPage(details.url);
-        asynchSetDoIntercept(false, 2000);
-        return {redirectUrl: redirectLink};
-    }else{
-        /* We do not redirect if the interception is made in the case
-         * when we just want to go back to the original destination
-         * At this point different modes (timeouts etc) will be
-         * (in part) implemented */
-        asynchSetDoIntercept(true, (900000));
+    incrementInterceptionCounter(details.url);
+    addToInterceptDateList();
+    seStorageOriginalDestination(details.url);
+    setEnableInterceptionAfterTimeout(false, 2000);
+    return {redirectUrl: redirectLink};
+};
+
+handleInterception = function(details) {
+    if (interceptionEnabled) {
+        return intercept(details);
+    } else {
+        setEnableInterceptionAfterTimeout(true, 1000);
     }
 };
 
-function asynchSetDoIntercept(val, time) {
+setEnableInterceptionAfterTimeout = function(val, time) {
     setTimeout(function () {
-        doIntercept = val;
+        interceptionEnabled = val;
     }, time);
-}
-
-/* --------------------Store the current URL---------------------------------*/
-
-storeCurrentPage = function (url) {
-   chrome.storage.sync.set({"originalDestination" : url}, function() {
-       handleRuntimeError();
-   });
 };
 
 /* --------------- ------ ------------------ ------ ---------------*/
@@ -141,7 +131,7 @@ addBrowserActionListener = function() {
 
 addSkipMessageListener = function() {
     chrome.runtime.onMessage.addListener(function(request, sender) {
-        if (request.message == "goToOriginalDestination") {
+        if (request.message == revertToOriginMessage) {
             chrome.tabs.update(sender.tab.id, {url: request.destination});
         }
     });

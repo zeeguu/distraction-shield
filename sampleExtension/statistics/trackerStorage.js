@@ -1,5 +1,5 @@
 
-var TrackerStorage = new function() {
+function TrackerStorage() {
     var self = this;
 
     this.init = function(){
@@ -17,8 +17,14 @@ var TrackerStorage = new function() {
         var dummyList = [];
         for(var i = amount; i > 0; i--){
             var date = new Date();
-            date = new Date(date.setDate(date.getDate()-i));
-            dummyList.push({'date': ((date.getDate())+"/"+(date.getMonth()+1)+"/"+date.getFullYear()), 'timespent': Math.floor((Math.random()*100)+1)});
+            //set date to date.day - 1
+            date = new Date(date.setDate(date.getDate() - i));
+            dummyList.push(
+                {
+                date: ((date.getDate())+"/"+(date.getMonth()+1)+"/"+date.getFullYear()),
+                timespent: Math.floor((Math.random()*100)+1)
+                }
+            );
         }
         self.setDayStatisticsList(dummyList);
     };
@@ -32,13 +38,13 @@ var TrackerStorage = new function() {
         self.getCurrentDayStatistic().then(function(response){
             var today = self.getToday();
             var responseObject = response.tds_currentDayStatistic;
-            if(responseObject == null){
-                self.setCurrentDayStatistic({'date': today, 'timespent': 0});
+            if (responseObject == null){
+                self.setCurrentDayStatistic({date: today, timespent: 0});
             } else if(responseObject.date != today){
                 self.addPreviousDayToStatsList(responseObject);
-                self.setCurrentDayStatistic({'date': today, 'timespent': amount});
+                self.setCurrentDayStatistic({date: today, timespent: amount});
             } else {
-                self.setCurrentDayStatistic({'date': today, 'timespent': responseObject.timespent+amount});
+                self.setCurrentDayStatistic({date: today, timespent: responseObject.timespent+amount});
             }
 
         });
@@ -46,7 +52,7 @@ var TrackerStorage = new function() {
 
     // This function adds the previous day to the list of day statistics.
     this.addPreviousDayToStatsList = function(dayStats){
-        console.log("Adding previous day to dayStats "+dayStats.date+" - "+dayStats.timespent);
+        console.log("Adding previous day to dayStats " + dayStats.date + " - " + dayStats.timespent);
         self.getDayStatisticsList().then(function(response){
             var newList = response.tds_dayStatistics;
             if(newList == null){
@@ -120,4 +126,4 @@ var TrackerStorage = new function() {
         var dateObject = new Date();
         return (dateObject.getDate())+"/"+(dateObject.getMonth()+1)+"/"+dateObject.getFullYear();
     }
-};
+}

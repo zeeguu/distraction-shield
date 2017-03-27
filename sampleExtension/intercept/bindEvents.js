@@ -1,6 +1,3 @@
-/**
- * Created by pieter on 22-3-17.
- */
 
 function subToCompletedEvent(originalDestination) {
     events.on("generatorCompleted", function () {

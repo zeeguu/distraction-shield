@@ -26,7 +26,7 @@ saveCurrentPageToBlacklist = function() {
         var activeTabUrl = activeTab.url;
         bg.addToBlockedSites(activeTabUrl);
     });
-}
+};
 
 generateHtmlTableRow = function(site) {
     var row =
@@ -42,7 +42,7 @@ generateHtmlTableRow = function(site) {
 
 var saveButton = $('#saveBtn');
 
-createHtmlTable = function (){
+createHtmlTable = function(){
     html_intCnt.text(interceptionCounter);
     html_date24.text(date24);
     html_date7.text(date7);
@@ -50,7 +50,7 @@ createHtmlTable = function (){
     $.each(links, function(k, site) {
         html_table.append(generateHtmlTableRow(site));
     });
-}
+};
 
 //Initialize HTML elements and set the local variables
 initStatisticsPage = function() {
@@ -62,7 +62,7 @@ initStatisticsPage = function() {
         }
     });
 
-    bg.TrackerStorage.getCompleteDayStatList().then(function(response){
+    bg.trs.getCompleteDayStatList().then(function(response){
        setDayStatisticsHtml(response);
     });
 };

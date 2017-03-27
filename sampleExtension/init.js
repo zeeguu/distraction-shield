@@ -1,13 +1,10 @@
-/**
- * Created by edser on 3/15/17.
- */
 
 /* --------------- ---- Session initializer ---- ---------------*/
 
 initSession = function () {
     //First receive the blacklist from the sync storage, and then create a onBeforeRequest listener using this list.
-    updateBlockedSites(replaceListener);
-    updateInterceptDateList();
+    retrieveBlockedSites(replaceListener);
+    retrieveInterceptDateList();
     addBrowserActionListener();
     addSkipMessageListener();
 };
@@ -31,9 +28,7 @@ initInterceptCounter = function(counter) {
 
 initInterceptDateList = function(dateList) {
     if (dateList == null) {
-        chrome.storage.sync.set({"tds_interceptDateList": []}, function () {
-            handleRuntimeError();
-        });
+        setInterceptDateList(dateList);
     }
 };
 
