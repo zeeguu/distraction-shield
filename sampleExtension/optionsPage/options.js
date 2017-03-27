@@ -1,85 +1,64 @@
+/**
+ * This file contains the core functions of the options page. this has the local variables,
+ * initializes everything javascript related and connects the syncStorage, connectDataToHtml and HtmlFunctionality
+ * to oe smoothly running file. Besides the initialization it contains the functions to manipulate the local variables
+ * found here
+ */
 
 // Log console messages to the background page console instead of the content page.
 var console = chrome.extension.getBackgroundPage().console;
 
-var html_blacklist = $('#blacklistedSites');
-var html_txtFld = $('#textFld');
-var html_intCnt = $('#iCounter');
-//Local variable that holds the list of links that we are blacklisting.
+//Local variables that holds the list of links and interceptCoun and variables ter.
 var links = [];
 var interceptionCounter = 0;
+var mode = "";
+
+/* -------------------- Initialization of options --------------------- */
 
 //Initialize HTML elements and set the local variables
-setLinksAndBlacklistList = function() {
-    chrome.storage.sync.get("tds_blacklist", function(output) {
-        links = output.tds_blacklist;
-        if (!chrome.runtime.error) {
-            //For every element in the array append it to the html blacklist
-            $.each(links, function(key, value) {
-                html_blacklist.append($("<option></option>").text(value));
-            });
-        }
-    });
-    chrome.storage.sync.get("tds_interceptCounter", function(output) {
-        interceptionCounter = output.tds_interceptCounter;
-        if (!chrome.runtime.error) {
-            html_intCnt.text(interceptionCounter);
+initOptionsPage = function() {
+    chrome.storage.sync.get(["tds_blacklist", "tds_interceptCounter", "tds_mode"], function(output) {
+        if (handleRuntimeError()) {
+            setLocalVariables(output);
+            connectLocalDataToHtml(); /* bottom of connectDataToHtml.js */
+            connectHtmlFunctionality(); /* bottom of htmlFunctionality.js */
         }
     });
 };
 
-
-/* -------------------- Logic for the html buttons -------------------- */
-
-saveButtonClick = function() {
-    var newurl = html_txtFld.val();
-    // Add the url to the sync storage.
-    links.push("*://"+newurl+"/*");
-    chrome.storage.sync.set({"tds_blacklist" : links }, function() {
-        if(chrome.runtime.error) {
-            console.log("Runtime error.");
-        }
-        //Append element to the html blacklist
-        html_blacklist.append($("<option></option>").text("*://"+newurl+"/*"));
-        // Empty the input box.
-        html_txtFld.val('');
-        var bg = chrome.extension.getBackgroundPage();
-        bg.updateBlockedSites(bg.replaceListener);
-    });
+setLocalVariables = function(storage_output) {
+    links = storage_output.tds_blacklist;
+    interceptionCounter = storage_output.tds_interceptCounter;
+    mode = storage_output.tds_mode;
 };
 
-deleteButtonClick = function() {
-    var urltodelete = $("#blacklistedSites").find('option:selected');
-    var urlkey = links.indexOf(urltodelete.val());
-    // Remove the url from the sync storage.
+/* -------------------- Manipulate storage ------------------- */
+
+updateStorageBlacklist = function() {
+    setStorageBlacklistWithCallback(links, updateBackgroundPage);
+};
+
+/* -------------------- Manipulate background ------------------- */
+
+updateBackgroundPage = function() {
+    var bg = chrome.extension.getBackgroundPage();
+    bg.retrieveBlockedSites(bg.replaceListener);
+};
+
+/* -------------------- Manipulate local variables ------------------- */
+
+removeFromLocalLinks = function(html_item) {
+    var urlkey = links.indexOf(html_item.data('blockedSite'));
     links.splice(urlkey, 1);
-    chrome.storage.sync.set({"tds_blacklist" : links}, function() {
-        if(chrome.runtime.error) {
-            console.log("Runtime error.");
-        }
-        // Remove the url from the list.
-        urltodelete.remove();
-        var bg = chrome.extension.getBackgroundPage();
-        bg.updateBlockedSites(bg.replaceListener);
-    });
 };
 
-//Connect functions to HTML elements
-connectButtons = function() {
-    var saveButton = $('#saveBtn');
-    saveButton.on('click', saveButtonClick);
-    var deleteButton = $('#deleteBtn');
-    deleteButton.on('click', deleteButtonClick);
+addToLocalLinks = function(blockedSite_item) {
+    links.push(blockedSite_item);
 };
 
 /* -------------------- -------------------------- -------------------- */
 
-
-
 //Run this when the page is loaded.
 document.addEventListener("DOMContentLoaded", function(){
-    connectButtons();
-    setLinksAndBlacklistList();
+    initOptionsPage();
 });
-
-
