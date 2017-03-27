@@ -21,12 +21,16 @@ function TrackerStorage() {
             date = new Date(date.setDate(date.getDate() - i));
             dummyList.push(
                 {
-                date: ((date.getDate())+"/"+(date.getMonth()+1)+"/"+date.getFullYear()),
+                date: self.formatDate(date),
                 timespent: Math.floor((Math.random()*100)+1)
                 }
             );
         }
         self.setDayStatisticsList(dummyList);
+    };
+
+    this.formatDate = function(date){
+        return date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
     };
 
 
@@ -36,18 +40,20 @@ function TrackerStorage() {
     // this currentDataStatistic is added to the list of previous day statistics.
     this.incrementDayStat = function(amount){
         self.getCurrentDayStatistic().then(function(response){
-            var today = self.getToday();
-            var responseObject = response.tds_currentDayStatistic;
-            if (responseObject == null){
-                self.setCurrentDayStatistic({date: today, timespent: 0});
-            } else if(responseObject.date != today){
-                self.addPreviousDayToStatsList(responseObject);
-                self.setCurrentDayStatistic({date: today, timespent: amount});
-            } else {
-                self.setCurrentDayStatistic({date: today, timespent: responseObject.timespent+amount});
-            }
-
+            self.handleIncrementDayStat(response.tds_currentDayStatistic, amount);
         });
+    };
+
+    this.handleIncrementDayStat = function(currentDayStatistic, amount){
+        var today = self.getToday();
+        if (currentDayStatistic == null){
+            self.setCurrentDayStatistic({date: today, timespent: 0});
+        } else if(currentDayStatistic.date != today){
+            self.addPreviousDayToStatsList(currentDayStatistic);
+            self.setCurrentDayStatistic({date: today, timespent: amount});
+        } else {
+            self.setCurrentDayStatistic({date: today, timespent: currentDayStatistic.timespent+amount});
+        }
     };
 
     // This function adds the previous day to the list of day statistics.
@@ -66,15 +72,18 @@ function TrackerStorage() {
 
     // Get the list containing information about time spent on exercises. For the previous days, and the current day.
     this.getCompleteDayStatList = function(){
-        return new Promise(function(resolve, reject){
-            self.getDayStatisticsList().then(function(response){
-                var previousDays = response.tds_dayStatistics;
-                self.getCurrentDayStatistic().then(function(response2){
-                    previousDays.push(response2.tds_currentDayStatistic);
-                    resolve(previousDays);
-                });
+        var statisticsPromise = new Promise(self.handlerRetrieveDayStatisticsList);
+        return statisticsPromise;
+    };
+
+    this.handlerRetrieveDayStatisticsList = function(resolve){
+        self.getDayStatisticsList().then(function(responseDayList){
+            var previousDays = responseDayList.tds_dayStatistics;
+            self.getCurrentDayStatistic().then(function(responseDay){
+                previousDays.push(responseDay.tds_currentDayStatistic);
+                resolve(previousDays);
             });
-        })
+        });
     };
 
     // Set the list dict containing information about how much time is spent on exercises each previous day.

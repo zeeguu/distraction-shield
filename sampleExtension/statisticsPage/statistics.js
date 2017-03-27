@@ -8,15 +8,18 @@ var bg = chrome.extension.getBackgroundPage();
 var links = [];
 var interceptionCounter = 0;
 var interceptDateList = [];
-var date24 = 0;
-var date7 = 0;
-var date31 = 0;
+var countDay = 0;
+var countWeek = 0;
+var countMonth = 0;
+
+var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+
 
 var html_table = $('#interceptTable');
 var html_intCnt = $('#iCounter');
-var html_date24 = $('#date24');
-var html_date7 = $('#date7');
-var html_date31 = $('#date31');
+var html_countDay = $('#countDay');
+var html_countWeek = $('#countWeek');
+var html_countMonth = $('#countMonth');
 
 saveCurrentPageToBlacklist = function() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
@@ -28,6 +31,7 @@ saveCurrentPageToBlacklist = function() {
     });
 };
 
+//TODO Remove HTML from javascript for iteration 3.
 generateHtmlTableRow = function(site) {
     var row =
         $("<tr class='table-row' >" +
@@ -44,9 +48,9 @@ var saveButton = $('#saveBtn');
 
 createHtmlTable = function(){
     html_intCnt.text(interceptionCounter);
-    html_date24.text(date24);
-    html_date7.text(date7);
-    html_date31.text(date31);
+    html_countDay.text(countDay);
+    html_countWeek.text(countWeek);
+    html_countMonth.text(countMonth);
     $.each(links, function(k, site) {
         html_table.append(generateHtmlTableRow(site));
     });
@@ -74,23 +78,24 @@ appendHtmlItemTo = function(html_child, html_parent) {
 calcInterceptData = function() {
     var tmp = interceptDateList;
     if (tmp != null) {
-        var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
         var firstDate = new Date();
         var length = tmp.length;
-
         for (var i = 0; i < length; i++) {
-            var secondDate = new Date(tmp.pop());
-            var diffDays = Math.floor(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)));
-            if (diffDays == 0) {
-                date24++;
-            }
-            if (diffDays < 8) {
-                date7++;
-            }
-            if (diffDays < 32) {
-                date31++
-            }
+            incrementCounters(firstDate, new Date(tmp.pop());
         }
+    }
+};
+
+incrementCounters = function(firstDate, secondDate){
+    var diffDays = Math.floor(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)));
+    if (diffDays == 0) {
+        countDay++;
+    }
+    if (diffDays < 8) {
+        countWeek++;
+    }
+    if (diffDays < 32) {
+        countMonth++
     }
 };
 
