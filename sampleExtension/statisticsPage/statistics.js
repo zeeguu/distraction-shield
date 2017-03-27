@@ -81,7 +81,7 @@ calcInterceptData = function() {
         var firstDate = new Date();
         var length = tmp.length;
         for (var i = 0; i < length; i++) {
-            incrementCounters(firstDate, new Date(tmp.pop());
+            incrementCounters(firstDate, new Date(tmp.pop()));
         }
     }
 };
