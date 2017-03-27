@@ -42,7 +42,7 @@ updateStorageBlacklist = function() {
 
 updateBackgroundPage = function() {
     var bg = chrome.extension.getBackgroundPage();
-    bg.updateBlockedSites(bg.replaceListener);
+    bg.retrieveBlockedSites(bg.replaceListener);
 };
 
 /* -------------------- Manipulate local variables ------------------- */

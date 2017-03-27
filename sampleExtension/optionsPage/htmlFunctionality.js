@@ -52,7 +52,8 @@ deleteButtonClick = function () {
 
 submitWithEnter = function(html_elem) {
     html_elem.keyup(function (event) {
-        if (event.keyCode == 13) {
+        var enterKeyID = 13;
+        if (event.keyCode == enterKeyID) {
             saveButtonClick();
         }
     });
@@ -89,12 +90,12 @@ enableTableSelection = function (html_table) {
 
 sortHtmlOnChecked = function () {
     var rows = html_table.find('tr').get();
-    rows.sort(function (a, b) {
-        var keyA = $(a).find('.checkbox-toggle')["0"].checked;
-        var keyB = $(b).find('.checkbox-toggle')["0"].checked;
-        if (keyA && !keyB)
+    rows.sort(function (checkboxA, checkboxB) {
+        var valueOfA = $(checkboxA).find('.checkbox-toggle')["0"].checked;
+        var valueOfB = $(checkboxB).find('.checkbox-toggle')["0"].checked;
+        if (valueOfA && !valueOfB)
             return -1;
-        if (!keyA && keyB)
+        if (!valueOfA && valueOfB)
             return 1;
         return 0;
     });

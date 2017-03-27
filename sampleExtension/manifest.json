@@ -35,7 +35,6 @@
     ]
   },
 
-  //TODO update to current state of extension
   "content_scripts": [
     {
       "matches" : ["https://zeeguu.herokuapp.com/get-ex"],

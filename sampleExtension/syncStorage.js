@@ -1,4 +1,3 @@
-/* --------------- ---- Error handler ---- ---------------*/
 
 //Check for a runtime error
 handleRuntimeError = function() {
@@ -40,7 +39,7 @@ getInterceptDateList = function(callback) {
 
 /* ------ Settings functions ------ */
 
-getStorageMode= function(callback) {
+getStorageMode = function(callback) {
     chrome.storage.sync.get("tds_mode", function (output) {
         if(handleRuntimeError()) {
             return callback(output.tds_mode);
@@ -73,23 +72,17 @@ setInterceptionCounter = function(number) {
     });
 };
 
-setInterceptCounter = function(counter) {
-    chrome.storage.sync.set({"tds_interceptCounter" : counter}, function() {
+setInterceptDateList = function(dateList) {
+    chrome.storage.sync.set({"tds_interceptDateList" : dateList}, function() {
         handleRuntimeError();
     });
 };
 
-setInterceptDateList = function(list) {
-    chrome.storage.sync.set({"tds_interceptDateList" : list}, function() {
-        handleRuntimeError();
-    });
-};
-
-
+//TODO for iteration 3 remove interceptioncounter integrate to statistics
 incrementInterceptionCounter = function(urlAddress) {
-    var name=new BlockedSite(urlAddress).name;
-    for (var i=0; i<blockedSites.length; i++) {
-        if (blockedSites[i].name==name){
+    var name = new BlockedSite(urlAddress).name;
+    for (var i = 0; i < blockedSites.length; i++) {
+        if (blockedSites[i].name == name){
             blockedSites[i].counter++;
         }
     }
@@ -110,3 +103,12 @@ setStorageMode= function(mode) {
         handleRuntimeError();
     });
 };
+
+/* ------ Store the current URL ----- */
+
+seStorageOriginalDestination = function(url) {
+    chrome.storage.sync.set({"originalDestination": url}, function() {
+        handleRuntimeError();
+    });
+};
+
