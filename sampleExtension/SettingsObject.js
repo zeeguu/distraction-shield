@@ -1,6 +1,4 @@
-/**
- * Created by edser on 3/21/17.
- */
+
 function SettingsObject () {
 
     this.status = { state: true,

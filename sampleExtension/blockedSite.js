@@ -4,6 +4,7 @@ function BlockedSite (input) {
         return "*://"+input+"/*";
     };
 
+    //TODO fix in interation 3 for url-handling module
     this.getName = function(input) {
         var result = extractDomain(input);
 
@@ -21,15 +22,18 @@ function BlockedSite (input) {
     };
 
     this.url = this.getUrl(input);
-
     this.name = this.getName(input);
 
     this.icon = this.getIcon(input);
     this.lastVisited = new Date();
     this.checkboxVal = true;
+    this.counter=0;
 
 }
 
+
+
+//TODO fix in interation 3 for url-handling module
 function extractDomain(url) {
     var domain;
     //find & remove protocol (http, ftp, etc.) and get domain

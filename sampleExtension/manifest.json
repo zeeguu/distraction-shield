@@ -18,19 +18,29 @@
   //Icon in the browser specification
   "browser_action": {
     "default_icon": "icon.png",
-    "default_title": "Distraction Shield Settings"
+    "default_title": "Distraction Shield Settings",
+    "default_popup": "tooltipPage/tooltip.html"        // optional
   },
 
   "background": {
-    "scripts": ["jquery/jquery-1.10.2.js", "blockedSite.js", "SettingsObject.js", "syncStorage.js", "background.js", "init.js"]
+    "scripts": [
+      "jquery/jquery-1.10.2.js",
+      "constants.js",
+      "blockedSite.js",
+      "syncStorage.js",
+      "SettingsObject.js",
+      "background.js",
+      "init.js",
+      "statistics/trackerStorage.js",
+      "statistics/tracker.js"
+    ]
   },
 
-  //TODO update to current state of extension
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches" : ["https://zeeguu.herokuapp.com/get-ex"],
       "css": ["jquery/jquery-ui.css"],
-      "js": ["jquery/jquery-1.10.2.js"]
+      "js" : ["jquery/jquery-1.10.2.js","constants.js","syncStorage.js", "intercept/inject.js"]
     }
   ],
 
@@ -39,7 +49,12 @@
     "storage",
     "webRequest",
     "webRequestBlocking",
+    "idle",
     "<all_urls>"
+  ],
+
+  "web_accessible_resources": [
+    "intercept/bindEvents.js"
   ]
 
 }
