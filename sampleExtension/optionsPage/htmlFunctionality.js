@@ -58,8 +58,8 @@ generateHtmlTableRow = function(blockedSite) {
         $("<tr class='table-row' >" +
             "<td>"+blockedSite.icon+"</td>" +
             "<td>"+blockedSite.name+"</td>" +
-            "<td width=\"50\">" + "<input class='checkbox-toggle' type=\"checkbox\" name=\"state\">" + "</td>" +
-            "<td width=\"50\">" + "<img class='delete-button' type=\"deleteButton\" src=\"./delete_button.png\" width=\"16\" height=\"16\">" + "</td>" +
+            "<td width='25'>" + "<input class='checkbox-toggle' type='checkbox' name='state' >" + "</td>" +
+            "<td width='25'>" + "<img class='delete-button' type='deleteButton' src='./delete_button.png' width='16' height='16'>" + "</td>" +
             "</tr>");
     tableRow.find('.checkbox-toggle').prop('checked', blockedSite.checkboxVal);
     //add the actual object to the html_element
@@ -70,9 +70,14 @@ generateHtmlTableRow = function(blockedSite) {
 // this function makes the passed table single row selection only
 enableTableSelection = function (html_table) {
     html_table.on('click', 'tr', function () {
-        $(this).addClass('selected').siblings().removeClass('selected');
+        var row = $(this);
+        if (row.hasClass('selected'))
+            row.removeClass('selected');
+        else
+        row.addClass('selected').siblings().removeClass('selected');
     });
 };
+
 
 
 
