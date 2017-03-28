@@ -73,7 +73,8 @@ generateHtmlTableRow = function(blockedSite) {
         $("<tr class='table-row' >" +
             "<td>"+blockedSite.icon+"</td>" +
             "<td>"+blockedSite.name+"</td>" +
-            "<td>"+ "<input class='checkbox-toggle' type=\"checkbox\" name=\"state\">" + "</td>" +
+            "<td width=\"50\">" + "<input class='checkbox-toggle' type=\"checkbox\" name=\"state\">" + "</td>" +
+            "<td width=\"50\">" + "<img class='delete-button' type=\"deleteButton\" src=\"./delete_button.png\" width=\"16\" height=\"16\">" + "</td>" +
             "</tr>");
     tableRow.find('.checkbox-toggle').prop('checked', blockedSite.checkboxVal);
     //add the actual object to the html_element
@@ -114,7 +115,15 @@ setCheckboxFunction = function (html_selectable) {
         selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
         //no need to set links cause it holds pointers so they get updated automatically
         updateStorageBlacklist();
-        sortHtmlOnChecked(html_selectable);
+    });
+};
+
+setDeleteButtonFunction = function (html_selectable) {
+    $('#deleteButton').on("click", function () {
+        var selected_row = html_selectable.find('.selected');
+        var selected_blockedSite = selected_row.data('blockedSite');
+        removeLinkFromAll(selected_row);
+        updateStorageBlacklist();
     });
 };
 
@@ -132,6 +141,7 @@ setRadioButtonFunction = function(buttonGroup) {
 connectHtmlFunctionality = function() {
     enableTableSelection(html_table);
     setCheckboxFunction(html_table);
+    setDeleteButtonFunction(html_table);
     setRadioButtonFunction(modeGroup);
     connectButton(html_saveButton, saveButtonClick);
     connectButton(html_deleteButton, deleteButtonClick);
