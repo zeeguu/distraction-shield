@@ -14,10 +14,14 @@ body {
     height: 200px;
     width: 100%;
     overflow: auto;
+    border: 1px solid black;
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 table {
-    border: 1px solid black;
+    margin-top: -15px;
+    margin-bottom: -15px;
 }
 
 .selected {

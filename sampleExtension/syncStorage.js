@@ -107,7 +107,7 @@ incrementInterceptionCounter = function(urlAddress) {
 
 /* ------ Settings functions ------ */
 
-setStorageMode= function(mode) {
+setStorageMode = function(mode) {
     chrome.storage.sync.set({"tds_mode": mode}, function() {
         handleRuntimeError();
     });
