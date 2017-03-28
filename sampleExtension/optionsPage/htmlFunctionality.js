@@ -10,7 +10,6 @@ var html_table = $('#blacklistTable');
 var html_txtFld = $('#textFld');
 var html_intCnt = $('#iCounter');
 var html_saveButton = $('#saveBtn');
-var html_deleteButton =$('#deleteBtn');
 var modeGroup = "modeOptions";
 
 
@@ -45,20 +44,6 @@ saveButtonClick = function() {
     html_txtFld.val('');
 };
 
-deleteButtonClick = function () {
-    var urlToDelete = html_table.find(".selected");
-    removeLinkFromAll(urlToDelete);
-};
-
-submitWithEnter = function(html_elem) {
-    html_elem.keyup(function (event) {
-        var enterKeyID = 13;
-        if (event.keyCode == enterKeyID) {
-            saveButtonClick();
-        }
-    });
-};
-
 //Connect functions to HTML elements
 connectButton = function(html_button, method) {
     html_button.on('click', method);
@@ -89,6 +74,9 @@ enableTableSelection = function (html_table) {
     });
 };
 
+
+
+// this function sorts the html table based on the checkbox value of the tr elements.
 sortHtmlOnChecked = function () {
     var rows = html_table.find('tr').get();
     rows.sort(function (checkboxA, checkboxB) {
@@ -109,8 +97,7 @@ sortHtmlOnChecked = function () {
 // and needs to have a selected attribute
 setCheckboxFunction = function (html_selectable) {
     html_selectable.on('change', 'input[type="checkbox"]', function () {
-        //Clicking the checkbox automatically selects the row, so we use this to our advantage
-        var selected_row = html_selectable.find('.selected');
+        var selected_row = $(this).closest('tr');
         var selected_blockedSite = selected_row.data('blockedSite');
         selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
         //no need to set links cause it holds pointers so they get updated automatically
@@ -118,12 +105,37 @@ setCheckboxFunction = function (html_selectable) {
     });
 };
 
+// if a delete button is clicked, the closest tr element is deleted.
 setDeleteButtonFunction = function (html_selectable) {
-    $('#deleteButton').on("click", function () {
+    html_selectable.on('click', '.delete-button', function () {
+        var rowToDelete = $(this).closest('tr');
+        removeLinkFromAll(rowToDelete);
+    });
+};
+
+/* -------------------- Keypress events ----------------------- */
+
+setKeypressFunctions = function () {
+    submitWithEnter(html_txtFld);
+    deleteOnKeyPress(html_table);
+};
+
+submitWithEnter = function (html_elem) {
+    html_elem.keyup(function (event) {
+        var enterKeyID = 13;
+        if (event.keyCode == enterKeyID) {
+            saveButtonClick();
+        }
+    });
+};
+
+deleteOnKeyPress = function (html_selectable) {
+    $('html').keyup(function (e) {
         var selected_row = html_selectable.find('.selected');
-        var selected_blockedSite = selected_row.data('blockedSite');
-        removeLinkFromAll(selected_row);
-        updateStorageBlacklist();
+        var deleteKeyID = 46;
+        if (e.keyCode == deleteKeyID) {
+            removeLinkFromAll(selected_row);
+        }
     });
 };
 
@@ -144,6 +156,5 @@ connectHtmlFunctionality = function() {
     setDeleteButtonFunction(html_table);
     setRadioButtonFunction(modeGroup);
     connectButton(html_saveButton, saveButtonClick);
-    connectButton(html_deleteButton, deleteButtonClick);
-    submitWithEnter(html_txtFld);
+    setKeypressFunctions();
 };
