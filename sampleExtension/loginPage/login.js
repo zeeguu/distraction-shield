@@ -1,7 +1,9 @@
 
-// Log console messages to the background page console instead of the content page.
-var console = chrome.extension.getBackgroundPage().console;
+var bg = chrome.extension.getBackgroundPage();
 
+// Log console messages to the background page console instead of the content page.
+var console = bg.console;
+var auth = bg.auth;
 
 /* -------------------- -------------------------- -------------------- */
 var html_loginButton = $('#loginBtn');
@@ -12,59 +14,29 @@ var html_signinButton = $('#signinBtn');
 var html_usernameSigninFld = $('#usernameSigninFld');
 var html_passwordSigninFld = $('#passwordSigninFld');
 
-var loginUrl = "https://zeeguu.unibe.ch/api/session";
-var signinUrl = "https://zeeguu.unibe.ch/api/add_user";
 
-var loginAnonUrl = "https://zeeguu.unibe.ch/api/get_anon_session";
-var signinAnonUrl = "https://zeeguu.unibe.ch/api/add_anon_user";
-
-loginZeeguu = function() {
+login = function(){
     var username = html_usernameLoginFld.val();
     var password = html_passwordLoginFld.val();
 
-    console.log("Username:"+username+" Password:"+password);
+    console.log("Username:" + username + " Password:" + password);
+    auth.loginAnon(username, password);
 
     html_usernameLoginFld.val('');
     html_passwordLoginFld.val('');
-
-    $.ajax({
-        type: "POST",
-        url: loginAnonUrl+"/"+username,
-        data: $.param({
-            //uuid: username,
-            password: password
-        })
-    }).done(function(session){
-        console.log(session);
-    }).fail(function(data){
-        console.log("Fail..");
-    }).always(function(data){
-        console.log("always? "+data);
-    });
 };
 
-signinZeeguu = function() {
+signin = function(){
     var username = html_usernameSigninFld.val();
     var password = html_passwordSigninFld.val();
 
-    console.log("Username:"+username+" Password:"+password);
+    console.log("Username:" + username + " Password:" + password);
+    auth.signinAnon(username, password);
 
     html_usernameSigninFld.val('');
     html_passwordSigninFld.val('');
-
-    $.ajax({
-        type: "POST",
-        url: signinAnonUrl,
-        data: $.param({
-            uuid: username,
-            password: password
-        })
-    }).done(function(session){
-        console.log(session);
-    }).always(function(data){
-        console.log("always? "+data);
-    });
 };
+
 
 //Connect functions to HTML elements
 connectButton = function(html_button, method) {
@@ -72,8 +44,8 @@ connectButton = function(html_button, method) {
 };
 
 connectHtmlFunctionality = function() {
-    connectButton(html_loginButton, loginZeeguu);
-    connectButton(html_signinButton, signinZeeguu);
+    connectButton(html_loginButton, login);
+    connectButton(html_signinButton, signin);
 };
 
 //Run this when the page is loaded.

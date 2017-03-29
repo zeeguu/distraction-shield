@@ -31,7 +31,8 @@
       "background.js",
       "init.js",
       "statistics/trackerStorage.js",
-      "statistics/tracker.js"
+      "statistics/tracker.js",
+      "auth/auth.js"
     ]
   },
 
