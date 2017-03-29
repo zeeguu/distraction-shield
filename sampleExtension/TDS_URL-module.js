@@ -82,36 +82,48 @@ formatForGetRequest = function(url) {
     return "http://" + strippedUrl[0];
 };
 
-httpGetAsync = function(theUrl, callback) {
+httpGetAsync = function(theUrl, callback, error) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", theUrl, true); // true for asynchronous
     xmlHttp.onreadystatechange = function () {
-        // on succesful request, return responeURL
+        // on succesful request, return responseURL
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
             if (xmlHttp.responseText != null) {
-                var title = (/<title>(.*?)<\/title>/m).exec(xmlHttp.responseText)[1];
+                var title = (/<title.*?>(.*?)<\/title>/m).exec(xmlHttp.responseText)[1];
+                callback(xmlHttp.responseURL, title);
+            } else {
+                error(xmlHttp.status);
             }
-            callback(xmlHttp.responseURL, title);
         }
-    } 
+    };
     // TODO Error handling!
     xmlHttp.onerror = function () {
-        console.log("ERROR");
-    }
+        error(xmlHttp.status);
+    };
     xmlHttp.send(null);
 };
 
-function finalURL(thing) {
-    console.log("called: " + thing);
-    var x = thing;
-}
-
 submitUrl = function(url, callback) {
     var getUrl = formatForGetRequest(url);
-    httpGetAsync(getUrl, function (url, title) {
-        console.log(url + " title: "+ title);
-        callback(url, title)
-    });
+    httpGetAsync(
+        getUrl, 
+        function (url, title) {
+            callback(url, title)
+        },
+        function (status) { // error callback
+            switch (status) {
+                case 404:
+                    alert('File not found');
+                    break;
+                case 500:
+                    alert('Server error');
+                    break;
+                case 0:
+                    alert('Request aborted');
+                    break;
+                default:
+                    alert('Unknown error ' + status);
+            }
+        }
+    );
 };
-
-

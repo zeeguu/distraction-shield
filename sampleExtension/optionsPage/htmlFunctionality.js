@@ -31,16 +31,19 @@ removeLinkFromAll = function(html_item) {
     updateStorageBlacklist();
 };
 
-addLinkToAll = function(newUrl) {
-    newItem = new BlockedSite(newUrl);
+addLinkToAll = function(newItem) {
     addToLocalLinks(newItem);
     appendHtmlItemTo(generateHtmlTableRow(newItem), html_table);
     updateStorageBlacklist();
+   
 };
 
 saveButtonClick = function() {
-    var newurl = html_txtFld.val();
-    addLinkToAll(newurl);
+    var newUrl = html_txtFld.val();
+    submitUrl(newUrl, function (url, title) {
+        newItem = new BlockedSite(url, title);
+        return addLinkToAll(newItem);
+    });
     html_txtFld.val('');
 };
 
@@ -53,14 +56,15 @@ connectButton = function(html_button, method) {
 /* -------------------- Logic for the table -------------------- */
 
 //Returns an html table row object
-generateHtmlTableRow = function(blockedSite) {
+generateHtmlTableRow = function (blockedSite) {
     var tableRow =
         $("<tr class='table-row' >" +
             "<td width='50'>"+blockedSite.icon+"</td>" +
-            "<td>"+blockedSite.name+"</td>" +
+            "<td>"           +blockedSite.name+"</td>" +
             "<td width='25'>" + "<input class='checkbox-toggle' type='checkbox' name='state' >" + "</td>" +
             "<td width='25'>" + "<img class='delete-button' type='deleteButton' src='./delete_button.png' width='16' height='16'>" + "</td>" +
             "</tr>");
+
     tableRow.find('.checkbox-toggle').prop('checked', blockedSite.checkboxVal);
     //add the actual object to the html_element
     tableRow.data('blockedSite', blockedSite);
@@ -163,3 +167,4 @@ connectHtmlFunctionality = function() {
     connectButton(html_saveButton, saveButtonClick);
     setKeypressFunctions();
 };
+
