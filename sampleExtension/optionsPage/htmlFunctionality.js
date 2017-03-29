@@ -56,7 +56,7 @@ connectButton = function(html_button, method) {
 generateHtmlTableRow = function(blockedSite) {
     var tableRow =
         $("<tr class='table-row' >" +
-            "<td>"+blockedSite.icon+"</td>" +
+            "<td width='50'>"+blockedSite.icon+"</td>" +
             "<td>"+blockedSite.name+"</td>" +
             "<td width='25'>" + "<input class='checkbox-toggle' type='checkbox' name='state' >" + "</td>" +
             "<td width='25'>" + "<img class='delete-button' type='deleteButton' src='./delete_button.png' width='16' height='16'>" + "</td>" +

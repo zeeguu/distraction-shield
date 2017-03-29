@@ -22,7 +22,9 @@ function BlockedSite (input) {
     };
 
     this.url = this.getUrl(input);
-    this.name = this.getName(input);
+    this.name = submitUrl(input, function(url, title){
+        return title;
+    });
 
     this.icon = this.getIcon(input);
     this.lastVisited = new Date();

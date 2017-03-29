@@ -82,10 +82,22 @@ formatForGetRequest = function(url) {
     return "http://" + strippedUrl[0];
 };
 
-httpGetAsync = function(theUrl) {
+httpGetAsync = function(theUrl, callback) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", theUrl, true); // true for asynchronous
-    xmlHttp.onload = function() { finalURL(xmlHttp.responseURL);};
+    xmlHttp.onreadystatechange = function () {
+        // on succesful request, return responeURL
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            if (xmlHttp.responseText != null) {
+                var title = (/<title>(.*?)<\/title>/m).exec(xmlHttp.responseText)[1];
+            }
+            callback(xmlHttp.responseURL, title);
+        }
+    } 
+    // TODO Error handling!
+    xmlHttp.onerror = function () {
+        console.log("ERROR");
+    }
     xmlHttp.send(null);
 };
 
@@ -94,7 +106,12 @@ function finalURL(thing) {
     var x = thing;
 }
 
-submitUrl = function(url) {
+submitUrl = function(url, callback) {
     var getUrl = formatForGetRequest(url);
-    httpGetAsync(getUrl);
+    httpGetAsync(getUrl, function (url, title) {
+        console.log(url + " title: "+ title);
+        callback(url, title)
+    });
 };
+
+

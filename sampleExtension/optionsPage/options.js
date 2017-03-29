@@ -62,16 +62,3 @@ addToLocalLinks = function(blockedSite_item) {
 document.addEventListener("DOMContentLoaded", function(){
     initOptionsPage();
 });
-
-
-/* -------------------- ---------- WIP ---------- -------------------- */
-
-// still work in progress, might be possible in combination with url checker
-getHtmlInfo = function (url) {
-    $.get(url, logData);
-};
-
-logData = function (data) {
-    var title = data.match("<title>(.*?)</title>")[1];
-    console.log(title);
-};
