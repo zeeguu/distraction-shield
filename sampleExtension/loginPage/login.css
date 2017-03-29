@@ -1,26 +1,26 @@
-body {
-    font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-    font-size: 100%;
-    background-color: #FFFBED;
-    width:620px;
+#loginDiv {
+    width: 500px;
+    margin: 0 auto 0 auto;
 }
 
+#loginForm {
+    width: 200px;
+    margin: 0 auto 0 auto;
 
-#blacklistTable {
-    width: 600px;
 }
 
-#listDiv {
-    height: 200px;
-    width: 100%;
-    overflow: auto;
+.centeredText {
+    text-align: center;
 }
 
-table {
-    border: 1px solid black;
+.form-control {
+    margin-top: 5px;
 }
 
-.selected {
-    background-color: #3297FD;
-    color: #FFF;
+.submit-btn {
+    margin-top: 30px;
+}
+
+#noAccount {
+    margin-top: 20px;
 }
