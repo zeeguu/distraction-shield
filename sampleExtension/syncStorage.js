@@ -8,7 +8,6 @@ handleRuntimeError = function() {
     return true;
 };
 
-
 /* --------------- ---- Getter functions ---- ---------------*/
 
 /* ------ Blacklist functions ------ */
@@ -127,7 +126,6 @@ seStorageOriginalDestination = function(url) {
 setStorageSettings = function(settingsObject) {
     var serializedSettings = settings_serialize(settingsObject);
     chrome.storage.sync.set({"tds_settings" : serializedSettings}, function() {
-        console.log("called");
         handleRuntimeError();
     });
 };

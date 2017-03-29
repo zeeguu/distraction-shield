@@ -25,6 +25,7 @@
   "background": {
     "scripts": [
       "jquery/jquery-1.10.2.js",
+      "TDS_URL-module.js",
       "constants.js",
       "blockedSite.js",
       "syncStorage.js",
