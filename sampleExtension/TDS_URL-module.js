@@ -21,7 +21,7 @@ stripFinalSlash = function(url) {
 };
 
 stripOfScheme = function(url) {
-    domain = url;
+    var domain = url;
     if (url.indexOf("://") > -1) {
         domain = url.split('://')[1];
     }
@@ -29,15 +29,15 @@ stripOfScheme = function(url) {
 };
 
 stripOfPort = function(url) {
-    result = [];
+    var result = [];
     if (url.indexOf(":") > -1) {
-        splitted = url.split(':');
+        var splitted = url.split(':');
         result.push(splitted[0]);
         splitted.shift();
         splitted = splitted[0].split('/');
         splitted.shift();
         splitted = splitted.join('/');
-        result.push('/');
+        result.push('/' + splitted + '/');
         url = result.join("");
     }
     return url;
@@ -91,7 +91,7 @@ httpGetAsync = function(theUrl) {
 
 function finalURL(thing) {
     console.log("called: " + thing);
-    x = thing;
+    var x = thing;
 }
 
 submitUrl = function(url) {
