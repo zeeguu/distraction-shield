@@ -38,12 +38,16 @@ addLinkToAll = function(newItem) {
    
 };
 
-saveButtonClick = function() {
-    var newUrl = html_txtFld.val();
+createNewBlockedSite = function (newUrl) {
     submitUrl(newUrl, function (url, title) {
         newItem = new BlockedSite(url, title);
         return addLinkToAll(newItem);
     });
+}
+
+saveButtonClick = function() {
+    var newUrl = html_txtFld.val();
+    createNewBlockedSite(newUrl);
     html_txtFld.val('');
 };
 
@@ -60,7 +64,7 @@ generateHtmlTableRow = function (blockedSite) {
     var tableRow =
         $("<tr class='table-row' >" +
             "<td width='50'>"+blockedSite.icon+"</td>" +
-            "<td>"           +blockedSite.name+"</td>" +
+            "<td width='485' class='pageTitle'>"           +blockedSite.name+"</td>" +
             "<td width='25'>" + "<input class='checkbox-toggle' type='checkbox' name='state' >" + "</td>" +
             "<td width='25'>" + "<img class='delete-button' type='deleteButton' src='./delete_button.png' width='16' height='16'>" + "</td>" +
             "</tr>");

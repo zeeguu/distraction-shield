@@ -5,3 +5,4 @@ var revertToOriginMessage = "goToOriginalDestination";
 var infoText = "Hey, you tried to enter one of the sites you wanted to be protected from!";
 var proText = "You are in pro mode. Complete the exercise and click the \"Back to home!\" button when you are done to continue browsing.";
 var lazyText = "You are in lazy mode. Click the \"Skip\" button any time to continue browsing.";
+var INVALID_URL_MESSAGE = "We unfortunately could not reach the site you are trying to block. Are you sure the url is correct? \n"

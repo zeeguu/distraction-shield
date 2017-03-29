@@ -10,6 +10,9 @@
  * filename - defines the name of a document or resource
  *
  */
+// use alert for warning popups
+alert = chrome.extension.getBackgroundPage().alert;
+var INVALID_URL_MESSAGE = "We unfortunately could not reach the site you are trying to block.\nAre you sure the url is correct? \n \n"
 
 stripFinalSlash = function(url) {
     if (url[url.length - 1] == '/') {
@@ -113,16 +116,16 @@ submitUrl = function(url, callback) {
         function (status) { // error callback
             switch (status) {
                 case 404:
-                    alert('File not found');
+                    alert(INVALID_URL_MESSAGE +'File not found');
                     break;
                 case 500:
-                    alert('Server error');
+                    alert(INVALID_URL_MESSAGE + 'Server error');
                     break;
                 case 0:
-                    alert('Request aborted');
+                    alert(INVALID_URL_MESSAGE + 'Request aborted');
                     break;
                 default:
-                    alert('Unknown error ' + status);
+                    alert(INVALID_URL_MESSAGE + 'Unknown error ' + status);
             }
         }
     );
