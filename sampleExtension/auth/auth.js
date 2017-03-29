@@ -49,7 +49,22 @@ function Auth() {
     };
 
     this.signin = function(username, password, email){
-        //TODO Create signin functionality.
+        $.ajax({
+            type: "POST",
+            url: self.signinUrl+"/"+email,
+            data: $.param({
+                username: username,
+                password: password
+            })
+        }).done(function (session) {
+            console.log("Creating account: "+email);
+            console.log(session);
+            self.session = session;
+        }).fail(function () {
+            console.log("Fail..");
+        }).always(function(){
+            console.log("Done creating account.");
+        });
     };
 
     this.logout = function(){
