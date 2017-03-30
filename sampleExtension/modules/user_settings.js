@@ -58,7 +58,7 @@ function SettingsObject () {
 
 /* --------------- --------------- --------------- --------------- --------------- */
 
-//Private to this and syncStorage.js
+//Private to this and sync_storage.js
 settings_serialize = function(settingsObject) {
     return JSON.stringify(settingsObject);
 };
@@ -72,7 +72,7 @@ newSettingsObject = function(parsedSettingsObject) {
     return s;
 };
 
-//Private to this and syncStorage.js
+//Private to this and sync_storage.js
 settings_deserialize = function(serializedSettingsObject) {
     var parsed = JSON.parse(serializedSettingsObject);
     return newSettingsObject(parsed);

@@ -22,7 +22,7 @@ addLinkToAll = function(newItem) {
 };
 
 createNewBlockedSite = function (newUrl) {
-    submitUrl(newUrl, function (url, title) {
+    url_formatter.getUrlFromServer(newUrl, function (url, title) {
         newItem = new BlockedSite(url, title);
         return addLinkToAll(newItem);
     });
