@@ -1,75 +1,43 @@
 
-
-
 function Auth() {
     var self = this;
 
     this.apiUrl = "https://zeeguu.unibe.ch/api";
     this.loginUrl = "/session";
     this.signinUrl = "/add_user";
-
     this.loginAnonUrl = "/get_anon_session";
     this.signinAnonUrl = "/add_anon_user";
-
     this.logoutUrl = "/logout_session";
 
     this.session = null;
 
-
     this.loginAnon = function(username, password) {
-        return Promise.resolve(
-            $.ajax({
-                type: "POST",
-                url: self.apiUrl+self.loginAnonUrl + "/" + username,
-                data: $.param({
-                    password: password
-                })
-            })
-        );
+        var url = self.loginAnonUrl + "/" + username;
+        var params = "password="+password;
+        return api.postRequest(url, params);
     };
 
     this.signinAnon = function(username, password) {
-        $.ajax({
-            type: "POST",
-            url: self.apiUrl+self.signinAnonUrl,
-            data: $.param({
-                uuid: username,
-                password: password
-            })
-        }).done(function (session) {
-            console.log(session);
-            self.session = session;
-        }).fail(function () {
-            console.log("Fail..");
-        });
+        var url = self.signinAnonUrl;
+        var params = "uuid="+username+"&password"+password;
+        return api.postRequest(url, params);
     };
 
-    this.login = function(username, password, email){
-        //TODO Create login functionality.
+    this.login = function(email, password){
+        var url = self.loginUrl + "/" + email;
+        var params = "password="+password;
+        return api.postRequest(url, params);
     };
 
     this.signin = function(username, password, email){
-        $.ajax({
-            type: "POST",
-            url: self.apiUrl+self.signinUrl+"/"+email,
-            data: $.param({
-                username: username,
-                password: password
-            })
-        }).done(function (session) {
-            console.log("Creating account: "+email);
-            console.log(session);
-            self.session = session;
-        }).fail(function () {
-            console.log("Fail..");
-        }).always(function(){
-            console.log("Done creating account.");
-        });
+        //TODO This will probably be done by redirecting to the Zeeguu website itself.
     };
 
     this.logout = function(){
-        //TODO Create logout functionality.
         this.session = null;
+        var url = self.logoutUrl;
+        var params = "";
+        return api.getRequest(url, params);
     };
 
     this.getSession = function(){

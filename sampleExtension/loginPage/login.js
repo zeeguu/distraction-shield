@@ -6,67 +6,34 @@ var console = bg.console;
 var auth = bg.auth;
 
 /* -------------------- -------------------------- -------------------- */
-var html_usernameLoginFld = $('#usernameLoginFld');
+var html_emailLoginFld = $('#emailLoginFld');
 var html_passwordLoginFld = $('#passwordLoginFld');
 var html_submitButton = $('#submitBtn');
 
-var html_signinButton = $('#signinBtn');
-var html_usernameSigninFld = $('#usernameSigninFld');
-var html_passwordSigninFld = $('#passwordSigninFld');
-var html_emailSigninFld = $('#emailSigninFld');
-
-var html_signinAnonButton = $('#signinAnonBtn');
-var html_usernameSigninAnonFld = $('#usernameSigninAnonFld');
-var html_passwordSigninAnonFld = $('#passwordSigninAnonFld');
-
 var messageDialog = $('#message');
-var spinner = $('#spinner');
+var spinner = $('.spinner');
 
 login = function(){
-    var username = html_usernameLoginFld.val();
+    messageDialog.text("");
+
+    var email = html_emailLoginFld.val();
     var password = html_passwordLoginFld.val();
+    console.log("Email:" + email + " Password:" + password);
 
-    console.log("Username:" + username + " Password:" + password);
-    auth.loginAnon(username, password).then(function(){
-        spinner.show();
-    }).then(function(response){
-        setTimeout(function(){
-            messageDialog.text("You logged in! "+response);
-        }, 2000);
+    spinner.show();
+    auth.login(email, password).then(function(response){
+        messageDialog.text("You logged in!");
     }, function(error){
-        setTimeout(function(){
-            messageDialog.text("Wrong credentials..");
-        }, 2000);
-    }).then(function(){
-        //spinner.hide();
+        messageDialog.text("Wrong credentials..");
+    }).then(function(response){
+        spinner.hide();
+    }, function(){
+        spinner.hide();
     });
-
-    html_usernameLoginFld.val('');
+    html_emailLoginFld.val('');
     html_passwordLoginFld.val('');
 };
 
-signinAnon = function(){
-    var username = html_usernameSigninAnonFld.val();
-    var password = html_passwordSigninAnonFld.val();
-
-    console.log("Username:" + username + " Password:" + password);
-    auth.signinAnon(username, password);
-
-    html_usernameSigninAnonFld.val('');
-    html_passwordSigninAnonFld.val('');
-};
-
-signin = function(){
-    var username = html_usernameSigninFld.val();
-    var password = html_passwordSigninFld.val();
-    var email = html_emailSigninFld.val();
-
-    console.log("Username:" + username + " Password:" + password + " Email:" + email);
-    auth.signin(username, password, email);
-
-    //html_usernameSigninFld.val('');
-    //html_passwordSigninFld.val('');
-};
 
 
 //Connect functions to HTML elements
