@@ -1,12 +1,14 @@
 function BlockedSite(url, title) {
     this.getUrl = function (url) {
-        var link = document.createElement('a');
-        link.setAttribute('href', url);
-        var domain = link.hostname;
-        return "*://" + domain + "/*";
+        url = stripOfScheme(url);
+        url = stripOfFileName(url);
+        return "*://" + url + "/*";
     };
 
     this.getIcon = function (url) {
+        console.log(url);
+        url = stripOfScheme(url);
+        url = stripOfFileName(url);
         return "<img style=\"-webkit-user-select: none\" src=\"https://www.google.com/s2/favicons?domain=" + url + "\">"
     };
 

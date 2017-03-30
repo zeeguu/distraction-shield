@@ -43,7 +43,7 @@ createNewBlockedSite = function (newUrl) {
         newItem = new BlockedSite(url, title);
         return addLinkToAll(newItem);
     });
-}
+};
 
 saveButtonClick = function() {
     var newUrl = html_txtFld.val();

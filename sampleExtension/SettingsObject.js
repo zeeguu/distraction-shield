@@ -2,72 +2,80 @@
 function SettingsObject () {
 
     this.status = { state: true,
-                    setAt: new Date()
+                    setAt: new Date(),
+                    offTill: new Date()
                   };
-    this.offTill = new Date();
+
+    this.getState = function()  {
+        return this.status.state ? "On" : "Off";
+    };
+
+    this.toggleState = function() {
+        if (this.getState() == "On") {
+            this.turnOff();
+        } else {
+            this.turnOn();
+        }
+    };
+
+    this.turnOn = function()  {
+        if (this.getState() == "Off") {
+            this.status = { state: true, setAt: new Date() };
+        } else {
+            console.log("Already turned on, should not happen!");
+        }
+    };
+
+    this.turnOff = function()  {
+        if (this.getState() == "On") {
+            this.status = {state: false, setAt: new Date()};
+            setTimer(this);
+            removeWebRequestListener();
+        } else {
+            console.log("Already turned off, should not happen!");
+        }
+    };
+
+    this.turnOffFor = function(minutes) {
+        var curDate = new Date();
+        this.status.offTill = new Date(curDate.setMinutes(minutes + curDate.getMinutes()));
+        console.log("turned off until: " + this.status.offTill);
+        this.turnOff();
+    };
+
+    this.turnOffForDay = function()  {
+        this.status.offTill= new Date((new Date()).setHours(24,0,0,0));
+        this.turnOff();
+    };
+
+    this.turnOffTill = function(dateObject) {
+        this.status.offTill = dateObject;
+        this.turnOff();
+    }
+
 }
 
-
-settings_getState = function(settingsObject)  {
-    return settingsObject.status.state ? "On" : "Off";
-};
-
-settings_turnOn = function(settingsObject)  {
-    if (settings_getState(settingsObject) == "Off") {
-        settingsObject.status = { state: true, setAt: new Date() };
-    } else {
-        console.log("Already turned on, should not happen!");
-    }
-};
-
-settings_turnOff = function(settingsObject)  {
-    if (settings_getState(settingsObject) == "On") {
-        settingsObject.status = {state: false, setAt: new Date()};
-        setTimer(settingsObject);
-        removeWebRequestListener();
-    } else {
-        console.log("Already turned off, should not happen!");
-    }
-};
-
-settings_turnOffFor = function(settingsObject, minutes) {
-    curDate = new Date();
-    settingsObject.offTill = new Date(curDate.setMinutes(minutes + curDate.getMinutes()));
-    console.log("turned off until: " + settingsObject.offTill);
-    settings_turnOff(settingsObject);
-};
-
-settings_turnOffForDay = function(settingsObject)  {
-    settingsObject.offTill = new Date((new Date()).setHours(24,0,0,0));
-    settings_turnOff(settingsObject);
-};
 
 /* --------------- --------------- --------------- --------------- --------------- */
 
 //Private to this and syncStorage.js
 settings_serialize = function(settingsObject) {
-    var s = { state: settingsObject.status.state,
-              setAt: settingsObject.status.setAt.getTime()
-            };
-    return {status: s, offTill: settingsObject.offTill.getTime()};
+    return JSON.stringify(settingsObject);
 };
 
 //Private method
-newSettingsObject = function(state, setAt, offTill) {
+newSettingsObject = function(parsedSettingsObject) {
     var s = new SettingsObject();
-    s.status.state = state;
-    s.status.setAt = setAt;
-    s.offTill = offTill;
+    s.status.state = parsedSettingsObject.status.state;
+    s.status.setAt = new Date(parsedSettingsObject.status.setAt);
+    s.status.offTill = new Date(parsedSettingsObject.status.offTill);
     return s;
 };
 
 //Private to this and syncStorage.js
 settings_deserialize = function(serializedSettingsObject) {
-    var status = serializedSettingsObject.status;
-    var state = status.state;
-    var setAt = new Date(status.setAt);
-    var offTill = new Date(serializedSettingsObject.offTill);
-    return newSettingsObject(state, setAt, offTill);
+    var parsed = JSON.parse(serializedSettingsObject);
+    return newSettingsObject(parsed);
 };
 
 
@@ -76,10 +84,11 @@ settings_deserialize = function(serializedSettingsObject) {
 //Private method
 checkTimer = function(settingsObject) {
     return function () {
-        curTime = new Date();
-        if (settingsObject.offTill <= curTime) {
-            settings_turnOn(settingsObject);
+        var curTime = new Date();
+        if (settingsObject.status.offTill <= curTime) {
+            settingsObject.turnOn();
             addWebRequestListener();
+            //TODO fix this timerVarError
             clearInterval(timerVar);
         }
     };
@@ -87,5 +96,5 @@ checkTimer = function(settingsObject) {
 
 //Private method
 setTimer = function(settingsObject) {
-    timerVar = setInterval(checkTimer(settingsObject), 60000);
+    setInterval(checkTimer(settingsObject), 60000);
 };

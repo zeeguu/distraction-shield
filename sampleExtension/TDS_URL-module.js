@@ -28,6 +28,7 @@ stripOfScheme = function(url) {
     if (url.indexOf("://") > -1) {
         domain = url.split('://')[1];
     }
+    domain = stripFinalSlash(domain);
     return domain;
 };
 
@@ -43,6 +44,7 @@ stripOfPort = function(url) {
         result.push('/' + splitted + '/');
         url = result.join("");
     }
+    url = stripFinalSlash(url);
     return url;
 };
 
@@ -56,8 +58,10 @@ stripOfFileName = function(url) {
             stripped.push(result[i]);
         }
         stripped = stripped.join("").split("").reverse().join("");
+        stripped = stripFinalSlash(stripped);
         return stripped;
     } else {
+        url = stripFinalSlash(url);
         return url;
     }
 };
