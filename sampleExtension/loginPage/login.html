@@ -4,29 +4,33 @@
   <head>
     <title>Login page for The Distraction Shield</title>
     <link rel="stylesheet" type="text/css" href="login.css">
+    <link rel="stylesheet" type="text/css" href="../dependencies/bootstrap/css/bootstrap.min.css">
   </head>
 
   <body>
-  <div id="loginDiv">
-      <h1>Login</h1>
-      Username <input id="usernameLoginFld" type="text"/>
-      Password <input id="passwordLoginFld" type="text"/>
-      <button id="loginBtn"> Log in </button>
+  <div class="centeredText">
+      <div id="loginDiv">
+          <h2>Login to The Distraction Shield</h2>
+          <div id="loginForm">
+              <label for="usernameLoginFld" class="sr-only">Username</label>
+              <input type="email" id="usernameLoginFld" class="form-control" placeholder="Your username" required autofocus>
+              <label for="passwordLoginFld" class="sr-only">Password</label>
+              <input type="password" id="passwordLoginFld" class="form-control" placeholder="Your password" required>
+              <button id="submitBtn" class="btn btn-lg btn-primary btn-block submit-btn" type="submit">Login</button>
+          </div>
+      </div>
+      <div id="noAccount">
+          <p>Have no account yet? <a href="signin.html">Click here!</a></p>
+      </div>
+      <div>
+          <p id="message"><div id="spinner"></div></p>
+      </div>
   </div>
-  <div id="signinDiv">
-      <h1>Sign in</h1>
-      Username <input id="usernameSigninFld" type="text"/>
-      Password <input id="passwordSigninFld" type="text"/>
-      Email <input id="emailSigninFld" type="text"/>
-      <button id="signinBtn"> Sign in </button>
-  </div>
-  <div id="signinAnonDiv">
-      <h1>Sign in anonymously</h1>
-      Username <input id="usernameSigninAnonFld" type="text"/>
-      Password <input id="passwordSigninAnonFld" type="text"/>
-      <button id="signinAnonBtn"> Sign in </button>
-  </div>
+
+
+
   </body>
   <script src="../dependencies/jquery/jquery-1.10.2.js"></script>
+  <script src="../dependencies/bootstrap/js/bootstrap.min.js"></script>
   <script src="login.js"></script>
 </html>
