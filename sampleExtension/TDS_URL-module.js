@@ -95,15 +95,19 @@ httpGetAsync = function(theUrl, callback, error) {
     xmlHttp.onreadystatechange = function () {
         // on succesful request, return responseURL
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-            if (xmlHttp.responseText != null) {
-                var title = (/<title.*?>(.*?)<\/title>/m).exec(xmlHttp.responseText)[1];
+            // simple regex to extract data from title tags, ignoring newlines, tabs and returns
+            var titleTags = (/<title.*?>(?:[\t\n\r]*)(.*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
+            if (titleTags != null) {
+                var title = titleTags[1];
                 callback(xmlHttp.responseURL, title);
             } else {
-                error(xmlHttp.status);
+                callback(xmlHttp.responseURL, theUrl);
             }
+        } else if (xmlHttp.status != 200) {
+            error(xmlHttp.status);
         }
+
     };
-    // TODO Error handling!
     xmlHttp.onerror = function () {
         error(xmlHttp.status);
     };
