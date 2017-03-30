@@ -3,22 +3,20 @@ mainFlow = function() {
     getStorageMode (initBasis);
 };
 
-/*Show some text on the top to indicate we are here because the extension is running*/
-
-initForMode = function(mode) {
+determineMode = function(mode) {
     var message;
-    if (mode == "pro" || mode == undefined) {
+    if (mode == modes.pro || mode == undefined) {
         message = proText;
-        initPro();
-    } else if(mode == "lazy"){
+        initProMode();
+    } else if(mode == modes.lazy){
         message = lazyText;
-        initLazy();
+        initLazyMode();
     }
     return message;
 };
 
 initBasis = function(mode) {
-    var message = initForMode(mode);
+    var message = determineMode(mode);
 
     var infoDiv =  $("\<div id='tds_infoDiv' class='ui-corner-all ui-front'></div>");
     var infoP = $("<p align='center'></p>").append(infoText);
@@ -30,12 +28,12 @@ initBasis = function(mode) {
 
 /*initialize lazy mode*/
 
-initLazy = function() {
+initLazyMode = function() {
     var lazyDiv =  $("\<div id='tds_lazyDiv'></div>");
     var skipButton = $("<button id='tds_skipButton' class='ui-button ui-corner-all ui-widget'> I'm lazy and I want to skip</button>");
     skipButton.on("click", function () {
-        chrome.storage.sync.get("originalDestination", function (url) {
-            chrome.runtime.sendMessage({message: "goToOriginalDestination", destination: url.originalDestination});
+        getStorageOriginalDestination(function (originalDestination) {
+            chrome.runtime.sendMessage({message: revertToOriginMessage, destination: originalDestination});
         });
     });
     lazyDiv.append(skipButton);
@@ -44,7 +42,7 @@ initLazy = function() {
 
 /*initialize pro mode*/
 
-initPro = function() {
+initProMode = function() {
     chrome.storage.sync.get("originalDestination", function (url) {
         /* after receiving the original destiniation we attach some code to zeeguu
            This will make sure
