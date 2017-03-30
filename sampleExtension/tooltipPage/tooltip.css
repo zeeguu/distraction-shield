@@ -2,5 +2,12 @@ body {
     font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
     font-size: 100%;
     background-color: #FFFBED;
-    width: 300px;
+    width: 275px;
+    padding: 10px;
+    text-align: center;
+}
+
+.btn-group-vertical > button {
+    margin-bottom:10px;
+    border-radius: 7px !important;
 }

@@ -6,9 +6,9 @@ var console = bg.console;
 var auth = bg.auth;
 
 /* -------------------- -------------------------- -------------------- */
-var html_loginButton = $('#loginBtn');
 var html_usernameLoginFld = $('#usernameLoginFld');
 var html_passwordLoginFld = $('#passwordLoginFld');
+var html_submitButton = $('#submitBtn');
 
 var html_signinButton = $('#signinBtn');
 var html_usernameSigninFld = $('#usernameSigninFld');
@@ -60,8 +60,7 @@ connectButton = function(html_button, method) {
 };
 
 connectHtmlFunctionality = function() {
-    connectButton(html_loginButton, login);
-    connectButton(html_signinButton, signin);
+    connectButton(html_submitButton, login);
 };
 
 //Run this when the page is loaded.
