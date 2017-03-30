@@ -123,13 +123,14 @@ function Url_Requester() {
                 } else {
                     callback(xmlHttp.responseURL, theUrlToGet);
                 }
+            } else if (xmlHttp.status != 200) {
+                errorHandler(status);
             }
         };
-        xmlHttp.onerror = this.errorHandler;
         xmlHttp.send(null);
     };
 
-    this.errorHandler = function(status) {
+    errorHandler = function(status) {
         switch (status) {
             case 404:
                 alert(INVALID_URL_MESSAGE + 'File not found');
