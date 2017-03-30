@@ -48,9 +48,17 @@ getStorageMode = function(callback) {
 
 getStorageSettings = function(callback) {
     chrome.storage.sync.get("tds_settings", function (output) {
-        if(handleRuntimeError()) {
+        if (handleRuntimeError()) {
             var deserializedSettings = settings_deserialize(output.tds_settings);
             return callback(deserializedSettings);
+        }
+    });
+};
+
+getStorageOriginalDestination = function(callback) {
+    chrome.storage.sync.get("originalDestination", function (output) {
+        if(handleRuntimeError()) {
+            return callback(output.originalDestination);
         }
     });
 };
@@ -114,7 +122,7 @@ setStorageMode = function(mode) {
 
 /* ------ Store the current URL ----- */
 
-seStorageOriginalDestination = function(url) {
+setStorageOriginalDestination = function(url) {
     chrome.storage.sync.set({"originalDestination": url}, function() {
         handleRuntimeError();
     });

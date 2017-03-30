@@ -41,7 +41,7 @@ initBlacklist = function(list) {
 
 initMode = function(mode) {
     if (mode == null || mode == "") {
-        setStorageMode("lazy");
+        setStorageMode(modes.lazy);
     }
 };
 

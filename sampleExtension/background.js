@@ -5,9 +5,7 @@ var interceptCounter = 0;
 var interceptDateList = [];
 //Boolean that determines whether we should be redirecting or not
 var interceptionEnabled = true;
-
 var localSettings = null; /* Settings WIP */
-
 
 
 /* --------------- ------ update list of BlockedSites ------ ---------------*/
@@ -107,7 +105,7 @@ addWebRequestListener = function(urlList) {
 intercept = function(details) {
     incrementInterceptionCounter(details.url);
     addToInterceptDateList();
-    seStorageOriginalDestination(details.url);
+    setStorageOriginalDestination(details.url);
     setEnableInterceptionAfterTimeout(false, 2000);
     return {redirectUrl: redirectLink};
 };

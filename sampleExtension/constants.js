@@ -1,5 +1,6 @@
 var redirectLink = "https://zeeguu.herokuapp.com/get-ex";
 var revertToOriginMessage = "goToOriginalDestination";
+var modes = {lazy: "lazy", pro: "pro"};
 
 
 var infoText = "Hey, you tried to enter one of the sites you wanted to be protected from!";
