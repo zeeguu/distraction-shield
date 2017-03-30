@@ -43,11 +43,11 @@ initLazyMode = function() {
 /*initialize pro mode*/
 
 initProMode = function() {
-    chrome.storage.sync.get("originalDestination", function (url) {
+    getStorageOriginalDestination(function (originalDestination) {
         /* after receiving the original destiniation we attach some code to zeeguu
            This will make sure
          */
-        var destination = url.originalDestination;
+        var destination = originalDestination.originalDestination;
         var defBindEvents = document.createElement('script');
         defBindEvents.src = chrome.extension.getURL('intercept/bindEvents.js');
         defBindEvents.onload = function() {

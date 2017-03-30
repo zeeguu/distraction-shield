@@ -3,7 +3,7 @@
 
 initSession = function () {
     //First receive the blacklist from the sync storage, and then create a onBeforeRequest listener using this list.
-    retrieveBlockedSites(replaceListener);
+    retrieveSettings(retrieveBlockedSites, replaceListener);
     retrieveInterceptDateList();
     addBrowserActionListener();
     addSkipMessageListener();
@@ -12,11 +12,10 @@ initSession = function () {
 /* --------------- ---- Run upon installation ---- ---------------*/
 
 chrome.runtime.onInstalled.addListener(function() {
-    chrome.storage.sync.get(["tds_blacklist", "tds_interceptCounter", "tds_interceptDateList", "tds_mode"], function(output) {
+    getStorageAll( function(output) {
         initBlacklist(output.tds_blacklist);
         initInterceptCounter(output.tds_interceptCounter);
         initInterceptDateList(output.tds_interceptDateList);
-        initMode(output.tds_mode);
         initSettings(output.tds_settings);
     });
 });
@@ -39,12 +38,6 @@ initBlacklist = function(list) {
     }
 };
 
-initMode = function(mode) {
-    if (mode == null || mode == "") {
-        setStorageMode(modes.lazy);
-    }
-};
-
 initSettings = function(settings) {
     if (settings == null) {
         settingsToStore = new SettingsObject();
@@ -55,4 +48,5 @@ initSettings = function(settings) {
 
 /* --------------- ---- Run upon Start of session ---- ---------------*/
 
-initSession();
+//TODO fix need to refresh page/extension before extension works
+setTimeout(initSession, 1000);

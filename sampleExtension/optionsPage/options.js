@@ -16,22 +16,21 @@ var html_intCnt = $('#iCounter');
 var html_saveButton = $('#saveBtn');
 var modeGroup = "modeOptions";
 
-//Local variables that hold all necessary data.
 var blacklistTable;
+
+//Local variables that hold all necessary data.
+var settings_object = {};
 var links = [];
 var interceptionCounter = 0;
-var mode = "";
 
 /* -------------------- Initialization of options --------------------- */
 
 //Initialize HTML elements and set the local variables
 initOptionsPage = function() {
-    chrome.storage.sync.get(["tds_blacklist", "tds_interceptCounter", "tds_mode"], function(output) {
-        if (handleRuntimeError()) {
-            setLocalVariables(output);
-            connectHtmlFunctionality();
-            connectLocalDataToHtml();
-        }
+    getStorageAll( function(output) {
+        setLocalVariables(output);
+        connectHtmlFunctionality();
+        connectLocalDataToHtml();
     });
 };
 
@@ -40,6 +39,7 @@ setLocalVariables = function(storage_output) {
     links = storage_output.tds_blacklist;
     interceptionCounter = storage_output.tds_interceptCounter;
     mode = storage_output.tds_mode;
+    settings_object = storage_output.tds_settings;
 };
 
 initBlacklistTable = function() {
@@ -47,7 +47,7 @@ initBlacklistTable = function() {
     blacklistTable.initTable();
 };
 
-//initialize all html elements on this page
+// functionality from htmlFunctionality and blacklist_table file
 connectHtmlFunctionality = function() {
     initBlacklistTable();
     initModeSelection(modeGroup);
@@ -55,11 +55,11 @@ connectHtmlFunctionality = function() {
     setKeyPressFunctions();
 };
 
-//connect local data to html-elements
+// functionality from connectDataToHtml file
 connectLocalDataToHtml = function() {
     loadHtmlInterceptCounter(interceptionCounter, html_intCnt);
     loadHtmlBlacklist(links, blacklistTable);
-    loadHtmlMode(mode, modeGroup);
+    loadHtmlMode(settings_object.mode, modeGroup);
 };
 
 
@@ -69,11 +69,21 @@ updateStorageBlacklist = function() {
     setStorageBlacklistWithCallback(links, updateBackgroundPage);
 };
 
+updateStorageSettings = function() {
+    setStorageSettings(settings_object);
+};
+
+
 /* -------------------- Manipulate background ------------------- */
 
 updateBackgroundPage = function() {
     var bg = chrome.extension.getBackgroundPage();
-    bg.retrieveBlockedSites(bg.replaceListener);
+    bg.retrieveSettings(retrieveBlockedSites, replaceListener);
+};
+
+setBackgroundSettings = function() {
+    var bg = chrome.extension.getBackgroundPage();
+    bg.setLocalSettings(settings_object);
 };
 
 /* -------------------- Manipulate local variables ------------------- */

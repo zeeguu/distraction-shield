@@ -8,9 +8,20 @@ handleRuntimeError = function() {
     return true;
 };
 
-/* --------------- ---- Getter functions ---- ---------------*/
 
-/* ------ Blacklist functions ------ */
+/* ---------------- TDS_Storage --------------- */
+getStorageAll = function(callback) {
+    chrome.storage.sync.get(["tds_blacklist", "tds_interceptCounter", "tds_interceptDateList", "tds_settings"], function(output) {
+        if(handleRuntimeError()) {
+            if (output.tds_settings != null) {
+                output.tds_settings = settings_deserialize(output.tds_settings);
+            }
+            return callback(output);
+        }
+    });
+};
+
+/* ---------------- Blacklist --------------- */
 
 getStorageBlacklist = function(callback) {
     chrome.storage.sync.get("tds_blacklist", function (output) {
@@ -19,53 +30,6 @@ getStorageBlacklist = function(callback) {
         }
     });
 };
-
-getInterceptCounter = function(callback) {
-    chrome.storage.sync.get("tds_interceptCounter", function (output) {
-        if(handleRuntimeError()) {
-            return callback(output.tds_interceptCounter);
-        }
-    });
-};
-
-getInterceptDateList = function(callback) {
-    chrome.storage.sync.get("tds_interceptDateList", function (output) {
-        if(handleRuntimeError()) {
-            return callback(output.tds_interceptDateList);
-        }
-    });
-};
-
-/* ------ Settings functions ------ */
-
-getStorageMode = function(callback) {
-    chrome.storage.sync.get("tds_mode", function (output) {
-        if(handleRuntimeError()) {
-            return callback(output.tds_mode);
-        }
-    });
-};
-
-getStorageSettings = function(callback) {
-    chrome.storage.sync.get("tds_settings", function (output) {
-        if (handleRuntimeError()) {
-            var deserializedSettings = settings_deserialize(output.tds_settings);
-            return callback(deserializedSettings);
-        }
-    });
-};
-
-getStorageOriginalDestination = function(callback) {
-    chrome.storage.sync.get("originalDestination", function (output) {
-        if(handleRuntimeError()) {
-            return callback(output.originalDestination);
-        }
-    });
-};
-
-/* --------------- ---- Setter functions ---- ---------------*/
-
-/* ------ Blacklist functions ------ */
 
 setStorageBlacklist = function(list) {
     chrome.storage.sync.set({"tds_blacklist" : list}, function() {
@@ -80,16 +44,18 @@ setStorageBlacklistWithCallback = function(list, callback) {
     });
 };
 
+/* ---------------- Interception Counter --------------- */
 
-/* ------ Statistics functions ------ */
-setInterceptionCounter = function(number) {
-    chrome.storage.sync.set({"tds_interceptCounter": number}, function () {
-        handleRuntimeError();
+getInterceptCounter = function(callback) {
+    chrome.storage.sync.get("tds_interceptCounter", function (output) {
+        if(handleRuntimeError()) {
+            return callback(output.tds_interceptCounter);
+        }
     });
 };
 
-setInterceptDateList = function(dateList) {
-    chrome.storage.sync.set({"tds_interceptDateList" : dateList}, function() {
+setInterceptionCounter = function(number) {
+    chrome.storage.sync.set({"tds_interceptCounter": number}, function () {
         handleRuntimeError();
     });
 };
@@ -112,15 +78,45 @@ incrementInterceptionCounter = function(urlAddress) {
     });
 };
 
-/* ------ Settings functions ------ */
+/* ---------------- Interception DateList --------------- */
 
-setStorageMode = function(mode) {
-    chrome.storage.sync.set({"tds_mode": mode}, function() {
+getInterceptDateList = function(callback) {
+    chrome.storage.sync.get("tds_interceptDateList", function (output) {
+        if(handleRuntimeError()) {
+            return callback(output.tds_interceptDateList);
+        }
+    });
+};
+
+setInterceptDateList = function(dateList) {
+    chrome.storage.sync.set({"tds_interceptDateList" : dateList}, function() {
         handleRuntimeError();
     });
 };
 
-/* ------ Store the current URL ----- */
+/* ---------------- Extension Mode --------------- */
+
+getStorageMode = function(callback) {
+    getStorageSettings(function(settings) {
+        callback(settings.mode);
+    });
+};
+
+getStorageInterceptInterval = function(callback) {
+    getStorageSettings(function(settings) {
+        callback(settings.interceptionInterval);
+    });
+};
+
+/* ---------------- Original destination --------------- */
+
+getStorageOriginalDestination = function(callback) {
+    chrome.storage.sync.get("originalDestination", function (output) {
+        if(handleRuntimeError()) {
+            return callback(output.originalDestination);
+        }
+    });
+};
 
 setStorageOriginalDestination = function(url) {
     chrome.storage.sync.set({"originalDestination": url}, function() {
@@ -129,11 +125,28 @@ setStorageOriginalDestination = function(url) {
 };
 
 
-/* ----- WIP on Settingsobject ----- */
+/* ---------------- Settings Object --------------- */
+
+getStorageSettings = function(callback) {
+    chrome.storage.sync.get("tds_settings", function (output) {
+        if (handleRuntimeError()) {
+            var deserializedSettings = settings_deserialize(output.tds_settings);
+            return callback(deserializedSettings);
+        }
+    });
+};
 
 setStorageSettings = function(settingsObject) {
     var serializedSettings = settings_serialize(settingsObject);
-    chrome.storage.sync.set({"tds_settings" : serializedSettings}, function() {
+    chrome.storage.sync.set({"tds_settings": serializedSettings}, function() {
         handleRuntimeError();
+    });
+};
+
+setStorageSettingsWithCallback = function(settings, callback) {
+    var serializedSettings = settings_serialize(settingsObject);
+    chrome.storage.sync.set({"tds_settings": serializedSettings}, function() {
+        handleRuntimeError();
+        return callback();
     });
 };

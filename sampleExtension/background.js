@@ -3,17 +3,15 @@
 var blockedSites = [];
 var interceptCounter = 0;
 var interceptDateList = [];
-//Boolean that determines whether we should be redirecting or not
-var interceptionEnabled = true;
 var localSettings = null; /* Settings WIP */
 
 
 /* --------------- ------ update list of BlockedSites ------ ---------------*/
 
-updateStorage = function() {
-    setStorageBlacklist(blockedSites);
+setLocalSettings = function(newSettings) {
+    localSettings = newSettings;
+    retrieveBlockedSites(replaceListener);
 };
-
 
 // This function receives the settings from the sync storage.
 retrieveSettings = function(callback, param) {
@@ -50,7 +48,7 @@ retrieveInterceptCounter = function(callback) {
 addToBlockedSites = function(urlToAdd) {
     var blockedSiteItem = new BlockedSite(formatUrl(urlToAdd));
     blockedSites.push(blockedSiteItem);
-    updateStorage();
+    setStorageBlacklist(blockedSites);
     replaceListener();
 };
 
@@ -67,7 +65,7 @@ addToInterceptDateList = function() {
 
 //TODO fix in interation 3 for url-handling module
 formatUrl = function(url) {
-    result = url.split(['//'])[1];
+    var result = url.split(['//'])[1];
     result = result.split("").reverse().join("");
     result = result.split(['/'])[1];
     result = result.split("").reverse().join("");
@@ -77,9 +75,9 @@ formatUrl = function(url) {
 /* --------------- ------ Listener functions ------ ---------------*/
 
 replaceListener = function() {
-    chrome.webRequest.onBeforeRequest.removeListener(handleInterception);
-    urlList = filterBlockedSitesOnChecked();
-    if (urlList.length > 0) {
+    removeWebRequestListener();
+    var urlList = filterBlockedSitesOnChecked();
+    if (localSettings.getState() == "On" && urlList.length > 0) {
         addWebRequestListener(urlList);
     }
 };
@@ -102,26 +100,21 @@ addWebRequestListener = function(urlList) {
     );
 };
 
+removeWebRequestListener = function() {
+    chrome.webRequest.onBeforeRequest.removeListener(handleInterception);
+};
+
 intercept = function(details) {
     incrementInterceptionCounter(details.url);
     addToInterceptDateList();
     setStorageOriginalDestination(details.url);
-    setEnableInterceptionAfterTimeout(false, 2000);
     return {redirectUrl: redirectLink};
 };
 
 handleInterception = function(details) {
-    if (interceptionEnabled) {
+    if (localSettings.getState() == "On") {
         return intercept(details);
-    } else {
-        setEnableInterceptionAfterTimeout(true, 1000);
     }
-};
-
-setEnableInterceptionAfterTimeout = function(val, time) {
-    setTimeout(function () {
-        interceptionEnabled = val;
-    }, time);
 };
 
 /* --------------- ------ ------------------ ------ ---------------*/

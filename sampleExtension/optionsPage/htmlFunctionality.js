@@ -68,7 +68,8 @@ deleteOnKeyPress = function (blacklistTable) {
 
 initModeSelection = function(buttonGroup) {
     $("input[name=" + buttonGroup + "]").change( function(){
-        var pickedMode = $("input[name=" + buttonGroup + "]:checked").val();
-        setStorageMode(pickedMode);
+        settings_object.mode = $("input[name=" + buttonGroup + "]:checked").val();
+        setStorageSettings(settings_object);
+        setBackgroundSettings();
     });
 };

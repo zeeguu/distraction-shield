@@ -1,10 +1,14 @@
 
 function SettingsObject () {
+    var self = this;
 
     this.status = { state: true,
                     setAt: new Date(),
                     offTill: new Date()
                   };
+    this.sessionID = 0;
+    this.mode = modes.lazy;
+    this.interceptionInterval = 1;
 
     this.getState = function()  {
         return this.status.state ? "On" : "Off";
@@ -20,7 +24,7 @@ function SettingsObject () {
 
     this.turnOn = function()  {
         if (this.getState() == "Off") {
-            this.status = { state: true, setAt: new Date() };
+            this.status = { state: true, setAt: new Date(), offTill: this.status.offTill };
         } else {
             console.log("Already turned on, should not happen!");
         }
@@ -28,9 +32,9 @@ function SettingsObject () {
 
     this.turnOff = function()  {
         if (this.getState() == "On") {
-            this.status = {state: false, setAt: new Date()};
-            setTimer(this);
-            removeWebRequestListener();
+            this.status = {state: false, setAt: new Date(), offTill: this.status.offTill};
+            this.setTimer();
+            this.stopBackground();
         } else {
             console.log("Already turned off, should not happen!");
         }
@@ -44,14 +48,43 @@ function SettingsObject () {
     };
 
     this.turnOffForDay = function()  {
-        this.status.offTill= new Date((new Date()).setHours(24,0,0,0));
+        this.status.offTill = new Date((new Date()).setHours(24,0,0,0));
         this.turnOff();
     };
 
     this.turnOffTill = function(dateObject) {
         this.status.offTill = dateObject;
         this.turnOff();
-    }
+    };
+
+    //Private method
+    this.turnExtensionBackOn = function() {
+        return function () {
+            self.turnOn();
+            self.startBackground();
+        };
+    };
+
+    //Private method
+    this.setTimer = function() {
+        var timerInMS = this.status.offTill - new Date();
+        var MSint = timerInMS.toFixed();
+        setTimeout(this.turnExtensionBackOn, MSint);
+    };
+
+    this.startBackground = function() {
+        var bg = chrome.extension.getBackgroundPage();
+        bg.setLocalSettings(this);
+        setStorageSettings(this);
+        bg.replaceListener();
+    };
+
+    this.stopBackground = function() {
+        var bg = chrome.extension.getBackgroundPage();
+        bg.setLocalSettings(this);
+        setStorageSettings(this);
+        bg.removeWebRequestListener();
+    };
 
 }
 
@@ -64,37 +97,21 @@ settings_serialize = function(settingsObject) {
 };
 
 //Private method
-newSettingsObject = function(parsedSettingsObject) {
+parseSettingsObject = function(parsedSettingsObject) {
     var s = new SettingsObject();
     s.status.state = parsedSettingsObject.status.state;
     s.status.setAt = new Date(parsedSettingsObject.status.setAt);
     s.status.offTill = new Date(parsedSettingsObject.status.offTill);
+    s.mode = parsedSettingsObject.mode;
+    s.sessionID = parsedSettingsObject.sessionID;
+    s.interceptionInterval = parsedSettingsObject.interceptionInterval;
     return s;
 };
 
 //Private to this and sync_storage.js
 settings_deserialize = function(serializedSettingsObject) {
     var parsed = JSON.parse(serializedSettingsObject);
-    return newSettingsObject(parsed);
+    return parseSettingsObject(parsed);
 };
-
 
 /* --------------- --------------- --------------- --------------- --------------- */
-
-//Private method
-checkTimer = function(settingsObject) {
-    return function () {
-        var curTime = new Date();
-        if (settingsObject.status.offTill <= curTime) {
-            settingsObject.turnOn();
-            addWebRequestListener();
-            //TODO fix this timerVarError
-            clearInterval(timerVar);
-        }
-    };
-};
-
-//Private method
-setTimer = function(settingsObject) {
-    setInterval(checkTimer(settingsObject), 60000);
-};

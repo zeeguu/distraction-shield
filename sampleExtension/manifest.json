@@ -25,11 +25,11 @@
   "background": {
     "scripts": [
       "jquery/jquery-1.10.2.js",
-      "modules/url_formatter.js",
       "constants.js",
+      "modules/url_formatter.js",
       "modules/blocked_site.js",
-      "modules/sync_storage.js",
       "modules/user_settings.js",
+      "modules/sync_storage.js",
       "background.js",
       "init.js",
       "statistics/trackerStorage.js",
@@ -41,7 +41,11 @@
     {
       "matches" : ["https://zeeguu.herokuapp.com/get-ex"],
       "css": ["jquery/jquery-ui.css"],
-      "js" : ["jquery/jquery-1.10.2.js","constants.js","modules/sync_storage.js", "intercept/inject.js"]
+      "js" : ["jquery/jquery-1.10.2.js",
+              "constants.js",
+              "modules/sync_storage.js",
+              "modules/user_settings.js",
+              "intercept/inject.js"]
     }
   ],
 
@@ -54,8 +58,6 @@
     "<all_urls>"
   ],
 
-  "web_accessible_resources": [
-    "intercept/bindEvents.js"
-  ]
+  "web_accessible_resources": ["intercept/bindEvents.js"]
 
 }
