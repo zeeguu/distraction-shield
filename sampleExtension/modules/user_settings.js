@@ -25,6 +25,8 @@ function SettingsObject () {
     this.turnOn = function()  {
         if (this.getState() == "Off") {
             this.status = { state: true, setAt: new Date(), offTill: this.status.offTill };
+            this.startBackground();
+            console.log("turned on at: " + new Date());
         } else {
             console.log("Already turned on, should not happen!");
         }
@@ -59,17 +61,14 @@ function SettingsObject () {
 
     //Private method
     this.turnExtensionBackOn = function() {
-        return function () {
-            self.turnOn();
-            self.startBackground();
-        };
+        self.turnOn();
     };
 
     //Private method
     this.setTimer = function() {
         var timerInMS = this.status.offTill - new Date();
         var MSint = timerInMS.toFixed();
-        setTimeout(this.turnExtensionBackOn, MSint);
+        setTimeout(self.turnExtensionBackOn, MSint);
     };
 
     this.startBackground = function() {
