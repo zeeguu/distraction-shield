@@ -17,8 +17,6 @@ var rangeSlider = function () {
             $(this).next(value).html(inputValue);
             var redVal = Math.round(inputValue / MAX_SLIDER_VAL * 255) ;
             var greenVal = 255 - redVal;
-
-            //range.css('background', 'rgb(' + redVal + ', ' + greenVal + ',0)');
             $('input[type=range]').css('background', 'rgb(' + redVal + ', ' + greenVal + ',0)');
         });
     });
