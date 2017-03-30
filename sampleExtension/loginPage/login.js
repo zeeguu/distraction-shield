@@ -19,12 +19,27 @@ var html_signinAnonButton = $('#signinAnonBtn');
 var html_usernameSigninAnonFld = $('#usernameSigninAnonFld');
 var html_passwordSigninAnonFld = $('#passwordSigninAnonFld');
 
+var messageDialog = $('#message');
+var spinner = $('#spinner');
+
 login = function(){
     var username = html_usernameLoginFld.val();
     var password = html_passwordLoginFld.val();
 
     console.log("Username:" + username + " Password:" + password);
-    auth.loginAnon(username, password);
+    auth.loginAnon(username, password).then(function(){
+        spinner.show();
+    }).then(function(response){
+        setTimeout(function(){
+            messageDialog.text("You logged in! "+response);
+        }, 2000);
+    }, function(error){
+        setTimeout(function(){
+            messageDialog.text("Wrong credentials..");
+        }, 2000);
+    }).then(function(){
+        //spinner.hide();
+    });
 
     html_usernameLoginFld.val('');
     html_passwordLoginFld.val('');

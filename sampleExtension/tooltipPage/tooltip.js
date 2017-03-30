@@ -21,6 +21,11 @@ redirectToStatistics = function() {
     //return {redirectUrl: "://statisticsPage/statistics.html/"};
 };
 
+redirectToLogin = function() {
+    chrome.tabs.create({'url': chrome.runtime.getURL('loginPage/login.html')});
+    //return {redirectUrl: "://statisticsPage/statistics.html/"};
+};
+
 openOptionsPage = function() {
     chrome.runtime.openOptionsPage();
 };
@@ -33,6 +38,8 @@ connectButtons = function() {
     optionsButton.on('click', openOptionsPage);
     var statisticsButton = $('#statisticsBtn');
     statisticsButton.on('click', redirectToStatistics);
+    var loginButton = $('#loginBtn');
+    loginButton.on('click', redirectToLogin);
 };
 
 connectButtons();

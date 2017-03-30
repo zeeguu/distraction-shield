@@ -17,18 +17,15 @@ function Auth() {
 
 
     this.loginAnon = function(username, password) {
-        $.ajax({
-            type: "POST",
-            url: self.apiUrl+self.loginAnonUrl + "/" + username,
-            data: $.param({
-                password: password
+        return Promise.resolve(
+            $.ajax({
+                type: "POST",
+                url: self.apiUrl+self.loginAnonUrl + "/" + username,
+                data: $.param({
+                    password: password
+                })
             })
-        }).done(function (session) {
-            console.log(session);
-            self.session = session;
-        }).fail(function () {
-            console.log("Fail..");
-        });
+        );
     };
 
     this.signinAnon = function(username, password) {
