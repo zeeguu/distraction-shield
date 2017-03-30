@@ -116,7 +116,7 @@ function Url_Requester() {
             // on succesful request, return responseURL
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
                 // simple regex to extract data from title tags, ignoring newlines, tabs and returns
-                var titleTags = (/<title.*?>(?:[\t\n\r]*)(.*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
+                var titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
                 if (titleTags != null) {
                     var title = titleTags[1];
                     callback(xmlHttp.responseURL, title);
