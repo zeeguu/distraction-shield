@@ -22,7 +22,8 @@ redirectToStatistics = function() {
 };
 
 openOptionsPage = function() {
-    chrome.runtime.openOptionsPage();
+    // chrome.runtime.openOptionsPage();
+    chrome.tabs.create({'url': chrome.runtime.getURL('optionsPage/options.html')});
 };
 
 //Connect functions to HTML elements

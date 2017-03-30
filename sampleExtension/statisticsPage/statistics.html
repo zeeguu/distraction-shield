@@ -4,25 +4,55 @@
   <head>
     <title>Statistics for The Distraction Shield</title>
     <link rel="stylesheet" type="text/css" href="statistics.css">
+    <link rel="stylesheet" type="text/css" href="../dependencies/bootstrap/css/bootstrap.min.css">
   </head>
 
   <body>
-    <h1>The Distraction Shield</h1>
-    <div id="intercepts"> 
-      <p> You were intercepted: </p>
-      <p> <span id="countDay"></span> times in the last 24 hours.</p>
-      <p> <span id="countWeek"></span> times in the last week.</p>
-      <p> <span id="countMonth"></span> times in the last month.</p>
-      <p> For a total of <span id="iCounter"></span> times.</p>
+    <div class="page-header">
+      <h1>The Distraction Shield</h1>
     </div>
-    <table id="interceptTable"> </table>
 
-    <table id="exerciseTime" border="1">
-      <tr><th colspan="2">Time spent on exercises each day</th></tr>
-      <tr>
-        <th>Date</th><th>Time spent</th>
-      </tr>
-    </table>
+    <div class="container">
+      <div class="row">
+        <div class="panel panel-primary col-md-offset-2 col-md-8" id="intercepts">
+          <div class="panel panel-heading"><p> You were intercepted: </p></div>
+          <div class="panel panel-body">
+            <p> <span id="countDay"></span> times in the last 24 hours.</p>
+            <p> <span id="countWeek"></span> times in the last week.</p>
+            <p> <span id="countMonth"></span> times in the last month.</p>
+            <p> For a total of <span id="iCounter"></span> times.</p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <!--<div class="col-md-2"></div>-->
+        <div class="col-md-offset-2 col-md-8">
+          <table id="interceptTable" class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Site</th>
+                <th>#intercepts</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <!--<div class="col-md-2"></div>-->
+      </div>
+
+        <div class="row">
+          <div class="col-md-offset-2 col-md-8">
+            <table id="exerciseTime" class="table table-striped table-bordered">
+              <tr><th colspan="2">Time spent on exercises each day</th></tr>
+              <tr>
+                <th>Date</th><th>Time spent</th>
+              </tr>
+            </table>
+          </div>
+        </div>
+    </div>
 
     <script src="../dependencies/jquery/jquery-1.10.2.js"></script>
     <script src="statistics.js"></script>
