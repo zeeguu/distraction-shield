@@ -15,6 +15,10 @@ function BlacklistTable (html_element) {
         this.getSelected().remove();
     };
 
+    this.removeFromTable = function (html_item) {
+        html_item.remove();
+    };
+
     this.sortTableOnChecked = function () {
         var rows = this.table.find('tr').get();
         rows.sort(function (checkboxA, checkboxB) {
@@ -74,9 +78,9 @@ function BlacklistTable (html_element) {
 generateTableRow = function (blockedSite) {
     var tableRow =
         $("<tr class='table-row' >" +
-            "<td>" + blockedSite.icon + "</td>" +
-            "<td>" + blockedSite.name + "</td>" +
-            "<td>" + "<input class='checkbox-toggle' type=\"checkbox\" name=\"state\">" + "</td>" +
+            "<td width='50'>" + blockedSite.icon + "</td>" +
+            "<td class='pageTitle' width='480'>" + blockedSite.name + "</td>" +
+            "<td width='25'>" + "<input class='checkbox-toggle' type=\"checkbox\" name=\"state\">" + "</td>" +
             "<td width='25'>" + "<img class='delete-button' type='deleteButton' src='./delete_button.png' width='16' height='16'>" + "</td>" +
             "</tr>");
     tableRow.find('.checkbox-toggle').prop('checked', blockedSite.checkboxVal);

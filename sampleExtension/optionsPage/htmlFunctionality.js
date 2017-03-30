@@ -10,7 +10,7 @@ appendHtmlItemTo = function(html_child, html_parent) {
 
 removeLinkFromAll = function(html_item) {
     removeFromLocalLinks(html_item);
-    blacklistTable.removeSelected();
+    blacklistTable.removeFromTable(html_item);
     updateStorageBlacklist();
 };
 
@@ -50,8 +50,7 @@ setKeyPressFunctions = function () {
 
 submitOnKeyPress = function (html_elem) {
     html_elem.keyup(function (event) {
-        var enterKeyID = 13;
-        if (event.keyCode == enterKeyID) {
+        if (event.keyCode == KEY_ENTER) {
             saveNewUrl();
         }
     });
@@ -59,12 +58,12 @@ submitOnKeyPress = function (html_elem) {
 
 deleteOnKeyPress = function (blacklistTable) {
     $('html').keyup(function (e) {
-        var deleteKeyID = 46;
-        if (e.keyCode == deleteKeyID) {
+        if (e.keyCode == KEY_DELETE) {
             blacklistTable.removeSelected();
         }
     });
 };
+
 /* -------------------- Logic for the mode selection -------------------- */
 
 initModeSelection = function(buttonGroup) {

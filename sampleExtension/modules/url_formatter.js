@@ -116,20 +116,21 @@ function Url_Requester() {
             // on succesful request, return responseURL
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
                 // simple regex to extract data from title tags, ignoring newlines, tabs and returns
-                var titleTags = (/<title.*?>(?:[\t\n\r]*)(.*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
+                var titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
                 if (titleTags != null) {
                     var title = titleTags[1];
                     callback(xmlHttp.responseURL, title);
                 } else {
                     callback(xmlHttp.responseURL, theUrlToGet);
                 }
+            } else if (xmlHttp.status != 200) {
+                errorHandler(status);
             }
         };
-        xmlHttp.onerror = this.errorHandler;
         xmlHttp.send(null);
     };
 
-    this.errorHandler = function(status) {
+    errorHandler = function(status) {
         switch (status) {
             case 404:
                 alert(INVALID_URL_MESSAGE + 'File not found');
