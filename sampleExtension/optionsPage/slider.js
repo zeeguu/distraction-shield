@@ -1,3 +1,5 @@
+var MAX_SLIDER_VAL = 60;
+
 var rangeSlider = function () {
     var slider = $('.range-slider'),
         range = $('.range-slider__range'),
@@ -11,7 +13,13 @@ var rangeSlider = function () {
         });
 
         range.on('input', function () {
-            $(this).next(value).html(this.value);
+            var inputValue = this.value;
+            $(this).next(value).html(inputValue);
+            var redVal = Math.round(inputValue / MAX_SLIDER_VAL * 255) ;
+            var greenVal = 255 - redVal;
+
+            //range.css('background', 'rgb(' + redVal + ', ' + greenVal + ',0)');
+            $('input[type=range]').css('background', 'rgb(' + redVal + ', ' + greenVal + ',0)');
         });
     });
 };
