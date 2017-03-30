@@ -3,7 +3,7 @@
 
   "name": "The Distraction Shield",
   "description": "Divert attention from social media websites to learning a new language",
-  "version": "0.1",
+  "version": "1.2",
   //Icon's shown in chrome://extensions
   "icons": {"128": "icon.png"},
   "offline_enabled": false,
@@ -25,11 +25,11 @@
   "background": {
     "scripts": [
       "jquery/jquery-1.10.2.js",
-      "TDS_URL-module.js",
+      "url_builder.js",
       "constants.js",
       "blockedSite.js",
       "syncStorage.js",
-      "SettingsObject.js",
+      "settingsObject.js",
       "background.js",
       "init.js",
       "statistics/trackerStorage.js",
