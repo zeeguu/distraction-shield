@@ -14,6 +14,7 @@ initForMode = function(mode) {
         message = lazyText;
         initLazy();
     }
+    console.log ("initialized "+mode+" mode.")
     return message;
 };
 

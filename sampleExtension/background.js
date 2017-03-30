@@ -10,7 +10,7 @@ var interceptionEnabled = true;
 
 updateStorage = function() {
     setStorageBlacklist(blockedSites);
-    return {redirectUrl: "https://zeeguu.herokuapp.com/get-ex"};
+    return {redirectUrl: redirectLink};
 };
 
 // This function receives the blacklist from the sync storage.
@@ -97,7 +97,7 @@ intercept = function(details) {
     addToInterceptDateList();
     seStorageOriginalDestination(details.url);
     setEnableInterceptionAfterTimeout(false, 2000);
-    return {redirectUrl: redirectLink};
+    return {redirectUrl: redirectLink+details.url};
 };
 
 handleInterception = function(details) {

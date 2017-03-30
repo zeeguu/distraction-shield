@@ -37,7 +37,7 @@
 
   "content_scripts": [
     {
-      "matches" : ["https://zeeguu.herokuapp.com/get-ex"],
+      "matches" : ["http://127.0.0.1:5000/get-ex/"],
       "css": ["jquery/jquery-ui.css"],
       "js" : ["jquery/jquery-1.10.2.js","constants.js","syncStorage.js", "intercept/inject.js"]
     }
@@ -53,7 +53,6 @@
   ],
 
   "web_accessible_resources": [
-    "intercept/bindEvents.js"
   ]
 
 }
