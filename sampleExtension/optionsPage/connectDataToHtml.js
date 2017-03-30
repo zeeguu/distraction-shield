@@ -5,10 +5,11 @@
 
 loadHtmlBlacklist = function(list) {
     //For each BlockedSite object from the list generate a tableRow
+    console.log("loadHtmlBlacklist");//TODO remove
     $.each(list, function(key, value) {
         appendHtmlItemTo(generateHtmlTableRow(value), html_table);
     });
-    sortHtmlOnChecked(html_table);
+    // sortHtmlOnChecked(html_table);
 };
 
 loadHtmlMode = function(extensionMode) {

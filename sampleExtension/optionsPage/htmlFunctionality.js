@@ -10,9 +10,12 @@ var html_table = $('#blacklistTable');
 var html_txtFld = $('#textFld');
 var html_intCnt = $('#iCounter');
 var html_saveButton = $('#saveBtn');
-var html_deleteButton =$('#deleteBtn');
+var html_deleteButton = $('#deleteBtn');
 var modeGroup = "modeOptions";
-
+// var bg = chrome.extension.getBackgroundPage();
+//
+// // Log console messages to the background page console instead of the content page.
+// var console = bg.console;
 
 /* -------------------- General functions concerning html_objects -------------------- */
 
@@ -46,7 +49,7 @@ saveButtonClick = function() {
 };
 
 deleteButtonClick = function () {
-    var urlToDelete = html_table.find(".selected");
+    var urlToDelete = html_table.find(".highlight");
     removeLinkFromAll(urlToDelete);
 };
 
@@ -69,6 +72,7 @@ connectButton = function(html_button, method) {
 
 //Returns an html table row object
 generateHtmlTableRow = function(blockedSite) {
+    console.log("generateHtmlTableRow");//TODO remove
     var tableRow =
         $("<tr class='table-row' >" +
             "<td>"+blockedSite.icon+"</td>" +
@@ -83,8 +87,8 @@ generateHtmlTableRow = function(blockedSite) {
 
 // this function makes the passed table single row selection only
 enableTableSelection = function (html_table) {
-    html_table.on('click', 'tr', function () {
-        $(this).addClass('selected').siblings().removeClass('selected');
+    html_table.on('click', 'tbody tr', function () {
+        $(this).addClass('highlight').siblings().removeClass('highlight');
     });
 };
 
@@ -109,12 +113,12 @@ sortHtmlOnChecked = function () {
 setCheckboxFunction = function (html_selectable) {
     html_selectable.on('change', 'input[type="checkbox"]', function () {
         //Clicking the checkbox automatically selects the row, so we use this to our advantage
-        var selected_row = html_selectable.find('.selected');
+        var selected_row = html_selectable.find('.highlight');
         var selected_blockedSite = selected_row.data('blockedSite');
         selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
         //no need to set links cause it holds pointers so they get updated automatically
         updateStorageBlacklist();
-        sortHtmlOnChecked(html_selectable);
+        // sortHtmlOnChecked(html_selectable);
     });
 };
 
@@ -130,6 +134,8 @@ setRadioButtonFunction = function(buttonGroup) {
 /* -------------------- Main function that calls the rest -------------------- */
 
 connectHtmlFunctionality = function() {
+
+    console.log("connectHtmlFunctionality");//TODO remove
     enableTableSelection(html_table);
     setCheckboxFunction(html_table);
     setRadioButtonFunction(modeGroup);

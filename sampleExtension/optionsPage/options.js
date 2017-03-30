@@ -6,7 +6,7 @@
  */
 
 // Log console messages to the background page console instead of the content page.
-var console = chrome.extension.getBackgroundPage().console;
+// var console = chrome.extension.getBackgroundPage().console;
 
 //Local variables that holds the list of links and interceptCoun and variables ter.
 var links = [];
@@ -18,6 +18,7 @@ var mode = "";
 //Initialize HTML elements and set the local variables
 initOptionsPage = function() {
     chrome.storage.sync.get(["tds_blacklist", "tds_interceptCounter", "tds_mode"], function(output) {
+        console.log('chrome.storage.sync.get(["tds_blacklist", "tds_interceptCounter", "tds_mode"] happened');//TODO remove
         if (handleRuntimeError()) {
             setLocalVariables(output);
             connectLocalDataToHtml(); /* bottom of connectDataToHtml.js */
@@ -27,7 +28,11 @@ initOptionsPage = function() {
 };
 
 setLocalVariables = function(storage_output) {
+    console.log("setLocalVariables");//TODO remove
+    console.log("list:");//TODO remove
+    console.log(JSON.stringify(links, null, 4)); //TODO remove
     links = storage_output.tds_blacklist;
+    console.log(JSON.stringify(links, null, 4)); //TODO remove
     interceptionCounter = storage_output.tds_interceptCounter;
     mode = storage_output.tds_mode;
 };
