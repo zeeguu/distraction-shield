@@ -1,4 +1,6 @@
-var redirectLink = "http://127.0.0.1:5000/get-ex?redirect=";
+// var redirectLink = "http://127.0.0.1:5000/get-ex?redirect=";//TODO remove
+var redirectLink = "https://zeeguu.herokuapp.com/get-ex?redirect=";
+
 var revertToOriginMessage = "goToOriginalDestination";
 
 

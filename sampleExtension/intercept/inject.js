@@ -1,5 +1,8 @@
+console.log("inject.js");//TODO remove
+
 
 mainFlow = function() {
+    console.log("mainFlow");
     getStorageMode (initBasis);
 };
 
@@ -9,24 +12,40 @@ initForMode = function(mode) {
     var message;
     if (mode == "pro" || mode == undefined) {
         message = proText;
-        initPro();
+        // initPro();
     } else if(mode == "lazy"){
         message = lazyText;
-        initLazy();
+        // initLazy();
     }
-    console.log ("initialized "+mode+" mode.")
+    console.log ("initialized "+mode+" mode.");//TODO remove
     return message;
 };
 
 initBasis = function(mode) {
     var message = initForMode(mode);
 
-    var infoDiv =  $("\<div id='tds_infoDiv' class='ui-corner-all ui-front'></div>");
-    var infoP = $("<p align='center'></p>").append(infoText);
-    var specificP = $("<p align='center'></p>").append(message);
+    $.ajax({
+        url: chrome.extension.getURL('intercept/inject.html'),
+        type: "GET",
+        timeout: 5000,
+        datattype: "html",
+        success: function(data) {
+            infoDiv = $.parseHTML(data);
+            $("#tds_generalInfoText").append(infoText);
+            $("#tds_modeSpecificText").append(message);
 
-    infoDiv.append(infoP).append(specificP);
-    $("body").prepend(infoDiv);
+            // infoDiv.append(infoP).append(specificP);
+            $("body").prepend(infoDiv);
+        },
+    });
+
+
+    // infoDiv = $.parseHTML(chrome.extension.getURL('intercept/inject.html'), );
+    // $("#tds_generalInfoText").append(infoText);
+    // $("#tds_modeSpecificText").append(message);
+    //
+    // // infoDiv.append(infoP).append(specificP);
+    // $("body").prepend(infoDiv);
 };
 
 /*initialize lazy mode*/
