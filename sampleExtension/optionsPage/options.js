@@ -78,7 +78,7 @@ updateStorageSettings = function() {
 
 updateBackgroundPage = function() {
     var bg = chrome.extension.getBackgroundPage();
-    bg.retrieveBlockedSites(replaceListener);
+    bg.setLocalBlacklist(links);
 };
 
 setBackgroundSettings = function() {

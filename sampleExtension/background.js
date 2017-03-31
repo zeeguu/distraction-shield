@@ -13,6 +13,11 @@ setLocalSettings = function(newSettings) {
     retrieveBlockedSites(replaceListener);
 };
 
+setLocalBlacklist = function(newList) {
+    blockedSites = newList;
+    replaceListener();
+};
+
 // This function receives the settings from the sync storage.
 retrieveSettings = function(callback, param) {
     getStorageSettings(function(settingsObject) {
