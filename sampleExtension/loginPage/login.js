@@ -22,6 +22,7 @@ login = function(){
 
     spinner.show();
     auth.login(email, password).then(function(response){
+        auth.setSession(response);
         messageDialog.text("You logged in!");
     }, function(error){
         messageDialog.text("Wrong credentials..");
