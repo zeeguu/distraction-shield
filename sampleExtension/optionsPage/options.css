@@ -28,7 +28,7 @@ body {
     width:50%;
 }
 
-#interceptionTimer {
+#interval-slider-div {
     width:50%;
     overflow:hidden;
 }
