@@ -49,21 +49,13 @@ retrieveInterceptCounter = function(callback) {
     });
 };
 
-// This function adds one url to the blacklist
-addToBlockedSites = function(urlToAdd) {
-    var blockedSiteItem = new BlockedSite(formatUrl(urlToAdd));
-    blockedSites.push(blockedSiteItem);
-    setStorageBlacklist(blockedSites);
-    replaceListener();
-};
-
-//TODO fix in interation 3 for url-handling module
-formatUrl = function(url) {
-    var result = url.split(['//'])[1];
-    result = result.split("").reverse().join("");
-    result = result.split(['/'])[1];
-    result = result.split("").reverse().join("");
-    return result;
+addToBlockedSites = function (newUrl, newUrlTitle) {
+    url_formatter.getUrlWithoutServer(newUrl, newUrlTitle, function (url, title) {
+        newItem = new BlockedSite(url, title);
+        blockedSites.push(newItem);
+        setStorageBlacklist(blockedSites);
+        replaceListener();
+    });
 };
 
 // This function adds the current time+date to the saved time+date list
@@ -123,19 +115,6 @@ handleInterception = function(details) {
 };
 
 /* --------------- ------ ------------------ ------ ---------------*/
-
-addBrowserActionListener = function() {
-    chrome.browserAction.onClicked.addListener(function () {
-        chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
-            // since only one tab should be active and in the current window at once
-            // the return variable should only have one entry
-            var activeTab = arrayOfTabs[0];
-            var activeTabUrl = activeTab.url;
-            addToBlockedSites(activeTabUrl);
-
-        });
-    });
-};
 
 addSkipMessageListener = function() {
     chrome.runtime.onMessage.addListener(function(request, sender) {

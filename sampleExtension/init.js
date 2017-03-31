@@ -2,10 +2,10 @@
 /* --------------- ---- Session initializer ---- ---------------*/
 
 initSession = function () {
-    //First receive the blacklist from the sync storage, and then create a onBeforeRequest listener using this list.
+    //First receive the blacklist and settings from the sync storage,
+    //then create a onBeforeRequest listener using this list.
     retrieveSettings(retrieveBlockedSites, replaceListener);
     retrieveInterceptDateList();
-    addBrowserActionListener();
     addSkipMessageListener();
 };
 
@@ -41,12 +41,16 @@ initBlacklist = function(list) {
 initSettings = function(settings) {
     if (settings == null) {
         settingsToStore = new SettingsObject();
-        setStorageSettings(settingsToStore);
+        setStorageSettingsWithCallback(settingsToStore, initSession);
     }
 };
 
 
 /* --------------- ---- Run upon Start of session ---- ---------------*/
 
-//TODO fix need to refresh page/extension before extension works
-setTimeout(initSession, 1000);
+//fix that checks whether everything that should be is initialized
+getStorageSettings(function(settings) {
+    if (settings != null) {
+        initSession();
+    }
+});

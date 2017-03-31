@@ -1,15 +1,4 @@
-/*
- * format of every Url:
- * "scheme://prefix.domain:port/path/filename"
- *
- * scheme - defines the type of Internet service (most common is http or https)
- * prefix - defines a domain prefix (default for http is www)
- * domain - defines the Internet domain name (like w3schools.com)
- * port - defines the port number at the host (default for http is 80)
- * path - defines a path at the server (If omitted: the root directory of the site)
- * filename - defines the name of a document or resource
- *
- */
+
 // use alert for warning popups
 alert = chrome.extension.getBackgroundPage().alert;
 
@@ -91,13 +80,19 @@ function Url_Formatter() {
         return "http://" + strippedUrl[0];
     };
 
-    this.getUrlFromServer = function (url, callback) {
+    this.getUrlFromServer = function(url, callback) {
         var urlToGet = this.formatForGetRequest(url);
         this.url_requester.httpGetAsync(urlToGet, function(url, title) {
             url = url_formatter.stripOfScheme(url);
             url = url_formatter.stripOfFileName(url);
             callback(url, title);
         });
+    };
+
+    this.getUrlWithoutServer = function(url, title, callback) {
+        url = url_formatter.stripOfScheme(url);
+        url = url_formatter.stripOfFileName(url);
+        callback(url, title);
     };
 
 }

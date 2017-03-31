@@ -9,7 +9,7 @@ function GreenToRedSlider(sliderID) {
         var inputValue = self.inputRange.val();
         self.value.html(inputValue);
         self.updateColor(inputValue);
-        settings_object.interceptionInterval = parseInt(inputValue);
+        settings_object.setInterceptionInterval(parseInt(inputValue));
         updateStorageSettings();
         setBackgroundSettings();
     });

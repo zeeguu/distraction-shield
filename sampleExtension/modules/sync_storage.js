@@ -131,7 +131,10 @@ setStorageOriginalDestination = function(url) {
 getStorageSettings = function(callback) {
     chrome.storage.sync.get("tds_settings", function (output) {
         if (handleRuntimeError()) {
-            var deserializedSettings = settings_deserialize(output.tds_settings);
+            var deserializedSettings = null;
+            if(output.tds_settings != null) {
+                deserializedSettings = settings_deserialize(output.tds_settings);
+            }
             return callback(deserializedSettings);
         }
     });
@@ -144,7 +147,7 @@ setStorageSettings = function(settingsObject) {
     });
 };
 
-setStorageSettingsWithCallback = function(settings, callback) {
+setStorageSettingsWithCallback = function(settingsObject, callback) {
     var serializedSettings = settings_serialize(settingsObject);
     chrome.storage.sync.set({"tds_settings": serializedSettings}, function() {
         handleRuntimeError();

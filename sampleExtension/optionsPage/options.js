@@ -8,7 +8,6 @@
 
 // Log console messages to the background page console instead of the content page.
 var console = chrome.extension.getBackgroundPage().console;
-var url_formatter = new Url_Formatter();
 
 //Local variables that hold the html elements
 var html_txtFld = $('#textFld');
