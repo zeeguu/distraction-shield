@@ -17,6 +17,7 @@ var html_saveButton = $('#saveBtn');
 var modeGroup = "modeOptions";
 
 var blacklistTable;
+var intervalSlider;
 
 //Local variables that hold all necessary data.
 var settings_object = {};
@@ -38,7 +39,6 @@ initOptionsPage = function() {
 setLocalVariables = function(storage_output) {
     links = storage_output.tds_blacklist;
     interceptionCounter = storage_output.tds_interceptCounter;
-    mode = storage_output.tds_mode;
     settings_object = storage_output.tds_settings;
 };
 
@@ -47,9 +47,14 @@ initBlacklistTable = function() {
     blacklistTable.initTable();
 };
 
+initIntervalSlider = function() {
+    intervalSlider = new GreenToRedSlider("interval-slider");
+};
+
 // functionality from htmlFunctionality and blacklist_table file
 connectHtmlFunctionality = function() {
     initBlacklistTable();
+    initIntervalSlider();
     initModeSelection(modeGroup);
     connectButton(html_saveButton, saveNewUrl);
     setKeyPressFunctions();
@@ -60,6 +65,7 @@ connectLocalDataToHtml = function() {
     loadHtmlInterceptCounter(interceptionCounter, html_intCnt);
     loadHtmlBlacklist(links, blacklistTable);
     loadHtmlMode(settings_object.mode, modeGroup);
+    loadHtmlInterval(settings_object.interceptionInterval, intervalSlider);
 };
 
 

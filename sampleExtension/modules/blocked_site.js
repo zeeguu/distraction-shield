@@ -1,4 +1,3 @@
-/* Dependency: url_formatter */
 
 function BlockedSite(url, title) {
     this.getUrl = function (url) {

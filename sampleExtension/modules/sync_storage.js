@@ -63,6 +63,7 @@ setInterceptionCounter = function(number) {
 //TODO for iteration 3 remove interceptioncounter integrate to statistics
 incrementInterceptionCounter = function(urlAddress) {
     var name = new BlockedSite(urlAddress).name;
+
     for (var i = 0; i < blockedSites.length; i++) {
         if (blockedSites[i].name == name){
             blockedSites[i].counter++;

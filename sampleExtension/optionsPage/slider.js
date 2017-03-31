@@ -1,23 +1,30 @@
-var greenToRedSlider = function () {
-    var slider = $('.range-slider'),
-        range = $('.range-slider__range'),
-        value = $('.range-slider__value');
+function GreenToRedSlider(sliderID) {
+    var self = this;
 
-    slider.each(function () {
-        value.each(function () {
-            var value = $(this).prev().attr('value');
-            $(this).html(value);
-        });
+    this.sliderDiv = $('#' + sliderID);
+    this.inputRange = $(this.sliderDiv.children()[0]);
+    this.value = $(this.sliderDiv.children()[1]);
 
-        range.on('input', function () {
-            var inputValue = this.value;
-            var maxSliderVal = this.max;
-            $(this).next(value).html(inputValue);
-            var redVal = Math.round(inputValue / maxSliderVal * 255);
-            var greenVal = 255 - redVal;
-            $(this).css('background', 'rgb(' + redVal + ', ' + greenVal + ',0)');
-        });
+    this.inputRange.on('input', function () {
+        var inputValue = self.inputRange.val();
+        self.value.html(inputValue);
+        self.updateColor(inputValue);
+
+        settings_object.interceptionInterval = inputValue;
+        updateStorageSettings();
+        setBackgroundSettings();
     });
-};
 
-greenToRedSlider();
+    this.updateColor = function(inputValue) {
+        var maxSliderVal = (this.inputRange[0]).max;
+        var redVal = Math.round(inputValue / maxSliderVal * 255);
+        var greenVal = 255 - redVal;
+        this.inputRange.css('background', 'rgb(' + redVal + ', ' + greenVal + ',0)');
+    };
+
+    this.setValue = function(val) {
+        this.inputRange.val(val);
+        this.value.html(val);
+        this.updateColor(val);
+    }
+}

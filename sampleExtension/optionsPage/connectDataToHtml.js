@@ -15,6 +15,10 @@ loadHtmlMode = function(extensionMode, radioGroup) {
     $("input[name=" + radioGroup + "][value=" + extensionMode + "]").prop('checked', true);
 };
 
+loadHtmlInterval = function(interceptInterval, html_slider) {
+    html_slider.setValue(interceptInterval);
+};
+
 loadHtmlInterceptCounter = function(count, html_counter) {
     html_counter.text(count);
 };

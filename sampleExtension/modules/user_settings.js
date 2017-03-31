@@ -14,6 +14,10 @@ function SettingsObject () {
         return this.status.state ? "On" : "Off";
     };
 
+    this.setInterceptionInterval = function(val) {
+      this.interceptionInterval = val;
+    };
+
     this.toggleState = function() {
         if (this.getState() == "On") {
             this.turnOff();

@@ -57,6 +57,15 @@ addToBlockedSites = function(urlToAdd) {
     replaceListener();
 };
 
+//TODO fix in interation 3 for url-handling module
+formatUrl = function(url) {
+    var result = url.split(['//'])[1];
+    result = result.split("").reverse().join("");
+    result = result.split(['/'])[1];
+    result = result.split("").reverse().join("");
+    return result;
+};
+
 // This function adds the current time+date to the saved time+date list
 addToInterceptDateList = function() {
     var newDate = new Date().toDateString();
@@ -66,15 +75,6 @@ addToInterceptDateList = function() {
         interceptDateList.push(newDate);
     }
     setInterceptDateList(interceptDateList);
-};
-
-//TODO fix in interation 3 for url-handling module
-formatUrl = function(url) {
-    var result = url.split(['//'])[1];
-    result = result.split("").reverse().join("");
-    result = result.split(['/'])[1];
-    result = result.split("").reverse().join("");
-    return result;
 };
 
 /* --------------- ------ Listener functions ------ ---------------*/
@@ -140,6 +140,7 @@ addBrowserActionListener = function() {
 addSkipMessageListener = function() {
     chrome.runtime.onMessage.addListener(function(request, sender) {
         if (request.message == revertToOriginMessage) {
+            localSettings.turnOffFor(localSettings.interceptionInterval);
             chrome.tabs.update(sender.tab.id, {url: request.destination});
         }
     });
