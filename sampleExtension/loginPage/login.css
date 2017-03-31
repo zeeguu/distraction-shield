@@ -4,8 +4,8 @@
 }
 
 #loginForm {
-    width: 200px;
-    margin: 0 auto 0 auto;
+    width: 250px;
+    margin: 35px auto 0 auto;
 
 }
 
@@ -25,7 +25,7 @@
     margin-top: 20px;
 }
 
-#spinner {
+.spinner {
     border: 16px solid #f3f3f3;
     border-top: 16px solid #3498db;
     border-radius: 50%;
@@ -33,6 +33,7 @@
     height: 60px;
     animation: spin 1s linear infinite;
     display: none;
+    margin: 0 auto 0 auto;
 }
 
 @keyframes spin {
