@@ -8,23 +8,23 @@ appendHtmlItemTo = function(html_child, html_parent) {
     html_parent.append(html_child);
 };
 
-removeLinkFromAll = function(html_item) {
-    removeFromLocalLinks(html_item);
+removeBlockedSiteFromAll = function(html_item) {
+    removeFromLocalBlacklist(html_item);
     blacklistTable.removeFromTable(html_item);
-    updateStorageBlacklist();
+    synchronizer.syncBlacklist(blacklist);
 };
 
-addLinkToAll = function(newItem) {
-    addToLocalLinks(newItem);
-    blacklistTable.addToTable(generateTableRow(newItem));
-    updateStorageBlacklist();
+addBlockedSiteToAll = function(newItem) {
+    addToLocalBlacklist(newItem);
+    blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
+    synchronizer.syncBlacklist(blacklist);
    
 };
 
 createNewBlockedSite = function (newUrl) {
     url_formatter.getUrlFromServer(newUrl, function (url, title) {
         newItem = new BlockedSite(url, title);
-        return addLinkToAll(newItem);
+        return addBlockedSiteToAll(newItem);
     });
 };
 
@@ -68,8 +68,18 @@ deleteOnKeyPress = function (blacklistTable) {
 
 initModeSelection = function(buttonGroup) {
     $("input[name=" + buttonGroup + "]").change( function(){
-        settings_object.mode = $("input[name=" + buttonGroup + "]:checked").val();
-        updateStorageSettings();
-        setBackgroundSettings();
+        settings_object.setMode($("input[name=" + buttonGroup + "]:checked").val());
+        synchronizer.syncSettings(settings_object);
     });
+};
+
+
+/* -------------------- Interval slider -------------------- */
+
+initIntervalSlider = function() {
+    intervalSlider = new GreenToRedSlider('#interval-slider');
+    intervalSlider.saveValue = function(value) {
+        settings_object.setInterceptionInterval(parseInt(value));
+        synchronizer.syncSettings(settings_object);
+    }
 };

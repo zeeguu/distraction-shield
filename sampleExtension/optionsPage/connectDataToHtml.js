@@ -3,10 +3,11 @@
  * to the actual html representations of this data.
  */
 
-loadHtmlBlacklist = function(list, table) {
+loadHtmlBlacklist = function(blockedSiteList, table) {
     //For each BlockedSite object from the list generate a tableRow
+    var list = blockedSiteList.getList();
     $.each(list, function(key, value) {
-        table.addToTable(generateTableRow(value));
+        table.addToTable(table.generateTableRow(value));
     });
     table.sortTableOnChecked();
 };

@@ -1,9 +1,11 @@
 
 /* --------------- ---- Session initializer ---- ---------------*/
 
+//First receive the blacklist and settings from the sync storage,
+//then create a onBeforeRequest listener using this list and the settings.
 initSession = function () {
-    //First receive the blacklist and settings from the sync storage,
-    //then create a onBeforeRequest listener using this list.
+    // Settings need to be loaded before the listener is replaced. The replaceListener
+    // requires the blocked sites to be loaded, so these weird callbacks are required.
     retrieveSettings(retrieveBlockedSites, replaceListener);
     retrieveInterceptDateList();
     addSkipMessageListener();
@@ -12,7 +14,7 @@ initSession = function () {
 /* --------------- ---- Run upon installation ---- ---------------*/
 
 chrome.runtime.onInstalled.addListener(function() {
-    getStorageAll( function(output) {
+    storage.getAll( function(output) {
         initBlacklist(output.tds_blacklist);
         initInterceptCounter(output.tds_interceptCounter);
         initInterceptDateList(output.tds_interceptDateList);
@@ -22,26 +24,27 @@ chrome.runtime.onInstalled.addListener(function() {
 
 initInterceptCounter = function(counter) {
     if (counter == null) {
-        setInterceptionCounter(0);
+        storage.setInterceptionCounter(0);
     }
 };
 
 initInterceptDateList = function(dateList) {
     if (dateList == null) {
-        setInterceptDateList(dateList);
+        storage.setInterceptDateList(dateList);
     }
 };
 
 initBlacklist = function(list) {
     if (list == null) {
-        setStorageBlacklist([]);
+        blacklistToStore = new BlockedSiteList();
+        storage.setBlacklist(blacklistToStore);
     }
 };
 
 initSettings = function(settings) {
     if (settings == null) {
-        settingsToStore = new SettingsObject();
-        setStorageSettingsWithCallback(settingsToStore, initSession);
+        settingsToStore = new UserSettings();
+        storage.setSettingsWithCallback(settingsToStore, initSession);
     }
 };
 
@@ -49,7 +52,7 @@ initSettings = function(settings) {
 /* --------------- ---- Run upon Start of session ---- ---------------*/
 
 //fix that checks whether everything that should be is initialized
-getStorageSettings(function(settings) {
+storage.getSettings(function(settings) {
     if (settings != null) {
         initSession();
     }

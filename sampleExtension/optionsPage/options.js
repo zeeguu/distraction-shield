@@ -17,17 +17,18 @@ var modeGroup = "modeOptions";
 
 var blacklistTable;
 var intervalSlider;
+var turnOffSlider;
 
 //Local variables that hold all necessary data.
-var settings_object = {};
-var links = [];
+var settings_object = new UserSettings();
+var blacklist = new BlockedSiteList();
 var interceptionCounter = 0;
 
 /* -------------------- Initialization of options --------------------- */
 
 //Initialize HTML elements and set the local variables
 initOptionsPage = function() {
-    getStorageAll( function(output) {
+    storage.getAll(function(output) {
         setLocalVariables(output);
         connectHtmlFunctionality();
         connectLocalDataToHtml();
@@ -36,23 +37,15 @@ initOptionsPage = function() {
 
 //Retrieve data from storage and store in local variables
 setLocalVariables = function(storage_output) {
-    links = storage_output.tds_blacklist;
+    blacklist.addAllToList(storage_output.tds_blacklist);
+    settings_object.copySettings(storage_output.tds_settings);
     interceptionCounter = storage_output.tds_interceptCounter;
-    settings_object = storage_output.tds_settings;
 };
 
-initBlacklistTable = function() {
-    blacklistTable = new BlacklistTable($('#blacklistTable'));
-    blacklistTable.initTable();
-};
-
-initIntervalSlider = function() {
-    intervalSlider = new GreenToRedSlider("interval-slider");
-};
-
-// functionality from htmlFunctionality and blacklist_table file
+// functionality from htmlFunctionality, blacklist_table and slider file
 connectHtmlFunctionality = function() {
-    initBlacklistTable();
+    blacklistTable = new BlacklistTable($('#blacklistTable'));
+    turnOffSlider = new TurnOffSlider('#turnOff-slider-div');
     initIntervalSlider();
     initModeSelection(modeGroup);
     connectButton(html_saveButton, saveNewUrl);
@@ -62,49 +55,25 @@ connectHtmlFunctionality = function() {
 // functionality from connectDataToHtml file
 connectLocalDataToHtml = function() {
     loadHtmlInterceptCounter(interceptionCounter, html_intCnt);
-    loadHtmlBlacklist(links, blacklistTable);
-    loadHtmlMode(settings_object.mode, modeGroup);
-    loadHtmlInterval(settings_object.interceptionInterval, intervalSlider);
-};
-
-
-/* -------------------- Manipulate storage ------------------- */
-
-updateStorageBlacklist = function() {
-    setStorageBlacklistWithCallback(links, updateBackgroundPage);
-};
-
-updateStorageSettings = function() {
-    setStorageSettings(settings_object);
-};
-
-
-/* -------------------- Manipulate background ------------------- */
-
-updateBackgroundPage = function() {
-    var bg = chrome.extension.getBackgroundPage();
-    bg.setLocalBlacklist(links);
-};
-
-setBackgroundSettings = function() {
-    var bg = chrome.extension.getBackgroundPage();
-    bg.setLocalSettings(settings_object);
+    loadHtmlBlacklist(blacklist, blacklistTable);
+    loadHtmlMode(settings_object.getMode(), modeGroup);
+    loadHtmlInterval(settings_object.getInterceptionInterval(), intervalSlider);
 };
 
 /* -------------------- Manipulate local variables ------------------- */
 
-removeFromLocalLinks = function(html_item) {
-    var urlkey = links.indexOf(html_item.data('blockedSite'));
-    links.splice(urlkey, 1);
+removeFromLocalBlacklist = function(html_item) {
+    var blockedSiteToDelete = html_item.data('blockedSite');
+    blacklist.removeFromList(blockedSiteToDelete);
 };
 
-addToLocalLinks = function(blockedSite_item) {
-    links.push(blockedSite_item);
+addToLocalBlacklist = function(blockedSite_item) {
+    blacklist.addToList(blockedSite_item);
 };
 
 /* -------------------- -------------------------- -------------------- */
 
 //Run this when the page is loaded.
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function() {
     initOptionsPage();
 });

@@ -1,59 +1,55 @@
 
 //Set that holds the urls to be intercepted
-var blockedSites = [];
-var interceptCounter = 0;
+var blockedSites = new BlockedSiteList();
 var interceptDateList = [];
-var localSettings = null; /* Settings WIP */
+var localSettings = new UserSettings();
 
-
-/* --------------- ------ update list of BlockedSites ------ ---------------*/
+/* --------------- ------ setter for local variables ------ ---------------*/
 
 setLocalSettings = function(newSettings) {
     localSettings = newSettings;
-    retrieveBlockedSites(replaceListener);
 };
 
 setLocalBlacklist = function(newList) {
-    blockedSites = newList;
+    blockedSites.setList(newList.getList());
     replaceListener();
 };
 
-// This function receives the settings from the sync storage.
+setLocalInterceptDateList = function(dateList) {
+    interceptDateList = dateList;
+};
+
+/* --------------- ------ Storage retrieval ------ ---------------*/
+// Methods here are only used upon initialization of the session.
+// Usage found in init.js
+
 retrieveSettings = function(callback, param) {
-    getStorageSettings(function(settingsObject) {
+    storage.getSettings(function(settingsObject) {
         localSettings = settingsObject;
         return callback(param);
     });
 };
 
-// This function receives the blacklist from the sync storage.
 retrieveBlockedSites = function(callback){
-    getStorageBlacklist(function(blacklist) {
-        blockedSites = blacklist;
+    storage.getBlacklist(function(blacklist) {
+        blockedSites.setList(blacklist.getList());
         return callback();
     });
 };
 
-//Loads the intercept time+date list from storage
 retrieveInterceptDateList = function() {
-    getInterceptDateList(function(dateList) {
+    storage.getInterceptDateList(function(dateList) {
         interceptDateList = dateList;
     });
 };
 
-//Loads the intercept counter from storage
-retrieveInterceptCounter = function(callback) {
-    getInterceptCounter(function(counter) {
-        interceptCounter = counter;
-        return callback();
-    });
-};
+/* --------------- ------ Updating of variables ------ ---------------*/
 
 addToBlockedSites = function (newUrl, newUrlTitle) {
     url_formatter.getUrlWithoutServer(newUrl, newUrlTitle, function (url, title) {
         newItem = new BlockedSite(url, title);
-        blockedSites.push(newItem);
-        setStorageBlacklist(blockedSites);
+        blockedSites.addToList(newItem);
+        storage.setBlacklist(blockedSites);
         replaceListener();
     });
 };
@@ -66,32 +62,25 @@ addToInterceptDateList = function() {
     } else {
         interceptDateList.push(newDate);
     }
-    setInterceptDateList(interceptDateList);
+    storage.setInterceptDateList(interceptDateList);
 };
 
-/* --------------- ------ Listener functions ------ ---------------*/
+/* --------------- ------ webRequest functions ------ ---------------*/
 
 replaceListener = function() {
     removeWebRequestListener();
-    var urlList = filterBlockedSitesOnChecked();
+    var urlList = blockedSites.getActiveUrls();
     if (localSettings.getState() == "On" && urlList.length > 0) {
         addWebRequestListener(urlList);
     }
-};
-
-filterBlockedSitesOnChecked = function() {
-    if(blockedSites.length > 0) {
-        return blockedSites.filter(function (a) {return a.checkboxVal == true;});
-    }
-    return [];
 };
 
 addWebRequestListener = function(urlList) {
     chrome.webRequest.onBeforeRequest.addListener(
         handleInterception
         ,{
-            urls: urlList.map(function (a) {return a.url;})
-            ,types: ["main_frame"]
+            urls: urlList
+            , types: ["main_frame"]
         }
         ,["blocking"]
     );
@@ -102,9 +91,9 @@ removeWebRequestListener = function() {
 };
 
 intercept = function(details) {
-    incrementInterceptionCounter(details.url);
+    storage.incrementInterceptionCounter(details.url);
     addToInterceptDateList();
-    setStorageOriginalDestination(details.url);
+    storage.setOriginalDestination(details.url);
     return {redirectUrl: redirectLink};
 };
 
@@ -119,8 +108,10 @@ handleInterception = function(details) {
 addSkipMessageListener = function() {
     chrome.runtime.onMessage.addListener(function(request, sender) {
         if (request.message == revertToOriginMessage) {
-            localSettings.turnOffFor(localSettings.interceptionInterval);
+            localSettings.turnOffFor(localSettings.getInterceptionInterval());
             chrome.tabs.update(sender.tab.id, {url: request.destination});
         }
     });
 };
+
+

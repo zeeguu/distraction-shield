@@ -1,17 +1,18 @@
+/* upon initiation you should implement the saveValue function to your specified case.
+* The function receives the value of the slider as an argument */
+
 function GreenToRedSlider(sliderID) {
     var self = this;
 
-    this.sliderDiv = $('#' + sliderID);
+    this.sliderDiv = $(sliderID);
     this.inputRange = $(this.sliderDiv.children()[0]);
     this.value = $(this.sliderDiv.children()[1]);
 
     this.inputRange.on('input', function () {
         var inputValue = self.inputRange.val();
-        self.value.html(inputValue);
+        self.value.html(self.calculateHours(inputValue));
         self.updateColor(inputValue);
-        settings_object.setInterceptionInterval(parseInt(inputValue));
-        updateStorageSettings();
-        setBackgroundSettings();
+        self.saveValue(inputValue);
     });
 
     this.updateColor = function(inputValue) {
@@ -23,7 +24,20 @@ function GreenToRedSlider(sliderID) {
 
     this.setValue = function(val) {
         this.inputRange.val(val);
-        this.value.html(val);
+        this.value.html(self.calculateHours(val));
         this.updateColor(val);
+    };
+
+    this.calculateHours = function(val) {
+        var hours = Math.floor(val / 60);
+        var minutes = val % 60;
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        return hours + ":" + minutes + " hours.";
+    };
+
+    this.saveValue = function(inputValue) {
+        //Implement per case of use
     }
 }

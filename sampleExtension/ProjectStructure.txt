@@ -1,0 +1,106 @@
+As you can all see I've made some major changes to just about everything. The things I have done barely any changes
+are the intercept, tooltip and statistics features. For the rest just about everyhting is refactored and redone.
+
+Just some simple clarification of some stuff:
+
+There are folders called "Classes":
+	These (as the name suggests) contain files that we few as classes.
+	Now what does this mean in Javascript and for our project? It means
+	that they generally contain 2 things:
+		1. class definition function very JAVA like.
+		2. class_name_(de)serialize. Functions external
+		   of the class to serialize and deserialize the objects
+		   of the class. Since writing to storage makes everything
+		   loose all functionality. This can fix that, therefore these
+		   serializer functions are private to the class and the sync_storage module
+		   I know this privateness is not enforced by javascript, but please adhere to it.
+
+There is a folder called "modules"
+	These modules (as I call them and by my own made-up definition) are a special type of classes
+	These classes are not ones you make an instance of, like a blockedSite item. But they are 
+	a class definition together with one instantiation of the object at the end of the same file.
+	This variable is per definition called "module_name". (Example: synchronizer.js instantiates
+	one variable called "synchronizer" which is of the type Synchronizer) The objects we find in
+	these modules are independent. They only take data and do something with it. They do not hold
+	important data themselves. They are simply objects, included in other files that we then may call
+	methods upon. (url_formatter formats urls for the blockedSites, synchronizer syncs given data to
+	background and storage, etc). If you code it this way it is really nice because there is no code mix
+	between functionality, you can just include the file and have all functionality. And best of all
+	there is no need to sync these objects. Every place that uses a module has its own instantiation
+	of the object and that is fine.
+
+Some further things that I tried to implement are encapsulation. Again very java like, keep all data
+private to the objects that are them and define getters and setters for this object's fields. Once again
+JavaScript does not enforce any of this but it helps a lot if it is done this way. Because you know project wide
+that is used like this. So you can make changes to the class without needing to go through the entire
+project (like I had to do multiple times xD) to find out who uses what data in which way and where it is manipulated.
+
+Please suggest improvements and try to adhere to these rules to make and keep things clear.
+
+Furthermore:
+	- The optionspage is fully functional (I think, if you find some bugs please mention)
+	- Interception works fine. Just have a look at how it works right now.
+	- After breaking it initially I was able to restore the functionality of the statistics as well
+	  So it works, but beware, I have done barely any refactoring at all in these files.
+
+
+Class-Descriptions:
+
+- BlockedSite
+	It is the most important thing for the entire project. Everything runs on these objects. It is just a simple
+	object that is in our blacklist. It holds the url the webRequestListener uses, a pretty name and a few more
+	fields. This one is quite basic, so just have a look.
+
+- BlockedSiteList
+	Exactly what the name suggests, object that has an array of the blockedSites, only there is some added
+	functionality in methods on this array. Things like the filtering, adding duplicates, etc is all
+	taken care of.
+
+- UserSettings
+	SettingsObject that holds all user specified data that is not the list of blocked sites. Besides holding
+	stuff like when it was turned off, for how low, the interval etc. This class is also responsible for
+	turning the interception part on and off inside our extension. If you need this functionality just
+	call the several turnOn/turnOff type of methods on this object and the rest happens automatically.
+	It updates the storage and the background itself.
+
+- GreenToRedSlider
+	The nice little sliders that are shown in the optionspage. I do not recommend using this on other
+	pages as long as you haven't discussed with me (Edser if that wasn't clear yet) or Rowan. Or by having
+	a really good look at it. We know how this things works and how you can use it yourself.
+	It is quite nice because it should be re-usable.
+
+- BlacklistTable
+	This is the blacklist table shown in the options page together with its functionality. Even more
+	than before: Do not use this in other pages. It is (at this point) not properly enough written to
+	be re-usable. We could do that, but up till now I did not think this was necessary.
+
+- TurnOffSlider
+	This is more or less a subclass of the GreenToRedSlider (at least it also contains that thing).
+	And again, stronger than before, DO NOT UNDER ANY CIRCUMSTANCE USE THIS IN YOUR OWN FILES. There
+	is a reason that these 3 files are in optionsPage/Classes. They have been written mostly specifically
+	for the optionsPage and  are at this point not fit to be used again.
+
+
+Module-Descriptions:
+
+- storage
+	This module is completely responsible for storing and retrieving data. Just have a look at how gets
+	and sets are defined and adhere to that structure please. THIS IS THE ONLY LOCATION WHERE
+	chrome.storage.sync.get/set SHOULD OCCUR. Please stick with this principle.
+	If there ever is something wrong with the storage or loading you know where to find your problem.
+	the object is of course called "storage" and you just include the storage.js file and call methods
+	upon your "storage" variable
+
+- synchronizer
+	This class is (and should in the future become even more) responsible for syncing data manipulated
+	by a "third-party script", to our background and storage. "third-party script" being everything that is not
+	the background and the sync.storage. So the optionsPage, the statisticsPage and the intercept-Feature.
+	At this point it is only implemented for the options page. Once again, i did not/barely refactor
+	the other features. It is a very simple class, just have a look at it.
+
+- url_formatter
+	Used for doing the getrequests and finding the nice little urls that the dumb user gives as input.
+	This module is basically responsible for the fact that we can enter any url we can enter in the
+	url-bar and still be able to function every time. its split in another class but that one is
+	private to url_formatter, so therefore it is included.
+

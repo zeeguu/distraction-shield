@@ -1,6 +1,6 @@
 
 mainFlow = function() {
-    getStorageMode (initBasis);
+    storage.getMode (initBasis);
 };
 
 determineMode = function(mode) {
@@ -32,7 +32,7 @@ initLazyMode = function() {
     var lazyDiv =  $("\<div id='tds_lazyDiv'></div>");
     var skipButton = $("<button id='tds_skipButton' class='ui-button ui-corner-all ui-widget'> I'm lazy and I want to skip</button>");
     skipButton.on("click", function () {
-        getStorageOriginalDestination(function (originalDestination) {
+        storage.getOriginalDestination(function (originalDestination) {
             chrome.runtime.sendMessage({message: revertToOriginMessage, destination: originalDestination});
         });
     });
@@ -43,7 +43,7 @@ initLazyMode = function() {
 /*initialize pro mode*/
 
 initProMode = function() {
-    getStorageOriginalDestination(function (originalDestination) {
+    storage.getOriginalDestination(function (originalDestination) {
         /* after receiving the original destiniation we attach some code to zeeguu
            This will make sure
          */

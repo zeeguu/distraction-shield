@@ -9,17 +9,14 @@
 
   <body>
 
-    <div id="description"> <p>
+    <div id="description">
         Modify the extension to suit your needs here.
         Also have a look at some of the <a target=_blank href="../statisticsPage/statistics.html">statistics</a>.
-    </p> </div>
-
-    <div id="intercepts"> 
-      <p> The times you were intercepted: <span id="iCounter"></span> </p>
+        Interceptions made since installation: <span id="iCounter"></span> <br> <br>
     </div>
-    
+
       <div id="modeWrapper">
-          <div id="modeDiv">
+          <div id="modeRadioDiv">
               Pick a mode:
               <form id="modeSelector" name="modePicker">
                   <input type="radio" name="modeOptions" value="lazy" checked> Lazy<br>
@@ -30,35 +27,45 @@
               Set time interval between intercepts:
               <div id="interval-slider" class="range-slider">
                   <input id="interval-slider-range" class="range-slider__range" type="range" value="15" min="1" max="90" step="1">
-                  <span class="range-slider__value">0</span> Minutes.
+                  <span class="range-slider__value">00:15</span>
               </div>
-          </div> 
+          </div>
       </div>
 
     <div id="tableTitle">
         <b>Websites you should be intercepted from:</b>
     </div>
 
-    <div id="listDiv"> <p>
+    <div id="tableWrapper"> <p>
         <table id="blacklistTable"> </table>
     </p> </div>
     <div>
         Enter the url you want to block:
         <input  id="textFld" type="text"/>
         <button id="saveBtn"> Save </button>
-        <button id="offBtn"> Turn Off </button>
+    </div>
+
+    <div id="turnOff-slider-div">
+        <div id="turnOff-slider" class="range-slider">
+            <input id="turnOff-slider-range" class="range-slider__range" type="range" value="10" min="10" max="10" step="10">
+            for <span class="range-slider__value">00:10 hours.</span>
+            <button id="offBtn">Turn Off</button>
+        </div>
     </div>
 
     <script src="../jquery/jquery-1.10.2.js"></script>
     <script src="../modules/url_formatter.js"></script>
-    <script src="../modules/user_settings.js"></script>
-    <script src="../modules/sync_storage.js"></script>
-    <script src="../modules/blocked_site.js"></script>
+    <script src="../modules/synchronizer.js"></script>
+    <script src="../modules/storage.js"></script>
+    <script src="../Classes/BlockedSiteList.js"></script>
+    <script src="../Classes/BlockedSite.js"></script>
+    <script src="../Classes/UserSettings.js"></script>
     <script src="../constants.js"></script>
+    <script src="Classes/TurnOffSlider.js"></script>
+    <script src="Classes/BlacklistTable.js"></script>
+    <script src="Classes/GreenToRedSlider.js"></script>
     <script src="htmlFunctionality.js"></script>
     <script src="connectDataToHtml.js"></script>
-    <script src="blacklist_table.js"></script>
-    <script src="slider.js"></script>
     <script src="options.js"></script>
 
 

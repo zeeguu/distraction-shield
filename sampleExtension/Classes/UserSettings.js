@@ -1,5 +1,5 @@
 
-function SettingsObject () {
+function UserSettings () {
     var self = this;
 
     this.status = { state: true,
@@ -10,27 +10,21 @@ function SettingsObject () {
     this.mode = modes.lazy;
     this.interceptionInterval = 1;
 
-    this.getState = function()  {
-        return this.status.state ? "On" : "Off";
-    };
+    this.setSessionID = function(newID) {this.sessionID = newID;};
+    this.getSessionID = function() {return this.sessionID;};
+    this.setInterceptionInterval = function(val) {this.interceptionInterval = val;};
+    this.getInterceptionInterval = function() {return this.interceptionInterval;};
+    this.setMode = function(newMode) {this.mode = newMode;};
+    this.getMode = function() {return this.mode;};
+    this.getOffTill = function() {return this.status.offTill;};
 
-    this.setInterceptionInterval = function(val) {
-      this.interceptionInterval = val;
-    };
-
-    this.toggleState = function() {
-        if (this.getState() == "On") {
-            this.turnOff();
-        } else {
-            this.turnOn();
-        }
-    };
+    this.getState = function() {return this.status.state ? "On" : "Off";};
+    this.getNotState = function() {return this.status.state ? "Off" : "On";};
 
     this.turnOn = function()  {
         if (this.getState() == "Off") {
             this.status = { state: true, setAt: new Date(), offTill: this.status.offTill };
             this.startBackground();
-            console.log("turned on at: " + new Date());
         } else {
             console.log("Already turned on, should not happen!");
         }
@@ -49,17 +43,11 @@ function SettingsObject () {
     this.turnOffFor = function(minutes) {
         var curDate = new Date();
         this.status.offTill = new Date(curDate.setMinutes(minutes + curDate.getMinutes()));
-        console.log("turned off until: " + this.status.offTill);
         this.turnOff();
     };
 
     this.turnOffForDay = function()  {
         this.status.offTill = new Date((new Date()).setHours(24,0,0,0));
-        this.turnOff();
-    };
-
-    this.turnOffTill = function(dateObject) {
-        this.status.offTill = dateObject;
         this.turnOff();
     };
 
@@ -75,33 +63,40 @@ function SettingsObject () {
         setTimeout(self.turnExtensionBackOn, MSint);
     };
 
+    //Private method
     this.startBackground = function() {
         var bg = chrome.extension.getBackgroundPage();
         bg.setLocalSettings(this);
-        setStorageSettings(this);
+        storage.setSettings(this);
         bg.replaceListener();
     };
 
+    //Private method
     this.stopBackground = function() {
         var bg = chrome.extension.getBackgroundPage();
         bg.setLocalSettings(this);
-        setStorageSettings(this);
+        storage.setSettings(this);
         bg.removeWebRequestListener();
     };
 
+    this.copySettings = function(settingsObject) {
+        this.status = settingsObject.status;
+        this.sessionID = settingsObject.sessionID;
+        this.interceptionInterval = settingsObject.interceptionInterval;
+        this.mode = settingsObject.mode;
+    }
 }
 
+/* --------------- --------------- Serialization --------------- --------------- */
 
-/* --------------- --------------- --------------- --------------- --------------- */
-
-//Private to this and sync_storage.js
+//Private to this and storage.js
 settings_serialize = function(settingsObject) {
     return JSON.stringify(settingsObject);
 };
 
 //Private method
 parseSettingsObject = function(parsedSettingsObject) {
-    var s = new SettingsObject();
+    var s = new UserSettings();
     s.status.state = parsedSettingsObject.status.state;
     s.status.setAt = new Date(parsedSettingsObject.status.setAt);
     s.status.offTill = new Date(parsedSettingsObject.status.offTill);
@@ -111,10 +106,13 @@ parseSettingsObject = function(parsedSettingsObject) {
     return s;
 };
 
-//Private to this and sync_storage.js
+//Private to this and storage.js
 settings_deserialize = function(serializedSettingsObject) {
-    var parsed = JSON.parse(serializedSettingsObject);
-    return parseSettingsObject(parsed);
+    if (serializedSettingsObject != null) {
+        var parsed = JSON.parse(serializedSettingsObject);
+        return parseSettingsObject(parsed);
+    }
+    return null;
 };
 
 /* --------------- --------------- --------------- --------------- --------------- */

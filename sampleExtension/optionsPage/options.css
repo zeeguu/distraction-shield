@@ -5,12 +5,13 @@ body {
     width:620px;
 }
 
-
-#blacklistTable {
-    width: 600px;
+#textFld {
+    width: 45%;
 }
 
-#listDiv {
+/* ---------- ---------- table ---------- ---------- */
+
+#tableWrapper {
     height: 200px;
     width: 100%;
     overflow: auto;
@@ -18,22 +19,8 @@ body {
     margin-top: 5px;
 }
 
-#modeWrapper {
-    width: 100%;
-    overflow:hidden;
-}
-
-#modeDiv {
-    float:left;
-    width:50%;
-}
-
-#interval-slider-div {
-    width:50%;
-    overflow:hidden;
-}
-
-table {
+#blacklistTable {
+    width: 600px;
     margin-top: -15px;
     margin-bottom: -15px;
     border-collapse: collapse;
@@ -43,6 +30,10 @@ table {
 .selected {
     background-color: #3297FD;
     color: #FFF;
+}
+
+.table-row {
+    box-shadow: 0px 0px 5px #888888;
 }
 
 .checkbox-toggle {
@@ -57,10 +48,6 @@ table {
     margin: 0 auto;
 }
 
-.table-row {
-    box-shadow: 0px 0px 5px #888888;
-}
-
 .pageTitle {
     position: relative;
     max-width: 100%;
@@ -70,10 +57,54 @@ table {
     text-overflow: ellipsis;
 }
 
-#interceptionTimer  {
-	width: 300px;
-	position: relative;
+/* ---------- ---------- Settings ---------- ---------- */
+
+#modeWrapper {
+    margin-bottom: 10px;
+    width: 100%;
+    overflow:hidden;
 }
+
+#modeRadioDiv {
+    float:left;
+    width:50%;
+}
+
+#interval-slider-div {
+    width:50%;
+    overflow:hidden;
+}
+
+/* ---------- ---------- Turn-Off ---------- ---------- */
+
+#turnOff-slider-div {
+    margin-top: 10px;
+    padding-top: 10px;
+    width:100%;
+    overflow:hidden;
+}
+
+#turnOff-slider-range {
+    width:50%;
+    float: right;
+    margin-left: 10px;
+    margin-top: 0px;
+}
+
+#offForDayBtn {
+    float: left;
+    margin-top: -8px;
+    margin-right: 10px;
+}
+
+#offBtn {
+    float: left;
+    margin-top: -8px;
+    margin-right: 10px;
+}
+
+
+/* ---------- ---------- Slider ---------- ---------- */
 
 .sliderColumn {
     float:left;
