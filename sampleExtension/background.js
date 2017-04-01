@@ -1,60 +1,116 @@
 
 //Set that holds the urls to be intercepted
 var blockedSites = [];
+var interceptCounter = 0;
+var interceptDateList = [];
+//Boolean that determines whether we should be redirecting or not
+var interceptionEnabled = true;
 
-initExtension = function () {
-    //First receive the blacklist from the sync storage, and then create a onBeforeRequest listener using this list.
-    updateBlockedSites(replaceListener);
-    addBrowserActionListener();
+/* --------------- ------ update functions ------ ---------------*/
+
+updateStorage = function() {
+    setStorageBlacklist(blockedSites);
 };
 
 // This function receives the blacklist from the sync storage.
-updateBlockedSites = function(callback){
-    chrome.storage.sync.get("tds_blacklist", function (items) {
-        if (!chrome.runtime.error) {
-            blockedSites = items.tds_blacklist;
-            return callback();
-        }
+retrieveBlockedSites = function(callback){
+    getStorageBlacklist(function(blacklist) {
+        blockedSites = blacklist;
+        return callback();
+    });
+};
+
+//Loads the intercept time+date list from storage
+retrieveInterceptDateList = function() {
+    getInterceptDateList(function(dateList) {
+        interceptDateList = dateList;
+    });
+};
+
+//Loads the intercept counter from storage
+retrieveInterceptCounter = function(callback) {
+    getInterceptCounter(function(counter) {
+        interceptCounter = counter;
+        return callback();
     });
 };
 
 // This function adds one url to the blacklist
 addToBlockedSites = function(urlToAdd) {
-    var formatUrl = urlToAdd.split(['//'])[1];
-    formatUrl = '*://' + formatUrl + '*';
-    blockedSites.push(formatUrl);
-    chrome.storage.sync.set({"tds_blacklist" : blockedSites }, function() {
-        if(chrome.runtime.error) {
-            console.log("Runtime error.");
-        }
-    });
+    var blockedSiteItem = new BlockedSite(formatUrl(urlToAdd));
+    blockedSites.push(blockedSiteItem);
+    updateStorage();
+    replaceListener();
+};
+
+// This function adds the current time+date to the saved time+date list
+addToInterceptDateList = function() {
+    var newDate = new Date().toDateString();
+    if (interceptDateList == null) {
+        interceptDateList = [newDate];
+    } else {
+        interceptDateList.push(newDate);
+    }
+    setInterceptDateList(interceptDateList);
+};
+
+//TODO fix in interation 3 for url-handling module
+formatUrl = function(url) {
+    result = url.split(['//'])[1];
+    result = result.split("").reverse().join("");
+    result = result.split(['/'])[1];
+    result = result.split("").reverse().join("");
+    return result;
 };
 
 /* --------------- ------ Listener functions ------ ---------------*/
 
 replaceListener = function() {
-    chrome.webRequest.onBeforeRequest.removeListener(intercept);
-    addWebRequestListener();
-};
-
-addWebRequestListener = function() {
-    if(blockedSites != null && blockedSites.length > 0) {
-        chrome.webRequest.onBeforeRequest.addListener(
-                intercept,
-                {
-                    //Url's to be intercepted
-                    urls: blockedSites,
-                    types: ["main_frame"]
-            },
-            ["blocking"]
-        );
+    chrome.webRequest.onBeforeRequest.removeListener(handleInterception);
+    urlList = filterBlockedSitesOnChecked();
+    if (urlList.length > 0) {
+        addWebRequestListener(urlList);
     }
 };
 
-intercept = function() {
-    incrementInterceptionCounter();
-    return {redirectUrl: "https://zeeguu.herokuapp.com/getex"};
-    //return {redirectUrl: "https://zeeguu.herokuapp.com/getex"};
+filterBlockedSitesOnChecked = function() {
+    if(blockedSites.length > 0) {
+        return blockedSites.filter(function (a) {return a.checkboxVal == true;});
+    }
+    return [];
+};
+
+addWebRequestListener = function(urlList) {
+    chrome.webRequest.onBeforeRequest.addListener(
+        handleInterception
+        ,{
+            urls: urlList.map(function (a) {return a.url;})
+            ,types: ["main_frame"]
+        }
+        ,["blocking"]
+    );
+};
+
+intercept = function(details) {
+    incrementInterceptionCounter(details.url);
+    addToInterceptDateList();
+    setStorageOriginalDestination(details.url);
+    setEnableInterceptionAfterTimeout(false, 2000);
+    return {redirectUrl: redirectLink};
+};
+
+handleInterception = function(details) {
+    if (interceptionEnabled) {
+        return intercept(details);
+    } else {
+        setEnableInterceptionAfterTimeout(true, 1000);
+    }
+};
+
+setEnableInterceptionAfterTimeout = function(val, time) {
+    setTimeout(function () {
+        interceptionEnabled = val;
+    }, time);
 };
 
 /* --------------- ------ ------------------ ------ ---------------*/
@@ -72,46 +128,13 @@ addBrowserActionListener = function() {
     });
 };
 
-/* --------------- ------ Statistics functions ------ ---------------*/
-
-incrementInterceptionCounter = function() {
-    chrome.storage.sync.get("tds_interceptCounter", function(output) {
-        var counter = output.tds_interceptCounter;
-        counter++;
-        chrome.storage.sync.set({"tds_interceptCounter": counter}, function () {
-            if (chrome.runtime.error) {
-                console.log("Runtime error.");
-            }
-        });
+addSkipMessageListener = function() {
+    chrome.runtime.onMessage.addListener(function(request, sender) {
+        if (request.message == revertToOriginMessage) {
+            chrome.tabs.update(sender.tab.id, {url: request.destination});
+        }
     });
 };
-
-
-/* --------------- ---- Run upon installation ---- ---------------*/
-
-chrome.runtime.onInstalled.addListener(function() {
-    chrome.storage.sync.get("tds_blacklist", function(output) {
-        if (output.tds_blacklist == null) {
-            chrome.storage.sync.set({"tds_blacklist": []}, function () {
-                if (chrome.runtime.error) {
-                    console.log("Runtime error.");
-                }
-            });
-        }
-    });
-    chrome.storage.sync.get("tds_interceptCounter", function(output) {
-        if (output.tds_interceptCounter == null) {
-            chrome.storage.sync.set({"tds_interceptCounter": 0}, function () {
-                if (chrome.runtime.error) {
-                    console.log("Runtime error.");
-                }
-            });
-        }
-    });
-});
-
-initExtension();
-
 
 
 
