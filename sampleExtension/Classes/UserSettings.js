@@ -24,7 +24,7 @@ function UserSettings () {
     this.turnOn = function()  {
         if (this.getState() == "Off") {
             this.status = { state: true, setAt: new Date(), offTill: this.status.offTill };
-            this.startBackground();
+            this.forwardToBackground();
         } else {
             console.log("Already turned on, should not happen!");
         }
@@ -34,7 +34,7 @@ function UserSettings () {
         if (this.getState() == "On") {
             this.status = {state: false, setAt: new Date(), offTill: this.status.offTill};
             this.setTimer();
-            this.stopBackground();
+            this.forwardToBackground();
         } else {
             console.log("Already turned off, should not happen!");
         }
@@ -64,19 +64,10 @@ function UserSettings () {
     };
 
     //Private method
-    this.startBackground = function() {
+    this.forwardToBackground = function() {
+        synchronizer.syncSettings(this);
         var bg = chrome.extension.getBackgroundPage();
-        bg.setLocalSettings(this);
-        storage.setSettings(this);
         bg.replaceListener();
-    };
-
-    //Private method
-    this.stopBackground = function() {
-        var bg = chrome.extension.getBackgroundPage();
-        bg.setLocalSettings(this);
-        storage.setSettings(this);
-        bg.removeWebRequestListener();
     };
 
     this.copySettings = function(settingsObject) {
