@@ -2,20 +2,18 @@ mainFlow = function() {
     getStorageMode (initBasis);
 };
 
-/*Show some text on the top to indicate we are here because the extension is running*/
-
-initForMode = function(mode) {
+determineMode = function(mode) {
     var message;
-    if (mode == "pro" || mode == undefined) {
+    if (mode == modes.pro || mode == undefined) {
         message = proText;
-    } else if(mode == "lazy"){
+    } else if(mode == modes.lazy){
         message = lazyText;
     }
     return message;
 };
 
 initBasis = function(mode) {
-    var message = initForMode(mode);
+    var message = determineMode(mode);
 
     $.ajax({
         url: chrome.extension.getURL('intercept/inject.html'),

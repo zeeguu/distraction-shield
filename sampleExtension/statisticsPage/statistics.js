@@ -36,7 +36,7 @@ saveCurrentPageToBlacklist = function() {
 };
 
 //TODO Remove HTML from javascript for iteration 3.
-generateHtmlTableRow = function(site) {
+generateTableRow = function(site) {
     var row =
         $("<tr class='table-row' >" +
             "<td>"+site.icon+"</td>" +
@@ -56,7 +56,7 @@ createHtmlTable = function(){
     html_countWeek.text(countWeek);
     html_countMonth.text(countMonth);
     $.each(links, function(k, site) {
-        html_table.append(generateHtmlTableRow(site));
+        html_table.append(generateTableRow(site));
     });
 };
 

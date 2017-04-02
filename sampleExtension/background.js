@@ -6,11 +6,10 @@ var interceptDateList = [];
 //Boolean that determines whether we should be redirecting or not
 var interceptionEnabled = true;
 
-/* --------------- ------ update list of BlockedSites ------ ---------------*/
+/* --------------- ------ update functions ------ ---------------*/
 
 updateStorage = function() {
     setStorageBlacklist(blockedSites);
-    return {redirectUrl: redirectLink};
 };
 
 // This function receives the blacklist from the sync storage.
@@ -95,7 +94,7 @@ addWebRequestListener = function(urlList) {
 intercept = function(details) {
     incrementInterceptionCounter(details.url);
     addToInterceptDateList();
-    seStorageOriginalDestination(details.url);
+    setStorageOriginalDestination(details.url);
     setEnableInterceptionAfterTimeout(false, 2000);
     return {redirectUrl: redirectLink+details.url};
 };

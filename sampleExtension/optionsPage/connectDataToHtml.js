@@ -3,24 +3,19 @@
  * to the actual html representations of this data.
  */
 
-loadHtmlBlacklist = function(list) {
+loadHtmlBlacklist = function(list, table) {
     //For each BlockedSite object from the list generate a tableRow
     $.each(list, function(key, value) {
-        appendHtmlItemTo(generateHtmlTableRow(value), html_table);
+        table.addToTable(generateTableRow(value));
     });
-    sortHtmlOnChecked(html_table);
+    table.sortTableOnChecked();
 };
 
-loadHtmlMode = function(extensionMode) {
-    $("input[name=modeOptions][value=" + extensionMode + "]").prop('checked', true);
+loadHtmlMode = function(extensionMode, radioGroup) {
+    $("input[name=" + radioGroup + "][value=" + extensionMode + "]").prop('checked', true);
 };
 
-loadHtmlInterceptCounter = function(count) {
-    html_intCnt.text(count);
+loadHtmlInterceptCounter = function(count, html_counter) {
+    html_counter.text(count);
 };
 
-connectLocalDataToHtml = function() {
-    loadHtmlInterceptCounter(interceptionCounter);
-    loadHtmlBlacklist(links);
-    loadHtmlMode(mode);
-};

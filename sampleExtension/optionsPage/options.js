@@ -1,14 +1,23 @@
 /**
- * This file contains the core functions of the options page. this has the local variables,
- * initializes everything javascript related and connects the syncStorage, connectDataToHtml and HtmlFunctionality
- * to oe smoothly running file. Besides the initialization it contains the functions to manipulate the local variables
+ * This file contains the core functions of the options page. this has all the local variables,
+ * initializes everything javascript related and connects the syncStorage,
+ * connectDataToHtml, blacklistTable and HtmlFunctionality
+ * to one smoothly running file. Besides the initialization it contains the functions to manipulate the local variables
  * found here
  */
 
 // Log console messages to the background page console instead of the content page.
 var console = chrome.extension.getBackgroundPage().console;
 
-//Local variables that holds the list of links and interceptCoun and variables ter.
+//Local variables that hold the html elements
+var html_txtFld = $('#textFld');
+var html_intCnt = $('#iCounter');
+var html_saveButton = $('#saveBtn');
+var html_deleteButton =$('#deleteBtn');
+var modeGroup = "modeOptions";
+
+//Local variables that hold all necessary data.
+var blacklistTable;
 var links = [];
 var interceptionCounter = 0;
 var mode = "";
@@ -20,17 +29,40 @@ initOptionsPage = function() {
     chrome.storage.sync.get(["tds_blacklist", "tds_interceptCounter", "tds_mode"], function(output) {
         if (handleRuntimeError()) {
             setLocalVariables(output);
-            connectLocalDataToHtml(); /* bottom of connectDataToHtml.js */
-            connectHtmlFunctionality(); /* bottom of htmlFunctionality.js */
+            connectHtmlFunctionality();
+            connectLocalDataToHtml();
         }
     });
 };
 
+//Retrieve data from storage and store in local variables
 setLocalVariables = function(storage_output) {
     links = storage_output.tds_blacklist;
     interceptionCounter = storage_output.tds_interceptCounter;
     mode = storage_output.tds_mode;
 };
+
+initBlacklistTable = function() {
+    blacklistTable = new BlacklistTable($('#blacklistTable'));
+    blacklistTable.initTable();
+};
+
+//initialize all html elements on this page
+connectHtmlFunctionality = function() {
+    initBlacklistTable();
+    initModeSelection(modeGroup);
+    connectButton(html_saveButton, saveButtonClick);
+    connectButton(html_deleteButton, deleteButtonClick);
+    initSubmitWithEnter(html_txtFld);
+};
+
+//connect local data to html-elements
+connectLocalDataToHtml = function() {
+    loadHtmlInterceptCounter(interceptionCounter, html_intCnt);
+    loadHtmlBlacklist(links, blacklistTable);
+    loadHtmlMode(mode, modeGroup);
+};
+
 
 /* -------------------- Manipulate storage ------------------- */
 
