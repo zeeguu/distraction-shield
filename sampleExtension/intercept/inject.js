@@ -1,7 +1,6 @@
 
 mainFlow = function() {
     storage.getMode(initBasis);
-    chrome.runtime.sendMessage({message: revertToOriginMessage});
 };
 
 determineMode = function(mode) {
@@ -34,7 +33,7 @@ initBasis = function(mode) {
 
 
 revertToOrigin = function() {
-    chrome.runtime.sendMessage({message: revertToOriginMessage});
+    chrome.runtime.sendMessage({skipmessage: revertToOriginMessage});
     window.location = getDest();
 };
 

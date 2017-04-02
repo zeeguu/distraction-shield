@@ -106,7 +106,7 @@ handleInterception = function(details) {
 
 addSkipMessageListener = function() {
     chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-        if (request.message == revertToOriginMessage) {
+        if (request.skipmessage == revertToOriginMessage) {
             localSettings.turnOffFromBackground();
         }
     });

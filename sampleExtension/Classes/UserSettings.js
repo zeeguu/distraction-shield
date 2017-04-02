@@ -51,34 +51,29 @@ function UserSettings () {
         this.turnOff();
     };
 
+    //Private method
+    this.forwardToBackground = function() {
+        synchronizer.syncSettings(self);
+        var bg = chrome.extension.getBackgroundPage();
+        bg.replaceListener();
+    };
+
     this.turnOffFromBackground = function() {
         if(self.getState() == "On") {
             var curDate = new Date();
             var newOffTill = new Date(curDate.setMinutes(self.interceptionInterval + curDate.getMinutes()));
             self.status = {state: false, setAt: new Date(), offTill: newOffTill};
             self.setTimer();
-            storage.setSettings(this);
+            storage.setSettings(self);
             replaceListener();
         }
-    };
-
-    //Private method
-    this.turnExtensionBackOn = function() {
-        self.turnOn();
     };
 
     //Private method
     this.setTimer = function() {
         var timerInMS = this.status.offTill - new Date();
         var MSint = timerInMS.toFixed();
-        setTimeout(self.turnExtensionBackOn, MSint);
-    };
-
-    //Private method
-    this.forwardToBackground = function() {
-        synchronizer.syncSettings(this);
-        var bg = chrome.extension.getBackgroundPage();
-        bg.replaceListener();
+        setTimeout(self.turnOn, MSint);
     };
 
     this.copySettings = function(settingsObject) {
