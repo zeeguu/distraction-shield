@@ -47,6 +47,14 @@ getStorageMode = function(callback) {
     });
 };
 
+getStorageOriginalDestination = function(callback) {
+    chrome.storage.sync.get("originalDestination", function (output) {
+        if(handleRuntimeError()) {
+            return callback(output.originalDestination);
+        }
+    });
+};
+
 /* --------------- ---- Setter functions ---- ---------------*/
 
 /* ------ Blacklist functions ------ */
@@ -106,7 +114,7 @@ setStorageMode= function(mode) {
 
 /* ------ Store the current URL ----- */
 
-seStorageOriginalDestination = function(url) {
+setStorageOriginalDestination = function(url) {
     chrome.storage.sync.set({"originalDestination": url}, function() {
         handleRuntimeError();
     });
