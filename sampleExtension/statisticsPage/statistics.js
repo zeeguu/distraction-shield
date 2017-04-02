@@ -21,7 +21,7 @@ var html_countDay = $('#countDay');
 var html_countWeek = $('#countWeek');
 var html_countMonth = $('#countMonth');
 
-secondsToHoursMinutesSecondsString = function (seconds) {
+secondsToHHMMSS = function (seconds) {
   return new Date(seconds * 1000).toISOString().substr(11, 8)
 };
 
@@ -117,7 +117,7 @@ generateDayStatisticHtmlRow = function(dayStatistic) {
     var tableRow =
         $("<tr>" +
             "<td>"+dayStatistic.date+"</td>" +
-            "<td>"+secondsToHoursMinutesSecondsString(dayStatistic.timespent)+"</td>" +
+            "<td>"+secondsToHHMMSS(dayStatistic.timespent)+"</td>" +
             "</tr>");
     //add the actual object to the html_element
     return tableRow;
