@@ -96,7 +96,7 @@ intercept = function(details) {
     addToInterceptDateList();
     setStorageOriginalDestination(details.url);
     setEnableInterceptionAfterTimeout(false, 2000);
-    return {redirectUrl: redirectLink+details.url};
+    return {redirectUrl: redirectLink};
 };
 
 handleInterception = function(details) {

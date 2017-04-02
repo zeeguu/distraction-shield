@@ -28,6 +28,7 @@ function BlockedSite (input) {
     this.lastVisited = new Date();
     this.checkboxVal = true;
     this.counter=0;
+
 }
 
 
