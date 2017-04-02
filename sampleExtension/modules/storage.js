@@ -11,8 +11,8 @@ handleRuntimeError = function() {
 function SyncStorage() {
 
     /* ---------------- TDS_Storage --------------- */
-    this.getAll = function (callback) {
-        chrome.storage.sync.get(null, function (output) {
+    this.getAll = function(callback) {
+        chrome.storage.sync.get(null, function(output) {
             if (handleRuntimeError()) {
                 output.tds_settings = settings_deserialize(output.tds_settings);
                 output.tds_blacklist = blockedSiteList_deserialize(output.tds_blacklist);
@@ -21,8 +21,8 @@ function SyncStorage() {
         });
     };
 
-    this.getStatistics = function (callback) {
-        chrome.storage.sync.get(["tds_interceptCounter", "tds_interceptDateList"], function (output) {
+    this.getStatistics = function(callback) {
+        chrome.storage.sync.get(["tds_interceptCounter", "tds_interceptDateList"], function(output) {
             if (handleRuntimeError()) {
                 return callback(output);
             }
@@ -31,8 +31,8 @@ function SyncStorage() {
 
     /* ---------------- Blacklist --------------- */
 
-    this.getBlacklist = function (callback) {
-        chrome.storage.sync.get("tds_blacklist", function (output) {
+    this.getBlacklist = function(callback) {
+        chrome.storage.sync.get("tds_blacklist", function(output) {
             if (handleRuntimeError()) {
                 output.tds_blacklist = blockedSiteList_deserialize(output.tds_blacklist);
                 return callback(output.tds_blacklist);
@@ -40,16 +40,16 @@ function SyncStorage() {
         });
     };
 
-    this.setBlacklist = function (blockedSiteList) {
+    this.setBlacklist = function(blockedSiteList) {
         var serializedList = blockedSiteList_serialize(blockedSiteList);
-        chrome.storage.sync.set({"tds_blacklist": serializedList}, function () {
+        chrome.storage.sync.set({"tds_blacklist": serializedList}, function() {
             handleRuntimeError();
         });
     };
 
-    this.setBlacklistWithCallback = function (blockedSiteList, callback) {
+    this.setBlacklistWithCallback = function(blockedSiteList, callback) {
         var serializedList = blockedSiteList_serialize(blockedSiteList);
-        chrome.storage.sync.set({"tds_blacklist": serializedList}, function () {
+        chrome.storage.sync.set({"tds_blacklist": serializedList}, function() {
             handleRuntimeError();
             return callback();
         });
@@ -57,22 +57,22 @@ function SyncStorage() {
 
     /* ---------------- Interception Counter --------------- */
 
-    this.getInterceptCounter = function (callback) {
-        chrome.storage.sync.get("tds_interceptCounter", function (output) {
+    this.getInterceptCounter = function(callback) {
+        chrome.storage.sync.get("tds_interceptCounter", function(output) {
             if (handleRuntimeError()) {
                 return callback(output.tds_interceptCounter);
             }
         });
     };
 
-    this.setInterceptionCounter = function (number) {
-        chrome.storage.sync.set({"tds_interceptCounter": number}, function () {
+    this.setInterceptionCounter = function(number) {
+        chrome.storage.sync.set({"tds_interceptCounter": number}, function() {
             handleRuntimeError();
         });
     };
 
     //TODO for iteration 3 remove interceptioncounter integrate to statistics
-    this.incrementInterceptionCounter = function (urlAddress) {
+    this.incrementInterceptionCounter = function(urlAddress) {
         urlList = blockedSites.getList();
         for (var i = 0; i < urlList.length; i++) {
             if (wildcardStrComp(urlAddress, urlList[i].getUrl())) {
@@ -81,10 +81,10 @@ function SyncStorage() {
             }
         }
         this.setBlacklist(blockedSites);
-        chrome.storage.sync.get("tds_interceptCounter", function (output) {
+        chrome.storage.sync.get("tds_interceptCounter", function(output) {
             var counter = output.tds_interceptCounter;
             counter++;
-            chrome.storage.sync.set({"tds_interceptCounter": counter}, function () {
+            chrome.storage.sync.set({"tds_interceptCounter": counter}, function() {
                 handleRuntimeError();
             });
         });
@@ -92,41 +92,24 @@ function SyncStorage() {
 
     /* ---------------- Interception DateList --------------- */
 
-    this.getInterceptDateList = function (callback) {
-        chrome.storage.sync.get("tds_interceptDateList", function (output) {
+    this.getInterceptDateList = function(callback) {
+        chrome.storage.sync.get("tds_interceptDateList", function(output) {
             if (handleRuntimeError()) {
                 return callback(output.tds_interceptDateList);
             }
         });
     };
 
-    this.setInterceptDateList = function (dateList) {
-        chrome.storage.sync.set({"tds_interceptDateList": dateList}, function () {
+    this.setInterceptDateList = function(dateList) {
+        chrome.storage.sync.set({"tds_interceptDateList": dateList}, function() {
             handleRuntimeError();
         });
     };
-
-    /* ---------------- Original destination --------------- */
-
-    this.getOriginalDestination = function (callback) {
-        chrome.storage.sync.get("originalDestination", function (output) {
-            if (handleRuntimeError()) {
-                return callback(output.originalDestination);
-            }
-        });
-    };
-
-    this.setOriginalDestination = function (url) {
-        chrome.storage.sync.set({"originalDestination": url}, function () {
-            handleRuntimeError();
-        });
-    };
-
 
     /* ---------------- Settings Object --------------- */
 
-    this.getSettings = function (callback) {
-        chrome.storage.sync.get("tds_settings", function (output) {
+    this.getSettings = function(callback) {
+        chrome.storage.sync.get("tds_settings", function(output) {
             if (handleRuntimeError()) {
                 var deserializedSettings = settings_deserialize(output.tds_settings);
                 return callback(deserializedSettings);
@@ -134,30 +117,28 @@ function SyncStorage() {
         });
     };
 
-    this.setSettings = function (settingsObject) {
+    this.setSettings = function(settingsObject) {
         var serializedSettings = settings_serialize(settingsObject);
-        chrome.storage.sync.set({"tds_settings": serializedSettings}, function () {
-            handleRuntimeError();
-        });
+        chrome.storage.sync.set({"tds_settings": serializedSettings}, handleRuntimeError);
     };
 
-    this.setSettingsWithCallback = function (settingsObject, callback) {
+    this.setSettingsWithCallback = function(settingsObject, callback) {
         var serializedSettings = settings_serialize(settingsObject);
-        chrome.storage.sync.set({"tds_settings": serializedSettings}, function () {
+        chrome.storage.sync.set({"tds_settings": serializedSettings}, function() {
             handleRuntimeError();
             return callback();
         });
     };
 
-    this.getMode = function (callback) {
-        this.getSettings(function (settings) {
+    this.getMode = function(callback) {
+        this.getSettings(function(settings) {
             callback(settings.getMode());
         });
     };
 }
 
 //Fancy string comparison with wildcards
-wildcardStrComp = function (str, rule) {
+wildcardStrComp = function(str, rule) {
     return new RegExp("^" + rule.split("*").join(".*") + "$").test(str);
 };
 

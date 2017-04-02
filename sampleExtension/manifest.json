@@ -27,10 +27,11 @@
       "jquery/jquery-1.10.2.js",
       "constants.js",
       "modules/url_formatter.js",
+      "modules/storage.js",
+      "modules/synchronizer.js",
       "Classes/BlockedSite.js",
       "Classes/BlockedSiteList.js",
       "Classes/UserSettings.js",
-      "modules/storage.js",
       "background.js",
       "init.js",
       "statistics/trackerStorage.js",
@@ -40,7 +41,7 @@
 
   "content_scripts": [
     {
-      "matches" : ["https://zeeguu.herokuapp.com/get-ex"],
+      "matches" : ["https://zeeguu.herokuapp.com/get-ex?*"],
       "css": ["jquery/jquery-ui.css"],
       "js" : ["jquery/jquery-1.10.2.js",
               "constants.js",
@@ -59,6 +60,7 @@
     "<all_urls>"
   ],
 
-  "web_accessible_resources": ["intercept/bindEvents.js"]
+  "web_accessible_resources": [
+    "intercept/inject.html"]
 
 }

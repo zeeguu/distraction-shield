@@ -23,7 +23,7 @@ function UserSettings () {
 
     this.turnOn = function()  {
         if (this.getState() == "Off") {
-            this.status = { state: true, setAt: new Date(), offTill: this.status.offTill };
+            this.status = { state: true, setAt: new Date(), offTill: new Date()};
             this.forwardToBackground();
         } else {
             console.log("Already turned on, should not happen!");
@@ -51,6 +51,17 @@ function UserSettings () {
         this.turnOff();
     };
 
+    this.turnOffFromBackground = function() {
+        if(self.getState() == "On") {
+            var curDate = new Date();
+            var newOffTill = new Date(curDate.setMinutes(self.interceptionInterval + curDate.getMinutes()));
+            self.status = {state: false, setAt: new Date(), offTill: newOffTill};
+            self.setTimer();
+            storage.setSettings(this);
+            replaceListener();
+        }
+    };
+
     //Private method
     this.turnExtensionBackOn = function() {
         self.turnOn();
@@ -75,7 +86,17 @@ function UserSettings () {
         this.sessionID = settingsObject.sessionID;
         this.interceptionInterval = settingsObject.interceptionInterval;
         this.mode = settingsObject.mode;
-    }
+    };
+
+    this.reInitTimer = function() {
+        if (this.getState() == "Off") {
+            if (this.getOffTill() < new Date()) {
+                localSettings.turnOn();
+            } else {
+                this.setTimer();
+            }
+        }
+    };
 }
 
 /* --------------- --------------- Serialization --------------- --------------- */

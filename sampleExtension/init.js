@@ -6,7 +6,11 @@
 initSession = function () {
     // Settings need to be loaded before the listener is replaced. The replaceListener
     // requires the blocked sites to be loaded, so these weird callbacks are required.
-    retrieveSettings(retrieveBlockedSites, replaceListener);
+    storage.getSettings(function(settings) {
+        settings.reInitTimer();
+        setLocalSettings(settings);
+        retrieveBlockedSites(replaceListener);
+    });
     retrieveInterceptDateList();
     addSkipMessageListener();
 };

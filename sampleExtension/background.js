@@ -93,8 +93,7 @@ removeWebRequestListener = function() {
 intercept = function(details) {
     storage.incrementInterceptionCounter(details.url);
     addToInterceptDateList();
-    storage.setOriginalDestination(details.url);
-    return {redirectUrl: redirectLink};
+    return {redirectUrl: redirectLink+details.url};
 };
 
 handleInterception = function(details) {
@@ -106,12 +105,9 @@ handleInterception = function(details) {
 /* --------------- ------ ------------------ ------ ---------------*/
 
 addSkipMessageListener = function() {
-    chrome.runtime.onMessage.addListener(function(request, sender) {
+    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         if (request.message == revertToOriginMessage) {
-            localSettings.turnOffFor(localSettings.getInterceptionInterval());
-            chrome.tabs.update(sender.tab.id, {url: request.destination});
+            localSettings.turnOffFromBackground();
         }
     });
 };
-
-
