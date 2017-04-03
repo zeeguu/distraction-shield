@@ -1,8 +1,7 @@
 
 // Log console messages to the background page console instead of the content page.
-var console = chrome.extension.getBackgroundPage().console;
-
 var bg = chrome.extension.getBackgroundPage();
+var console = bg.console;
 
 //Local variables that holds the list of links and interceptCounter.
 var links = [];
@@ -22,7 +21,7 @@ var html_countWeek = $('#countWeek');
 var html_countMonth = $('#countMonth');
 
 secondsToHHMMSS = function (seconds) {
-  return new Date(seconds * 1000).toISOString().substr(11, 8)
+    return new Date(seconds * 1000).toISOString().substr(11, 8);
 };
 
 saveCurrentPageToBlacklist = function() {
@@ -39,9 +38,9 @@ saveCurrentPageToBlacklist = function() {
 generateTableRow = function(site) {
     var row =
         $("<tr class='table-row' >" +
-            "<td>"+site.icon+"</td>" +
-            "<td>"+site.name+"</td>" +
-            "<td>"+site.counter+"</td>" +
+            "<td>"+site.getIcon()+"</td>" +
+            "<td>"+site.getName()+"</td>" +
+            "<td>"+site.getCounter()+"</td>" +
         "</tr>");
     //add the actual object to the html_element
     row.data('site', site);
@@ -62,16 +61,13 @@ createHtmlTable = function(){
 
 //Initialize HTML elements and set the local variables
 initStatisticsPage = function() {
-    chrome.storage.sync.get(["tds_interceptCounter", "tds_interceptDateList"], function(output) {
-        if (bg.handleRuntimeError()) {
-            setLocalVariables(output);
-            calcInterceptData();
-            createHtmlTable();
-        }
+    storage.getStatistics(function(output) {
+        setLocalVariables(output);
+        calcInterceptData();
+        createHtmlTable();
     });
-
     bg.trs.getCompleteDayStatList().then(function(response){
-       setDayStatisticsHtml(response);
+        setDayStatisticsHtml(response);
     });
 };
 
@@ -106,7 +102,7 @@ incrementCounters = function(firstDate, secondDate){
 setLocalVariables = function(output) {
     interceptionCounter = output.tds_interceptCounter;
     interceptDateList = output.tds_interceptDateList;
-    links = bg.blockedSites;
+    links = bg.blockedSites.getList();
 };
 
 connectButtons = function(){

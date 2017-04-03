@@ -8,44 +8,65 @@
 
   <body>
 
-    <div id="description"> <p>
+    <div id="description">
         Modify the extension to suit your needs here.
         Also have a look at some of the <a target=_blank href="../statisticsPage/statistics.html">statistics</a>.
-    </p> </div>
-
-    <div id="intercepts"> 
-      <p> The times you were intercepted: <span id="iCounter"></span> </p>
+        Interceptions made since installation: <span id="iCounter"></span> <br> <br>
     </div>
 
-    <div id="modeDiv">
-        Pick a mode:
-        <form id="modeSelector" name="modePicker">
-            <input type="radio" name="modeOptions" value="lazy" checked> Lazy<br>
-            <input type="radio" name="modeOptions" value="pro"> Pro
-        </form>
-    </div></p>
+      <div id="modeWrapper">
+          <div id="modeRadioDiv">
+              Pick a mode:
+              <form id="modeSelector" name="modePicker">
+                  <input type="radio" name="modeOptions" value="lazy" checked> Lazy<br>
+                  <input type="radio" name="modeOptions" value="pro"> Pro
+              </form>
+          </div>
+          <div id="interval-slider-div">
+              Set time interval between intercepts:
+              <div id="interval-slider" class="range-slider">
+                  <input id="interval-slider-range" class="range-slider__range" type="range" value="15" min="1" max="90" step="1">
+                  <span class="range-slider__value">00:15</span>
+              </div>
+          </div>
+      </div>
 
     <div id="tableTitle">
         <b>Websites you should be intercepted from:</b>
     </div>
 
-    <div id="listDiv"> <p>
+    <div id="tableWrapper"> <p>
         <table id="blacklistTable"> </table>
     </p> </div>
     <div>
         Enter the url you want to block:
         <input  id="textFld" type="text"/>
         <button id="saveBtn"> Save </button>
-        <button id="deleteBtn"> Delete </button>
+    </div>
+
+    <div id="turnOff-slider-div">
+        <div id="turnOff-slider" class="range-slider">
+            <input id="turnOff-slider-range" class="range-slider__range" type="range" value="10" min="10" max="10" step="10">
+            for <span class="range-slider__value">00:10 hours.</span>
+            <button id="offBtn">Turn Off</button>
+        </div>
     </div>
 
     <script src="../jquery/jquery-1.10.2.js"></script>
-    <script src="../syncStorage.js"></script>
-    <script src="../blockedSite.js"></script>
+    <script src="../modules/urlFormatter.js"></script>
+    <script src="../modules/synchronizer.js"></script>
+    <script src="../modules/storage.js"></script>
+    <script src="../classes/BlockedSiteList.js"></script>
+    <script src="../classes/BlockedSite.js"></script>
+    <script src="../classes/UserSettings.js"></script>
+    <script src="../constants.js"></script>
+    <script src="classes/TurnOffSlider.js"></script>
+    <script src="classes/BlacklistTable.js"></script>
+    <script src="classes/GreenToRedSlider.js"></script>
     <script src="htmlFunctionality.js"></script>
     <script src="connectDataToHtml.js"></script>
-    <script src="blacklistTable.js"></script>
     <script src="options.js"></script>
+
 
   </body>
 </html>

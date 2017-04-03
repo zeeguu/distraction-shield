@@ -13,84 +13,67 @@ var console = chrome.extension.getBackgroundPage().console;
 var html_txtFld = $('#textFld');
 var html_intCnt = $('#iCounter');
 var html_saveButton = $('#saveBtn');
-var html_deleteButton =$('#deleteBtn');
 var modeGroup = "modeOptions";
 
-//Local variables that hold all necessary data.
 var blacklistTable;
-var links = [];
+var intervalSlider;
+var turnOffSlider;
+
+//Local variables that hold all necessary data.
+var settings_object = new UserSettings();
+var blacklist = new BlockedSiteList();
 var interceptionCounter = 0;
-var mode = "";
 
 /* -------------------- Initialization of options --------------------- */
 
 //Initialize HTML elements and set the local variables
 initOptionsPage = function() {
-    chrome.storage.sync.get(["tds_blacklist", "tds_interceptCounter", "tds_mode"], function(output) {
-        if (handleRuntimeError()) {
-            setLocalVariables(output);
-            connectHtmlFunctionality();
-            connectLocalDataToHtml();
-        }
+    storage.getAll(function(output) {
+        setLocalVariables(output);
+        connectHtmlFunctionality();
+        connectLocalDataToHtml();
     });
 };
 
 //Retrieve data from storage and store in local variables
 setLocalVariables = function(storage_output) {
-    links = storage_output.tds_blacklist;
+    blacklist.addAllToList(storage_output.tds_blacklist);
+    settings_object.copySettings(storage_output.tds_settings);
     interceptionCounter = storage_output.tds_interceptCounter;
-    mode = storage_output.tds_mode;
 };
 
-initBlacklistTable = function() {
-    blacklistTable = new BlacklistTable($('#blacklistTable'));
-    blacklistTable.initTable();
-};
-
-//initialize all html elements on this page
+// functionality from htmlFunctionality, blacklist_table and slider file
 connectHtmlFunctionality = function() {
-    initBlacklistTable();
+    blacklistTable = new BlacklistTable($('#blacklistTable'));
+    turnOffSlider = new TurnOffSlider('#turnOff-slider-div');
+    initIntervalSlider();
     initModeSelection(modeGroup);
-    connectButton(html_saveButton, saveButtonClick);
-    connectButton(html_deleteButton, deleteButtonClick);
-    initSubmitWithEnter(html_txtFld);
+    connectButton(html_saveButton, saveNewUrl);
+    setKeyPressFunctions();
 };
 
-//connect local data to html-elements
+// functionality from connectDataToHtml file
 connectLocalDataToHtml = function() {
     loadHtmlInterceptCounter(interceptionCounter, html_intCnt);
-    loadHtmlBlacklist(links, blacklistTable);
-    loadHtmlMode(mode, modeGroup);
-};
-
-
-/* -------------------- Manipulate storage ------------------- */
-
-updateStorageBlacklist = function() {
-    setStorageBlacklistWithCallback(links, updateBackgroundPage);
-};
-
-/* -------------------- Manipulate background ------------------- */
-
-updateBackgroundPage = function() {
-    var bg = chrome.extension.getBackgroundPage();
-    bg.retrieveBlockedSites(bg.replaceListener);
+    loadHtmlBlacklist(blacklist, blacklistTable);
+    loadHtmlMode(settings_object.getMode(), modeGroup);
+    loadHtmlInterval(settings_object.getInterceptionInterval(), intervalSlider);
 };
 
 /* -------------------- Manipulate local variables ------------------- */
 
-removeFromLocalLinks = function(html_item) {
-    var urlkey = links.indexOf(html_item.data('blockedSite'));
-    links.splice(urlkey, 1);
+removeFromLocalBlacklist = function(html_item) {
+    var blockedSiteToDelete = html_item.data('blockedSite');
+    blacklist.removeFromList(blockedSiteToDelete);
 };
 
-addToLocalLinks = function(blockedSite_item) {
-    links.push(blockedSite_item);
+addToLocalBlacklist = function(blockedSite_item) {
+    return blacklist.addToList(blockedSite_item);
 };
 
 /* -------------------- -------------------------- -------------------- */
 
 //Run this when the page is loaded.
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function() {
     initOptionsPage();
 });

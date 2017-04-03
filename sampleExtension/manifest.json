@@ -3,7 +3,7 @@
 
   "name": "The Distraction Shield",
   "description": "Divert attention from social media websites to learning a new language",
-  "version": "0.1",
+  "version": "1.2",
   //Icon's shown in chrome://extensions
   "icons": {"128": "icon.png"},
   "offline_enabled": false,
@@ -26,8 +26,12 @@
     "scripts": [
       "jquery/jquery-1.10.2.js",
       "constants.js",
-      "blockedSite.js",
-      "syncStorage.js",
+      "modules/urlFormatter.js",
+      "modules/storage.js",
+      "modules/synchronizer.js",
+      "classes/BlockedSite.js",
+      "classes/BlockedSiteList.js",
+      "classes/UserSettings.js",
       "background.js",
       "init.js",
       "statistics/trackerStorage.js",
@@ -39,7 +43,11 @@
     {
       "matches" : ["https://zeeguu.herokuapp.com/get-ex?*"],
       "css": ["jquery/jquery-ui.css"],
-      "js" : ["jquery/jquery-1.10.2.js","constants.js","syncStorage.js", "intercept/inject.js"]
+      "js" : ["jquery/jquery-1.10.2.js",
+              "constants.js",
+              "modules/storage.js",
+              "classes/UserSettings.js",
+              "intercept/inject.js"]
     }
   ],
 

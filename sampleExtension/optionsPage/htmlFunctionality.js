@@ -8,44 +8,58 @@ appendHtmlItemTo = function(html_child, html_parent) {
     html_parent.append(html_child);
 };
 
-removeLinkFromAll = function(html_item) {
-    removeFromLocalLinks(html_item);
-    blacklistTable.removeSelected();
-    updateStorageBlacklist();
+removeBlockedSiteFromAll = function(html_item) {
+    removeFromLocalBlacklist(html_item);
+    blacklistTable.removeFromTable(html_item);
+    synchronizer.syncBlacklist(blacklist);
 };
 
-addLinkToAll = function(newUrl) {
-    newItem = new BlockedSite(newUrl);
-    addToLocalLinks(newItem);
-    blacklistTable.addToTable(generateTableRow(newItem));
-    updateStorageBlacklist();
+addBlockedSiteToAll = function(newItem) {
+    if (addToLocalBlacklist(newItem)) {
+        blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
+        synchronizer.syncBlacklist(blacklist);
+    }
 };
 
-/* -------------------- Logic for the buttons -------------------- */
+createNewBlockedSite = function (newUrl) {
+    urlFormatter.getUrlFromServer(newUrl, function (url, title) {
+        newItem = new BlockedSite(url, title);
+        return addBlockedSiteToAll(newItem);
+    });
+};
+
+/* -------------------- Button Click functions ----------------------- */
+
+saveNewUrl = function() {
+    var newUrl = html_txtFld.val();
+    createNewBlockedSite(newUrl);
+    html_txtFld.val('');
+};
 
 //Connect functions to HTML elements
 connectButton = function(html_button, method) {
     html_button.on('click', method);
 };
 
-saveButtonClick = function() {
-    var newurl = html_txtFld.val();
-    addLinkToAll(newurl);
-    html_txtFld.val('');
+/* -------------------- Keypress events ----------------------- */
+
+setKeyPressFunctions = function () {
+    submitOnKeyPress(html_txtFld);
+    deleteOnKeyPress(blacklistTable);
 };
 
-deleteButtonClick = function () {
-    var urlToDelete = blacklistTable.getSelected();
-    removeLinkFromAll(urlToDelete);
+submitOnKeyPress = function (html_elem) {
+    html_elem.keyup(function (event) {
+        if (event.keyCode == KEY_ENTER) {
+            saveNewUrl();
+        }
+    });
 };
 
-/* -------------------- Logic for new url TextField -------------------- */
-
-initSubmitWithEnter = function(txtFld) {
-    txtFld.keyup(function (event) {
-        var enterKeyID = 13;
-        if (event.keyCode == enterKeyID) {
-            saveButtonClick();
+deleteOnKeyPress = function (blacklistTable) {
+    $('html').keyup(function (e) {
+        if (e.keyCode == KEY_DELETE) {
+            blacklistTable.removeSelected();
         }
     });
 };
@@ -54,7 +68,18 @@ initSubmitWithEnter = function(txtFld) {
 
 initModeSelection = function(buttonGroup) {
     $("input[name=" + buttonGroup + "]").change( function(){
-        var pickedMode = $("input[name=" + buttonGroup + "]:checked").val();
-        setStorageMode(pickedMode);
+        settings_object.setMode($("input[name=" + buttonGroup + "]:checked").val());
+        synchronizer.syncSettings(settings_object);
     });
+};
+
+
+/* -------------------- Interval slider -------------------- */
+
+initIntervalSlider = function() {
+    intervalSlider = new GreenToRedSlider('#interval-slider');
+    intervalSlider.saveValue = function(value) {
+        settings_object.setInterceptionInterval(parseInt(value));
+        synchronizer.syncSettings(settings_object);
+    }
 };
