@@ -73,7 +73,7 @@ function BlacklistTable (html_element) {
                 "<td width='50'>" + blockedSite.getIcon ()+ "</td>" +
                 "<td class='pageTitle' width='480'>" + blockedSite.getName() + "</td>" +
                 "<td width='25'>" + "<input class='checkbox-toggle' type=\"checkbox\" name=\"state\">" + "</td>" +
-                "<td width='25'>" + "<img class='delete-button' type='deleteButton' src='Classes/tableRow_delete_button.png' width='16' height='16'>" + "</td>" +
+                "<td width='25'>" + "<img class='delete-button' type='deleteButton' src='classes/tableRow_delete_button.png' width='16' height='16'>" + "</td>" +
                 "</tr>");
         tableRow.find('.checkbox-toggle').prop('checked', blockedSite.getCheckboxVal());
         //add the actual object to the html_element

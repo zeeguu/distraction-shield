@@ -20,4 +20,4 @@ var KEY_ENTER  = 13;
 /* -------------------- Number constants ----------------------- */
 var MAX_TURN_OFF_TIME = 480;
 
-var FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
+var FAVICONLINK = "\"https://www.google.com/s2/favicons?domain=";
