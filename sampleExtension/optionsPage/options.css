@@ -1,8 +1,12 @@
 body {
     font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
     font-size: 100%;
-    background-color: #FFFBED;
-    width:620px;
+    /*background-color: #FFFBED;*/
+    /*width:620px;*/
+}
+
+#addUrlDiv {
+    margin-bottom: 15px;
 }
 
 /* ---------- ---------- table ---------- ---------- */
@@ -19,6 +23,11 @@ body {
 
 /* ---------- ---------- Slider ---------- ---------- */
 
+.sliderColumn {
+    /*float:left;*/
+    /*width:100px;*/
+}
+
 .amountColumn {
     overflow:hidden;
 }
@@ -26,7 +35,7 @@ body {
 input[type=range] {
     -webkit-appearance: none;
     margin: 10px 0;
-    width: 99%; 
+    width: 99%;
     height:16px;
     border: 1px solid #000;
     border-radius: 6px;
