@@ -69,11 +69,15 @@ function UserSettings () {
         }
     };
 
+    this.turnExtensionBackOn = function () {
+        self.turnOn();
+    };
+
     //Private method
     this.setTimer = function() {
         var timerInMS = this.status.offTill - new Date();
         var MSint = timerInMS.toFixed();
-        setTimeout(self.turnOn, MSint);
+        setTimeout(this.turnExtensionBackOn, MSint);
     };
 
     this.copySettings = function(settingsObject) {
