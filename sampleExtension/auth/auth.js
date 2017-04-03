@@ -38,16 +38,14 @@ function Auth() {
     };
 
     this.validate = function () {
-        var url = self.validateUrl;
-        var params = "session="+self.session;
-        return api.getRequest(url, params);
-    }
+        var url = self.validateUrl + "?session="+self.session;
+        return api.getRequest(url, "");
+    };
 
     this.logout = function(){
-        var url = self.logoutUrl;
-        var params = "session="+self.session;
+        var url = self.logoutUrl + "?session="+self.session;
         this.session = null;
-        return api.getRequest(url, params);
+        return api.getRequest(url, "");
     };
 
     this.getSession = function(){

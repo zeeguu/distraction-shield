@@ -1,4 +1,3 @@
-
 function Api() {
     var self = this;
 

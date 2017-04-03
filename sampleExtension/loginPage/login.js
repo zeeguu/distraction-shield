@@ -9,6 +9,7 @@ var auth = bg.auth;
 var html_emailLoginFld = $('#emailLoginFld');
 var html_passwordLoginFld = $('#passwordLoginFld');
 var html_submitButton = $('#submitBtn');
+var html_validateButton = $('#validateBtn') // TODO remove
 
 var messageDialog = $('#message');
 var spinner = $('.spinner');
@@ -36,6 +37,14 @@ login = function(){
 };
 
 
+validate  = function () { // TODO remove
+    auth.validate().then(function (response) {
+        console.log(response);
+    }, function (error) {
+        console.log(error);
+    });
+};
+
 
 //Connect functions to HTML elements
 connectButton = function(html_button, method) {
@@ -44,7 +53,10 @@ connectButton = function(html_button, method) {
 
 connectHtmlFunctionality = function() {
     connectButton(html_submitButton, login);
+    connectButton(html_validateButton, validate);
 };
+
+
 
 //Run this when the page is loaded.
 document.addEventListener("DOMContentLoaded", function(){
