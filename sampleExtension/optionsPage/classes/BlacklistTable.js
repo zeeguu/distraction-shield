@@ -71,7 +71,7 @@ function BlacklistTable (html_element) {
         var tableRow =
             $("<tr class='table-row' >" +
                 "<td width='50'>" + blockedSite.getIcon ()+ "</td>" +
-                "<td class='pageTitle' width='480'>" + blockedSite.getName() + "</td>" +
+                "<td class='pageTitle'>" + blockedSite.getName() + "</td>" +
                 "<td width='25'>" + "<input class='checkbox-toggle' type=\"checkbox\" name=\"state\">" + "</td>" +
                 "<td width='25'>" + "<img class='delete-button' type='deleteButton' src='classes/tableRow_delete_button.png' width='16' height='16'>" + "</td>" +
                 "</tr>");
