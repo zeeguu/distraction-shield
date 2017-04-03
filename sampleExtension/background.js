@@ -46,7 +46,7 @@ retrieveInterceptDateList = function() {
 /* --------------- ------ Updating of variables ------ ---------------*/
 
 addToBlockedSites = function (newUrl, newUrlTitle) {
-    url_formatter.getUrlWithoutServer(newUrl, newUrlTitle, function (url, title) {
+    urlFormatter.getUrlWithoutServer(newUrl, newUrlTitle, function (url, title) {
         newItem = new BlockedSite(url, title);
         blockedSites.addToList(newItem);
         storage.setBlacklist(blockedSites);
@@ -91,7 +91,6 @@ removeWebRequestListener = function() {
 };
 
 intercept = function(details) {
-    console.log("hey intercept");
     storage.incrementInterceptionCounter(details.url);
     addToInterceptDateList();
     return {redirectUrl: redirectLink+details.url};

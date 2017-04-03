@@ -59,8 +59,8 @@ function BlockedSiteList() {
 /* --------------- --------------- Serialization --------------- --------------- */
 
 //Private to this and storage.js
-blockedSiteList_serialize = function(blockedSiteList) {
-    //blockedSiteList.list = blockedSiteList.list.map(blockedSite_serialize);
+serializeBlockedSiteList = function(blockedSiteList) {
+    //blockedSiteList.list = blockedSiteList.list.map(serializeBlockedSite);
     return JSON.stringify(blockedSiteList);
 };
 
@@ -72,7 +72,7 @@ parseBlockedSiteList = function(blockedSiteList) {
 };
 
 //Private to this and storage.js
-blockedSiteList_deserialize = function(serializedBlockedSiteList) {
+deserializeBlockedSiteList = function(serializedBlockedSiteList) {
     if(serializedBlockedSiteList != null) {
         var parsed = JSON.parse(serializedBlockedSiteList);
         parsed.list = parsed.list.map(parseBlockedSite);

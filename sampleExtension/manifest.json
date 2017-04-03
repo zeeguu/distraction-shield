@@ -26,12 +26,12 @@
     "scripts": [
       "jquery/jquery-1.10.2.js",
       "constants.js",
-      "modules/url_formatter.js",
+      "modules/urlFormatter.js",
       "modules/storage.js",
       "modules/synchronizer.js",
-      "Classes/BlockedSite.js",
-      "Classes/BlockedSiteList.js",
-      "Classes/UserSettings.js",
+      "classes/BlockedSite.js",
+      "classes/BlockedSiteList.js",
+      "classes/UserSettings.js",
       "background.js",
       "init.js",
       "statistics/trackerStorage.js",
@@ -46,7 +46,7 @@
       "js" : ["jquery/jquery-1.10.2.js",
               "constants.js",
               "modules/storage.js",
-              "Classes/UserSettings.js",
+              "classes/UserSettings.js",
               "intercept/inject.js"]
     }
   ],

@@ -2,8 +2,8 @@
 // use alert for warning popups
 alert = chrome.extension.getBackgroundPage().alert;
 
-function Url_Formatter() {
-    this.url_requester = new Url_Requester();
+function UrlFormatter() {
+    this.url_requester = new UrlRequester();
 
     this.stripOfFinalSlash = function (url) {
         if (url[url.length - 1] == '/') {
@@ -83,49 +83,47 @@ function Url_Formatter() {
     this.getUrlFromServer = function(url, callback) {
         var urlToGet = this.formatForGetRequest(url);
         this.url_requester.httpGetAsync(urlToGet, function(url, title) {
-            url = url_formatter.stripOfScheme(url);
-            url = url_formatter.stripOfFileName(url);
+            url = urlFormatter.stripOfScheme(url);
+            url = urlFormatter.stripOfFileName(url);
             callback(url, title);
         });
     };
 
     this.getUrlWithoutServer = function(url, title, callback) {
-        url = url_formatter.stripOfScheme(url);
-        url = url_formatter.stripOfFileName(url);
+        url = urlFormatter.stripOfScheme(url);
+        url = urlFormatter.stripOfFileName(url);
         callback(url, title);
     };
 
 }
 
-function Url_Requester() {
-    INVALID_URL_MESSAGE = "We unfortunately could not reach the site you are trying to block.\n" +
-        "Are you sure the url is correct? \n \n";
-
+function UrlRequester() {
     var self = this;
 
     //Fire a request for the actual url from server. Then go on to fire the passed callback with the newly found url
     this.httpGetAsync = function (theUrlToGet, callback) {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", theUrlToGet, true); // true for asynchronous
-        xmlHttp.onreadystatechange = function () {
-            // on succesful request, return responseURL
-            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                // simple regex to extract data from title tags, ignoring newlines, tabs and returns
-                var titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
-                if (titleTags != null) {
-                    var title = titleTags[1];
-                    callback(xmlHttp.responseURL, title);
-                } else {
-                    callback(xmlHttp.responseURL, theUrlToGet);
-                }
-            } else if (xmlHttp.readyState == 4) {
-                errorHandler(xmlHttp.status);
-            }
-        };
+        xmlHttp.onreadystatechange = function() {self.readyStateChange(xmlHttp, callback);};
         xmlHttp.send(null);
     };
 
-    errorHandler = function (status) {
+    this.readyStateChange = function(xmlHttp, callback) {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            // simple regex to extract data from title tags, ignoring newlines, tabs and returns
+            var titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
+            if (titleTags != null) {
+                var title = titleTags[1];
+                callback(xmlHttp.responseURL, title);
+            } else {
+                callback(xmlHttp.responseURL, theUrlToGet);
+            }
+        } else if (xmlHttp.readyState == 4) {
+            self.errorHandler(xmlHttp.status);
+        }
+    };
+
+    this.errorHandler = function (status) {
         switch (status) {
             case 404:
                 alert(INVALID_URL_MESSAGE + 'File not found');
@@ -142,4 +140,4 @@ function Url_Requester() {
     };
 }
 
-var url_formatter = new Url_Formatter();
+var urlFormatter = new UrlFormatter();

@@ -14,8 +14,8 @@ function SyncStorage() {
     this.getAll = function(callback) {
         chrome.storage.sync.get(null, function(output) {
             if (handleRuntimeError()) {
-                output.tds_settings = settings_deserialize(output.tds_settings);
-                output.tds_blacklist = blockedSiteList_deserialize(output.tds_blacklist);
+                output.tds_settings = deserializeSettings(output.tds_settings);
+                output.tds_blacklist = deserializeBlockedSiteList(output.tds_blacklist);
                 return callback(output);
             }
         });
@@ -34,21 +34,21 @@ function SyncStorage() {
     this.getBlacklist = function(callback) {
         chrome.storage.sync.get("tds_blacklist", function(output) {
             if (handleRuntimeError()) {
-                output.tds_blacklist = blockedSiteList_deserialize(output.tds_blacklist);
+                output.tds_blacklist = deserializeBlockedSiteList(output.tds_blacklist);
                 return callback(output.tds_blacklist);
             }
         });
     };
 
     this.setBlacklist = function(blockedSiteList) {
-        var serializedList = blockedSiteList_serialize(blockedSiteList);
+        var serializedList = serializeBlockedSiteList(blockedSiteList);
         chrome.storage.sync.set({"tds_blacklist": serializedList}, function() {
             handleRuntimeError();
         });
     };
 
     this.setBlacklistWithCallback = function(blockedSiteList, callback) {
-        var serializedList = blockedSiteList_serialize(blockedSiteList);
+        var serializedList = serializeBlockedSiteList(blockedSiteList);
         chrome.storage.sync.set({"tds_blacklist": serializedList}, function() {
             handleRuntimeError();
             return callback();
@@ -111,19 +111,19 @@ function SyncStorage() {
     this.getSettings = function(callback) {
         chrome.storage.sync.get("tds_settings", function(output) {
             if (handleRuntimeError()) {
-                var deserializedSettings = settings_deserialize(output.tds_settings);
+                var deserializedSettings = deserializeSettings(output.tds_settings);
                 return callback(deserializedSettings);
             }
         });
     };
 
     this.setSettings = function(settingsObject) {
-        var serializedSettings = settings_serialize(settingsObject);
+        var serializedSettings = serializeSettings(settingsObject);
         chrome.storage.sync.set({"tds_settings": serializedSettings}, handleRuntimeError);
     };
 
     this.setSettingsWithCallback = function(settingsObject, callback) {
-        var serializedSettings = settings_serialize(settingsObject);
+        var serializedSettings = serializeSettings(settingsObject);
         chrome.storage.sync.set({"tds_settings": serializedSettings}, function() {
             handleRuntimeError();
             return callback();

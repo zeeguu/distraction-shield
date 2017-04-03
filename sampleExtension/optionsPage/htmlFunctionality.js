@@ -22,7 +22,7 @@ addBlockedSiteToAll = function(newItem) {
 };
 
 createNewBlockedSite = function (newUrl) {
-    url_formatter.getUrlFromServer(newUrl, function (url, title) {
+    urlFormatter.getUrlFromServer(newUrl, function (url, title) {
         newItem = new BlockedSite(url, title);
         return addBlockedSiteToAll(newItem);
     });

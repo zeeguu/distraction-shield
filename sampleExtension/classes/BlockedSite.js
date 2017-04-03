@@ -5,7 +5,7 @@ function BlockedSite(url, title) {
     };
 
     this.constructIcon = function (url) {
-        return "<img style=\"-webkit-user-select: none\" src=\"https://www.google.com/s2/favicons?domain=" + url + "\">"
+        return "<img style=\"-webkit-user-select: none\" src=" + FAVICONLINK + url + "\">"
     };
 
     this.url = this.constructUrl(url);
@@ -26,7 +26,7 @@ function BlockedSite(url, title) {
 /* --------------- --------------- Serialization --------------- --------------- */
 
 //Private to this and storage.js
-blockedSite_serialize = function(blockedSite) {
+serializeBlockedSite = function(blockedSite) {
     return JSON.stringify(blockedSite);
 };
 
@@ -42,7 +42,7 @@ parseBlockedSite = function(blockedSite) {
 };
 
 //Private to this and storage.js
-blockedSite_deserialize = function(serializedBlockedSite) {
+deserializeBlockedSite = function(serializedBlockedSite) {
     if(serializedBlockedSite != null) {
         var parsed = JSON.parse(serializedBlockedSite);
         return parseBlockedSite(parsed);

@@ -47,7 +47,7 @@ function UserSettings () {
     };
 
     this.turnOffForDay = function()  {
-        this.status.offTill = new Date((new Date()).setHours(24,0,0,0));
+        this.status.offTill = new Date(new Date().setHours(24,0,0,0));
         this.turnOff();
     };
 
@@ -97,7 +97,7 @@ function UserSettings () {
 /* --------------- --------------- Serialization --------------- --------------- */
 
 //Private to this and storage.js
-settings_serialize = function(settingsObject) {
+serializeSettings = function(settingsObject) {
     return JSON.stringify(settingsObject);
 };
 
@@ -114,7 +114,7 @@ parseSettingsObject = function(parsedSettingsObject) {
 };
 
 //Private to this and storage.js
-settings_deserialize = function(serializedSettingsObject) {
+deserializeSettings = function(serializedSettingsObject) {
     if (serializedSettingsObject != null) {
         var parsed = JSON.parse(serializedSettingsObject);
         return parseSettingsObject(parsed);
