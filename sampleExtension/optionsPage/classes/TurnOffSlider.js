@@ -4,7 +4,7 @@ function TurnOffSlider(sliderDivID) {
     var self = this;
     this.selectedTime = 10;
     this.slider = new GreenToRedSlider('#turnOff-slider', function(value) { self.selectedTime = parseInt(value); });
-    this.offButton = $(sliderDivID).children('#offBtn');
+    this.offButton = $(sliderDivID).find('#offBtn');
 
     this.toggleShowOffMessage = function() {
         if (settings_object.getState() == "Off") {
@@ -21,13 +21,8 @@ function TurnOffSlider(sliderDivID) {
         return arr.splice(0, 5).join(" ");
     };
 
-    this.getParentDiv = function() {
-        return this.offButton.parent();
-    };
-
     this.createHtmlOffMessage = function() {
-        var message = "Turned off until: " + this.formatDate(settings_object.getOffTill());
-        return message;
+        return "Turned off until: " + this.formatDate(settings_object.getOffTill());
     };
 
     this.setSliderHourFunc = function() {
