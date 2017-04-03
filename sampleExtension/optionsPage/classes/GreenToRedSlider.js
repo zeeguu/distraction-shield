@@ -1,5 +1,3 @@
-/* upon initiation you should implement the saveValue function to your specified case.
-* The function receives the value of the slider as an argument */
 
 function GreenToRedSlider(sliderID, saveFunction) {
     var self = this;
@@ -18,7 +16,7 @@ function GreenToRedSlider(sliderID, saveFunction) {
     this.inputRange.on('mouseup', function () {
         var inputValue = self.inputRange.val();
         self.saveValue(inputValue);
-    })
+    });
 
     this.updateColor = function(inputValue) {
         var maxSliderVal = (this.inputRange[0]).max;
