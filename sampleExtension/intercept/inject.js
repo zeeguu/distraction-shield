@@ -26,24 +26,23 @@ initBasis = function(mode) {
             $("#tds").width(window.innerWidth + "px");
             $("#tds_generalInfoText").append(infoText);
             $("#tds_modeSpecificText").append(message);
-            $("#originalDestination").on('click', revertToOrigin);
+            $("#originalDestination").attr("href", getDest());
         }
     });
 };
 
-
-revertToOrigin = function() {
-    chrome.runtime.sendMessage({skipmessage: revertToOriginMessage});
-    window.location = getDest();
-};
-
 getDest = function() {
-    url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]redirect(=([^&#]*)|&|#|$)"),
-    results = regex.exec(url);
+    var url = window.location.href;
+    var regex = new RegExp("[?&]redirect(=([^&#]*)|&|#|$)");
+    var results = regex.exec(url);
     if (!results || !results[2]) { return null; }
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
+    var newUrl = decodeURIComponent(results[2].replace(/\+/g, " "));
+    if (newUrl.indexOf("?") > -1) {
+        newUrl += "&tds_exComplete=true";
+    } else {
+        newUrl += "?tds_exComplete=true";
+    }
+    return newUrl;
 };
 
 mainFlow();

@@ -12,7 +12,6 @@ initSession = function () {
         retrieveBlockedSites(replaceListener);
     });
     retrieveInterceptDateList();
-    addSkipMessageListener();
 };
 
 /* --------------- ---- Run upon installation ---- ---------------*/

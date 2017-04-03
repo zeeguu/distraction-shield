@@ -54,8 +54,6 @@ function UserSettings () {
     //Private method
     this.forwardToBackground = function() {
         synchronizer.syncSettings(self);
-        var bg = chrome.extension.getBackgroundPage();
-        bg.replaceListener();
     };
 
     this.turnOffFromBackground = function() {
@@ -64,8 +62,6 @@ function UserSettings () {
             var newOffTill = new Date(curDate.setMinutes(self.interceptionInterval + curDate.getMinutes()));
             self.status = {state: false, setAt: new Date(), offTill: newOffTill};
             self.setTimer();
-            storage.setSettings(self);
-            replaceListener();
         }
     };
 

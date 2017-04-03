@@ -91,6 +91,7 @@ removeWebRequestListener = function() {
 };
 
 intercept = function(details) {
+    console.log("hey intercept");
     storage.incrementInterceptionCounter(details.url);
     addToInterceptDateList();
     return {redirectUrl: redirectLink+details.url};
@@ -98,16 +99,17 @@ intercept = function(details) {
 
 handleInterception = function(details) {
     if (localSettings.getState() == "On") {
-        return intercept(details);
+        if (details.url.indexOf("tds_exComplete=true") > -1) {
+            turnOfInterception();
+            var url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
+            return {redirectUrl: url};
+        } else {
+            return intercept(details);
+        }
     }
 };
 
-/* --------------- ------ ------------------ ------ ---------------*/
-
-addSkipMessageListener = function() {
-    chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-        if (request.skipmessage == revertToOriginMessage) {
-            localSettings.turnOffFromBackground();
-        }
-    });
+turnOfInterception = function() {
+    localSettings.turnOffFromBackground();
+    storage.setSettings(localSettings);
 };

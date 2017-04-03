@@ -68,7 +68,7 @@ removeFromLocalBlacklist = function(html_item) {
 };
 
 addToLocalBlacklist = function(blockedSite_item) {
-    blacklist.addToList(blockedSite_item);
+    return blacklist.addToList(blockedSite_item);
 };
 
 /* -------------------- -------------------------- -------------------- */

@@ -13,8 +13,10 @@ function BlockedSiteList() {
         });
         if (unique) {
             this.list.push(newBlockedSite);
+            return true;
         } else {
             alert(newUrlNotUniqueError + newBlockedSite.getUrl());
+            return false;
         }
     };
 

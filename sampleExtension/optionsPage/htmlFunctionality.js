@@ -15,10 +15,10 @@ removeBlockedSiteFromAll = function(html_item) {
 };
 
 addBlockedSiteToAll = function(newItem) {
-    addToLocalBlacklist(newItem);
-    blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
-    synchronizer.syncBlacklist(blacklist);
-   
+    if (addToLocalBlacklist(newItem)) {
+        blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
+        synchronizer.syncBlacklist(blacklist);
+    }
 };
 
 createNewBlockedSite = function (newUrl) {
