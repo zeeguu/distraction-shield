@@ -5,7 +5,7 @@ function BlockedSite(url, title) {
     };
 
     this.constructIcon = function (url) {
-        return "<img style=\"-webkit-user-select: none\" src=" + FAVICONLINK + url + "\">"
+        return "<img style=\"-webkit-user-select: none\" src=\""+ FAVICONLINK + url +"\">"
     };
 
     this.url = this.constructUrl(url);

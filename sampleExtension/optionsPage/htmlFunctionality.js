@@ -8,6 +8,10 @@ appendHtmlItemTo = function(html_child, html_parent) {
     html_parent.append(html_child);
 };
 
+prependHtmlItemTo = function (html_child, html_parent) {
+    html_parent.prepend(html_child);
+};
+
 removeBlockedSiteFromAll = function(html_item) {
     removeFromLocalBlacklist(html_item);
     blacklistTable.removeFromTable(html_item);
