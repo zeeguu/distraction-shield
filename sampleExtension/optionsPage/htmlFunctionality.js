@@ -77,9 +77,8 @@ initModeSelection = function(buttonGroup) {
 /* -------------------- Interval slider -------------------- */
 
 initIntervalSlider = function() {
-    intervalSlider = new GreenToRedSlider('#interval-slider');
-    intervalSlider.saveValue = function(value) {
+    intervalSlider = new GreenToRedSlider('#interval-slider', function (value) {
         settings_object.setInterceptionInterval(parseInt(value));
         synchronizer.syncSettings(settings_object);
-    }
+    });
 };

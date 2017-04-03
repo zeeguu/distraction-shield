@@ -2,9 +2,9 @@
 /* -------------------- TurnOff slider -------------------- */
 function TurnOffSlider(sliderDivID) {
     var self = this;
-    this.slider = new GreenToRedSlider('#turnOff-slider');
-    this.offButton = $(sliderDivID).children().children('#offBtn');
     this.selectedTime = 10;
+    this.slider = new GreenToRedSlider('#turnOff-slider', function(value) { self.selectedTime = parseInt(value); });
+    this.offButton = $(sliderDivID).children().children('#offBtn');
 
     this.toggleShowOffMessage = function() {
         if (settings_object.getState() == "Off") {
@@ -16,9 +16,7 @@ function TurnOffSlider(sliderDivID) {
 
     this.formatDate = function(date) {
         var arr = date.toString().split(" ");
-        arr.pop();
-        arr.pop();
-        return arr.join(" ");
+        return arr.splice(0, 5).join(" ");
     };
 
     this.getParentDiv = function() {
@@ -28,12 +26,6 @@ function TurnOffSlider(sliderDivID) {
     this.createHtmlOffMessage = function() {
         var message = "Turned off until: " + this.formatDate(settings_object.getOffTill());
         return "<div id='offTillTimestamp'>" + "<br>" + message + "</div>";
-    };
-
-    this.setSliderValueFunc = function() {
-        this.slider.saveValue = function(value) {
-            self.selectedTime = parseInt(value);
-        };
     };
 
     this.setSliderHourFunc = function() {
@@ -71,7 +63,6 @@ function TurnOffSlider(sliderDivID) {
         }
         this.offButton.text("Turn " + settings_object.getNotState());
         this.slider.inputRange[0].max = MAX_TURN_OFF_TIME;
-        this.setSliderValueFunc();
         this.setSliderHourFunc();
         connectButton(this.offButton, this.turnOff);
     };

@@ -12,8 +12,12 @@ function GreenToRedSlider(sliderID) {
         var inputValue = self.inputRange.val();
         self.value.html(self.calculateHours(inputValue));
         self.updateColor(inputValue);
-        self.saveValue(inputValue);
     });
+
+    this.inputRange.on('mouseup', function () {
+        var inputValue = self.inputRange.val();
+        self.saveValue(inputValue);
+    })
 
     this.updateColor = function(inputValue) {
         var maxSliderVal = (this.inputRange[0]).max;
