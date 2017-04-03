@@ -1,5 +1,5 @@
+
 var redirectLink = "https://zeeguu.herokuapp.com/get-ex?redirect=";
-var revertToOriginMessage = "goToOriginalDestination";
 var modes = {lazy: "lazy", pro: "pro"};
 
 var newUrlNotUniqueError = "new blocked site item to be added was found to resolve to an already blacklisted website, " +
@@ -17,3 +17,4 @@ var KEY_ENTER  = 13;
 
 /* -------------------- Number constants ----------------------- */
 var MAX_TURN_OFF_TIME = 480;
+

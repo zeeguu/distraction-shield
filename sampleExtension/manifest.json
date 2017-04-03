@@ -61,6 +61,7 @@
   ],
 
   "web_accessible_resources": [
-    "intercept/inject.html"]
+    "intercept/inject.html"
+  ]
 
 }

@@ -1,4 +1,3 @@
-
 mainFlow = function() {
     storage.getMode(initBasis);
 };
@@ -15,6 +14,7 @@ determineMode = function(mode) {
 
 initBasis = function(mode) {
     var message = determineMode(mode);
+
     $.ajax({
         url: chrome.extension.getURL('intercept/inject.html'),
         type: "GET",

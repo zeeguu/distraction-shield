@@ -21,7 +21,7 @@ var html_countWeek = $('#countWeek');
 var html_countMonth = $('#countMonth');
 
 secondsToHHMMSS = function (seconds) {
-    return new Date(seconds * 1000).toISOString().substr(11, 8)
+    return new Date(seconds * 1000).toISOString().substr(11, 8);
 };
 
 saveCurrentPageToBlacklist = function() {
@@ -113,7 +113,6 @@ generateDayStatisticHtmlRow = function(dayStatistic) {
     var tableRow =
         $("<tr>" +
             "<td>"+dayStatistic.date+"</td>" +
-            "<td>"+dayStatistic.timespent+"</td>" +
             "<td>"+secondsToHHMMSS(dayStatistic.timespent)+"</td>" +
             "</tr>");
     //add the actual object to the html_element
