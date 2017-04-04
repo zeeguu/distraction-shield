@@ -36,16 +36,6 @@ login = function(){
     html_passwordLoginFld.val('');
 };
 
-
-validate  = function () { // TODO remove
-    auth.validate().then(function (response) {
-        console.log(response);
-    }, function (error) {
-        console.log(error);
-    });
-};
-
-
 //Connect functions to HTML elements
 connectButton = function(html_button, method) {
     html_button.on('click', method);
@@ -53,10 +43,7 @@ connectButton = function(html_button, method) {
 
 connectHtmlFunctionality = function() {
     connectButton(html_submitButton, login);
-    connectButton(html_validateButton, validate);
 };
-
-
 
 //Run this when the page is loaded.
 document.addEventListener("DOMContentLoaded", function(){

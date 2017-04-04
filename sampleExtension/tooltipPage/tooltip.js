@@ -4,6 +4,8 @@ var console = chrome.extension.getBackgroundPage().console;
 
 var bg = chrome.extension.getBackgroundPage();
 
+var auth = bg.auth;
+
 saveCurrentPageToBlacklist = function() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         // since only one tab should be active and in the current window at once
@@ -26,6 +28,10 @@ redirectToLogin = function() {
     //return {redirectUrl: "://statisticsPage/statistics.html/"};
 };
 
+logout = function () {
+    auth.logout();
+}
+
 openOptionsPage = function() {
     // chrome.runtime.openOptionsPage();
     chrome.tabs.create({'url': chrome.runtime.getURL('optionsPage/options.html')});
@@ -39,14 +45,38 @@ connectButtons = function() {
     optionsButton.on('click', openOptionsPage);
     var statisticsButton = $('#statisticsBtn');
     statisticsButton.on('click', redirectToStatistics);
-    var loginButton = $('#loginBtn');
-    loginButton.on('click', redirectToLogin);
 };
 
+connectLogin = function () {
+    console.log('connectLogin');
+    $('#sessionBtn').html('Login page');
+    $('#sessionBtn').off('click',  logout);
+    $('#sessionBtn').on('click', redirectToLogin);
+}
+
+connectLogout = function () {
+    console.log('connectLogout');
+    $('#sessionBtn').html('Logout');
+    $('#sessionBtn').off('click',  redirectToLogin);
+    $('#sessionBtn').on('click', logout);
+}
+
+checkLoginStatus = function () {
+    auth.checkSessionAuthenticity().then( function () {
+        if (auth.sessionAuthenticated) {
+            //logout button active
+            connectLogout();
+        } else {
+            //login button active
+            connectLogin();
+        }
+    }, function () {
+        //login button active
+        connectLogin();
+    })
+}
+
+// $('body').on('load', checkLoginStatus);
+
 connectButtons();
-
-
-
-
-
-
+checkLoginStatus();

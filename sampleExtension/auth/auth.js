@@ -2,15 +2,14 @@
 function Auth() {
     var self = this;
 
-    this.apiUrl = "https://zeeguu.unibe.ch/api";
     this.loginUrl = "/session";
-    this.signinUrl = "/add_user";
     this.loginAnonUrl = "/get_anon_session";
     this.signinAnonUrl = "/add_anon_user";
     this.validateUrl = "/validate";
     this.logoutUrl = "/logout_session";
 
     this.session = null;
+    this.sessionAuthenticated = false;
 
     this.loginAnon = function(username, password) {
         //caller has responsibility to set auth.session to the returned value
@@ -44,9 +43,24 @@ function Auth() {
 
     this.logout = function(){
         var url = self.logoutUrl + "?session="+self.session;
-        this.session = null;
+        self.session = null;
+        self.sessionAuthenticated = false;
         return api.getRequest(url, "");
     };
+
+    this.checkSessionAuthenticity = function () {
+        return self.validate().then(function (response) {
+            if (response !== "OK") {
+                self.setSession(null);
+                self.sessionAuthenticated = false;
+            } else {
+                self.sessionAuthenticated = true;
+            }
+        }, function (error) {
+            self.setSession(null);
+            self.sessionAuthenticated = false;
+        });
+    }
 
     this.getSession = function(){
         if(self.session != null){
@@ -63,6 +77,7 @@ function Auth() {
             self.session = session;
         }
     };
+
 }
 
 var auth = new Auth();
