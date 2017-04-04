@@ -24,7 +24,7 @@
 
   "background": {
     "scripts": [
-      "jquery/jquery-1.10.2.js",
+      "dependencies/jquery/jquery-1.10.2.js",
       "constants.js",
       "modules/urlFormatter.js",
       "modules/storage.js",
@@ -42,8 +42,7 @@
   "content_scripts": [
     {
       "matches" : ["https://zeeguu.herokuapp.com/get-ex?*"],
-      "css": ["jquery/jquery-ui.css"],
-      "js" : ["jquery/jquery-1.10.2.js",
+      "js" : ["dependencies/jquery/jquery-1.10.2.js",
               "constants.js",
               "modules/storage.js",
               "classes/UserSettings.js",

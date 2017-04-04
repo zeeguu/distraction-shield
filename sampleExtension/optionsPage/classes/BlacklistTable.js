@@ -7,21 +7,24 @@ function BlacklistTable (html_element) {
         this.table.append(tableRow);
     };
 
+    this.getSelected = function() {
+        return this.table.find('.highlight');
+    };
+
     this.removeFromTable = function (html_item) {
         html_item.remove();
     };
 
-    /* -- Deprecated -- */
-    // this function makes the passed table single row selection only
-    // this.enableTableSelection = function () {
-    //     this.table.on('click', 'tr', function () {
-    //         var row = $(this);
-    //         if (row.hasClass('selected'))
-    //             row.removeClass('selected');
-    //         else
-    //             row.addClass('selected').siblings().removeClass('selected');
-    //     });
-    // };
+    //this function makes the passed table single row selection only
+    this.enableTableSelection = function () {
+        this.table.on('click', 'tr', function () {
+            var row = $(this);
+            if (row.hasClass('highlight'))
+                row.removeClass('highlight');
+            else
+                row.addClass('highlight').siblings().removeClass('highlight');
+        });
+    };
 
     // set functionality for all checkboxes found within the html_table
     this.setCheckboxFunction = function () {
@@ -60,6 +63,7 @@ function BlacklistTable (html_element) {
 
     this.setCheckboxFunction();
     this.setDeleteButtonFunction();
+    this.enableTableSelection();
 }
 
 

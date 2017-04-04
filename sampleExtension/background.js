@@ -7,7 +7,7 @@ var localSettings = new UserSettings();
 /* --------------- ------ setter for local variables ------ ---------------*/
 
 setLocalSettings = function(newSettings) {
-    localSettings = newSettings;
+    localSettings.copySettings(newSettings);
 };
 
 setLocalBlacklist = function(newList) {

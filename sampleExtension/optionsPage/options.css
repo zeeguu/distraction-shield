@@ -1,9 +1,6 @@
 body {
-    font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-    font-size: 100%;
-    padding-top: 30px;
-    /*background-color: #FFFBED;*/
-    /*width:620px;*/
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 #addUrlDiv {
@@ -11,10 +8,11 @@ body {
 }
 
 /* ---------- ---------- table ---------- ---------- */
-.selected {
-    background-color: #3297FD;
-    color: #FFF;
+
+.highlight {
+    background-color: lightskyblue;
 }
+
 
 .pageTitle {
     white-space: nowrap;
@@ -23,11 +21,6 @@ body {
 }
 
 /* ---------- ---------- Slider ---------- ---------- */
-
-.sliderColumn {
-    /*float:left;*/
-    /*width:100px;*/
-}
 
 .amountColumn {
     overflow:hidden;
