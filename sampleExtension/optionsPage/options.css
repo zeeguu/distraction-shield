@@ -1,12 +1,10 @@
-body {
-    padding-top: 15px;
-    padding-bottom: 15px;
-}
-
 #addUrlDiv {
     margin-bottom: 15px;
 }
 
+.page-header {
+    text-align:center;
+}
 /* ---------- ---------- table ---------- ---------- */
 
 .highlight {
