@@ -5,6 +5,7 @@
 .page-header {
     text-align:center;
 }
+
 /* ---------- ---------- table ---------- ---------- */
 
 .highlight {
@@ -51,4 +52,3 @@ input[type=range]::-webkit-slider-thumb {
     cursor: pointer;
     -webkit-appearance: none;
 }
-
