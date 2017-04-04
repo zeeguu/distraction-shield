@@ -2,38 +2,27 @@
 /* -------------------- TurnOff slider -------------------- */
 function TurnOffSlider(sliderDivID) {
     var self = this;
-    this.slider = new GreenToRedSlider('#turnOff-slider');
-    this.offButton = $(sliderDivID).children().children('#offBtn');
     this.selectedTime = 10;
+    this.slider = new GreenToRedSlider('#turnOff-slider', function(value) { self.selectedTime = parseInt(value); });
+    this.offButton = $(sliderDivID).find('#offBtn');
 
     this.toggleShowOffMessage = function() {
         if (settings_object.getState() == "Off") {
-            appendHtmlItemTo(this.createHtmlOffMessage(), this.getParentDiv());
+            self.slider.value.html(self.createHtmlOffMessage());
+            self.slider.sliderDiv.children('#turnOff-slider-range').css('visibility', 'hidden').css('display', 'none');
         } else {
-            this.getParentDiv().children('#offTillTimestamp').remove();
+            self.slider.value.html(self.slider.calculateHours(self.selectedTime));
+            self.slider.sliderDiv.children('#turnOff-slider-range').css('visibility', 'visible').css('display', 'initial');
         }
     };
 
     this.formatDate = function(date) {
         var arr = date.toString().split(" ");
-        arr.pop();
-        arr.pop();
-        return arr.join(" ");
-    };
-
-    this.getParentDiv = function() {
-        return this.offButton.parent();
+        return arr.splice(0, 5).join(" ");
     };
 
     this.createHtmlOffMessage = function() {
-        var message = "Turned off until: " + this.formatDate(settings_object.getOffTill());
-        return "<div id='offTillTimestamp'>" + "<br>" + message + "</div>";
-    };
-
-    this.setSliderValueFunc = function() {
-        this.slider.saveValue = function(value) {
-            self.selectedTime = parseInt(value);
-        };
+        return "Turned off until: " + this.formatDate(settings_object.getOffTill());
     };
 
     this.setSliderHourFunc = function() {
@@ -43,9 +32,9 @@ function TurnOffSlider(sliderDivID) {
             if (minutes < 10) {
                 minutes = "0" + minutes;
             }
-            var returnVal = hours + ":" + minutes + " hours.";
+            var returnVal = "for " + hours + ":" + minutes + " hours.";
             if (val == MAX_TURN_OFF_TIME) {
-                returnVal = "the rest of the day";
+                returnVal = "for the rest of the day";
             }
             return returnVal;
         };
@@ -65,13 +54,11 @@ function TurnOffSlider(sliderDivID) {
         self.offButton.text("Turn " + settings_object.getNotState());
     };
 
-    this.init = function() {
-        if (settings_object.getState() == "Off") {
-            appendHtmlItemTo(this.createHtmlOffMessage(), this.getParentDiv());
-        }
+    this.init = function () {
+        this.slider.value.html(this.slider.calculateHours(this.slider.inputRange.val()));
+        this.toggleShowOffMessage();
         this.offButton.text("Turn " + settings_object.getNotState());
         this.slider.inputRange[0].max = MAX_TURN_OFF_TIME;
-        this.setSliderValueFunc();
         this.setSliderHourFunc();
         connectButton(this.offButton, this.turnOff);
     };
