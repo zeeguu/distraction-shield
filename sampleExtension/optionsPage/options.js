@@ -1,69 +1,79 @@
 /**
- * This file contains the core functions of the options page. this has the local variables,
- * initializes everything javascript related and connects the syncStorage, connectDataToHtml and HtmlFunctionality
- * to oe smoothly running file. Besides the initialization it contains the functions to manipulate the local variables
+ * This file contains the core functions of the options page. this has all the local variables,
+ * initializes everything javascript related and connects the syncStorage,
+ * connectDataToHtml, blacklistTable and HtmlFunctionality
+ * to one smoothly running file. Besides the initialization it contains the functions to manipulate the local variables
  * found here
  */
 
 // Log console messages to the background page console instead of the content page.
 // var console = chrome.extension.getBackgroundPage().console;
 
-//Local variables that holds the list of links and interceptCoun and variables ter.
-var links = [];
+//Local variables that hold the html elements
+var html_txtFld = $('#textFld');
+var html_intCnt = $('#iCounter');
+var html_saveButton = $('#saveBtn');
+var modeGroup = "modeOptions";
+
+var blacklistTable;
+var intervalSlider;
+var turnOffSlider;
+
+//Local variables that hold all necessary data.
+var settings_object = new UserSettings();
+var blacklist = new BlockedSiteList();
 var interceptionCounter = 0;
-var mode = "";
 
 /* -------------------- Initialization of options --------------------- */
 
 //Initialize HTML elements and set the local variables
 initOptionsPage = function() {
-    chrome.storage.sync.get(["tds_blacklist", "tds_interceptCounter", "tds_mode"], function(output) {
-        console.log('chrome.storage.sync.get(["tds_blacklist", "tds_interceptCounter", "tds_mode"] happened');//TODO remove
-        if (handleRuntimeError()) {
-            setLocalVariables(output);
-            connectLocalDataToHtml(); /* bottom of connectDataToHtml.js */
-            connectHtmlFunctionality(); /* bottom of htmlFunctionality.js */
-        }
+    storage.getAll(function(output) {
+        setLocalVariables(output);
+        connectHtmlFunctionality();
+        connectLocalDataToHtml();
     });
 };
 
+//Retrieve data from storage and store in local variables
 setLocalVariables = function(storage_output) {
-    console.log("setLocalVariables");//TODO remove
-    console.log("list:");//TODO remove
-    console.log(JSON.stringify(links, null, 4)); //TODO remove
-    links = storage_output.tds_blacklist;
-    console.log(JSON.stringify(links, null, 4)); //TODO remove
+    blacklist.addAllToList(storage_output.tds_blacklist);
+    settings_object.copySettings(storage_output.tds_settings);
     interceptionCounter = storage_output.tds_interceptCounter;
-    mode = storage_output.tds_mode;
 };
 
-/* -------------------- Manipulate storage ------------------- */
-
-updateStorageBlacklist = function() {
-    setStorageBlacklistWithCallback(links, updateBackgroundPage);
+// functionality from htmlFunctionality, blacklist_table and slider file
+connectHtmlFunctionality = function() {
+    blacklistTable = new BlacklistTable($('#blacklistTable'));
+    turnOffSlider = new TurnOffSlider('#turnOff-slider-div');
+    initIntervalSlider();
+    initModeSelection(modeGroup);
+    connectButton(html_saveButton, saveNewUrl);
+    setKeyPressFunctions();
 };
 
-/* -------------------- Manipulate background ------------------- */
-
-updateBackgroundPage = function() {
-    var bg = chrome.extension.getBackgroundPage();
-    bg.retrieveBlockedSites(bg.replaceListener);
+// functionality from connectDataToHtml file
+connectLocalDataToHtml = function() {
+    loadHtmlInterceptCounter(interceptionCounter, html_intCnt);
+    loadHtmlBlacklist(blacklist, blacklistTable);
+    loadHtmlMode(settings_object.getMode(), modeGroup);
+    loadHtmlInterval(settings_object.getInterceptionInterval(), intervalSlider);
 };
 
 /* -------------------- Manipulate local variables ------------------- */
 
-removeFromLocalLinks = function(html_item) {
-    var urlkey = links.indexOf(html_item.data('blockedSite'));
-    links.splice(urlkey, 1);
+removeFromLocalBlacklist = function(html_item) {
+    var blockedSiteToDelete = html_item.data('blockedSite');
+    blacklist.removeFromList(blockedSiteToDelete);
 };
 
-addToLocalLinks = function(blockedSite_item) {
-    links.push(blockedSite_item);
+addToLocalBlacklist = function(blockedSite_item) {
+    return blacklist.addToList(blockedSite_item);
 };
 
 /* -------------------- -------------------------- -------------------- */
 
 //Run this when the page is loaded.
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function() {
     initOptionsPage();
 });

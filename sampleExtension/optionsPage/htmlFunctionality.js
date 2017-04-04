@@ -1,65 +1,39 @@
 /**
- * This file contains the specific functionality for the options and its elements
- * This file holds all javascript functions used by the html_elements like buttons and tables.
+ * This file contains the specific functionality for the options and some of its elements
+ * This file holds all javascript functions used by the html_elements like buttons and fields.
  * Here things like, onClicked or onChanged events are monitored
- * The last method: connectHtmlFunctionality is called from the options.js file upon initialization.
  */
-
-//Local variables that hold the html elements
-var html_table = $('#blacklistTable');
-var html_txtFld = $('#textFld');
-var html_intCnt = $('#iCounter');
-var html_saveButton = $('#saveBtn');
-var html_deleteButton = $('#deleteBtn');
-var modeGroup = "modeOptions";
-// var bg = chrome.extension.getBackgroundPage();
-//
-// // Log console messages to the background page console instead of the content page.
-// var console = bg.console;
-
-/* -------------------- General functions concerning html_objects -------------------- */
 
 appendHtmlItemTo = function(html_child, html_parent) {
     html_parent.append(html_child);
 };
 
-removeFromHtml = function(html_item) {
-    html_item.remove();
+removeBlockedSiteFromAll = function(html_item) {
+    removeFromLocalBlacklist(html_item);
+    blacklistTable.removeFromTable(html_item);
+    synchronizer.syncBlacklist(blacklist);
 };
 
-/* -------------------- Logic for the html buttons -------------------- */
-
-removeLinkFromAll = function(html_item) {
-    removeFromLocalLinks(html_item);
-    removeFromHtml(html_item);
-    updateStorageBlacklist();
+addBlockedSiteToAll = function(newItem) {
+    if (addToLocalBlacklist(newItem)) {
+        blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
+        synchronizer.syncBlacklist(blacklist);
+    }
 };
 
-addLinkToAll = function(newUrl) {
-    newItem = new BlockedSite(newUrl);
-    addToLocalLinks(newItem);
-    appendHtmlItemTo(generateHtmlTableRow(newItem), html_table);
-    updateStorageBlacklist();
-};
-
-saveButtonClick = function() {
-    var newurl = html_txtFld.val();
-    addLinkToAll(newurl);
-    html_txtFld.val('');
-};
-
-deleteButtonClick = function () {
-    var urlToDelete = html_table.find(".highlight");
-    removeLinkFromAll(urlToDelete);
-};
-
-submitWithEnter = function(html_elem) {
-    html_elem.keyup(function (event) {
-        var enterKeyID = 13;
-        if (event.keyCode == enterKeyID) {
-            saveButtonClick();
-        }
+createNewBlockedSite = function (newUrl) {
+    urlFormatter.getUrlFromServer(newUrl, function (url, title) {
+        newItem = new BlockedSite(url, title);
+        return addBlockedSiteToAll(newItem);
     });
+};
+
+/* -------------------- Button Click functions ----------------------- */
+
+saveNewUrl = function() {
+    var newUrl = html_txtFld.val();
+    createNewBlockedSite(newUrl);
+    html_txtFld.val('');
 };
 
 //Connect functions to HTML elements
@@ -67,79 +41,44 @@ connectButton = function(html_button, method) {
     html_button.on('click', method);
 };
 
+/* -------------------- Keypress events ----------------------- */
 
-/* -------------------- Logic for the table -------------------- */
-
-//Returns an html table row object
-generateHtmlTableRow = function(blockedSite) {
-    console.log("generateHtmlTableRow");//TODO remove
-    var tableRow =
-        $("<tr class='table-row' >" +
-            "<td>"+blockedSite.icon+"</td>" +
-            "<td>"+blockedSite.name+"</td>" +
-            "<td>"+ "<input class='checkbox-toggle' type=\"checkbox\" name=\"state\">" + "</td>" +
-            "</tr>");
-    tableRow.find('.checkbox-toggle').prop('checked', blockedSite.checkboxVal);
-    //add the actual object to the html_element
-    tableRow.data('blockedSite', blockedSite);
-    return tableRow;
+setKeyPressFunctions = function () {
+    submitOnKeyPress(html_txtFld);
+    deleteOnKeyPress(blacklistTable);
 };
 
-// this function makes the passed table single row selection only
-enableTableSelection = function (html_table) {
-    html_table.on('click', 'tbody tr', function () {
-        $(this).addClass('highlight').siblings().removeClass('highlight');
+submitOnKeyPress = function (html_elem) {
+    html_elem.keyup(function (event) {
+        if (event.keyCode == KEY_ENTER) {
+            saveNewUrl();
+        }
     });
 };
 
-sortHtmlOnChecked = function () {
-    var rows = html_table.find('tr').get();
-    rows.sort(function (checkboxA, checkboxB) {
-        var valueOfA = $(checkboxA).find('.checkbox-toggle')["0"].checked;
-        var valueOfB = $(checkboxB).find('.checkbox-toggle')["0"].checked;
-        if (valueOfA && !valueOfB)
-            return -1;
-        if (!valueOfA && valueOfB)
-            return 1;
-        return 0;
-    });
-    $.each(rows, function (index, row) {
-        html_table.append(row);
-    });
-};
-
-// set one function for all checkboxes found within the passed html_item, this items needs to be selectable
-// and needs to have a selected attribute
-setCheckboxFunction = function (html_selectable) {
-    html_selectable.on('change', 'input[type="checkbox"]', function () {
-        //Clicking the checkbox automatically selects the row, so we use this to our advantage
-        var selected_row = html_selectable.find('.highlight');
-        var selected_blockedSite = selected_row.data('blockedSite');
-        selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
-        //no need to set links cause it holds pointers so they get updated automatically
-        updateStorageBlacklist();
-        // sortHtmlOnChecked(html_selectable);
+deleteOnKeyPress = function (blacklistTable) {
+    $('html').keyup(function (e) {
+        if (e.keyCode == KEY_DELETE) {
+            blacklistTable.removeSelected();
+        }
     });
 };
 
 /* -------------------- Logic for the mode selection -------------------- */
 
-setRadioButtonFunction = function(buttonGroup) {
+initModeSelection = function(buttonGroup) {
     $("input[name=" + buttonGroup + "]").change( function(){
-        var pickedMode = $("input[name=" + buttonGroup + "]:checked").val();
-        setStorageMode(pickedMode);
+        settings_object.setMode($("input[name=" + buttonGroup + "]:checked").val());
+        synchronizer.syncSettings(settings_object);
     });
 };
 
-/* -------------------- Main function that calls the rest -------------------- */
+/* -------------------- Interval slider -------------------- */
 
-connectHtmlFunctionality = function() {
-
-    console.log("connectHtmlFunctionality");//TODO remove
-    enableTableSelection(html_table);
-    setCheckboxFunction(html_table);
-    setRadioButtonFunction(modeGroup);
-    connectButton(html_saveButton, saveButtonClick);
-    connectButton(html_deleteButton, deleteButtonClick);
-    submitWithEnter(html_txtFld);
+initIntervalSlider = function() {
+    intervalSlider = new GreenToRedSlider('#interval-slider');
+    intervalSlider.saveValue = function(value) {
+        settings_object.setInterceptionInterval(parseInt(value));
+        synchronizer.syncSettings(settings_object);
+    }
 };

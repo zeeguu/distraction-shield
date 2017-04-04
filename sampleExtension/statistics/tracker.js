@@ -14,7 +14,7 @@ function Tracker() {
         self.trs = trackerStorage;
 
         // Fire alarm every second.
-        setInterval(self.fireAlarm, 1000);
+        setInterval(self.fireAlarm, 3000);
 
         // When the user does not input anything for 15 seconds, set the state to idle.
         chrome.idle.setDetectionInterval(15);
@@ -26,7 +26,7 @@ function Tracker() {
         if(!self.idle){
             self.getCurrentTab();
             if(self.compareUrlToRegex(self.zeeguuRegex, self.tabActive)){
-                self.trs.incrementDayStat(1);
+                self.trs.incrementDayStat(3);
             }
         }
     };
