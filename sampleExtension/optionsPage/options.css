@@ -13,6 +13,9 @@ body {
     background-color: lightskyblue;
 }
 
+.table-striped>tbody>tr:nth-of-type(odd).highlight {
+        background-color: lightskyblue;
+}
 
 .pageTitle {
     white-space: nowrap;
