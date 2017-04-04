@@ -77,7 +77,6 @@ initModeSelection = function(buttonGroup) {
     });
 };
 
-
 /* -------------------- Interval slider -------------------- */
 
 initIntervalSlider = function() {
