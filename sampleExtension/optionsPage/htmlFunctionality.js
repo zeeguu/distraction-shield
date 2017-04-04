@@ -49,6 +49,7 @@ connectButton = function(html_button, method) {
 
 setKeyPressFunctions = function () {
     submitOnKeyPress(html_txtFld);
+    deleteOnKeyPress(blacklistTable);
 };
 
 submitOnKeyPress = function (html_elem) {
@@ -59,14 +60,14 @@ submitOnKeyPress = function (html_elem) {
     });
 };
 
-/* -- Deprecated -- */
-// deleteOnKeyPress = function (blacklistTable) {
-//     $('html').keyup(function (e) {
-//         if (e.keyCode == KEY_DELETE) {
-//             blacklistTable.removeSelected();
-//         }
-//     });
-// };
+deleteOnKeyPress = function (blacklistTable) {
+    $('html').keyup(function (e) {
+        if (e.keyCode == KEY_DELETE) {
+            var html = blacklistTable.getSelected();
+            removeBlockedSiteFromAll(html);
+        }
+    });
+};
 
 /* -------------------- Logic for the mode selection -------------------- */
 

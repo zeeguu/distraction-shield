@@ -1,32 +1,34 @@
 <!doctype html>
 
 <html>
-<head>
-    <title>Options page for The Distraction Shield</title>
-    <link rel="stylesheet" type="text/css" href="options.css">
-    <link rel="stylesheet" type="text/css" href="../dependencies/bootstrap/css/bootstrap.min.css">
-</head>
+    <head>
+        <title>Options page for The Distraction Shield</title>
+        <link rel="stylesheet" type="text/css" href="../dependencies/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="options.css">
+    </head>
 
-<body>
-<div class="container">
-    <div id="description" class="row">
-        <div class="panel panel-default col-md-offset-2 col-md-8">
-            Modify the extension to suit your needs here.
-            Also have a look at some of the <a target=_blank href="../statisticsPage/statistics.html">statistics</a>.
-            Interceptions made since installation: <span id="iCounter"></span> <br> <br>
+    <body>
+        <div class="page-header">
+            <h1>The Distraction Shield</h1>
         </div>
-    </div>
-
-    <div id="modeWrapper" class="row" >
-        <div class="panel panel-default col-md-offset-2 col-md-8">
-            <div id="modeRadioDiv" class="col-md-2">
-                Pick a mode:
-                <form id="modeSelector" name="modePicker">
-                    <input type="radio" name="modeOptions" value="lazy" checked> Lazy<br>
-                    <input type="radio" name="modeOptions" value="pro"> Pro
-                </form>
+        <div class="container">
+            <div id="description" class="row">
+                <div class="panel panel-default col-md-offset-2 col-md-8">
+                    Modify the extension to suit your needs here.
+                    Also have a look at some of the <a target=_blank href="../statisticsPage/statistics.html">statistics</a>.
+                    Interceptions made since installation: <span id="iCounter"></span> <br> <br>
+                </div>
             </div>
 
+            <div id="modeWrapper" class="row" >
+                <div class="panel panel-default col-md-offset-2 col-md-8">
+                    <div id="modeRadioDiv" class="col-md-2">
+                        Pick a mode:
+                        <form id="modeSelector" name="modePicker">
+                            <input type="radio" name="modeOptions" value="lazy" checked> Lazy<br>
+                            <input type="radio" name="modeOptions" value="pro"> Pro
+                        </form>
+                    </div>
             <div id="interval-slider-div" class="col-md-10">
                 Set time interval between intercepts:
                 <div id="interval-slider" class="range-slider">
