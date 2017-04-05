@@ -22,16 +22,13 @@ redirectToStatistics = function() {
 
 redirectToLogin = function() {
     chrome.tabs.create({'url': chrome.runtime.getURL('loginPage/login.html')});
-    //return {redirectUrl: "://statisticsPage/statistics.html/"};
 };
 
 logout = function () {
     auth.logout();
-}
+};
 
 openOptionsPage = function() {
-    // chrome.runtime.openOptionsPage();
-
     chrome.tabs.create({'url': chrome.runtime.getURL('optionsPage/options.html')});
 };
 
@@ -46,18 +43,18 @@ connectButtons = function() {
 };
 
 connectLogin = function () {
-    console.log('connectLogin');
-    $('#sessionBtn').html('Login page');
-    $('#sessionBtn').off('click',  logout);
-    $('#sessionBtn').on('click', redirectToLogin);
-}
+    var sessionBtn =$('#sessionBtn');
+    sessionBtn.html('Login page');
+    sessionBtn.off('click',  logout);
+    sessionBtn.on('click', redirectToLogin);
+};
 
 connectLogout = function () {
-    console.log('connectLogout');
-    $('#sessionBtn').html('Logout');
-    $('#sessionBtn').off('click',  redirectToLogin);
-    $('#sessionBtn').on('click', logout);
-}
+    var sessionBtn =$('#sessionBtn');
+    sessionBtn.html('Logout');
+    sessionBtn.off('click',  redirectToLogin);
+    sessionBtn.on('click', logout);
+};
 
 checkLoginStatus = function () {
     auth.checkSessionAuthenticity().then( function () {
@@ -72,9 +69,7 @@ checkLoginStatus = function () {
         //login button active
         connectLogin();
     })
-}
-
-// $('body').on('load', checkLoginStatus);
+};
 
 connectButtons();
 checkLoginStatus();

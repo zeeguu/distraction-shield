@@ -1,33 +1,37 @@
+//Adhere to this structure in the html:
+//sliderID = "variableName-slider"
+//sliderRange = "variableName-slider-range"
+//sliderValue = "variableName-slider-value"
 
 function GreenToRedSlider(sliderID, saveFunction) {
     var self = this;
 
     this.saveValue = saveFunction;
     this.sliderDiv = $(sliderID);
-    this.inputRange = $(this.sliderDiv.children()[0]);
-    this.value = $(this.sliderDiv.children()[1]);
+    this.sliderRange = $(this.sliderDiv.children(sliderID + "-range"));
+    this.sliderValue = $(this.sliderDiv.children(sliderID + "-value"));
 
-    this.inputRange.on('input', function () {
-        var inputValue = self.inputRange.val();
-        self.value.html(self.calculateHours(inputValue));
+    this.sliderRange.on('input', function () {
+        var inputValue = self.sliderRange.val();
+        self.sliderValue.html(self.calculateHours(inputValue));
         self.updateColor(inputValue);
     });
 
-    this.inputRange.on('mouseup', function () {
-        var inputValue = self.inputRange.val();
+    this.sliderRange.on('mouseup', function () {
+        var inputValue = self.sliderRange.val();
         self.saveValue(inputValue);
     });
 
     this.updateColor = function(inputValue) {
-        var maxSliderVal = (this.inputRange[0]).max;
+        var maxSliderVal = (this.sliderRange[0]).max;
         var redVal = Math.round(inputValue / maxSliderVal * 255);
         var greenVal = 255 - redVal;
-        this.inputRange.css('background', 'rgb(' + redVal + ', ' + greenVal + ',0)');
+        this.sliderRange.css('background', 'rgb(' + redVal + ', ' + greenVal + ',0)');
     };
 
     this.setValue = function(val) {
-        this.inputRange.val(val);
-        this.value.html(self.calculateHours(val));
+        this.sliderRange.val(val);
+        this.sliderValue.html(self.calculateHours(val));
         this.updateColor(val);
     };
 

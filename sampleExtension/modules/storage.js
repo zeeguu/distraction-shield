@@ -42,17 +42,7 @@ function SyncStorage() {
 
     this.setBlacklist = function(blockedSiteList) {
         var serializedList = serializeBlockedSiteList(blockedSiteList);
-        chrome.storage.sync.set({"tds_blacklist": serializedList}, function() {
-            handleRuntimeError();
-        });
-    };
-
-    this.setBlacklistWithCallback = function(blockedSiteList, callback) {
-        var serializedList = serializeBlockedSiteList(blockedSiteList);
-        chrome.storage.sync.set({"tds_blacklist": serializedList}, function() {
-            handleRuntimeError();
-            return callback();
-        });
+        chrome.storage.sync.set({"tds_blacklist": serializedList}, handleRuntimeError);
     };
 
     /* ---------------- Interception Counter --------------- */
@@ -66,9 +56,7 @@ function SyncStorage() {
     };
 
     this.setInterceptionCounter = function(number) {
-        chrome.storage.sync.set({"tds_interceptCounter": number}, function() {
-            handleRuntimeError();
-        });
+        chrome.storage.sync.set({"tds_interceptCounter": number}, handleRuntimeError);
     };
 
     //TODO for iteration 3 remove interceptioncounter integrate to statistics
@@ -84,9 +72,7 @@ function SyncStorage() {
         chrome.storage.sync.get("tds_interceptCounter", function(output) {
             var counter = output.tds_interceptCounter;
             counter++;
-            chrome.storage.sync.set({"tds_interceptCounter": counter}, function() {
-                handleRuntimeError();
-            });
+            chrome.storage.sync.set({"tds_interceptCounter": counter}, handleRuntimeError);
         });
     };
 
@@ -101,9 +87,7 @@ function SyncStorage() {
     };
 
     this.setInterceptDateList = function(dateList) {
-        chrome.storage.sync.set({"tds_interceptDateList": dateList}, function() {
-            handleRuntimeError();
-        });
+        chrome.storage.sync.set({"tds_interceptDateList": dateList}, handleRuntimeError);
     };
 
     /* ---------------- Settings Object --------------- */

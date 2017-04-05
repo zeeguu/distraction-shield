@@ -102,5 +102,4 @@ Module-Descriptions:
 	Used for doing the getrequests and finding the nice little urls that the dumb user gives as input.
 	This module is basically responsible for the fact that we can enter any url we can enter in the
 	url-bar and still be able to function every time. its split in another class but that one is
-	private to url_formatter, so therefore it is included.
-
+	private to url_formatter, so therefore it is included. ,.

@@ -42,13 +42,13 @@ setLocalVariables = function(storage_output) {
     interceptionCounter = storage_output.tds_interceptCounter;
 };
 
-// functionality from htmlFunctionality, blacklist_table and slider file
+// functionality from htmlFunctionality, blacklist_table and slider files
 connectHtmlFunctionality = function() {
-    blacklistTable = new BlacklistTable($('#blacklistTable'));
-    turnOffSlider = new TurnOffSlider('#turnOff-slider-div');
-    initIntervalSlider();
     initModeSelection(modeGroup);
+    initIntervalSlider();
+    blacklistTable = new BlacklistTable($('#blacklistTable'));
     connectButton(html_saveButton, saveNewUrl);
+    turnOffSlider = new TurnOffSlider('#turnOff-slider');
     setKeyPressFunctions();
 };
 
@@ -64,7 +64,7 @@ connectLocalDataToHtml = function() {
 
 removeFromLocalBlacklist = function(html_item) {
     var blockedSiteToDelete = html_item.data('blockedSite');
-    blacklist.removeFromList(blockedSiteToDelete);
+    return blacklist.removeFromList(blockedSiteToDelete);
 };
 
 addToLocalBlacklist = function(blockedSite_item) {
