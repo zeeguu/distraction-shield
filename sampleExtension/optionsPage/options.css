@@ -1,9 +1,35 @@
+body{
+    margin: 0 auto;
+    min-width:600px;
+}
+
 #addUrlDiv {
     margin-bottom: 15px;
 }
 
 .page-header {
     text-align:center;
+}
+
+/* ---------- ---------- options alignment ---------- ---------- */
+#modeWrapper {
+    width:100%;
+    overflow: auto;
+}
+
+#modeRadioDiv {
+    float:left;
+    width:30%;
+}
+
+#interval-slider-div {
+    width:70%;
+    overflow:hidden;
+}
+
+#turnOff-slider{
+    width:70%;
+    overflow:hidden;
 }
 
 /* ---------- ---------- table ---------- ---------- */

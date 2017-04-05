@@ -5,7 +5,6 @@ function BlockedSiteBuilder() {
 
     // this requires a callback since the getUrlFromServer is asynchronous
     this.createNewBlockedSite = function(newUrl, callback) {
-        console.log(callback);
         getUrl = urlFormatter.getUrlFromServer(newUrl, function(url, title) {
             console.log(callback);
             var bs = new BlockedSite(url, title);
