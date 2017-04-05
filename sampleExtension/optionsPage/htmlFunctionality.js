@@ -28,7 +28,8 @@ addBlockedSiteToAll = function(newItem) {
 
 createNewBlockedSite = function(newUrl) {
     urlFormatter.getUrlFromServer(newUrl, function(url, title) {
-        return new BlockedSite(url, title);
+        var bs=  new BlockedSite(url, title);
+        addBlockedSiteToAll(bs);
     });
 };
 
@@ -36,8 +37,7 @@ createNewBlockedSite = function(newUrl) {
 
 saveNewUrl = function() {
     var newUrl = html_txtFld.val();
-    var bs = createNewBlockedSite(newUrl);
-    addBlockedSiteToAll(bs);
+    createNewBlockedSite(newUrl);
     html_txtFld.val('');
 };
 
