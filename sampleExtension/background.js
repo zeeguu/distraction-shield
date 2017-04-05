@@ -45,12 +45,6 @@ retrieveInterceptDateList = function() {
 
 /* --------------- ------ Updating of variables ------ ---------------*/
 
-addToBlockedSites = function (newItem) {
-    blockedSiteBuilder.createNewBlockedSite(newUrl, blockedSites.addToList);
-    storage.setBlacklist(blockedSites);
-    replaceListener();
-};
-
 // This function adds the current time+date to the saved time+date list
 addToInterceptDateList = function() {
     var newDate = new Date().toDateString();
@@ -60,6 +54,14 @@ addToInterceptDateList = function() {
         interceptDateList.push(newDate);
     }
     storage.setInterceptDateList(interceptDateList);
+};
+
+addUrlToBlockedSites = function(unformattedUrl) {
+    blockedSiteBuilder.createNewBlockedSite(unformattedUrl, function(newBS) {
+        if (blockedSites.addToList(newBS)) {
+            storage.setBlacklist(blockedSites);
+        }
+    });
 };
 
 /* --------------- ------ webRequest functions ------ ---------------*/

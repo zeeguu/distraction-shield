@@ -10,7 +10,7 @@ saveCurrentPageToBlacklist = function() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         var activeTab = arrayOfTabs[0];
         var activeTabUrl = activeTab.url;
-        blockedSiteBuilder.createNewBlockedSite(activeTabUrl, bg.addToBlockedSites);   
+        bg.addUrlToBlockedSites(activeTabUrl);
         window.close();
     });
 };
@@ -19,16 +19,16 @@ redirectToStatistics = function() {
     chrome.tabs.create({'url': chrome.runtime.getURL('statisticsPage/statistics.html')});
 };
 
+openOptionsPage = function() {
+    chrome.tabs.create({'url': chrome.runtime.getURL('optionsPage/options.html')});
+};
+
 redirectToLogin = function() {
     chrome.tabs.create({'url': chrome.runtime.getURL('loginPage/login.html')});
 };
 
 logout = function () {
     auth.logout();
-};
-
-openOptionsPage = function() {
-    chrome.tabs.create({'url': chrome.runtime.getURL('optionsPage/options.html')});
 };
 
 //Connect functions to HTML elements

@@ -29,6 +29,7 @@
       "modules/urlFormatter.js",
       "modules/storage.js",
       "modules/synchronizer.js",
+      "modules/blockedSiteBuilder.js",
       "classes/BlockedSite.js",
       "classes/BlockedSiteList.js",
       "classes/UserSettings.js",

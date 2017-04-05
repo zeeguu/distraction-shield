@@ -4,11 +4,11 @@ function BlockedSiteBuilder() {
     var self = this;
 
     // this requires a callback since the getUrlFromServer is asynchronous
-    this.createNewBlockedSite = function (newUrl, callback) {
-        console.log("success");
-        getUrl = urlFormatter.getUrlFromServer(newUrl, function (url, title) {
+    this.createNewBlockedSite = function(newUrl, callback) {
+        console.log(callback);
+        getUrl = urlFormatter.getUrlFromServer(newUrl, function(url, title) {
+            console.log(callback);
             var bs = new BlockedSite(url, title);
-            console.log(title);
             callback(bs);
         });
     };
