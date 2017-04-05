@@ -1,6 +1,7 @@
 body{
     margin: 0 auto;
     min-width:600px;
+    min-height:445px;
 }
 
 #addUrlDiv {

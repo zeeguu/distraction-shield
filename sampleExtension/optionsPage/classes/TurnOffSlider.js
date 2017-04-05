@@ -3,7 +3,7 @@ function TurnOffSlider(sliderID) {
     var self = this;
     this.selectedTime = 10;
     this.slider = new GreenToRedSlider(sliderID, function(value) { self.selectedTime = parseInt(value); });
-    this.offButton = $(this.slider.sliderDiv.children(sliderID + "-offBtn"));
+    this.offButton = $("#turnOff-slider-offBtn");
 
     this.toggleShowOffMessage = function() {
         var sl = self.slider;
