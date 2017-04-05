@@ -8,8 +8,8 @@ function GreenToRedSlider(sliderID, saveFunction) {
 
     this.saveValue = saveFunction;
     this.sliderDiv = $(sliderID);
-    this.sliderRange = $(this.sliderDiv.children(sliderID + "-range"));
-    this.sliderValue = $(this.sliderDiv.children(sliderID + "-value"));
+    this.sliderRange = $(this.sliderDiv.find(sliderID + "-range"));
+    this.sliderValue = $(this.sliderDiv.find(sliderID + "-value"));
 
     this.sliderRange.on('input', function () {
         var inputValue = self.sliderRange.val();

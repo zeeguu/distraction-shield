@@ -3,15 +3,17 @@ function TurnOffSlider(sliderID) {
     var self = this;
     this.selectedTime = 10;
     this.slider = new GreenToRedSlider(sliderID, function(value) { self.selectedTime = parseInt(value); });
-    this.offButton = $("#turnOff-slider-offBtn");
+    this.offButton = $(this.slider.sliderDiv.find(sliderID + "-offBtn"));
 
     this.toggleShowOffMessage = function() {
         var sl = self.slider;
         if (settings_object.getState() == "Off") {
             sl.sliderValue.html(self.createHtmlOffMessage());
+            sl.sliderValue.parent().removeClass('col-md-3').addClass('col-md-10');
             sl.sliderRange.css('visibility', 'hidden').css('display', 'none');
         } else {
             sl.sliderValue.html(sl.calculateHours(self.selectedTime));
+            sl.sliderValue.parent().removeClass('col-md-10').addClass('col-md-3');
             sl.sliderRange.css('visibility', 'visible').css('display', 'initial');
         }
     };

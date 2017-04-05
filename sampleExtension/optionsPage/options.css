@@ -1,7 +1,6 @@
 body{
     margin: 0 auto;
-    min-width:600px;
-    min-height:445px;
+    min-width:1000px;
 }
 
 #addUrlDiv {
@@ -13,10 +12,6 @@ body{
 }
 
 /* ---------- ---------- options alignment ---------- ---------- */
-#modeWrapper {
-    width:100%;
-    overflow: auto;
-}
 
 #modeRadioDiv {
     float:left;
@@ -28,9 +23,21 @@ body{
     overflow:hidden;
 }
 
-#turnOff-slider{
-    width:70%;
-    overflow:hidden;
+/* ---------- ---------- TurnOff Slider ---------- ---------- */
+
+#offBtnDiv{
+    margin-top:4px;
+    margin-bottom:4px;
+}
+
+#offRanDiv{
+    margin-top:3px;
+    margin-bottom:3px;
+}
+
+#offValDiv{
+    margin-top:11px;
+    margin-left:-20px;
 }
 
 /* ---------- ---------- table ---------- ---------- */

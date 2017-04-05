@@ -17,7 +17,7 @@ function BlacklistTable (html_element) {
 
     //this function makes the passed table single row selection only
     this.enableTableSelection = function () {
-        this.table.on('click', 'tr', function () {
+        this.table.on('click', '.table-row', function () {
             var row = $(this);
             if (row.hasClass('highlight'))
                 row.removeClass('highlight');
