@@ -66,7 +66,9 @@ function UserSettings () {
     };
 
     this.turnExtensionBackOn = function () {
-        self.turnOn();
+        if(self.getState() == "Off") {
+            self.turnOn();
+        }
     };
 
     //Private method

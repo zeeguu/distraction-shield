@@ -16,7 +16,7 @@
                 <div class="panel panel-default col-md-offset-2 col-md-8">
                     Modify the extension to suit your needs here.
                     Also have a look at some of the <a target=_blank href="../statisticsPage/statistics.html">statistics</a>.
-                    Interceptions made since installation: <span id="iCounter"></span> <br> <br>
+                    Interceptions made since installation: <span id="iCounter"></span> <br>
                 </div>
             </div>
 
@@ -29,16 +29,16 @@
                             <input type="radio" name="modeOptions" value="pro"> Pro
                         </form>
                     </div>
-            <div id="interval-slider-div" class="col-md-10">
-                Set time interval between intercepts:
-                <div id="interval-slider" class="range-slider">
-                    <input id="interval-slider-range" class="range-slider__range" type="range" value="15" min="1" max="90"
-                           step="1">
-                    <span class="range-slider__value">00:15</span>
+                    <div id="interval-slider-div" class="col-md-10">
+                        Set time interval between intercepts:
+                        <div id="interval-slider" class="range-slider">
+                            <input id="interval-slider-range" class="range-slider__range" type="range" value="15" min="1" max="90"
+                                   step="1">
+                            <span id="interval-slider-value" class="range-slider__value">00:15</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
     <div class="row">
         <div class="col-md-offset-2 col-md-8">
@@ -64,12 +64,10 @@
 
     <div class="row">
         <div id="turnOff-slider-div" class="col-md-offset-2 col-md-8">
-            <div class="col-md-2">
-                <button id="offBtn" class="btn btn-default" type="button">Turn Off</button>
-            </div>
-            <div id="turnOff-slider" class="range-slider col-md-10">
+            <div id="turnOff-slider" class="range-slider col-md-8">
+                <button id="turnOff-slider-offBtn" class="btn btn-default" type="button">Turn Off</button>
                 <input id="turnOff-slider-range" class="range-slider__range" type="range" value="10" min="10" max="10" step="10">
-                <span class="range-slider__value">00:10 hours.</span>
+                <span id="turnOff-slider-value" class="range-slider__value">00:10 hours.</span>
             </div>
         </div>
     </div>

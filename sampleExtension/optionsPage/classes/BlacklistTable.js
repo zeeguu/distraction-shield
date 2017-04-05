@@ -7,12 +7,12 @@ function BlacklistTable (html_element) {
         this.table.append(tableRow);
     };
 
-    this.getSelected = function() {
-        return this.table.find('.highlight');
-    };
-
     this.removeFromTable = function (html_item) {
         html_item.remove();
+    };
+
+    this.getSelected = function() {
+        return this.table.find('.highlight');
     };
 
     //this function makes the passed table single row selection only
@@ -52,7 +52,7 @@ function BlacklistTable (html_element) {
             $("<tr class='table-row' >" +
                 "<td width='50'>" + blockedSite.getIcon ()+ "</td>" +
                 "<td class='pageTitle'>" + blockedSite.getName() + "</td>" +
-                "<td width='25'>" + "<input class='checkbox-toggle' type=\"checkbox\" name=\"state\">" + "</td>" +
+                "<td width='25'>" + "<input class='checkbox-toggle' type='checkbox' name='state'>" + "</td>" +
                 "<td width='25'>" + "<img class='delete-button' type='deleteButton' src='classes/tableRow_delete_button.png' width='16' height='16'>" + "</td>" +
                 "</tr>");
         tableRow.find('.checkbox-toggle').prop('checked', blockedSite.getCheckboxVal());
