@@ -110,7 +110,6 @@ function UrlRequester() {
 
     this.readyStateChange = function(xmlHttp, callback) {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-            console.log("in if");
             // simple regex to extract data from title tags, ignoring newlines, tabs and returns
             var titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
             if (titleTags != null) {

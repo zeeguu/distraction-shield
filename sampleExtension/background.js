@@ -56,11 +56,12 @@ addToInterceptDateList = function() {
     storage.setInterceptDateList(interceptDateList);
 };
 
-addUrlToBlockedSites = function(unformattedUrl) {
+addUrlToBlockedSites = function(unformattedUrl, onSuccess) {
     blockedSiteBuilder.createNewBlockedSite(unformattedUrl, function(newBS) {
         if (blockedSites.addToList(newBS)) {
             storage.setBlacklist(blockedSites);
-        }
+            onSuccess();
+        } 
     });
 };
 

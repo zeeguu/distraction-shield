@@ -5,7 +5,7 @@ var FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
 var modes = {lazy: "lazy", pro: "pro"};
 
 var newUrlNotUniqueError = "New blocked site item to be added was found to resolve to an already blacklisted website, " +
-                           "please try a different url.\n Duplicate url: ";
+                           "please try a different url.\nDuplicate url: ";
 var INVALID_URL_MESSAGE = "We unfortunately could not reach the site you are trying to block.\n" +
                           "Are you sure the url is correct? \n \n";
 

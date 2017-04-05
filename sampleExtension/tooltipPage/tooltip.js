@@ -6,13 +6,22 @@ var bg = chrome.extension.getBackgroundPage();
 
 var auth = bg.auth;
 
+var saveButton = $('#saveBtn');
+
 saveCurrentPageToBlacklist = function() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         var activeTab = arrayOfTabs[0];
-        var activeTabUrl = activeTab.url;
-        bg.addUrlToBlockedSites(activeTabUrl);
-        window.close();
+        bg.addUrlToBlockedSites(activeTab.url, setSaveButtonToSuccess);
+
+       // window.close();
     });
+};
+
+setSaveButtonToSuccess = function () {
+    saveButton.attr('class', 'btn btn-success');
+    setTimeout(function () {
+        saveButton.attr('class', 'btn btn-primary');
+    }, 4000);
 };
 
 redirectToStatistics = function() {
@@ -32,8 +41,7 @@ logout = function () {
 };
 
 //Connect functions to HTML elements
-connectButtons = function() {
-    var saveButton = $('#saveBtn');
+connectButtons = function() {  
     saveButton.on('click', saveCurrentPageToBlacklist);
     var optionsButton = $('#optionsBtn');
     optionsButton.on('click', openOptionsPage);

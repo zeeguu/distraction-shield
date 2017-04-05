@@ -15,7 +15,7 @@ function BlockedSiteList() {
             this.list.push(newBlockedSite);
             return true;
         } else {
-            alert(newUrlNotUniqueError + newBlockedSite.getUrl());
+            alert(newUrlNotUniqueError + newBlockedSite.getDomain());
             return false;
         }
     };
