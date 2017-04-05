@@ -19,8 +19,10 @@ saveCurrentPageToBlacklist = function() {
 
 setSaveButtonToSuccess = function () {
     saveButton.attr('class', 'btn btn-success');
+    saveButton.html('Successfully added!');
     setTimeout(function () {
-        saveButton.attr('class', 'btn btn-primary');
+        saveButton.attr('class', 'btn btn-info');
+        saveButton.html(' Save current page ');
     }, 4000);
 };
 

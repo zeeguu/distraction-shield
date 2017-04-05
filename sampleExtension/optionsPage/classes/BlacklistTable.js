@@ -4,11 +4,11 @@ function BlacklistTable (html_element) {
     this.table = html_element;
 
     this.addToTable = function(tableRow) {
-        this.table.append(tableRow);
+        tableRow.hide().appendTo(this.table).fadeIn();
     };
 
     this.removeFromTable = function (html_item) {
-        html_item.remove();
+        html_item.fadeOut(function () { html_item.remove(); });
     };
 
     this.getSelected = function() {
