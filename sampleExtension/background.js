@@ -45,13 +45,10 @@ retrieveInterceptDateList = function() {
 
 /* --------------- ------ Updating of variables ------ ---------------*/
 
-addToBlockedSites = function (newUrl, newUrlTitle) {
-    urlFormatter.getUrlWithoutServer(newUrl, newUrlTitle, function (url, title) {
-        newItem = new BlockedSite(url, title);
-        blockedSites.addToList(newItem);
-        storage.setBlacklist(blockedSites);
-        replaceListener();
-    });
+addToBlockedSites = function (newItem) {
+    blockedSiteBuilder.createNewBlockedSite(newUrl, blockedSites.addToList);
+    storage.setBlacklist(blockedSites);
+    replaceListener();
 };
 
 // This function adds the current time+date to the saved time+date list

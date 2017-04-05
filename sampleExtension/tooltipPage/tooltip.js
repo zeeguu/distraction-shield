@@ -10,8 +10,7 @@ saveCurrentPageToBlacklist = function() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         var activeTab = arrayOfTabs[0];
         var activeTabUrl = activeTab.url;
-        var activeTabTitle = activeTab.title;
-        bg.addToBlockedSites(activeTabUrl, activeTabTitle);
+        blockedSiteBuilder.createNewBlockedSite(activeTabUrl, bg.addToBlockedSites);   
         window.close();
     });
 };

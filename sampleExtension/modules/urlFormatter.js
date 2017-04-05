@@ -82,6 +82,7 @@ function UrlFormatter() {
 
     this.getUrlFromServer = function(url, callback) {
         var urlToGet = this.formatForGetRequest(url);
+        console.log(url);
         this.url_requester.httpGetAsync(urlToGet, function(url, title) {
             url = urlFormatter.stripOfScheme(url);
             url = urlFormatter.stripOfFileName(url);

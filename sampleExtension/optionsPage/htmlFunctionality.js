@@ -12,32 +12,11 @@ prependHtmlItemTo = function(html_child, html_parent) {
     html_parent.prepend(html_child);
 };
 
-removeBlockedSiteFromAll = function(html_item) {
-    if (removeFromLocalBlacklist(html_item)) {
-        blacklistTable.removeFromTable(html_item);
-        synchronizer.syncBlacklist(blacklist);
-    }
-};
-
-addBlockedSiteToAll = function(newItem) {
-    if (addToLocalBlacklist(newItem)) {
-        blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
-        synchronizer.syncBlacklist(blacklist);
-    }
-};
-
-createNewBlockedSite = function(newUrl) {
-    urlFormatter.getUrlFromServer(newUrl, function (url, title) {
-        var newItem = new BlockedSite(url, title);
-        return addBlockedSiteToAll(newItem);
-    });
-};
-
 /* -------------------- Button Click functions ----------------------- */
 
 saveNewUrl = function () {
     var newUrl = html_txtFld.val();
-    createNewBlockedSite(newUrl);
+    blockedSiteBuilder.createNewBlockedSite(newUrl, addBlockedSiteToAll);
     html_txtFld.val('');
 };
 

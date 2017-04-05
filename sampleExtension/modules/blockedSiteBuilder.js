@@ -1,10 +1,15 @@
+var console = chrome.extension.getBackgroundPage().console;
+
 function BlockedSiteBuilder() {
     var self = this;
 
-    this.createNewBlockedSite = function (newUrl) {
-        urlFormatter.getUrlFromServer(newUrl, function (url, title) {
-            newItem = new BlockedSite(url, title);
-            return newItem;
+    // this requires a callback since the getUrlFromServer is asynchronous
+    this.createNewBlockedSite = function (newUrl, callback) {
+        console.log("success");
+        getUrl = urlFormatter.getUrlFromServer(newUrl, function (url, title) {
+            var bs = new BlockedSite(url, title);
+            console.log(title);
+            callback(bs);
         });
     };
 }
