@@ -1,5 +1,7 @@
 
 var redirectLink = "https://zeeguu.herokuapp.com/get-ex?redirect=";
+var FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
+
 var modes = {lazy: "lazy", pro: "pro"};
 
 var newUrlNotUniqueError = "New blocked site item to be added was found to resolve to an already blacklisted website, " +
@@ -20,4 +22,3 @@ var KEY_ENTER  = 13;
 /* -------------------- Number constants ----------------------- */
 var MAX_TURN_OFF_TIME = 480;
 
-var FAVICONLINK = "https://www.google.com/s2/favicons?domain=";

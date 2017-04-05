@@ -27,17 +27,17 @@ addBlockedSiteToAll = function(newItem) {
 };
 
 createNewBlockedSite = function(newUrl) {
-    urlFormatter.getUrlFromServer(newUrl, function(url, title) {
-        return new BlockedSite(url, title);
+    urlFormatter.getUrlFromServer(newUrl, function (url, title) {
+        var newItem = new BlockedSite(url, title);
+        return addBlockedSiteToAll(newItem);
     });
 };
 
 /* -------------------- Button Click functions ----------------------- */
 
-saveNewUrl = function() {
+saveNewUrl = function () {
     var newUrl = html_txtFld.val();
-    var bs = createNewBlockedSite(newUrl);
-    addBlockedSiteToAll(bs);
+    createNewBlockedSite(newUrl);
     html_txtFld.val('');
 };
 
