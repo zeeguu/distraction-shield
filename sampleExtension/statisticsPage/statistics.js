@@ -2,6 +2,7 @@
 // Log console messages to the background page console instead of the content page.
 var bg = chrome.extension.getBackgroundPage();
 var console = bg.console;
+var ic = bg.ic;
 
 //Local variables that holds the list of links and interceptCounter.
 var links = [];
@@ -49,27 +50,25 @@ generateTableRow = function(site) {
 };
 
 
-createHtmlTable = function(){
-    html_intCnt.text(interceptionCounter);
-    html_countDay.text(countDay);
-    html_countWeek.text(countWeek);
-    html_countMonth.text(countMonth);
-    $.each(links, function(k, site) {
+createCounterTable = function(counters){
+    html_intCnt.text(counters.countTotal);
+    html_countDay.text(counters.countDay);
+    html_countWeek.text(counters.countWeek);
+    html_countMonth.text(counters.countMonth);
+};
+
+createBlockedSiteTable = function(siteList){
+    $.each(siteList, function(k, site) {
         html_table.append(generateTableRow(site));
     });
 };
 
 //Initialize HTML elements and set the local variables
 initStatisticsPage = function() {
-    // storage.getStatistics(function(output) {
-    //     setLocalVariables(output);
-    //     calcInterceptData();
-    //     createHtmlTable();
-    // });
     bg.trs.getStatistics().then(function(response){
-        setLocalVariables(response);
-        calcInterceptData();
-        createHtmlTable();
+        let counters = ic.calcInterceptData(response.tds_interceptDateList);
+        createCounterTable(counters);
+        createBlockedSiteTable(bg.blockedSites.getList());
     });
     bg.trs.getCompleteDayStatList().then(function(response){
         setDayStatisticsHtml(response);
@@ -80,35 +79,7 @@ appendHtmlItemTo = function(html_child, html_parent) {
     html_parent.append(html_child);
 };
 
-calcInterceptData = function() {
-    var tmp = interceptDateList;
-    if (tmp != null) {
-        var firstDate = new Date();
-        var length = tmp.length;
-        for (var i = 0; i < length; i++) {
-            incrementCounters(firstDate, new Date(tmp.pop()));
-        }
-    }
-};
 
-incrementCounters = function(firstDate, secondDate){
-    var diffDays = Math.floor(Math.abs((firstDate.getTime() - secondDate.getTime()) / (oneDay)));
-    if (diffDays == 0) {
-        countDay++;
-    }
-    if (diffDays < 8) {
-        countWeek++;
-    }
-    if (diffDays < 32) {
-        countMonth++
-    }
-};
-
-setLocalVariables = function(output) {
-    interceptionCounter = output.tds_interceptCounter;
-    interceptDateList = output.tds_interceptDateList;
-    links = bg.blockedSites.getList();
-};
 
 connectButtons = function(){
     saveButton.on('click', saveCurrentPageToBlacklist);
