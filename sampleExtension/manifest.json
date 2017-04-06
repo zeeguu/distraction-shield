@@ -36,9 +36,9 @@
       "background.js",
       "init.js",
       "statistics/statisticsStorage.js",
-      "statistics/trackerStorage.js",
       "statistics/tracker.js",
       "statistics/interception.js",
+      "statistics/exerciseTime.js",
       "auth/api.js",
       "auth/auth.js"
     ]

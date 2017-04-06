@@ -4,10 +4,6 @@ function Interception() {
 
     this.oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 
-
-    this.init = function() {
-    };
-
     this.calcInterceptData = function(dateList) {
         var tmp = dateList;
         let countDay = 0, countWeek = 0, countMonth = 0, countTotal = 0;

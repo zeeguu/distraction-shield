@@ -2,8 +2,6 @@
 // Log console messages to the background page console instead of the content page.
 var bg = chrome.extension.getBackgroundPage();
 var console = bg.console;
-var ic = bg.ic;
-
 var saveButton = $('#saveBtn');
 
 var interceptionCounterTable = null;
@@ -16,25 +14,18 @@ connectButton = function(html_button, method) {
 };
 
 saveCurrentPageToBlacklist = function() {
-    chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
-        // since only one tab should be active and in the current window at once
-        // the return variable should only have one entry
-        var activeTab = arrayOfTabs[0];
-        var activeTabUrl = activeTab.url;
-        bg.addToBlockedSites(activeTabUrl);
-    });
+    bg.tr.getCurrentTab().then(bg.addToBlockedSites(result));
 };
 
-//Initialize HTML elements and set the local variables
+//Initialize HTML elements and set the data in the tables.
 initStatisticsPage = function() {
-    bg.statsStorage.getStatisticsData().then(function(response){
-        let counters = ic.calcInterceptData(response.tds_interceptDateList);
-        interceptionCounterTable.setDataAndRender(counters);
-        blacklistTable.setDataAndRender(bg.blockedSites.getList());
-    });
-    bg.trs.getCompleteDayStatList().then(function(response){
-        dayStatisticsTable.setDataAndRender(response);
-    });
+    Promise.all([bg.statsStorage.getInterceptDateList(), bg.statsStorage.getCompleteDayStatList()])
+        .then(function(response){
+            let counters = bg.ic.calcInterceptData(response[0].tds_interceptDateList);
+            interceptionCounterTable.setDataAndRender(counters);
+            blacklistTable.setDataAndRender(bg.blockedSites.getList());
+            dayStatisticsTable.setDataAndRender(response[1]);
+        });
 };
 
 connectHtmlFunctionality = function() {
