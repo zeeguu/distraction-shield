@@ -26,6 +26,7 @@
     "scripts": [
       "dependencies/jquery/jquery-1.10.2.js",
       "constants.js",
+      "modules/dateutil.js",
       "modules/urlFormatter.js",
       "modules/storage.js",
       "modules/synchronizer.js",
@@ -34,6 +35,7 @@
       "classes/UserSettings.js",
       "background.js",
       "init.js",
+      "statistics/statisticsStorage.js",
       "statistics/trackerStorage.js",
       "statistics/tracker.js",
       "statistics/interception.js",

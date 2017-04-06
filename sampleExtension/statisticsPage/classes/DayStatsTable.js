@@ -17,7 +17,7 @@ function DayStatsTable(html_element) {
         var tableRow =
             $("<tr>" +
                 "<td>"+dayStatistic.date+"</td>" +
-                "<td>"+secondsToHHMMSS(dayStatistic.timespent)+"</td>" +
+                "<td>"+bg.dateUtil.secondsToHHMMSS(dayStatistic.timespent)+"</td>" +
                 "</tr>");
         //add the actual object to the html_element
         return tableRow;

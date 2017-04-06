@@ -10,9 +10,6 @@ var interceptionCounterTable = null;
 var blacklistTable = null;
 var dayStatisticsTable = null;
 
-secondsToHHMMSS = function (seconds) {
-    return new Date(seconds * 1000).toISOString().substr(11, 8);
-};
 
 connectButton = function(html_button, method) {
     html_button.on('click', method);
@@ -30,7 +27,7 @@ saveCurrentPageToBlacklist = function() {
 
 //Initialize HTML elements and set the local variables
 initStatisticsPage = function() {
-    bg.trs.getStatisticsData().then(function(response){
+    bg.statsStorage.getStatisticsData().then(function(response){
         let counters = ic.calcInterceptData(response.tds_interceptDateList);
         interceptionCounterTable.setDataAndRender(counters);
         blacklistTable.setDataAndRender(bg.blockedSites.getList());

@@ -21,16 +21,12 @@ function TrackerStorage() {
             date = new Date(date.setDate(date.getDate() - i));
             dummyList.push(
                 {
-                date: self.formatDate(date),
+                date: dateUtil.formatDate(date),
                 timespent: Math.floor((Math.random()*100)+1)
                 }
             );
         }
         self.setDayStatisticsList(dummyList);
-    };
-
-    this.formatDate = function(date){
-        return date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
     };
 
 
@@ -45,7 +41,7 @@ function TrackerStorage() {
     };
 
     this.handleIncrementDayStat = function(currentDayStatistic, amount){
-        var today = self.getToday();
+        var today = dateUtil.getToday();
         if (currentDayStatistic == null){
             self.setCurrentDayStatistic({date: today, timespent: 0});
         } else if(currentDayStatistic.date != today){
@@ -69,14 +65,9 @@ function TrackerStorage() {
         });
     };
 
-    this.getStatisticsData = function(){
-        return self.getStorage(["tds_interceptCounter", "tds_interceptDateList"]);
-    };
-
     // Get the list containing information about time spent on exercises. For the previous days, and the current day.
     this.getCompleteDayStatList = function(){
-        var statisticsPromise = new Promise(self.handlerRetrieveDayStatisticsList);
-        return statisticsPromise;
+        return new Promise(self.handlerRetrieveDayStatisticsList);
     };
 
     this.handlerRetrieveDayStatisticsList = function(resolve){
@@ -91,51 +82,23 @@ function TrackerStorage() {
 
     // Set the list dict containing information about how much time is spent on exercises each previous day.
     this.setDayStatisticsList = function(statList){
-        self.setStorage("tds_dayStatistics", statList);
+        statsStorage.setStorage("tds_dayStatistics", statList);
     };
 
     // Get the list containing information about how much time is spent on exercises each previous day.
     this.getDayStatisticsList = function(){
-        return self.getStorage(["tds_dayStatistics"]);
+        return statsStorage.getStorage(["tds_dayStatistics"]);
     };
 
     // Set the data dict containing information about how much time is spent on exercises today.
     this.setCurrentDayStatistic = function(dayStats){
-        self.setStorage("tds_currentDayStatistic", dayStats);
+        statsStorage.setStorage("tds_currentDayStatistic", dayStats);
     };
 
     // Get the data dict containing information about how much time is spent on exercises today.
     this.getCurrentDayStatistic = function(){
-        return self.getStorage(["tds_currentDayStatistic"]);
+        return statsStorage.getStorage(["tds_currentDayStatistic"]);
     };
 
-    // General function which is used to set items stored in the storage of the chrome api.
-    this.setStorage = function(ind, data) {
-        var newObj= {};
-        newObj[ind] = data;
-        chrome.storage.sync.set(newObj, function() {
-            handleRuntimeError();
-        })
-    };
 
-    // General function which is used to retrieve items stored in the storage of the chrome api.
-    // This function returns a Promise, to account for possible delays which might exist between the requesting of
-    // the things in the storage and the actual retrieving of it.
-    this.getStorage = function(index){
-        return new Promise(function (resolve, reject) {
-            chrome.storage.sync.get(index, function (output) {
-                if (handleRuntimeError()) {
-                    resolve(output);
-                } else {
-                    reject(Error("Data cannot be found."));
-                }
-            })
-        });
-    };
-
-    // Function which returns the current date, formatted in the correct format.
-    this.getToday = function(){
-        var dateObject = new Date();
-        return (dateObject.getDate())+"/"+(dateObject.getMonth()+1)+"/"+dateObject.getFullYear();
-    }
 }
