@@ -69,6 +69,9 @@ function TrackerStorage() {
         });
     };
 
+    this.getStatistics = function(){
+        return self.getStorage(["tds_interceptCounter", "tds_interceptDateList"]);
+    };
 
     // Get the list containing information about time spent on exercises. For the previous days, and the current day.
     this.getCompleteDayStatList = function(){
@@ -93,7 +96,7 @@ function TrackerStorage() {
 
     // Get the list containing information about how much time is spent on exercises each previous day.
     this.getDayStatisticsList = function(){
-        return self.getStorage("tds_dayStatistics");
+        return self.getStorage(["tds_dayStatistics"]);
     };
 
     // Set the data dict containing information about how much time is spent on exercises today.
@@ -103,7 +106,7 @@ function TrackerStorage() {
 
     // Get the data dict containing information about how much time is spent on exercises today.
     this.getCurrentDayStatistic = function(){
-        return self.getStorage("tds_currentDayStatistic");
+        return self.getStorage(["tds_currentDayStatistic"]);
     };
 
     // General function which is used to set items stored in the storage of the chrome api.

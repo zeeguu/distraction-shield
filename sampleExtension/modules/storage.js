@@ -21,14 +21,6 @@ function SyncStorage() {
         });
     };
 
-    this.getStatistics = function(callback) {
-        chrome.storage.sync.get(["tds_interceptCounter", "tds_interceptDateList"], function(output) {
-            if (handleRuntimeError()) {
-                return callback(output);
-            }
-        });
-    };
-
     /* ---------------- Blacklist --------------- */
 
     this.getBlacklist = function(callback) {

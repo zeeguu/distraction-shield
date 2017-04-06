@@ -19,6 +19,7 @@ var html_intCnt = $('#iCounter');
 var html_countDay = $('#countDay');
 var html_countWeek = $('#countWeek');
 var html_countMonth = $('#countMonth');
+var saveButton = $('#saveBtn');
 
 secondsToHHMMSS = function (seconds) {
     return new Date(seconds * 1000).toISOString().substr(11, 8);
@@ -47,7 +48,6 @@ generateTableRow = function(site) {
     return row;
 };
 
-var saveButton = $('#saveBtn');
 
 createHtmlTable = function(){
     html_intCnt.text(interceptionCounter);
@@ -61,8 +61,13 @@ createHtmlTable = function(){
 
 //Initialize HTML elements and set the local variables
 initStatisticsPage = function() {
-    storage.getStatistics(function(output) {
-        setLocalVariables(output);
+    // storage.getStatistics(function(output) {
+    //     setLocalVariables(output);
+    //     calcInterceptData();
+    //     createHtmlTable();
+    // });
+    bg.trs.getStatistics().then(function(response){
+        setLocalVariables(response);
         calcInterceptData();
         createHtmlTable();
     });
