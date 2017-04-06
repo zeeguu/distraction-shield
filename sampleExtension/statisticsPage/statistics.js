@@ -4,26 +4,18 @@ var bg = chrome.extension.getBackgroundPage();
 var console = bg.console;
 var ic = bg.ic;
 
-//Local variables that holds the list of links and interceptCounter.
-var links = [];
-var interceptionCounter = 0;
-var interceptDateList = [];
-var countDay = 0;
-var countWeek = 0;
-var countMonth = 0;
-
-var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-
-
-var html_table = $('#interceptTable');
-var html_intCnt = $('#iCounter');
-var html_countDay = $('#countDay');
-var html_countWeek = $('#countWeek');
-var html_countMonth = $('#countMonth');
 var saveButton = $('#saveBtn');
+
+var interceptionCounterTable = null;
+var blacklistTable = null;
+var dayStatisticsTable = null;
 
 secondsToHHMMSS = function (seconds) {
     return new Date(seconds * 1000).toISOString().substr(11, 8);
+};
+
+connectButton = function(html_button, method) {
+    html_button.on('click', method);
 };
 
 saveCurrentPageToBlacklist = function() {
@@ -36,77 +28,29 @@ saveCurrentPageToBlacklist = function() {
     });
 };
 
-//TODO Remove HTML from javascript for iteration 3.
-generateTableRow = function(site) {
-    var row =
-        $("<tr class='table-row' >" +
-            "<td>"+site.getIcon()+"</td>" +
-            "<td>"+site.getName()+"</td>" +
-            "<td>"+site.getCounter()+"</td>" +
-        "</tr>");
-    //add the actual object to the html_element
-    row.data('site', site);
-    return row;
-};
-
-
-createCounterTable = function(counters){
-    html_intCnt.text(counters.countTotal);
-    html_countDay.text(counters.countDay);
-    html_countWeek.text(counters.countWeek);
-    html_countMonth.text(counters.countMonth);
-};
-
-createBlockedSiteTable = function(siteList){
-    $.each(siteList, function(k, site) {
-        html_table.append(generateTableRow(site));
-    });
-};
-
 //Initialize HTML elements and set the local variables
 initStatisticsPage = function() {
-    bg.trs.getStatistics().then(function(response){
+    bg.trs.getStatisticsData().then(function(response){
         let counters = ic.calcInterceptData(response.tds_interceptDateList);
-        createCounterTable(counters);
-        createBlockedSiteTable(bg.blockedSites.getList());
+        interceptionCounterTable.setDataAndRender(counters);
+        blacklistTable.setDataAndRender(bg.blockedSites.getList());
     });
     bg.trs.getCompleteDayStatList().then(function(response){
-        setDayStatisticsHtml(response);
+        dayStatisticsTable.setDataAndRender(response);
     });
 };
 
-appendHtmlItemTo = function(html_child, html_parent) {
-    html_parent.append(html_child);
+connectHtmlFunctionality = function() {
+    interceptionCounterTable = new InterceptionCounterTable();
+    blacklistTable = new BlacklistStatsTable($('#interceptTable'));
+    dayStatisticsTable = new DayStatsTable($('#exerciseTime'));
+    connectButton(saveButton, saveCurrentPageToBlacklist);
 };
 
-
-
-connectButtons = function(){
-    saveButton.on('click', saveCurrentPageToBlacklist);
-};
-
-generateDayStatisticHtmlRow = function(dayStatistic) {
-    var tableRow =
-        $("<tr>" +
-            "<td>"+dayStatistic.date+"</td>" +
-            "<td>"+secondsToHHMMSS(dayStatistic.timespent)+"</td>" +
-            "</tr>");
-    //add the actual object to the html_element
-    return tableRow;
-};
-
-setDayStatisticsHtml = function(list) {
-    list = list.reverse();
-    $.each(list, function(key, value) {
-        if(value != null){
-            appendHtmlItemTo(generateDayStatisticHtmlRow(value), $('#exerciseTime'));
-        }
-    });
-};
 
 //Run this when the page is loaded.
 document.addEventListener("DOMContentLoaded", function(){
-    connectButtons();
+    connectHtmlFunctionality();
     initStatisticsPage();
 });
 

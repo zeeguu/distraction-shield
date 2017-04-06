@@ -69,7 +69,7 @@ function TrackerStorage() {
         });
     };
 
-    this.getStatistics = function(){
+    this.getStatisticsData = function(){
         return self.getStorage(["tds_interceptCounter", "tds_interceptDateList"]);
     };
 
@@ -127,7 +127,7 @@ function TrackerStorage() {
                 if (handleRuntimeError()) {
                     resolve(output);
                 } else {
-                    reject(Error("Statistics cannot be found."));
+                    reject(Error("Data cannot be found."));
                 }
             })
         });
