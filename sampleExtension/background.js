@@ -7,7 +7,11 @@ var localSettings = new UserSettings();
 /* --------------- ------ setter for local variables ------ ---------------*/
 
 setLocalSettings = function(newSettings) {
+    var oldState = localSettings.getState();
     localSettings.copySettings(newSettings);
+    if (oldState != localSettings.getState()) {
+        replaceListener();
+    }
 };
 
 setLocalBlacklist = function(newList) {

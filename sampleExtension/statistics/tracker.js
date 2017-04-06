@@ -1,4 +1,6 @@
 
+var console = chrome.extension.getBackgroundPage().console;
+
 // The tracker tracks whether you are currently working on exercises.
 // Every second, the "alarm" is fired, and the url of the current tab is examined.
 // If this url corresponds with the zeeguu url, the time spent on exercises counter is incremented.

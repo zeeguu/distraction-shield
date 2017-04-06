@@ -88,7 +88,7 @@ function UserSettings () {
     this.reInitTimer = function() {
         if (this.getState() == "Off") {
             if (this.getOffTill() < new Date()) {
-                localSettings.turnOn();
+                self.turnOn();
             } else {
                 this.setTimer();
             }
