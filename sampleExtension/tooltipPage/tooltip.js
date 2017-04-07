@@ -6,38 +6,44 @@ var bg = chrome.extension.getBackgroundPage();
 
 var auth = bg.auth;
 
+var saveButton = $('#saveBtn');
+
 saveCurrentPageToBlacklist = function() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         var activeTab = arrayOfTabs[0];
-        var activeTabUrl = activeTab.url;
-        var activeTabTitle = activeTab.title;
-        bg.addToBlockedSites(activeTabUrl, activeTabTitle);
-        window.close();
+        bg.addUrlToBlockedSites(activeTab.url, setSaveButtonToSuccess);
+
+       // window.close();
     });
+};
+
+setSaveButtonToSuccess = function () {
+    saveButton.attr('class', 'btn btn-success');
+    saveButton.html('Successfully added!');
+    setTimeout(function () {
+        saveButton.attr('class', 'btn btn-info');
+        saveButton.html(' Save current page ');
+    }, 4000);
 };
 
 redirectToStatistics = function() {
     chrome.tabs.create({'url': chrome.runtime.getURL('statisticsPage/statistics.html')});
 };
 
+openOptionsPage = function() {
+    chrome.tabs.create({'url': chrome.runtime.getURL('optionsPage/options.html')});
+};
+
 redirectToLogin = function() {
     chrome.tabs.create({'url': chrome.runtime.getURL('loginPage/login.html')});
-    //return {redirectUrl: "://statisticsPage/statistics.html/"};
 };
 
 logout = function () {
     auth.logout();
-}
-
-openOptionsPage = function() {
-    // chrome.runtime.openOptionsPage();
-
-    chrome.tabs.create({'url': chrome.runtime.getURL('optionsPage/options.html')});
 };
 
 //Connect functions to HTML elements
-connectButtons = function() {
-    var saveButton = $('#saveBtn');
+connectButtons = function() {  
     saveButton.on('click', saveCurrentPageToBlacklist);
     var optionsButton = $('#optionsBtn');
     optionsButton.on('click', openOptionsPage);
@@ -46,18 +52,18 @@ connectButtons = function() {
 };
 
 connectLogin = function () {
-    console.log('connectLogin');
-    $('#sessionBtn').html('Login page');
-    $('#sessionBtn').off('click',  logout);
-    $('#sessionBtn').on('click', redirectToLogin);
-}
+    var sessionBtn =$('#sessionBtn');
+    sessionBtn.html('Login page');
+    sessionBtn.off('click',  logout);
+    sessionBtn.on('click', redirectToLogin);
+};
 
 connectLogout = function () {
-    console.log('connectLogout');
-    $('#sessionBtn').html('Logout');
-    $('#sessionBtn').off('click',  redirectToLogin);
-    $('#sessionBtn').on('click', logout);
-}
+    var sessionBtn =$('#sessionBtn');
+    sessionBtn.html('Logout');
+    sessionBtn.off('click',  redirectToLogin);
+    sessionBtn.on('click', logout);
+};
 
 checkLoginStatus = function () {
     auth.checkSessionAuthenticity().then( function () {
@@ -72,9 +78,7 @@ checkLoginStatus = function () {
         //login button active
         connectLogin();
     })
-}
-
-// $('body').on('load', checkLoginStatus);
+};
 
 connectButtons();
 checkLoginStatus();
