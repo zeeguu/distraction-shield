@@ -78,7 +78,7 @@ var tour = new Tour({
         " Click 'Next' to continue.",
         placement: "bottom"
     }, {
-        path: "/loginPage/login.html",
+        path: "/introTour/logincopy.html",
         element: "#loginForm",
         title: "Login",
         content: "Finally, login with your existing Zeeguu account, or create a new one here to get started." +
