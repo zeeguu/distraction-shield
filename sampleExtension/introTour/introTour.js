@@ -41,8 +41,9 @@ var tour = new Tour({
         path: "/introTour/optionscopy.html",
         element: "#modeSelector",
         title: "Mode",
-        content: "Here you can select which mode you want The Distraction Shield to use. INSERT MODE EXPLANATION HERE." +
-        " Click 'Next' to continue.",
+        content: "Here you can select which mode you want The Distraction Shield to use. Lazy Mode adds an option to " +
+        "skip an exercise if you wish, while in Pro Mode you cannot continue to your destination until you have " +
+        "completed the exercise. Click 'Next' to continue.",
         placement: "left"
     }, {
         path: "/introTour/optionscopy.html",
