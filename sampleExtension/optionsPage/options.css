@@ -57,6 +57,11 @@ body{
     text-overflow: ellipsis;
 }
 
+.link1 {
+    text-align: center;
+    bottom: 0;
+}
+
 /* ---------- ---------- Slider ---------- ---------- */
 
 .amountColumn {

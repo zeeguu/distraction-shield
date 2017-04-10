@@ -1,5 +1,7 @@
 var console = chrome.extension.getBackgroundPage().console;
 
+var id;
+
 var tour = new Tour({
     orphan: true,
     steps: [{
@@ -15,35 +17,35 @@ var tour = new Tour({
         " The Distraction Shield. We'll have a look at it now. Click 'Next' to continue.",
         placement: "bottom"
     }, {
-        path: "/tooltipPage/tooltip.html",
+        path: "/introTour/tooltipcopy.html",
         element: "#saveBtn",
         title: "Save Button",
         content: "Clicking this button will add the current website to the blacklist. The Distraction Shield will redirect " +
         "you from all of the websites in your blacklist. Click 'Next' to continue.",
         placement: "right"
     }, {
-        path: "/tooltipPage/tooltip.html",
+        path: "/introTour/tooltipcopy.html",
         element: "#statisticsBtn",
         title: "Statistics Button",
         content: "Clicking this button will show you some statistics about your Distraction Shield usage." +
         " Click 'Next' to continue.",
         placement: "right"
     }, {
-        path: "/tooltipPage/tooltip.html",
+        path: "/introTour/tooltipcopy.html",
         element: "#optionsBtn",
         title: "Options Button",
         content: "Clicking this button open the options page. We will have a look at this next." +
         " Click 'Next' to continue.",
         placement: "right"
     }, {
-        path: "/optionsPage/options.html",
+        path: "/introTour/optionscopy.html",
         element: "#modeSelector",
         title: "Mode",
         content: "Here you can select which mode you want The Distraction Shield to use. INSERT MODE EXPLANATION HERE." +
         " Click 'Next' to continue.",
         placement: "left"
     }, {
-        path: "/optionsPage/options.html",
+        path: "/introTour/optionscopy.html",
         element: "#interval-slider",
         title: "Interval Slider",
         content: "Use the slider to chose how often you want to be redirected. For example if you chose 10 minutes, " +
@@ -52,7 +54,7 @@ var tour = new Tour({
         placement: "right"
 
     }, {
-        path: "/optionsPage/options.html",
+        path: "/introTour/optionscopy.html",
         element: "#blacklistTable",
         title: "Blacklist",
         content: "Here is the list of sites that you will be redirected from. We've added a few suggestions to get you " +
@@ -60,14 +62,14 @@ var tour = new Tour({
         " Click 'Next' to continue.",
         placement: "left"
     }, {
-        path: "/optionsPage/options.html",
+        path: "/introTour/optionscopy.html",
         element: "#addUrlDiv",
         title: "Add to Blacklist",
         content: "You can also add a site to the blacklist here. Just enter the address and hit save." +
         " Click 'Next' to continue.",
         placement: "left"
     }, {
-        path: "/optionsPage/options.html",
+        path: "/introTour/optionscopy.html",
         element: "#turnOff-slider",
         title: "Turn Off",
         content: "Need to do some important work and don't want to be redirected? You can use this slider to disable" +
@@ -95,7 +97,24 @@ tour.init();
 // Start the tour
 tour.start();
 
-//Ends tour If they close the tour tab
-chrome.tabs.onRemoved.addListener(function(tabid, removed) {
-    tour.end();
+//Restart tour link
+if(tour.ended()) {
+    chrome.tabs.getSelected(null, function(tab) {
+        if (tab.url.indexOf('/introTour/introTour.html') != -1) {
+            tour.restart();
+        }
+    });
+}
+
+//get current tab
+chrome.tabs.getSelected(null, function(tab) {
+    id = tab.id;
 });
+
+//end tour if tab closed
+chrome.tabs.onRemoved.addListener(function(tabId) {
+    if(tabId == id) {
+        tour.end();
+    }
+});
+
