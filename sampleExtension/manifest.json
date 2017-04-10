@@ -37,7 +37,8 @@
       "statistics/trackerStorage.js",
       "statistics/tracker.js",
       "auth/api.js",
-      "auth/auth.js"
+      "auth/auth.js",
+      "introTour/introTour.js"
     ]
   },
 

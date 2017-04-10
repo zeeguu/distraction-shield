@@ -22,6 +22,7 @@ chrome.runtime.onInstalled.addListener(function() {
         initInterceptCounter(output.tds_interceptCounter);
         initInterceptDateList(output.tds_interceptDateList);
         initSettings(output.tds_settings);
+        runIntroTour();
     });
 });
 
@@ -49,6 +50,10 @@ initSettings = function(settings) {
         settingsToStore = new UserSettings();
         storage.setSettingsWithCallback(settingsToStore, initSession);
     }
+};
+
+runIntroTour = function() {
+    chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
 };
 
 
