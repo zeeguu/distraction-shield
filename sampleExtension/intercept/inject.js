@@ -13,7 +13,7 @@ determineMode = function(mode) {
 };
 
 initBasis = function(mode) {
-    var message = determineMode(mode);
+    var message = localSettings.mode.zeeguuText;
 
     $.ajax({
         url: chrome.extension.getURL('intercept/inject.html'),
@@ -24,7 +24,7 @@ initBasis = function(mode) {
             infoDiv = $.parseHTML(data);
             $("body").prepend(infoDiv);
             $("#tds").width(window.innerWidth + "px");
-            $("#tds_generalInfoText").append(infoText);
+            $("#tds_generalInfoText").append(zeeguuInfoText);
             $("#tds_modeSpecificText").append(message);
             $("#originalDestination").attr("href", getDest());
         }

@@ -9,10 +9,10 @@ var auth = bg.auth;
 var html_emailLoginFld = $('#emailLoginFld');
 var html_passwordLoginFld = $('#passwordLoginFld');
 var html_submitButton = $('#submitBtn');
-var html_validateButton = $('#validateBtn') // TODO remove
 
 var messageDialog = $('#message');
 var spinner = $('.spinner');
+
 
 login = function(){
     messageDialog.text("");
@@ -36,6 +36,29 @@ login = function(){
     html_passwordLoginFld.val('');
 };
 
+getExtraInstructions = function () {
+    url = window.location.href;
+    urlParts = url.split(/\?/);
+    cleanUrl = urlParts[0];
+    params = urlParts[1];
+    setUrlInAddressbar(cleanUrl);
+    return GetparametersDictionary(params);
+};
+
+GetparametersDictionary = function (unsplitParams) {
+    unsplitParams = href.split(/&/);
+    params = {};
+    for (unsplitParam in unsplitParams) {
+        splitParam = unsplitParams[unsplitParam].split(/=/);
+        params[splitParam[0]] = splitParam[1];
+    }
+    return params;
+}
+
+setUrlInAddressbar = function (newUrl) {
+    window.history.pushState('',document.title,newHref);
+}
+
 //Connect functions to HTML elements
 connectButton = function(html_button, method) {
     html_button.on('click', method);
@@ -47,5 +70,8 @@ connectHtmlFunctionality = function() {
 
 //Run this when the page is loaded.
 document.addEventListener("DOMContentLoaded", function(){
+    
     connectHtmlFunctionality();
 });
+
+var getParameters = removeGetParameters();

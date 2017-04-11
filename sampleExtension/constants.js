@@ -1,6 +1,18 @@
 
 var redirectLink = "https://zeeguu.herokuapp.com/get-ex?redirect=";
-var modes = {lazy: "lazy", pro: "pro"};
+var redirectLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
+
+var modes = {
+    lazy: {
+        label:"lazy",
+        zeeguuText:"You are in lazy mode. Click <a id='originalDestination'>'Skip'</a> any time to continue browsing."
+    },
+    pro: {
+        label: "pro",
+        zeeguuText:"You are in pro mode. Complete the exercise and click the 'Take me away!' button when you are done to continue browsing."
+    }
+};
+
 
 var newUrlNotUniqueError = "new blocked site item to be added was found to resolve to an already blacklisted website, " +
                            "please try a different url.\n Duplicate url: ";
@@ -9,7 +21,7 @@ var INVALID_URL_MESSAGE = "We unfortunately could not reach the site you are try
 
 /* -------------------- Text Messages ----------------------- */
 
-var infoText = "Hey, you tried to enter one of the sites you wanted to be protected from!";
+var zeeguuInfoText = "Hey, you tried to enter one of the sites you wanted to be protected from!";
 var proText = "You are in pro mode. Complete the exercise and click the 'Take me away!' button when you are done to continue browsing.";
 var lazyText = "You are in lazy mode. Click <a id='originalDestination'>'Skip'</a> any time to continue browsing.";
 

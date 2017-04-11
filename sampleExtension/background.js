@@ -93,7 +93,7 @@ removeWebRequestListener = function() {
 intercept = function(details) {
     storage.incrementInterceptionCounter(details.url);
     addToInterceptDateList();
-    return {redirectUrl: redirectLink+details.url};
+    return {redirectUrl: redirectLink+"?sessionID="+auth.getSession()+"&redirect="+details.url};
 };
 
 handleInterception = function(details) {
