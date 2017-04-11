@@ -23,6 +23,14 @@ function Synchronizer() {
         self.bg.setLocalStatistics(statistics);
     };
 
+    this.addBlockedSiteAndSync = function(blockedSite) {
+        storage.getBlacklist(function(blacklist) {
+            if (blacklist.addToList(blockedSite)) {
+                self.syncBlacklist(blacklist);
+            }
+        })
+    }
+
 }
 
 var synchronizer = new Synchronizer();

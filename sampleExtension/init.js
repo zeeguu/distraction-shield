@@ -32,7 +32,7 @@ initInterceptCounter = function(counter) {
 
 initInterceptDateList = function(dateList) {
     if (dateList == null) {
-        storage.setInterceptDateList(dateList);
+        storage.setInterceptDateList([]);
     }
 };
 
@@ -53,7 +53,7 @@ initSettings = function(settings) {
 
 /* --------------- ---- Run upon Start of session ---- ---------------*/
 
-//fix that checks whether everything that should be is initialized
+//fix that checks whether everything that should be is indeed initialized
 storage.getSettings(function(settings) {
     if (settings != null) {
         initSession();

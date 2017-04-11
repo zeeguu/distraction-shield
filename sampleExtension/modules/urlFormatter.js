@@ -3,7 +3,7 @@
 alert = chrome.extension.getBackgroundPage().alert;
 
 function UrlFormatter() {
-    this.url_requester = new UrlRequester();
+    this.urlRequester = new UrlRequester();
 
     this.stripOfFinalSlash = function (url) {
         if (url[url.length - 1] == '/') {
@@ -82,17 +82,11 @@ function UrlFormatter() {
 
     this.getUrlFromServer = function(url, callback) {
         var urlToGet = this.formatForGetRequest(url);
-        this.url_requester.httpGetAsync(urlToGet, function(url, title) {
+        this.urlRequester.httpGetAsync(urlToGet, function(url, title) {
             url = urlFormatter.stripOfScheme(url);
             url = urlFormatter.stripOfFileName(url);
             callback(url, title);
         });
-    };
-
-    this.getUrlWithoutServer = function(url, title, callback) {
-        url = urlFormatter.stripOfScheme(url);
-        url = urlFormatter.stripOfFileName(url);
-        callback(url, title);
     };
 
 }

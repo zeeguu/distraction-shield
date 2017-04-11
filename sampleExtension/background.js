@@ -7,7 +7,11 @@ var localSettings = new UserSettings();
 /* --------------- ------ setter for local variables ------ ---------------*/
 
 setLocalSettings = function(newSettings) {
+    var oldState = localSettings.getState();
     localSettings.copySettings(newSettings);
+    if (oldState != localSettings.getState()) {
+        replaceListener();
+    }
 };
 
 setLocalBlacklist = function(newList) {
@@ -48,7 +52,14 @@ addToBlockedSites = function (newUrl, newUrlTitle) {
     });
 };
 
-
+addUrlToBlockedSites = function(unformattedUrl, onSuccess) {
+    blockedSiteBuilder.createNewBlockedSite(unformattedUrl, function(newBS) {
+        if (blockedSites.addToList(newBS)) {
+            storage.setBlacklist(blockedSites);
+            onSuccess();
+        } 
+    });
+};
 
 /* --------------- ------ webRequest functions ------ ---------------*/
 

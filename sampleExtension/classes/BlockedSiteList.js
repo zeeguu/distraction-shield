@@ -15,7 +15,7 @@ function BlockedSiteList() {
             this.list.push(newBlockedSite);
             return true;
         } else {
-            alert(newUrlNotUniqueError + newBlockedSite.getUrl());
+            alert(newUrlNotUniqueError + newBlockedSite.getDomain());
             return false;
         }
     };
@@ -28,7 +28,12 @@ function BlockedSiteList() {
 
     this.removeFromList = function(blockedSiteToDelete) {
         var urlKey = this.list.indexOf(blockedSiteToDelete);
-        this.list.splice(urlKey, 1);
+        if (urlKey > -1) {
+            this.list.splice(urlKey, 1);
+            return true;
+        } else {
+            return false;
+        }
     };
 
     this.filterOnChecked = function() {

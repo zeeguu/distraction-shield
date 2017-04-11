@@ -3,29 +3,8 @@ function ExerciseTime() {
     var self = this;
 
     this.init = function() {
-        // Create new dummydata.
-        storage.setDayStatisticsList([]);
-        self.loadDummyData(10);
-
         // Make sure there is a record for the current day by calling this method.
         self.incrementDayStat(0);
-    };
-
-    // Loads dummy data in the previous day list for demonstration purposes.
-    this.loadDummyData = function(amount){
-        var dummyList = [];
-        for(var i = amount; i > 0; i--){
-            var date = new Date();
-            //set date to date.day - 1
-            date = new Date(date.setDate(date.getDate() - i));
-            dummyList.push(
-                {
-                    date: dateUtil.formatDate(date),
-                    timespent: Math.floor((Math.random()*100)+1)
-                }
-            );
-        }
-        storage.setDayStatisticsList(dummyList);
     };
 
 

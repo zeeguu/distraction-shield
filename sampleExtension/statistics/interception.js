@@ -34,7 +34,6 @@ function Interception() {
         }
     };
 
-    //TODO for iteration 3 remove interceptioncounter integrate to statistics
     this.incrementInterceptionCounter = function(urlAddress) {
         let urlList = blockedSites.getList();
         for (var i = 0; i < urlList.length; i++) {

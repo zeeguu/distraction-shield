@@ -9,12 +9,14 @@ function BlockedSite(url, title) {
     };
 
     this.url = this.constructUrl(url);
+    this.domain = url;
     this.name = title;
     this.icon = this.constructIcon(url);
     this.checkboxVal = true;
     this.counter = 0;
 
-    this.getUrl = function() {return this.url;};
+    this.getUrl = function () { return this.url; };
+    this.getDomain = function () { return this.domain; };
     this.getIcon = function() {return this.icon;};
     this.getName = function() {return this.name;};
     this.setCounter = function(newVal) {this.counter = newVal;};

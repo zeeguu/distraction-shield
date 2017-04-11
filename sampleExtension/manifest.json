@@ -11,7 +11,6 @@
   //what pops up once we hit the options
   "options_page": "optionsPage/options.html",
   "options_ui": {
-    "chrome_style": true,
     "page": "optionsPage/options.html"
   },
 
@@ -30,6 +29,7 @@
       "modules/urlFormatter.js",
       "modules/storage.js",
       "modules/synchronizer.js",
+      "modules/blockedSiteBuilder.js",
       "classes/BlockedSite.js",
       "classes/BlockedSiteList.js",
       "classes/UserSettings.js",
