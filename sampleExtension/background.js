@@ -43,15 +43,6 @@ retrieveBlockedSites = function(callback){
 
 /* --------------- ------ Updating of variables ------ ---------------*/
 
-addToBlockedSites = function (newUrl, newUrlTitle) {
-    urlFormatter.getUrlWithoutServer(newUrl, newUrlTitle, function (url, title) {
-        newItem = new BlockedSite(url, title);
-        blockedSites.addToList(newItem);
-        storage.setBlacklist(blockedSites);
-        replaceListener();
-    });
-};
-
 addUrlToBlockedSites = function(unformattedUrl, onSuccess) {
     blockedSiteBuilder.createNewBlockedSite(unformattedUrl, function(newBS) {
         if (blockedSites.addToList(newBS)) {

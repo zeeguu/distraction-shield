@@ -2,16 +2,10 @@
 // Log console messages to the background page console instead of the content page.
 var bg = chrome.extension.getBackgroundPage();
 var console = bg.console;
-var saveButton = $('#saveBtn');
 
 var interceptionCounterTable = null;
 var blacklistTable = null;
-var dayStatisticsTable = null;
-
-
-connectButton = function(html_button, method) {
-    html_button.on('click', method);
-};
+var exerciseTimeTable = null;
 
 saveCurrentPageToBlacklist = function() {
     bg.tr.getCurrentTab().then(bg.addToBlockedSites(result));
@@ -24,15 +18,14 @@ initStatisticsPage = function() {
             let counters = bg.ic.calcInterceptData(response[0].tds_interceptDateList);
             interceptionCounterTable.setDataAndRender(counters);
             blacklistTable.setDataAndRender(bg.blockedSites.getList());
-            dayStatisticsTable.setDataAndRender(response[1]);
+            exerciseTimeTable.setDataAndRender(response[1]);
         });
 };
 
 connectHtmlFunctionality = function() {
     interceptionCounterTable = new InterceptionCounterTable();
     blacklistTable = new BlacklistStatsTable($('#interceptTable'));
-    dayStatisticsTable = new DayStatsTable($('#exerciseTime'));
-    connectButton(saveButton, saveCurrentPageToBlacklist);
+    exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
 };
 
 

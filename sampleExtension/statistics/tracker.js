@@ -13,7 +13,7 @@ function Tracker() {
     // Initialize the alarm, and initialize the idle-checker.
     this.init = function() {
 
-        // Fire alarm every second.
+        // Fire alarm every three second.
         setInterval(self.fireAlarm, 3000);
 
         // When the user does not input anything for 15 seconds, set the state to idle.
@@ -26,7 +26,7 @@ function Tracker() {
         if(!self.idle){
             self.getCurrentTab().then(function(result){ self.tabActive = result});
             if(self.compareUrlToRegex(self.zeeguuRegex, self.tabActive)){
-                exerciseTime.incrementDayStat(3);
+                exerciseTime.incrementTodayExerciseTime(3);
             }
         }
     };

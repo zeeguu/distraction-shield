@@ -1,5 +1,5 @@
 
-function DayStatsTable(html_element) {
+function ExerciseTimeTable(html_element) {
     var self = this;
     this.table = html_element;
     this.timeSpentData = null;
@@ -13,27 +13,26 @@ function DayStatsTable(html_element) {
 
     };
 
-    this.generateDayStatisticHtmlRow = function(dayStatistic) {
+    this.generateExerciseTimeHtmlRow = function(dayStatistic) {
         var tableRow =
             $("<tr>" +
                 "<td>"+dayStatistic.date+"</td>" +
                 "<td>"+bg.dateUtil.secondsToHHMMSS(dayStatistic.timespent)+"</td>" +
                 "</tr>");
-        //add the actual object to the html_element
         return tableRow;
     };
 
-    this.createDayStatisticsTable = function(list) {
+    this.createExerciseTimeTable = function(list) {
         list = list.reverse();
         $.each(list, function(key, value) {
             if(value != null){
-                self.addToTable(self.generateDayStatisticHtmlRow(value));
+                self.addToTable(self.generateExerciseTimeHtmlRow(value));
             }
         });
     };
 
     this.render = function(){
-        self.createDayStatisticsTable(self.timeSpentData);
+        self.createExerciseTimeTable(self.timeSpentData);
     };
 
     this.setDataAndRender = function(data){

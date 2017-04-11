@@ -53,7 +53,7 @@ initInterceptDateList = function(dateList) {
 
 initDayStatistics = function(dayStatistics){
     if (dayStatistics == null) {
-        storage.setDayStatisticsList([]);
+        storage.setExerciseTimeList([]);
     }
 };
 

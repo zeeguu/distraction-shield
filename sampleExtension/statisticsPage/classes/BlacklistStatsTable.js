@@ -22,8 +22,6 @@ function BlacklistStatsTable(html_element) {
                 "<td>"+site.getName()+"</td>" +
                 "<td>"+site.getCounter()+"</td>" +
                 "</tr>");
-        //add the actual object to the html_element
-        row.data('site', site);
         return row;
     };
 
