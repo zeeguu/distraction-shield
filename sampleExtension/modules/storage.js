@@ -82,22 +82,22 @@ function SyncStorage() {
 
     // Set the list dict containing information about how much time is spent on exercises each previous day.
     this.setExerciseTimeList = function(statList){
-        return self.setStorage("tds_dayStatistics", statList);
+        return self.setStorage("tds_exerciseTime", statList);
     };
 
     // Get the list containing information about how much time is spent on exercises each previous day.
     this.getExerciseTimeList = function(){
-        return self.getStorage(["tds_dayStatistics"]);
+        return self.getStorage(["tds_exerciseTime"]);
     };
 
     // Set the data dict containing information about how much time is spent on exercises today.
     this.setTodayExerciseTime = function(dayStats){
-        return self.setStorage("tds_currentDayStatistic", dayStats);
+        return self.setStorage("tds_exerciseTimeToday", dayStats);
     };
 
     // Get the data dict containing information about how much time is spent on exercises today.
     this.getTodayExerciseTime = function(){
-        return self.getStorage(["tds_currentDayStatistic"]);
+        return self.getStorage(["tds_exerciseTimeToday"]);
     };
 
 

@@ -20,7 +20,7 @@ chrome.runtime.onInstalled.addListener(function() {
         initBlacklist(output.tds_blacklist);
         initInterceptCounter(output.tds_interceptCounter);
         initInterceptDateList(output.tds_interceptDateList);
-        initDayStatistics(output.tds_dayStatistics);
+        initExerciseTime(output.tds_exerciseTime);
         initSettings(output.tds_settings);
     });
 });
@@ -51,8 +51,8 @@ initInterceptDateList = function(dateList) {
     }
 };
 
-initDayStatistics = function(dayStatistics){
-    if (dayStatistics == null) {
+initExerciseTime = function(exerciseTime){
+    if (exerciseTime == null) {
         storage.setExerciseTimeList([]);
     }
 };

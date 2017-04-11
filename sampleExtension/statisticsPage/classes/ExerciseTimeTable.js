@@ -13,11 +13,11 @@ function ExerciseTimeTable(html_element) {
 
     };
 
-    this.generateExerciseTimeHtmlRow = function(dayStatistic) {
+    this.generateExerciseTimeHtmlRow = function(exerciseTime) {
         var tableRow =
             $("<tr>" +
-                "<td>"+dayStatistic.date+"</td>" +
-                "<td>"+bg.dateUtil.secondsToHHMMSS(dayStatistic.timespent)+"</td>" +
+                "<td>"+exerciseTime.date+"</td>" +
+                "<td>"+bg.dateUtil.secondsToHHMMSS(exerciseTime.timespent)+"</td>" +
                 "</tr>");
         return tableRow;
     };
