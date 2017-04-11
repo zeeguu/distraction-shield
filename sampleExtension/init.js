@@ -11,7 +11,6 @@ initSession = function () {
         setLocalSettings(settings);
         retrieveBlockedSites(replaceListener);
     });
-    retrieveInterceptDateList();
 };
 
 /* --------------- ---- Run upon installation ---- ---------------*/

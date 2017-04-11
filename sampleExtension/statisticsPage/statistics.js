@@ -19,7 +19,7 @@ saveCurrentPageToBlacklist = function() {
 
 //Initialize HTML elements and set the data in the tables.
 initStatisticsPage = function() {
-    Promise.all([bg.statsStorage.getInterceptDateList(), bg.statsStorage.getCompleteDayStatList()])
+    Promise.all([bg.storage.getInterceptDateList(), bg.exerciseTime.getCompleteDayStatList()])
         .then(function(response){
             let counters = bg.ic.calcInterceptData(response[0].tds_interceptDateList);
             interceptionCounterTable.setDataAndRender(counters);

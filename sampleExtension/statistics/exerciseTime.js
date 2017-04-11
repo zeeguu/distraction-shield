@@ -4,7 +4,7 @@ function ExerciseTime() {
 
     this.init = function() {
         // Create new dummydata.
-        statsStorage.setDayStatisticsList([]);
+        storage.setDayStatisticsList([]);
         self.loadDummyData(10);
 
         // Make sure there is a record for the current day by calling this method.
@@ -25,7 +25,7 @@ function ExerciseTime() {
                 }
             );
         }
-        statsStorage.setDayStatisticsList(dummyList);
+        storage.setDayStatisticsList(dummyList);
     };
 
 
@@ -34,7 +34,7 @@ function ExerciseTime() {
     // And when the currentDateStatistic does not correspond with the actual current date,
     // this currentDataStatistic is added to the list of previous day statistics.
     this.incrementDayStat = function(amount){
-        statsStorage.getCurrentDayStatistic().then(function(response){
+        storage.getCurrentDayStatistic().then(function(response){
             self.handleIncrementDayStat(response.tds_currentDayStatistic, amount);
         });
     };
@@ -42,13 +42,37 @@ function ExerciseTime() {
     this.handleIncrementDayStat = function(currentDayStatistic, amount){
         var today = dateUtil.getToday();
         if (currentDayStatistic == null){
-            statsStorage.setCurrentDayStatistic({date: today, timespent: 0});
+            storage.setCurrentDayStatistic({date: today, timespent: 0});
         } else if(currentDayStatistic.date != today){
-            statsStorage.addPreviousDayToStatsList(currentDayStatistic);
-            statsStorage.setCurrentDayStatistic({date: today, timespent: amount});
+            self.addPreviousDayToStatsList(currentDayStatistic);
+            storage.setCurrentDayStatistic({date: today, timespent: amount});
         } else {
-            statsStorage.setCurrentDayStatistic({date: today, timespent: currentDayStatistic.timespent+amount});
+            storage.setCurrentDayStatistic({date: today, timespent: currentDayStatistic.timespent+amount});
         }
+    };
+
+    // This function adds the previous day to the list of day statistics.
+    this.addPreviousDayToStatsList = function(dayStats){
+        storage.getDayStatisticsList().then(function(response){
+            var newList = response.tds_dayStatistics;
+            if(newList == null){
+                newList = [];
+            }
+            newList.push(dayStats);
+            storage.setDayStatisticsList(newList);
+        });
+    };
+
+    // Get the list containing information about time spent on exercises. For the previous days, and the current day.
+    this.getCompleteDayStatList = function(){
+        return new Promise(function(resolve, reject){
+            Promise.all([storage.getDayStatisticsList(), storage.getCurrentDayStatistic()])
+                .then(function(result){
+                    let completeList = result[0].tds_dayStatistics;
+                    completeList.push(result[1].tds_currentDayStatistic);
+                    resolve(completeList);
+                });
+        });
     };
 }
 

@@ -35,7 +35,6 @@
       "classes/UserSettings.js",
       "background.js",
       "init.js",
-      "statistics/statisticsStorage.js",
       "statistics/tracker.js",
       "statistics/interception.js",
       "statistics/exerciseTime.js",
