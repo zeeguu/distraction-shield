@@ -3,8 +3,8 @@
 <html>
   <head>
     <title>Statistics for The Distraction Shield</title>
-    <link rel="stylesheet" type="text/css" href="statistics.css">
     <link rel="stylesheet" type="text/css" href="../dependencies/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="statistics.css">
   </head>
 
   <body>
@@ -20,7 +20,7 @@
             <p> <span id="countDay"></span> times in the last 24 hours.</p>
             <p> <span id="countWeek"></span> times in the last week.</p>
             <p> <span id="countMonth"></span> times in the last month.</p>
-            <p> For a total of <span id="iCounter"></span> times.</p>
+            <p> For a total of <span id="countTotal"></span> times.</p>
           </div>
         </div>
       </div>
@@ -53,6 +53,9 @@
     </div>
 
     <script src="../dependencies/jquery/jquery-1.10.2.js"></script>
+    <script src="classes/InterceptionCounterTable.js"></script>
+    <script src="classes/BlacklistStatsTable.js"></script>
+    <script src="classes/ExerciseTimeTable.js"></script>
     <script src="../modules/storage.js"></script>
     <script src="statistics.js"></script>
 

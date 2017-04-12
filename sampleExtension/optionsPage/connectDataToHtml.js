@@ -14,7 +14,6 @@ sortListOnCheckboxVal = function(bsA, bsB) {
 };
 
 loadHtmlBlacklist = function(blockedSiteList, table) {
-    //For each BlockedSite object from the list generate a tableRow
     var list = blockedSiteList.getList();
     list.sort(sortListOnCheckboxVal);
     $.each(list, function(key, value) {

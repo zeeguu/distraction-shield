@@ -12,10 +12,3 @@ body {
     border-radius: 7px !important;
 }
 
-#loginBtn {
-    visibility: hidden;
-}
-
-#logoutBtn {
-    visbility: hidden;
-}
