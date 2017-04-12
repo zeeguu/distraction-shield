@@ -5,6 +5,9 @@ var redirectLink = "https://zeeguu.herokuapp.com/get-ex?redirect=";
 /* ---------- ----- BlockedSite ----- ---------- */
 var FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
 
+/* ---------- ----- statistics ----- ---------- */
+var ZEEGUU_LINK = "https://zeeguu.herokuapp.com/";
+
 /* ---------- ----- UserSettings, inject ----- ---------- */
 var modes = {lazy: "lazy", pro: "pro"};
 
