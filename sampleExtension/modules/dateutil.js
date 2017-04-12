@@ -1,6 +1,7 @@
 
 // This module is an utility to help get the correct format for dates which are used in the codebase.
 function DateUtil() {
+    var self = this;
     this.bg = chrome.extension.getBackgroundPage();
 
     // Converts seconds to the format HH:MM:SS
