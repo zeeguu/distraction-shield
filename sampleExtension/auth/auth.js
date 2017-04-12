@@ -63,17 +63,17 @@ function Auth() {
     }
 
     this.getSession = function(){
-        return localSettings.getSession();
+        return localSettings.getSessionID();
     };
 
     this.setSession = function (session) {
         oldSession = self.getSession();
         if (oldSession != null) {
             self.logout().then(function () {
-                localSettings.setSession(session);
+                localSettings.setSessionID(session);
             });
         } else {
-            localSettings.setSession(session);
+            localSettings.setSessionID(session);
         }
     };
 

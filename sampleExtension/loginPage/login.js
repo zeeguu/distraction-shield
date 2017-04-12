@@ -6,6 +6,8 @@ var console = bg.console;
 var auth = bg.auth;
 
 /* -------------------- -------------------------- -------------------- */
+var instructions;
+
 var html_emailLoginFld = $('#emailLoginFld');
 var html_passwordLoginFld = $('#passwordLoginFld');
 var html_submitButton = $('#submitBtn');
@@ -34,30 +36,38 @@ login = function(){
     });
     html_emailLoginFld.val('');
     html_passwordLoginFld.val('');
+
+    if ("forceLogin" in instructions) {
+        console.log('forcelogin!');
+        url = instructions["forceLogin"];
+        url = url + "?redirect=" + instructions["redirect"];
+        window.location = url;
+    }
 };
 
 getExtraInstructions = function () {
-    url = window.location.href;
-    urlParts = url.split(/\?/);
-    cleanUrl = urlParts[0];
-    params = urlParts[1];
+    var url = window.location.href;
+    var urlParts = url.split(/\?/);
+    var cleanUrl = urlParts[0];
+    var params = urlParts[1];
     setUrlInAddressbar(cleanUrl);
     return GetparametersDictionary(params);
 };
 
 GetparametersDictionary = function (unsplitParams) {
-    unsplitParams = href.split(/&/);
-    params = {};
-    for (unsplitParam in unsplitParams) {
-        splitParam = unsplitParams[unsplitParam].split(/=/);
+    if (!unsplitParamPairs) return {};
+    var unsplitParamPairs = unsplitParams.split(/&/);
+    var params = {};
+    for (i in unsplitParamPairs) {
+        var splitParam = unsplitParamPairs[i].split(/=/);
         params[splitParam[0]] = splitParam[1];
     }
     return params;
-}
+};
 
 setUrlInAddressbar = function (newUrl) {
-    window.history.pushState('',document.title,newHref);
-}
+    window.history.pushState('',document.title,newUrl);
+};
 
 //Connect functions to HTML elements
 connectButton = function(html_button, method) {
@@ -70,8 +80,7 @@ connectHtmlFunctionality = function() {
 
 //Run this when the page is loaded.
 document.addEventListener("DOMContentLoaded", function(){
-    
+    instructions = getExtraInstructions();
+    console.log(instructions);
     connectHtmlFunctionality();
 });
-
-var getParameters = removeGetParameters();

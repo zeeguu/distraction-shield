@@ -1,6 +1,6 @@
 
-var redirectLink = "https://zeeguu.herokuapp.com/get-ex?redirect=";
-var redirectLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
+// var redirectLink = "https://zeeguu.herokuapp.com/get-ex?redirect=";
+var zeeguuExLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
 
 var modes = {
     lazy: {
@@ -22,8 +22,6 @@ var INVALID_URL_MESSAGE = "We unfortunately could not reach the site you are try
 /* -------------------- Text Messages ----------------------- */
 
 var zeeguuInfoText = "Hey, you tried to enter one of the sites you wanted to be protected from!";
-var proText = "You are in pro mode. Complete the exercise and click the 'Take me away!' button when you are done to continue browsing.";
-var lazyText = "You are in lazy mode. Click <a id='originalDestination'>'Skip'</a> any time to continue browsing.";
 
 /* -------------------- Keypress constants ----------------------- */
 var KEY_DELETE = 46;

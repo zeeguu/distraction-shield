@@ -93,7 +93,21 @@ removeWebRequestListener = function() {
 intercept = function(details) {
     storage.incrementInterceptionCounter(details.url);
     addToInterceptDateList();
-    return {redirectUrl: redirectLink+"?sessionID="+auth.getSession()+"&redirect="+details.url};
+    var redirectLink;
+    var params;
+    if (localSettings.getSessionID() == undefined) {
+        redirectLink = chrome.extension.getURL('loginPage/login.html');
+        // redirectLink = redirectLink + "?forceLogin=" + zeeguuExLink;
+        params = "?forceLogin=" + zeeguuExLink;
+
+        // params = "?forceLogin=" + 'https://www.google.nl';
+    } else {
+        redirectLink = zeeguuExLink + "?sessionID=" + localSettings.getSessionID();
+    }
+    params = params+"&redirect="+details.url;
+    console.log(redirectLink+params);
+    return {redirectUrl: redirectLink+params};
+
 };
 
 handleInterception = function(details) {

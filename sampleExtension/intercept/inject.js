@@ -2,16 +2,6 @@ mainFlow = function() {
     storage.getMode(initBasis);
 };
 
-determineMode = function(mode) {
-    var message;
-    if (mode == modes.pro || mode == undefined) {
-        message = proText;
-    } else if(mode == modes.lazy){
-        message = lazyText;
-    }
-    return message;
-};
-
 initBasis = function(mode) {
     var message = localSettings.mode.zeeguuText;
 
