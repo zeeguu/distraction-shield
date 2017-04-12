@@ -14,7 +14,7 @@ function ExerciseTime() {
     // this currentDataStatistic is added to the list of previous day statistics.
     this.incrementTodayExerciseTime = function(amount){
         storage.getTodayExerciseTime().then(function(response){
-            self.handleIncExerciseTime(response.tds_exerciseTimeToday, amount);
+            self.handleIncExerciseTime(response, amount);
         });
     };
 
@@ -33,7 +33,7 @@ function ExerciseTime() {
     // This function adds the previous day to the list of day statistics.
     this.addDayToList = function(dayStats){
         storage.getExerciseTimeList().then(function(response){
-            var newList = response.tds_exerciseTime;
+            var newList = response;
             if(newList == null){
                 newList = [];
             }
@@ -47,8 +47,8 @@ function ExerciseTime() {
         return new Promise(function(resolve, reject){
             Promise.all([storage.getExerciseTimeList(), storage.getTodayExerciseTime()])
                 .then(function(result){
-                    let completeList = result[0].tds_exerciseTime;
-                    completeList.push(result[1].tds_exerciseTimeToday);
+                    let completeList = result[0];
+                    completeList.push(result[1]);
                     resolve(completeList);
                 });
         });

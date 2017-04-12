@@ -45,7 +45,7 @@ function Interception() {
         storage.setBlacklist(blockedSites);
         storage.getInterceptCounter()
             .then(function(output){
-                var counter = output.tds_interceptCounter;
+                var counter = output;
                 counter++;
                 storage.setInterceptionCounter(counter);
             });
@@ -56,7 +56,7 @@ function Interception() {
         let interceptDateList = [];
         storage.getInterceptDateList()
         .then(function(result){
-            interceptDateList = result.tds_interceptDateList;
+            interceptDateList = result;
         })
         .then(function(){
             var newDate = new Date().toDateString();

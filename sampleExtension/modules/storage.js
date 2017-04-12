@@ -125,7 +125,11 @@ function SyncStorage() {
         return new Promise(function (resolve, reject) {
             chrome.storage.sync.get(dataKey, function (output) {
                 if (handleRuntimeError()) {
-                    resolve(output);
+                    if(dataKey == null || dataKey.length != 1){
+                        resolve(output);
+                    } else {
+                        resolve(output[dataKey]);
+                    }
                 } else {
                     reject(Error("Data cannot be found."));
                 }
