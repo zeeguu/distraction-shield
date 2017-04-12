@@ -22,6 +22,7 @@ chrome.runtime.onInstalled.addListener(function() {
         initInterceptDateList(output.tds_interceptDateList);
         initExerciseTime(output.tds_exerciseTime);
         initSettings(output.tds_settings);
+        runIntroTour();
     });
 });
 
@@ -57,6 +58,10 @@ initExerciseTime = function(exerciseTime){
     }
 };
 
+
+runIntroTour = function() {
+    chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
+};
 
 
 /* --------------- ---- Run upon Start of session ---- ---------------*/
