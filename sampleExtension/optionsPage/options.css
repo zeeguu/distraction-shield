@@ -1,9 +1,43 @@
+body{
+    margin: 0 auto;
+    min-width:1000px;
+}
+
 #addUrlDiv {
     margin-bottom: 15px;
 }
 
 .page-header {
     text-align:center;
+}
+
+/* ---------- ---------- options alignment ---------- ---------- */
+
+#modeRadioDiv {
+    float:left;
+    width:30%;
+}
+
+#interval-slider-div {
+    width:70%;
+    overflow:hidden;
+}
+
+/* ---------- ---------- TurnOff Slider ---------- ---------- */
+
+#offBtnDiv{
+    margin-top:4px;
+    margin-bottom:4px;
+}
+
+#offRanDiv{
+    margin-top:3px;
+    margin-bottom:3px;
+}
+
+#offValDiv{
+    margin-top:11px;
+    margin-left:-20px;
 }
 
 /* ---------- ---------- table ---------- ---------- */
@@ -17,6 +51,7 @@
 }
 
 .pageTitle {
+    max-width:500px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

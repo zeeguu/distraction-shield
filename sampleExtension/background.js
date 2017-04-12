@@ -7,7 +7,11 @@ var localSettings = new UserSettings();
 /* --------------- ------ setter for local variables ------ ---------------*/
 
 setLocalSettings = function(newSettings) {
+    var oldState = localSettings.getState();
     localSettings.copySettings(newSettings);
+    if (oldState != localSettings.getState()) {
+        replaceListener();
+    }
 };
 
 setLocalBlacklist = function(newList) {
@@ -45,15 +49,6 @@ retrieveInterceptDateList = function() {
 
 /* --------------- ------ Updating of variables ------ ---------------*/
 
-addToBlockedSites = function (newUrl, newUrlTitle) {
-    urlFormatter.getUrlWithoutServer(newUrl, newUrlTitle, function (url, title) {
-        newItem = new BlockedSite(url, title);
-        blockedSites.addToList(newItem);
-        storage.setBlacklist(blockedSites);
-        replaceListener();
-    });
-};
-
 // This function adds the current time+date to the saved time+date list
 addToInterceptDateList = function() {
     var newDate = new Date().toDateString();
@@ -63,6 +58,15 @@ addToInterceptDateList = function() {
         interceptDateList.push(newDate);
     }
     storage.setInterceptDateList(interceptDateList);
+};
+
+addUrlToBlockedSites = function(unformattedUrl, onSuccess) {
+    blockedSiteBuilder.createNewBlockedSite(unformattedUrl, function(newBS) {
+        if (blockedSites.addToList(newBS)) {
+            storage.setBlacklist(blockedSites);
+            onSuccess();
+        } 
+    });
 };
 
 /* --------------- ------ webRequest functions ------ ---------------*/

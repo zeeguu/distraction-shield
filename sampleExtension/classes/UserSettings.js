@@ -66,7 +66,9 @@ function UserSettings () {
     };
 
     this.turnExtensionBackOn = function () {
-        self.turnOn();
+        if(self.getState() == "Off") {
+            self.turnOn();
+        }
     };
 
     //Private method
@@ -86,7 +88,7 @@ function UserSettings () {
     this.reInitTimer = function() {
         if (this.getState() == "Off") {
             if (this.getOffTill() < new Date()) {
-                localSettings.turnOn();
+                self.turnOn();
             } else {
                 this.setTimer();
             }

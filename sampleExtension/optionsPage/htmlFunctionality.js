@@ -8,35 +8,15 @@ appendHtmlItemTo = function(html_child, html_parent) {
     html_parent.append(html_child);
 };
 
-prependHtmlItemTo = function (html_child, html_parent) {
+prependHtmlItemTo = function(html_child, html_parent) {
     html_parent.prepend(html_child);
-};
-
-removeBlockedSiteFromAll = function(html_item) {
-    removeFromLocalBlacklist(html_item);
-    blacklistTable.removeFromTable(html_item);
-    synchronizer.syncBlacklist(blacklist);
-};
-
-addBlockedSiteToAll = function(newItem) {
-    if (addToLocalBlacklist(newItem)) {
-        blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
-        synchronizer.syncBlacklist(blacklist);
-    }
-};
-
-createNewBlockedSite = function (newUrl) {
-    urlFormatter.getUrlFromServer(newUrl, function (url, title) {
-        newItem = new BlockedSite(url, title);
-        return addBlockedSiteToAll(newItem);
-    });
 };
 
 /* -------------------- Button Click functions ----------------------- */
 
-saveNewUrl = function() {
+saveNewUrl = function () {
     var newUrl = html_txtFld.val();
-    createNewBlockedSite(newUrl);
+    blockedSiteBuilder.createNewBlockedSite(newUrl, addBlockedSiteToAll);
     html_txtFld.val('');
 };
 
@@ -47,21 +27,21 @@ connectButton = function(html_button, method) {
 
 /* -------------------- Keypress events ----------------------- */
 
-setKeyPressFunctions = function () {
+setKeyPressFunctions = function() {
     submitOnKeyPress(html_txtFld);
     deleteOnKeyPress(blacklistTable);
 };
 
-submitOnKeyPress = function (html_elem) {
-    html_elem.keyup(function (event) {
+submitOnKeyPress = function(html_elem) {
+    html_elem.keyup(function(event) {
         if (event.keyCode == KEY_ENTER) {
             saveNewUrl();
         }
     });
 };
 
-deleteOnKeyPress = function (blacklistTable) {
-    $('html').keyup(function (e) {
+deleteOnKeyPress = function(blacklistTable) {
+    $('html').keyup(function(e) {
         if (e.keyCode == KEY_DELETE) {
             var html = blacklistTable.getSelected();
             removeBlockedSiteFromAll(html);
@@ -81,7 +61,7 @@ initModeSelection = function(buttonGroup) {
 /* -------------------- Interval slider -------------------- */
 
 initIntervalSlider = function() {
-    intervalSlider = new GreenToRedSlider('#interval-slider', function (value) {
+    intervalSlider = new GreenToRedSlider('#interval-slider', function(value) {
         settings_object.setInterceptionInterval(parseInt(value));
         synchronizer.syncSettings(settings_object);
     });
