@@ -104,11 +104,11 @@ function SyncStorage() {
     /* ---------------- General methods --------------- */
 
     // General function which is used to set items stored in the storage of the chrome api.
-    this.setStorage = function(ind, data) {
+    this.setStorage = function(dataKey, dataValue) {
         return new Promise(function(resolve, reject){
-            var newObj= {};
-            newObj[ind] = data;
-            chrome.storage.sync.set(newObj, function() {
+            var newObject= {};
+            newObject[dataKey] = dataValue;
+            chrome.storage.sync.set(newObject, function() {
                 if(handleRuntimeError()){
                     resolve();
                 } else {
@@ -121,9 +121,9 @@ function SyncStorage() {
     // General function which is used to retrieve items stored in the storage of the chrome api.
     // This function returns a Promise, to account for possible delays which might exist between the requesting of
     // the things in the storage and the actual retrieving of it.
-    this.getStorage = function(index){
+    this.getStorage = function(dataKey){
         return new Promise(function (resolve, reject) {
-            chrome.storage.sync.get(index, function (output) {
+            chrome.storage.sync.get(dataKey, function (output) {
                 if (handleRuntimeError()) {
                     resolve(output);
                 } else {
