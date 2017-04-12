@@ -1,4 +1,3 @@
-
 //Set that holds the urls to be intercepted
 var blockedSites = new BlockedSiteList();
 var interceptDateList = [];
@@ -78,35 +77,21 @@ removeWebRequestListener = function() {
 };
 
 intercept = function(details) {
+    console.log("intercept!")
     interception.incrementInterceptionCounter(details.url);
     interception.addToInterceptDateList();
-    auth.authenticateSession().then(function () {
-        //resolution
-        var redirectLink;
-        var params;
-        if (!localSettings.getSessionID()) {
-            redirectLink = chrome.extension.getURL('loginPage/login.html');
-            params = "?forceLogin=" + zeeguuExLink;
-        } else {
-            redirectLink = zeeguuExLink;
-            params = "?sessionID=" + localSettings.getSessionID();
-        }
-        params = params+"&redirect="+details.url;
-        setCurrentTabLocation(redirectLink+params);
-    }, function rejection () {
-        //rejection
-        var redirectLink = chrome.extension.getURL('loginPage/login.html');
-        var params = "?forceLogin=" + zeeguuExLink;
-        params = params+"&redirect="+details.url;
-        setCurrentTabLocation(redirectLink+params);
-    });
-};
+    var redirectLink;
+    var params;
+    if (!auth.sessionAuthentic) {
+        redirectLink = chrome.extension.getURL('loginPage/login.html');
+        params = "?forceLogin=" + zeeguuExLink;
+    } else {
+        redirectLink = zeeguuExLink;
+        params = "?sessionID=" + localSettings.getSessionID();
+    }
+    params = params+"&redirect="+details.url;
 
-setCurrentTabLocation = function (location) {
-  chrome.tabs.query({currentWindow: true, active:true},function (tabs) {
-      var id = tabs[0].id;
-      chrome.tabs.update(id, {url: location});
-  })
+    return {redirectUrl: redirectLink + params};
 };
 
 handleInterception = function(details) {

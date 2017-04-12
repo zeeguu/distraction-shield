@@ -1,9 +1,10 @@
+
 mainFlow = function() {
     storage.getMode(initBasis);
 };
 
 initBasis = function(mode) {
-    var message = localSettings.mode.zeeguuText;
+    var message = mode.zeeguuText;
 
     $.ajax({
         url: chrome.extension.getURL('intercept/inject.html'),
