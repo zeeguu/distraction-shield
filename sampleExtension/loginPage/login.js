@@ -1,4 +1,4 @@
-
+var bg = chrome.extension.getBackgroundPage();
 var auth = bg.auth;
 /* -------------------- -------------------------- -------------------- */
 var instructions;
