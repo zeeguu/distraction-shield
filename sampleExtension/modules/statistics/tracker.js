@@ -37,7 +37,7 @@ function Tracker() {
                 self.activeTime = self.activeTime + 1;
             }
         }
-    }
+    };
 
     // Function attached to the idle-listener. Sets the self.idle variable.
     this.checkIdle = function(idleState) {

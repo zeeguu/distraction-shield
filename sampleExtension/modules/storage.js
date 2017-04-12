@@ -60,7 +60,7 @@ function SyncStorage() {
         });
     };
 
-    /* ---------------- Interception Counter --------------- */
+    /* ---------------- Statistics --------------- */
 
     this.getInterceptCounter = function() {
         return self.getStorage("tds_interceptCounter");
@@ -70,22 +70,18 @@ function SyncStorage() {
         return self.setStorage("tds_interceptCounter", number);
     };
 
-    /* ---------------- Statistics --------------- */
+    this.setInterceptDateList = function(dateList) {
+        return self.setStorage("tds_interceptDateList", dateList);
+    };
 
     this.getInterceptDateList = function(){
         return self.getStorage("tds_interceptDateList");
     };
 
-    this.setInterceptDateList = function(dateList) {
-        return self.setStorage("tds_interceptDateList", dateList);
-    };
-
-    // Set the list dict containing information about how much time is spent on exercises each previous day.
     this.setExerciseTimeList = function(statList){
         return self.setStorage("tds_exerciseTime", statList);
     };
 
-    // Get the list containing information about how much time is spent on exercises each previous day.
     this.getExerciseTimeList = function(){
         return self.getStorage(["tds_exerciseTime"]);
     };
@@ -93,6 +89,7 @@ function SyncStorage() {
     /* ---------------- General methods --------------- */
 
     // General function which is used to set items stored in the storage of the chrome api.
+    // Returns a promise.
     this.setStorage = function(dataKey, dataValue) {
         return new Promise(function(resolve, reject){
             var newObject= {};

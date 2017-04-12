@@ -8,7 +8,7 @@ var blacklistTable = null;
 var exerciseTimeTable = null;
 
 saveCurrentPageToBlacklist = function() {
-    bg.tr.getCurrentTab().then(bg.addToBlockedSites(result));
+    bg.tracker.getCurrentTab().then(bg.addToBlockedSites(result));
 };
 
 //Initialize HTML elements and set the data in the tables.
@@ -22,6 +22,7 @@ initStatisticsPage = function() {
         });
 };
 
+// Connects html items to the tables.
 connectHtmlFunctionality = function() {
     interceptionCounterTable = new InterceptionCounterTable();
     blacklistTable = new BlacklistStatsTable($('#interceptTable'));
