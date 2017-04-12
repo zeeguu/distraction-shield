@@ -13,22 +13,20 @@ function ExerciseTimeTable(html_element) {
 
     };
 
-    this.generateExerciseTimeHtmlRow = function(exerciseTime) {
+    this.generateExerciseTimeHtmlRow = function(date, exerciseTime) {
         var tableRow =
             $("<tr>" +
-                "<td>"+exerciseTime.date+"</td>" +
-                "<td>"+bg.dateUtil.secondsToHHMMSS(exerciseTime.timespent)+"</td>" +
+                "<td>"+date+"</td>" +
+                "<td>"+bg.dateUtil.secondsToHHMMSS(exerciseTime)+"</td>" +
                 "</tr>");
         return tableRow;
     };
 
     this.createExerciseTimeTable = function(list) {
-        list = list.reverse();
-        $.each(list, function(key, value) {
-            if(value != null){
-                self.addToTable(self.generateExerciseTimeHtmlRow(value));
-            }
-        });
+        let keys = Object.keys(list);
+        for(var i = keys.length-1; i >= 0; i--){
+            self.addToTable(self.generateExerciseTimeHtmlRow(keys[i], list[keys[i]]));
+        }
     };
 
     this.render = function(){

@@ -33,7 +33,7 @@ function Tracker() {
 
     // Function attached to the idle-listener. Sets the self.idle variable.
     this.checkIdle = function(idleState) {
-        self.idle = (idleState == "active");
+        self.idle = (idleState != "active");
     };
 
     // Gets the current tab.

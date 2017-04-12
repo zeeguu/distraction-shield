@@ -53,7 +53,7 @@ initInterceptDateList = function(dateList) {
 
 initExerciseTime = function(exerciseTime){
     if (exerciseTime == null) {
-        storage.setExerciseTimeList([]);
+        storage.setExerciseTimeList({});
     }
 };
 

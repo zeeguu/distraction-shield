@@ -53,10 +53,10 @@ function Interception() {
 
     // This function adds the current time+date to the saved time+date list
     this.addToInterceptDateList = function() {
-        let interceptDateList = [];
+        let interceptDateList;
         storage.getInterceptDateList()
         .then(function(result){
-            interceptDateList = result;
+            interceptDateList = result.tds_interceptDateList;
         })
         .then(function(){
             var newDate = new Date().toDateString();
