@@ -8,7 +8,7 @@ function Auth() {
     this.validateUrl = "/validate";
     this.logoutUrl = "/logout_session";
 
-    this.sessionAuthenticated = false;
+    this.sessionAuthentic = false;
 
     this.loginAnon = function(username, password) {
         //caller has responsibility to set auth.session to the returned value
@@ -31,36 +31,30 @@ function Auth() {
         return api.postRequest(url, params);
     };
 
-    this.signin = function(username, password, email){
-        //TODO This will be done by redirecting to the Zeeguu website itself.
-    };
-
     this.validate = function () {
         var url = self.validateUrl + "?session="+self.getSession();
         return api.getRequest(url, "");
     };
 
     this.logout = function(){
+        console.log("logout!");
         var url = self.logoutUrl + "?session="+self.getSession();
+        self.sessionAuthentic = false;
         self.setSession(null);
-        self.sessionAuthenticated = false;
-        return api.getRequest(url, "");
+        return api.getRequest(url, "").then();
     };
 
-    this.checkSessionAuthenticity = function () {
+    this.authenticateSession = function () {
         return self.validate().then(function (response) {
             if (response !== "OK") {
                 self.setSession(null);
-                self.sessionAuthenticated = false;
-                console.log("sessionAuthenticated false"); //todo remove
+                self.sessionAuthentic = false;
             } else {
-                self.sessionAuthenticated = true;
-                console.log("sessionAuthenticated true"); //todo remove
+                self.sessionAuthentic = true;
             }
         }, function (error) {
             self.setSession(null);
-            self.sessionAuthenticated = false;
-            console.log("sessionAuthenticated false"); //todo remove
+            self.sessionAuthentic = false;
         });
     }
 
@@ -70,12 +64,22 @@ function Auth() {
 
     this.setSession = function (session) {
         oldSession = self.getSession();
-        if (oldSession != null) {
+        if (self.sessionAuthentic) {
             self.logout().then(function () {
                 localSettings.setSessionID(session);
+                if (session) {
+                    self.sessionAuthentic = true;
+                } else {
+                    self.sessionAuthentic = false;
+                }
             });
         } else {
             localSettings.setSessionID(session);
+            if (session) {
+                self.sessionAuthentic = true;
+            } else {
+                self.sessionAuthentic = false;
+            }
         }
     };
 

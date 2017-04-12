@@ -33,11 +33,12 @@
       "classes/BlockedSiteList.js",
       "classes/UserSettings.js",
       "background.js",
-      "init.js",
+
       "statistics/trackerStorage.js",
       "statistics/tracker.js",
       "auth/api.js",
-      "auth/auth.js"
+      "auth/auth.js",
+      "init.js"
     ]
   },
 

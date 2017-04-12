@@ -39,7 +39,11 @@ redirectToLogin = function() {
 };
 
 logout = function () {
-    auth.logout();
+    auth.logout().then(function () {
+        updateSessionbutton();
+    }, function () {
+        updateSessionbutton();
+    });
 };
 
 //Connect functions to HTML elements
@@ -65,18 +69,25 @@ connectLogout = function () {
     sessionBtn.on('click', logout);
 };
 
-checkLoginStatus = function () {
-    auth.checkSessionAuthenticity().then( function () {
-        if (auth.sessionAuthenticated) {
-            //logout button active
-            connectLogout();
-        } else {
-            //login button active
-            connectLogin();
-        }
-    }, function () {
+updateSessionbutton = function() {
+    console.log('updateSessionButton()');
+    if (auth.sessionAuthentic) {
+        //logout button active
+        console.log('session authenticated, so logout');
+        connectLogout();
+    } else {
         //login button active
+        console.log('session not authenticated, so login');
         connectLogin();
+    }
+}
+
+checkLoginStatus = function () {
+    console.log('checkLoginStatus()');
+    auth.authenticateSession().then( function () {
+        updateSessionbutton();
+    }, function () {
+        updateSessionbutton();
     })
 };
 

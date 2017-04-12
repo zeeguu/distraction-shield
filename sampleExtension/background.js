@@ -97,7 +97,7 @@ removeWebRequestListener = function() {
 intercept = function(details) {
     storage.incrementInterceptionCounter(details.url);
     addToInterceptDateList();
-    return auth.checkSessionAuthenticity().then(function () {
+    auth.authenticateSession().then(function () {
         //resolution
         var redirectLink;
         var params;
@@ -109,24 +109,21 @@ intercept = function(details) {
             params = "?sessionID=" + localSettings.getSessionID();
         }
         params = params+"&redirect="+details.url;
-        return {redirectUrl: redirectLink+params}
+        setCurrentTabLocation(redirectLink+params);
     }, function rejection () {
         //rejection
         var redirectLink = chrome.extension.getURL('loginPage/login.html');
         var params = "?forceLogin=" + zeeguuExLink;
         params = params+"&redirect="+details.url;
-        return {redirectUrl: redirectLink+params}
+        setCurrentTabLocation(redirectLink+params);
     });
+};
 
-    // if (!localSettings.getSessionID()) {
-    //     redirectLink = chrome.extension.getURL('loginPage/login.html');
-    //     params = "?forceLogin=" + zeeguuExLink;
-    // } else {
-    //     redirectLink = zeeguuExLink;
-    //     params = "?sessionID=" + localSettings.getSessionID();
-    // }
-    // params = params+"&redirect="+details.url;
-    // return {redirectUrl: redirectLink+params};
+setCurrentTabLocation = function (location) {
+  chrome.tabs.query({currentWindow: true, active:true},function (tabs) {
+      var id = tabs[0].id;
+      chrome.tabs.update(id, {url: location});
+  })
 };
 
 handleInterception = function(details) {
