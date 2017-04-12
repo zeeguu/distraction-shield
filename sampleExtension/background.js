@@ -46,7 +46,7 @@ retrieveBlockedSites = function(callback){
 addUrlToBlockedSites = function(unformattedUrl, onSuccess) {
     blockedSiteBuilder.createNewBlockedSite(unformattedUrl, function(newBS) {
         if (blockedSites.addToList(newBS)) {
-            storage.setBlacklist(blockedSites);
+            synchronizer.syncBlacklist(blockedSites);
             onSuccess();
         } 
     });
