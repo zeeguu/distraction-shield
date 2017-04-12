@@ -1,8 +1,6 @@
 
 function DateUtil() {
-    var self = this;
     this.bg = chrome.extension.getBackgroundPage();
-
 
     this.secondsToHHMMSS = function (seconds) {
         return new Date(seconds * 1000).toISOString().substr(11, 8);
@@ -17,7 +15,6 @@ function DateUtil() {
         var dateObject = new Date();
         return (dateObject.getDate())+"/"+(dateObject.getMonth()+1)+"/"+dateObject.getFullYear();
     }
-
 }
 
 var dateUtil = new DateUtil();

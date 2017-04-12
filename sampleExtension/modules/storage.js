@@ -90,17 +90,6 @@ function SyncStorage() {
         return self.getStorage(["tds_exerciseTime"]);
     };
 
-    // Set the data dict containing information about how much time is spent on exercises today.
-    this.setTodayExerciseTime = function(dayStats){
-        return self.setStorage("tds_exerciseTimeToday", dayStats);
-    };
-
-    // Get the data dict containing information about how much time is spent on exercises today.
-    this.getTodayExerciseTime = function(){
-        return self.getStorage(["tds_exerciseTimeToday"]);
-    };
-
-
     /* ---------------- General methods --------------- */
 
     // General function which is used to set items stored in the storage of the chrome api.
