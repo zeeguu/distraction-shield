@@ -41,24 +41,7 @@ retrieveBlockedSites = function(callback){
     });
 };
 
-retrieveInterceptDateList = function() {
-    storage.getInterceptDateList(function(dateList) {
-        interceptDateList = dateList;
-    });
-};
-
 /* --------------- ------ Updating of variables ------ ---------------*/
-
-// This function adds the current time+date to the saved time+date list
-addToInterceptDateList = function() {
-    var newDate = new Date().toDateString();
-    if (interceptDateList == null) {
-        interceptDateList = [newDate];
-    } else {
-        interceptDateList.push(newDate);
-    }
-    storage.setInterceptDateList(interceptDateList);
-};
 
 addUrlToBlockedSites = function(unformattedUrl, onSuccess) {
     blockedSiteBuilder.createNewBlockedSite(unformattedUrl, function(newBS) {
@@ -95,8 +78,8 @@ removeWebRequestListener = function() {
 };
 
 intercept = function(details) {
-    storage.incrementInterceptionCounter(details.url);
-    addToInterceptDateList();
+    interception.incrementInterceptionCounter(details.url);
+    interception.addToInterceptDateList();
     return {redirectUrl: redirectLink+details.url};
 };
 

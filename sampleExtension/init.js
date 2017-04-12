@@ -11,7 +11,6 @@ initSession = function () {
         setLocalSettings(settings);
         retrieveBlockedSites(replaceListener);
     });
-    retrieveInterceptDateList();
 };
 
 /* --------------- ---- Run upon installation ---- ---------------*/
@@ -21,22 +20,11 @@ chrome.runtime.onInstalled.addListener(function() {
         initBlacklist(output.tds_blacklist);
         initInterceptCounter(output.tds_interceptCounter);
         initInterceptDateList(output.tds_interceptDateList);
+        initExerciseTime(output.tds_exerciseTime);
         initSettings(output.tds_settings);
         runIntroTour();
     });
 });
-
-initInterceptCounter = function(counter) {
-    if (counter == null) {
-        storage.setInterceptionCounter(0);
-    }
-};
-
-initInterceptDateList = function(dateList) {
-    if (dateList == null) {
-        storage.setInterceptDateList([]);
-    }
-};
 
 initBlacklist = function(list) {
     if (list == null) {
@@ -51,6 +39,25 @@ initSettings = function(settings) {
         storage.setSettingsWithCallback(settingsToStore, initSession);
     }
 };
+
+initInterceptCounter = function(counter) {
+    if (counter == null) {
+        storage.setInterceptionCounter(0);
+    }
+};
+
+initInterceptDateList = function(dateList) {
+    if (dateList == null) {
+        storage.setInterceptDateList([]);
+    }
+};
+
+initExerciseTime = function(exerciseTime){
+    if (exerciseTime == null) {
+        storage.setExerciseTimeList([]);
+    }
+};
+
 
 runIntroTour = function() {
     chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});

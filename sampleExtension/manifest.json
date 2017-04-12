@@ -25,6 +25,7 @@
     "scripts": [
       "dependencies/jquery/jquery-1.10.2.js",
       "constants.js",
+      "modules/dateutil.js",
       "modules/urlFormatter.js",
       "modules/storage.js",
       "modules/synchronizer.js",
@@ -34,8 +35,9 @@
       "classes/UserSettings.js",
       "background.js",
       "init.js",
-      "statistics/trackerStorage.js",
-      "statistics/tracker.js",
+      "modules/statistics/tracker.js",
+      "modules/statistics/interception.js",
+      "modules/statistics/exerciseTime.js",
       "auth/api.js",
       "auth/auth.js",
       "introTour/introTour.js"
