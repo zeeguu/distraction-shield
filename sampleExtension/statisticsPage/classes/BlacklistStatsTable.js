@@ -14,7 +14,6 @@ function BlacklistStatsTable(html_element) {
         });
     };
 
-    //TODO Remove HTML from javascript for iteration 3.
     this.generateTableRow = function(site) {
         var row =
             $("<tr class='table-row' >" +
