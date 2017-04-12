@@ -97,21 +97,36 @@ removeWebRequestListener = function() {
 intercept = function(details) {
     storage.incrementInterceptionCounter(details.url);
     addToInterceptDateList();
-    var redirectLink;
-    var params;
-    if (localSettings.getSessionID() == undefined) {
-        redirectLink = chrome.extension.getURL('loginPage/login.html');
-        // redirectLink = redirectLink + "?forceLogin=" + zeeguuExLink;
-        params = "?forceLogin=" + zeeguuExLink;
+    return auth.checkSessionAuthenticity().then(function () {
+        //resolution
+        var redirectLink;
+        var params;
+        if (!localSettings.getSessionID()) {
+            redirectLink = chrome.extension.getURL('loginPage/login.html');
+            params = "?forceLogin=" + zeeguuExLink;
+        } else {
+            redirectLink = zeeguuExLink;
+            params = "?sessionID=" + localSettings.getSessionID();
+        }
+        params = params+"&redirect="+details.url;
+        return {redirectUrl: redirectLink+params}
+    }, function rejection () {
+        //rejection
+        var redirectLink = chrome.extension.getURL('loginPage/login.html');
+        var params = "?forceLogin=" + zeeguuExLink;
+        params = params+"&redirect="+details.url;
+        return {redirectUrl: redirectLink+params}
+    });
 
-        // params = "?forceLogin=" + 'https://www.google.nl';
-    } else {
-        redirectLink = zeeguuExLink + "?sessionID=" + localSettings.getSessionID();
-    }
-    params = params+"&redirect="+details.url;
-    console.log(redirectLink+params);
-    return {redirectUrl: redirectLink+params};
-
+    // if (!localSettings.getSessionID()) {
+    //     redirectLink = chrome.extension.getURL('loginPage/login.html');
+    //     params = "?forceLogin=" + zeeguuExLink;
+    // } else {
+    //     redirectLink = zeeguuExLink;
+    //     params = "?sessionID=" + localSettings.getSessionID();
+    // }
+    // params = params+"&redirect="+details.url;
+    // return {redirectUrl: redirectLink+params};
 };
 
 handleInterception = function(details) {

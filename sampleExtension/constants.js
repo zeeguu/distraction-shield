@@ -1,7 +1,12 @@
-
+/* ---------- ----- background ----- ---------- */
 // var redirectLink = "https://zeeguu.herokuapp.com/get-ex?redirect=";
 var zeeguuExLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
 
+
+/* ---------- ----- BlockedSite ----- ---------- */
+var FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
+
+/* ---------- ----- UserSettings, inject ----- ---------- */
 var modes = {
     lazy: {
         label:"lazy",
@@ -13,7 +18,6 @@ var modes = {
     }
 };
 
-
 /* ---------- ----- BlockedSiteList ----- ---------- */
 var newUrlNotUniqueError = "New blocked site item to be added was found to resolve to an already blacklisted website, " +
                            "please try a different url.\nDuplicate url: ";
@@ -23,7 +27,6 @@ var INVALID_URL_MESSAGE = "We unfortunately could not reach the site you are try
                           "Are you sure the url is correct? \n \n";
 
 /* -------------------- Text Messages ----------------------- */
-
 var zeeguuInfoText = "Hey, you tried to enter one of the sites you wanted to be protected from!";
 
 /* -------------------- Keypress constants ----------------------- */

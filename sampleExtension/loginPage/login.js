@@ -4,7 +4,6 @@ var bg = chrome.extension.getBackgroundPage();
 // Log console messages to the background page console instead of the content page.
 var console = bg.console;
 var auth = bg.auth;
-
 /* -------------------- -------------------------- -------------------- */
 var instructions;
 
@@ -27,6 +26,11 @@ login = function(){
     auth.login(email, password).then(function(response){
         auth.setSession(response);
         messageDialog.text("You logged in!");
+        if ("forceLogin" in instructions) {
+            url = instructions["forceLogin"];
+            url = url + "?sessionID=" + bg.localSettings.getSessionID() + "&redirect=" + instructions["redirect"];
+            window.location = url;
+        }
     }, function(error){
         messageDialog.text("Wrong credentials..");
     }).then(function(response){
@@ -36,13 +40,6 @@ login = function(){
     });
     html_emailLoginFld.val('');
     html_passwordLoginFld.val('');
-
-    if ("forceLogin" in instructions) {
-        console.log('forcelogin!');
-        url = instructions["forceLogin"];
-        url = url + "?redirect=" + instructions["redirect"];
-        window.location = url;
-    }
 };
 
 getExtraInstructions = function () {
@@ -55,7 +52,7 @@ getExtraInstructions = function () {
 };
 
 GetparametersDictionary = function (unsplitParams) {
-    if (!unsplitParamPairs) return {};
+    if (!unsplitParams) return {};
     var unsplitParamPairs = unsplitParams.split(/&/);
     var params = {};
     for (i in unsplitParamPairs) {
@@ -81,6 +78,5 @@ connectHtmlFunctionality = function() {
 //Run this when the page is loaded.
 document.addEventListener("DOMContentLoaded", function(){
     instructions = getExtraInstructions();
-    console.log(instructions);
     connectHtmlFunctionality();
 });

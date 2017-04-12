@@ -8,7 +8,6 @@ function Auth() {
     this.validateUrl = "/validate";
     this.logoutUrl = "/logout_session";
 
-    this.session = null;
     this.sessionAuthenticated = false;
 
     this.loginAnon = function(username, password) {
@@ -37,13 +36,13 @@ function Auth() {
     };
 
     this.validate = function () {
-        var url = self.validateUrl + "?session="+self.session;
+        var url = self.validateUrl + "?session="+self.getSession();
         return api.getRequest(url, "");
     };
 
     this.logout = function(){
-        var url = self.logoutUrl + "?session="+self.session;
-        self.session = null;
+        var url = self.logoutUrl + "?session="+self.getSession();
+        self.setSession(null);
         self.sessionAuthenticated = false;
         return api.getRequest(url, "");
     };
@@ -53,12 +52,15 @@ function Auth() {
             if (response !== "OK") {
                 self.setSession(null);
                 self.sessionAuthenticated = false;
+                console.log("sessionAuthenticated false"); //todo remove
             } else {
                 self.sessionAuthenticated = true;
+                console.log("sessionAuthenticated true"); //todo remove
             }
         }, function (error) {
             self.setSession(null);
             self.sessionAuthenticated = false;
+            console.log("sessionAuthenticated false"); //todo remove
         });
     }
 
