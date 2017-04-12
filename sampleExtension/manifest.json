@@ -39,7 +39,8 @@
       "modules/statistics/interception.js",
       "modules/statistics/exerciseTime.js",
       "auth/api.js",
-      "auth/auth.js"
+      "auth/auth.js",
+      "introTour/introTour.js"
     ]
   },
 

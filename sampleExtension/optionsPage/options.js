@@ -18,6 +18,7 @@ var modeGroup = "modeOptions";
 var blacklistTable;
 var intervalSlider;
 var turnOffSlider;
+var tr = document.getElementById("tourRestart");
 
 //Local variables that hold all necessary data.
 var settings_object = new UserSettings();
@@ -90,3 +91,9 @@ addBlockedSiteToAll = function (newItem) {
 document.addEventListener("DOMContentLoaded", function() {
     initOptionsPage();
 });
+
+//Tour Restart Function
+tr.onclick = function(){
+    chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
+};
+
