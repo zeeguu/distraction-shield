@@ -45,8 +45,9 @@ function Interception() {
         storage.setBlacklist(blockedSites);
         storage.getInterceptCounter()
             .then(function(output){
-                var counter = output;
+                var counter = output.tds_interceptCounter;
                 counter++;
+                console.log(counter);
                 storage.setInterceptionCounter(counter);
             });
     };
