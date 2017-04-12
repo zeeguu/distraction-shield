@@ -65,7 +65,6 @@ function BlockedSiteList() {
 
 //Private to this and storage.js
 serializeBlockedSiteList = function(blockedSiteList) {
-    //blockedSiteList.list = blockedSiteList.list.map(serializeBlockedSite);
     return JSON.stringify(blockedSiteList);
 };
 

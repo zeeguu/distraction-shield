@@ -1,7 +1,3 @@
-//Adhere to this structure in the html:
-//sliderID = "variableName-slider"
-//sliderRange = "variableName-slider-range"
-//sliderValue = "variableName-slider-value"
 
 function GreenToRedSlider(sliderID, saveFunction) {
     var self = this;
