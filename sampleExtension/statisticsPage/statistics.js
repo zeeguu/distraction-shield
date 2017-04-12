@@ -15,7 +15,7 @@ saveCurrentPageToBlacklist = function() {
 initStatisticsPage = function() {
     Promise.all([bg.storage.getInterceptDateList(), bg.exerciseTime.getCompleteDayStatList()])
         .then(function(response){
-            let counters = bg.ic.calcInterceptData(response[0].tds_interceptDateList);
+            let counters = bg.interception.calcInterceptData(response[0].tds_interceptDateList);
             interceptionCounterTable.setDataAndRender(counters);
             blacklistTable.setDataAndRender(bg.blockedSites.getList());
             exerciseTimeTable.setDataAndRender(response[1]);

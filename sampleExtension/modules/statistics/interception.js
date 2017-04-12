@@ -72,5 +72,5 @@ function Interception() {
     };
 }
 
-var ic = new Interception();
+var interception = new Interception();
 

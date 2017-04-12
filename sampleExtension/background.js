@@ -78,8 +78,8 @@ removeWebRequestListener = function() {
 };
 
 intercept = function(details) {
-    ic.incrementInterceptionCounter(details.url);
-    ic.addToInterceptDateList();
+    interception.incrementInterceptionCounter(details.url);
+    interception.addToInterceptDateList();
     return {redirectUrl: redirectLink+details.url};
 };
 

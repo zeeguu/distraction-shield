@@ -35,9 +35,9 @@
       "classes/UserSettings.js",
       "background.js",
       "init.js",
-      "statistics/tracker.js",
-      "statistics/interception.js",
-      "statistics/exerciseTime.js",
+      "modules/statistics/tracker.js",
+      "modules/statistics/interception.js",
+      "modules/statistics/exerciseTime.js",
       "auth/api.js",
       "auth/auth.js"
     ]
