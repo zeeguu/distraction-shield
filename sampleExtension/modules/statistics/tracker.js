@@ -8,7 +8,7 @@ function Tracker() {
     var self = this;
     this.idle = false;
     this.tabActive = null;
-    this.zeeguuRegex = "https://zeeguu.herokuapp.com/.*";
+    this.zeeguuRegex = ZEEGUU_LINK +".*";
     this.activeTime = 0;
 
     // Initialize the alarm, and initialize the idle-checker.
