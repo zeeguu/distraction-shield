@@ -28,16 +28,19 @@ body{
 #offBtnDiv{
     margin-top:4px;
     margin-bottom:4px;
+    width:20%;
 }
 
 #offRanDiv{
     margin-top:3px;
     margin-bottom:3px;
+    width:50%; 
 }
 
 #offValDiv{
     margin-top:11px;
-    margin-left:-20px;
+    width:30%;
+    overflow:visible;
 }
 
 /* ---------- ---------- table ---------- ---------- */
