@@ -9,12 +9,14 @@ function TurnOffSlider(sliderID) {
         var sl = self.slider;
         if (settings_object.getState() == "Off") {
             sl.sliderValue.html(self.createHtmlOffMessage());
-            sl.sliderValue.parent().removeClass('col-md-3').addClass('col-md-10');
             sl.sliderRange.css('visibility', 'hidden').css('display', 'none');
+            sl.sliderRange.parent().css('width', '0%');
+            sl.sliderValue.parent().css('width', '50%');
         } else {
             sl.sliderValue.html(sl.calculateHours(self.selectedTime));
-            sl.sliderValue.parent().removeClass('col-md-10').addClass('col-md-3');
             sl.sliderRange.css('visibility', 'visible').css('display', 'initial');
+            sl.sliderRange.parent().css('width', '50%');
+            sl.sliderValue.parent().css('width', '30%');
         }
     };
 
