@@ -9,13 +9,11 @@ function TurnOffSlider(sliderID) {
         var sl = self.slider;
         if (settings_object.getState() == "Off") {
             sl.sliderValue.html(self.createHtmlOffMessage());
-            sl.sliderRange.css('visibility', 'hidden').css('display', 'none');
-            sl.sliderRange.parent().css('width', '0%');
+            sl.sliderRange.css('visibility', 'hidden').parent().css('display', 'none');
             sl.sliderValue.parent().css('width', '50%');
         } else {
             sl.sliderValue.html(sl.calculateHours(self.selectedTime));
-            sl.sliderRange.css('visibility', 'visible').css('display', 'initial');
-            sl.sliderRange.parent().css('width', '50%');
+            sl.sliderRange.css('visibility', 'visible').parent().css('display', 'initial');
             sl.sliderValue.parent().css('width', '30%');
         }
     };

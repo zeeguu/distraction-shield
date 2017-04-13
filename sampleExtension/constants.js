@@ -1,5 +1,4 @@
 /* ---------- ----- background ----- ---------- */
-// var redirectLink = "https://zeeguu.herokuapp.com/get-ex?redirect=";
 var zeeguuExLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
 
 

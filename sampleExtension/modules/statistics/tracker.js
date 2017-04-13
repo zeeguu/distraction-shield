@@ -6,32 +6,39 @@ function Tracker() {
     var self = this;
     this.idle = false;
     this.tabActive = null;
+    this.activeTime = 0;
     this.zeeguuRegex = zeeguuExLink+ ".*";
 
     // Initialize the alarm, and initialize the idle-checker.
     this.init = function() {
 
-        // Fire alarm every three second.
-        setInterval(self.fireAlarm, 3000);
+        setInterval(self.fireAlarm, 5000);
+        setInterval(self.increaseTimeCounter, 1000);
 
         // When the user does not input anything for 15 seconds, set the state to idle.
         chrome.idle.setDetectionInterval(15);
         chrome.idle.onStateChanged.addListener(self.checkIdle);
+
+    };
+
+    this.fireAlarm = function() {
+        exerciseTime.incrementTodayExerciseTime(self.activeTime);
+        self.activeTime = 0;
     };
 
     // Check if the user is idle. If the user is not idle, and on the zeeguu website, increment the counter.
-    this.fireAlarm = function() {
-        if(!self.idle){
+    this.increaseTimeCounter = function () {
+        if (!self.idle) {
             self.getCurrentTab().then(function(result){ self.tabActive = result});
-            if(self.compareUrlToRegex(self.zeeguuRegex, self.tabActive)){
-                exerciseTime.incrementTodayExerciseTime(3);
+            if (self.compareUrlToRegex(self.zeeguuRegex, self.tabActive)) {
+                self.activeTime = self.activeTime + 1;
             }
         }
     };
 
     // Function attached to the idle-listener. Sets the self.idle variable.
     this.checkIdle = function(idleState) {
-        self.idle = (idleState == "active");
+        self.idle = (idleState != "active");
     };
 
     // Gets the current tab.
@@ -52,5 +59,5 @@ function Tracker() {
 }
 
 
-var tr = new Tracker();
-tr.init();
+var tracker = new Tracker();
+tracker.init();

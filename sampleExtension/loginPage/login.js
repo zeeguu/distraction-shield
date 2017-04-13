@@ -21,6 +21,7 @@ login = function(){
     auth.login(email, password).then(function(response){
         auth.setSession(response);
         messageDialog.text("You logged in!");
+        html_emailLoginFld.val('');
         if ("forceLogin" in instructions) {
             url = instructions["forceLogin"];
             url = url + "?sessionID=" + bg.localSettings.getSessionID() + "&redirect=" + instructions["redirect"];
@@ -33,7 +34,6 @@ login = function(){
     }, function(){
         spinner.hide();
     });
-    html_emailLoginFld.val('');
     html_passwordLoginFld.val('');
 };
 
@@ -61,6 +61,14 @@ setUrlInAddressbar = function (newUrl) {
     window.history.pushState('',document.title,newUrl);
 };
 
+loginOnEnter = function (html_elem) {
+    html_elem.keyup(function (event) {
+        if (event.keyCode == KEY_ENTER) {
+            login();
+        }
+    });
+};
+
 //Connect functions to HTML elements
 connectButton = function(html_button, method) {
     html_button.on('click', method);
@@ -68,6 +76,7 @@ connectButton = function(html_button, method) {
 
 connectHtmlFunctionality = function() {
     connectButton(html_submitButton, login);
+    loginOnEnter(html_passwordLoginFld.parent());
 };
 
 //Run this when the page is loaded.

@@ -2,8 +2,11 @@
 function Interception() {
     var self = this;
 
+    // The amount of milliseconds in one day
     this.oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 
+    // This method goes through the interceptDateList and count how many times the user was intercepted last day,
+    // last week, last month and the total amount of interceptions.
     this.calcInterceptData = function(dateList) {
         var tmp = dateList;
         let countDay = 0, countWeek = 0, countMonth = 0, countTotal = 0;
@@ -34,6 +37,9 @@ function Interception() {
         }
     };
 
+    // Receives the url from the parameter, and searches the correct blockedSite item from the blockedsite list.
+    // Then the interceptioncounter for this item is incremented by 1.
+    // Also the global interceptioncounter is incremented by one.
     this.incrementInterceptionCounter = function(urlAddress) {
         let urlList = blockedSites.getList();
         for (var i = 0; i < urlList.length; i++) {
@@ -45,7 +51,7 @@ function Interception() {
         storage.setBlacklist(blockedSites);
         storage.getInterceptCounter()
             .then(function(output){
-                var counter = output;
+                var counter = output.tds_interceptCounter;
                 counter++;
                 storage.setInterceptionCounter(counter);
             });
@@ -53,10 +59,10 @@ function Interception() {
 
     // This function adds the current time+date to the saved time+date list
     this.addToInterceptDateList = function() {
-        let interceptDateList = [];
+        let interceptDateList;
         storage.getInterceptDateList()
         .then(function(result){
-            interceptDateList = result;
+            interceptDateList = result.tds_interceptDateList;
         })
         .then(function(){
             var newDate = new Date().toDateString();
