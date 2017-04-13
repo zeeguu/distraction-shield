@@ -40,7 +40,6 @@
       "background.js",
       "modules/authentication/api.js",
       "modules/authentication/auth.js",
-      "introTour/introTour.js",
       "init.js"
     ]
   },
