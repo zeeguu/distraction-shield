@@ -77,7 +77,6 @@ removeWebRequestListener = function() {
 };
 
 intercept = function(details) {
-    console.log("intercept!")
     interception.incrementInterceptionCounter(details.url);
     interception.addToInterceptDateList();
     var redirectLink;
