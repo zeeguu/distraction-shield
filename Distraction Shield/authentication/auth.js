@@ -55,7 +55,7 @@ function Auth() {
             self.setSession(null);
             self.sessionAuthentic = false;
         });
-    }
+    };
 
     this.getSession = function(){
         return localSettings.getSessionID();

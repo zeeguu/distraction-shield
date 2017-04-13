@@ -71,7 +71,7 @@ updateSessionbutton = function() {
         //login button active
         connectLogin();
     }
-}
+};
 
 checkLoginStatus = function () {
     auth.authenticateSession().then( function () {

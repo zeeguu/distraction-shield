@@ -24,6 +24,7 @@
   "background": {
     "scripts": [
       "dependencies/jquery/jquery-1.10.2.js",
+      "dependencies/bootstrapTour/bootstrap-tour-standalone.min.js",
       "constants.js",
       "modules/dateutil.js",
       "modules/urlFormatter.js",
@@ -38,8 +39,8 @@
       "modules/statistics/interception.js",
       "modules/statistics/exerciseTime.js",
       "background.js",
-      "auth/api.js",
-      "auth/auth.js",
+      "authentication/api.js",
+      "authentication/auth.js",
       "introTour/introTour.js"
     ]
   },
@@ -51,7 +52,7 @@
               "constants.js",
               "modules/storage.js",
               "classes/UserSettings.js",
-              "intercept/inject.js"]
+              "contentInjection/inject.js"]
     }
   ],
 
@@ -65,7 +66,7 @@
   ],
 
   "web_accessible_resources": [
-    "intercept/inject.html",
+    "contentInjection/inject.html",
     "loginPage/login.html"
   ]
 
