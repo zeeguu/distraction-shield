@@ -34,14 +34,14 @@
       "classes/BlockedSite.js",
       "classes/BlockedSiteList.js",
       "classes/UserSettings.js",
-      "init.js",
       "modules/statistics/tracker.js",
       "modules/statistics/interception.js",
       "modules/statistics/exerciseTime.js",
       "background.js",
       "modules/authentication/api.js",
       "modules/authentication/auth.js",
-      "introTour/introTour.js"
+      "introTour/introTour.js",
+      "init.js"
     ]
   },
 
