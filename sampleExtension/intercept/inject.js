@@ -1,19 +1,10 @@
+
 mainFlow = function() {
     storage.getMode(initBasis);
 };
 
-determineMode = function(mode) {
-    var message;
-    if (mode == modes.pro || mode == undefined) {
-        message = proText;
-    } else if(mode == modes.lazy){
-        message = lazyText;
-    }
-    return message;
-};
-
 initBasis = function(mode) {
-    var message = determineMode(mode);
+    var message = mode.zeeguuText;
 
     $.ajax({
         url: chrome.extension.getURL('intercept/inject.html'),
@@ -24,7 +15,7 @@ initBasis = function(mode) {
             infoDiv = $.parseHTML(data);
             $("body").prepend(infoDiv);
             $("#tds").width(window.innerWidth + "px");
-            $("#tds_generalInfoText").append(infoText);
+            $("#tds_generalInfoText").append(zeeguuInfoText);
             $("#tds_modeSpecificText").append(message);
             $("#originalDestination").attr("href", getDest());
         }

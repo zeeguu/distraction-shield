@@ -6,7 +6,7 @@ function UserSettings () {
                     setAt: new Date(),
                     offTill: new Date()
                   };
-    this.sessionID = 0;
+    this.sessionID = undefined;
     this.mode = modes.lazy;
     this.interceptionInterval = 1;
 

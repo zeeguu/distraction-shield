@@ -1,4 +1,3 @@
-
 //Set that holds the urls to be intercepted
 var blockedSites = new BlockedSiteList();
 var interceptDateList = [];
@@ -46,7 +45,7 @@ retrieveBlockedSites = function(callback){
 addUrlToBlockedSites = function(unformattedUrl, onSuccess) {
     blockedSiteBuilder.createNewBlockedSite(unformattedUrl, function(newBS) {
         if (blockedSites.addToList(newBS)) {
-            storage.setBlacklist(blockedSites);
+            synchronizer.syncBlacklist(blockedSites);
             onSuccess();
         } 
     });
@@ -80,7 +79,18 @@ removeWebRequestListener = function() {
 intercept = function(details) {
     interception.incrementInterceptionCounter(details.url);
     interception.addToInterceptDateList();
-    return {redirectUrl: redirectLink+details.url};
+    var redirectLink;
+    var params;
+    if (!auth.sessionAuthentic) {
+        redirectLink = chrome.extension.getURL('loginPage/login.html');
+        params = "?forceLogin=" + zeeguuExLink;
+    } else {
+        redirectLink = zeeguuExLink;
+        params = "?sessionID=" + localSettings.getSessionID();
+    }
+    params = params+"&redirect="+details.url;
+
+    return {redirectUrl: redirectLink + params};
 };
 
 handleInterception = function(details) {

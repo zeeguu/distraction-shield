@@ -33,11 +33,11 @@
       "classes/BlockedSite.js",
       "classes/BlockedSiteList.js",
       "classes/UserSettings.js",
-      "background.js",
       "init.js",
       "modules/statistics/tracker.js",
       "modules/statistics/interception.js",
       "modules/statistics/exerciseTime.js",
+      "background.js",
       "auth/api.js",
       "auth/auth.js",
       "introTour/introTour.js"
@@ -46,7 +46,7 @@
 
   "content_scripts": [
     {
-      "matches" : ["https://zeeguu.herokuapp.com/get-ex?*"],
+        "matches" : ["*://www.zeeguu.unibe.ch/practice*"],
       "js" : ["dependencies/jquery/jquery-1.10.2.js",
               "constants.js",
               "modules/storage.js",
@@ -65,7 +65,8 @@
   ],
 
   "web_accessible_resources": [
-    "intercept/inject.html"
+    "intercept/inject.html",
+    "loginPage/login.html"
   ]
 
 }

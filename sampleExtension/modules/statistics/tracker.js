@@ -1,6 +1,4 @@
 
-var console = chrome.extension.getBackgroundPage().console;
-
 // The tracker tracks whether you are currently working on exercises.
 // Every second, the "alarm" is fired, and the url of the current tab is examined.
 // If this url corresponds with the zeeguu url, the time spent on exercises counter is incremented.
@@ -8,7 +6,7 @@ function Tracker() {
     var self = this;
     this.idle = false;
     this.tabActive = null;
-    this.zeeguuRegex = "https://zeeguu.herokuapp.com/.*";
+    this.zeeguuRegex = zeeguuExLink+ ".*";
 
     // Initialize the alarm, and initialize the idle-checker.
     this.init = function() {
