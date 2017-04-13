@@ -37,7 +37,6 @@ function Auth() {
     };
 
     this.logout = function(){
-        console.log("logout!");
         var url = self.logoutUrl + "?session="+self.getSession();
         self.sessionAuthentic = false;
         self.setSession(null);
