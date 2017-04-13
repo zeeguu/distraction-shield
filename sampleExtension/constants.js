@@ -5,9 +5,6 @@ var zeeguuExLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
 /* ---------- ----- BlockedSite ----- ---------- */
 var FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
 
-/* ---------- ----- statistics ----- ---------- */
-var ZEEGUU_LINK = "https://zeeguu.herokuapp.com/";
-
 /* ---------- ----- UserSettings, inject ----- ---------- */
 var modes = {
     lazy: {
