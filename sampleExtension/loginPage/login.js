@@ -43,10 +43,10 @@ getExtraInstructions = function () {
     var cleanUrl = urlParts[0];
     var params = urlParts[1];
     setUrlInAddressbar(cleanUrl);
-    return GetparametersDictionary(params);
+    return getparametersDictionary(params);
 };
 
-GetparametersDictionary = function (unsplitParams) {
+getparametersDictionary = function (unsplitParams) {
     if (!unsplitParams) return {};
     var unsplitParamPairs = unsplitParams.split(/&/);
     var params = {};
