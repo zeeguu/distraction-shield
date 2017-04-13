@@ -64,20 +64,16 @@ connectLogout = function () {
 };
 
 updateSessionbutton = function() {
-    console.log('updateSessionButton()');
     if (auth.sessionAuthentic) {
         //logout button active
-        console.log('session authenticated, so logout');
         connectLogout();
     } else {
         //login button active
-        console.log('session not authenticated, so login');
         connectLogin();
     }
 }
 
 checkLoginStatus = function () {
-    console.log('checkLoginStatus()');
     auth.authenticateSession().then( function () {
         updateSessionbutton();
     }, function () {
