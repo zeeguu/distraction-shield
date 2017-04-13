@@ -2,8 +2,8 @@
   "manifest_version": 2,
 
   "name": "The Distraction Shield",
-  "description": "Divert attention from social media websites to learning a new language",
-  "version": "1.2",
+  "description": "Divert attention from social media websites towards learning a new language",
+  "version": "1.3.1",
   //Icon's shown in chrome://extensions
   "icons": {"128": "icon.png"},
   "offline_enabled": false,
@@ -18,7 +18,7 @@
   "browser_action": {
     "default_icon": "icon.png",
     "default_title": "Distraction Shield Settings",
-    "default_popup": "tooltipPage/tooltip.html"        // optional
+    "default_popup": "tooltipPage/tooltip.html"
   },
 
   "background": {
@@ -46,7 +46,7 @@
 
   "content_scripts": [
     {
-        "matches" : ["*://www.zeeguu.unibe.ch/practice*"],
+      "matches" : ["*://www.zeeguu.unibe.ch/practice*"],
       "js" : ["dependencies/jquery/jquery-1.10.2.js",
               "constants.js",
               "modules/storage.js",
