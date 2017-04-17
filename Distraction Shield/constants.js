@@ -24,6 +24,11 @@ var newUrlNotUniqueError = "New blocked site item to be added was found to resol
 /* ---------- ----- urlFormatter ----- ---------- */
 var INVALID_URL_MESSAGE = "We unfortunately could not reach the site you are trying to block.\n" +
                           "Are you sure the url is correct? \n \n";
+var FILE_NOT_FOUND = 404;
+var SERVER_ERROR = 500;
+var REQUEST_ABORTED = 0;
+var SUCCESFUL_REQUEST = 200;
+var REQUEST_COMPLETED = 4;
 
 /* -------------------- Text Messages ----------------------- */
 var zeeguuInfoText = "Hey, you tried to enter one of the sites you wanted to be protected from!";

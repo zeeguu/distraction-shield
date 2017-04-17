@@ -98,12 +98,12 @@ function UrlRequester() {
     this.httpGetAsync = function (theUrlToGet, callback) {
         var xmlHttp = new XMLHttpRequest();
         xmlHttp.open("GET", theUrlToGet, true); // true for asynchronous
-        xmlHttp.onreadystatechange = function() {self.readyStateChange(xmlHttp, callback);};
+        xmlHttp.onreadystatechange = function() {readyStateChange(xmlHttp, callback);};
         xmlHttp.send(null);
     };
 
-    this.readyStateChange = function(xmlHttp, callback) {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+    readyStateChange = function(xmlHttp, callback) {
+        if (xmlHttp.readyState == REQUEST_COMPLETED && xmlHttp.status == SUCCESFUL_REQUEST) {
             // simple regex to extract data from title tags, ignoring newlines, tabs and returns
             var titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
             if (titleTags != null) {
@@ -112,20 +112,20 @@ function UrlRequester() {
             } else {
                 callback(xmlHttp.responseURL, theUrlToGet);
             }
-        } else if (xmlHttp.readyState == 4) {
-            self.errorHandler(xmlHttp.status);
+        } else if (xmlHttp.readyState == REQUEST_COMPLETED) {
+            errorHandler(xmlHttp.status);
         }
     };
 
-    this.errorHandler = function (status) {
+    errorHandler = function (status) {
         switch (status) {
-            case 404:
+            case FILE_NOT_FOUND:
                 alert(INVALID_URL_MESSAGE + 'File not found');
                 break;
-            case 500:
+            case SERVER_ERROR:
                 alert(INVALID_URL_MESSAGE + 'Server error');
                 break;
-            case 0:
+            case REQUEST_ABORTED:
                 alert(INVALID_URL_MESSAGE + 'Request aborted');
                 break;
             default:
