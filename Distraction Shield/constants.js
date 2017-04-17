@@ -1,9 +1,9 @@
 /* ---------- ----- background ----- ---------- */
 var zeeguuExLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
 
-
 /* ---------- ----- BlockedSite ----- ---------- */
 var FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
+
 
 /* ---------- ----- UserSettings, inject ----- ---------- */
 var modes = {

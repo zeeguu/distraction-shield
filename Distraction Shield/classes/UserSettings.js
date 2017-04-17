@@ -51,7 +51,7 @@ function UserSettings () {
         this.turnOff();
     };
 
-    forwardToBackground = function() {
+    this.forwardToBackground = function() {
         synchronizer.syncSettings(self);
     };
 
@@ -70,7 +70,7 @@ function UserSettings () {
         }
     };
 
-    setTimer = function() {
+    this.setTimer = function() {
         var timerInMS = self.status.offTill - new Date();
         var MSint = timerInMS.toFixed();
         setTimeout(self.turnExtensionBackOn, MSint);

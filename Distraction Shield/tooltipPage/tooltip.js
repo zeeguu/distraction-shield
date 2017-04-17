@@ -39,8 +39,6 @@ redirectToLogin = function() {
 logout = function () {
     auth.logout().then(function () {
         updateSessionbutton();
-    }, function () {
-        updateSessionbutton();
     });
 };
 
@@ -74,11 +72,9 @@ updateSessionbutton = function() {
 };
 
 checkLoginStatus = function () {
-    auth.authenticateSession().then( function () {
+    auth.authenticateSession().then(function () {
         updateSessionbutton();
-    }, function () {
-        updateSessionbutton();
-    })
+    });
 };
 
 connectButtons();
