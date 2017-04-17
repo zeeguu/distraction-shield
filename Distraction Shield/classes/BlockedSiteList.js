@@ -38,14 +38,14 @@ function BlockedSiteList() {
 
     this.filterOnChecked = function() {
         if (this.list != []) {
-            return this.list.filter(function (a) {return a.checkboxVal == true;});
+            return this.list.filter(function (a) {return a.getCheckboxVal() == true;});
         }
         return [];
     };
 
     this.getUrls = function() {
         if (this.list != []) {
-            return this.list.map(function (a) {return a.url;});
+            return this.list.map(function (a) {return a.getUrl();});
         }
         return [];
     };
@@ -54,7 +54,7 @@ function BlockedSiteList() {
         if (this.list != []) {
             var urlList = this.filterOnChecked();
             if (urlList != []) {
-                return urlList.map(function (a) { return a.url; });
+                return urlList.map(function (a) { return a.getUrl(); });
             }
         }
         return [];

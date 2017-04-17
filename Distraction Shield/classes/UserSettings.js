@@ -51,8 +51,7 @@ function UserSettings () {
         this.turnOff();
     };
 
-    //Private method
-    this.forwardToBackground = function() {
+    forwardToBackground = function() {
         synchronizer.syncSettings(self);
     };
 
@@ -71,11 +70,10 @@ function UserSettings () {
         }
     };
 
-    //Private method
-    this.setTimer = function() {
-        var timerInMS = this.status.offTill - new Date();
+    setTimer = function() {
+        var timerInMS = self.status.offTill - new Date();
         var MSint = timerInMS.toFixed();
-        setTimeout(this.turnExtensionBackOn, MSint);
+        setTimeout(self.turnExtensionBackOn, MSint);
     };
 
     this.copySettings = function(settingsObject) {
