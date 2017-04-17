@@ -23,6 +23,8 @@
 
   "background": {
     "scripts": [
+      "require.js",
+      "main.js",
       "dependencies/jquery/jquery-1.10.2.js",
       "dependencies/bootstrapTour/bootstrap-tour-standalone.min.js",
       "constants.js",

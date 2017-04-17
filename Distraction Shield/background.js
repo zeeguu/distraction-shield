@@ -1,3 +1,4 @@
+define(['blockedSiteBuilder','BlockedSiteList','interception','UserSettings',''])
 //Set that holds the urls to be intercepted
 var blockedSites = new BlockedSiteList();
 var interceptDateList = [];
