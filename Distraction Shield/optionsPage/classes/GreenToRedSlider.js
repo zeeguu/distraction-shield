@@ -20,8 +20,8 @@ function GreenToRedSlider(sliderID, saveFunction) {
 
     this.updateColor = function(inputValue) {
         var maxSliderVal = (this.sliderRange[0]).max;
-        var redVal = Math.round(inputValue / maxSliderVal * 255);
-        var greenVal = 255 - redVal;
+        var redVal = Math.round(inputValue / maxSliderVal * 220);
+        var greenVal = 220 - redVal;
         this.sliderRange.css('background', 'rgb(' + redVal + ', ' + greenVal + ',0)');
     };
 
@@ -39,4 +39,5 @@ function GreenToRedSlider(sliderID, saveFunction) {
         }
         return hours + ":" + minutes + " hours.";
     };
+
 }

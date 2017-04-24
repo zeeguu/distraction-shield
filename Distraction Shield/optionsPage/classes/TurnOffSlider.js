@@ -67,5 +67,6 @@ function TurnOffSlider(sliderID) {
     };
 
     this.init();
+    this.slider.setValue(this.selectedTime);
 }
 

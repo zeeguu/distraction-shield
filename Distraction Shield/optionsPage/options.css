@@ -1,6 +1,5 @@
-body{
+body {
     margin: 0 auto;
-    min-width:1000px;
 }
 
 #addUrlDiv {
@@ -84,7 +83,7 @@ input[type=range] {
     height:16px;
     border: 1px solid #000;
     border-radius: 6px;
-    background: rgb(0,255,0);
+    /*background: rgb(0,220,0);*/
     background-size: cover; 
 }
 
