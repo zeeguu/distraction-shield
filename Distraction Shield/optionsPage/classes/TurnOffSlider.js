@@ -34,7 +34,8 @@ function TurnOffSlider(sliderID) {
             if (minutes < 10) {
                 minutes = "0" + minutes;
             }
-            var returnVal = "for " + hours + ":" + minutes + " hours.";
+            var returnVal = "for " + (hours > 0 ? hours + ":" + minutes + " hours." : minutes + " minute(s).");
+
             if (val == MAX_TURN_OFF_TIME) {
                 returnVal = "for the rest of the day";
             }

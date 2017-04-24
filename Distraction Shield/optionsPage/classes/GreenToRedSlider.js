@@ -1,3 +1,4 @@
+var console = chrome.extension.getBackgroundPage().console;
 
 function GreenToRedSlider(sliderID, saveFunction) {
     var self = this;
@@ -34,10 +35,30 @@ function GreenToRedSlider(sliderID, saveFunction) {
     this.calculateHours = function(val) {
         var hours = Math.floor(val / 60);
         var minutes = val % 60;
-        if (minutes < 10) {
+        if (minutes < 10 && hours > 0) {
             minutes = "0" + minutes;
         }
-        return hours + ":" + minutes + " hours.";
+        return (hours > 0 ? hours + ":" + minutes + " hours" : minutes + " minute(s)");
+    };
+
+    this.sliderValue.on('blur', function () {
+        self.checkTimeValidity($(this).html());
+    });
+
+    this.sliderValue.keyup(function (event) {
+        if (event.keyCode == KEY_ENTER) {
+            self.checkTimeValidity($(this).html());
+        }
+    });
+
+    this.checkTimeValidity = function (val) {
+        var regex = (/(\d+)(?:\s*)(hours?|minutes?|$)/m).exec(val);
+        if (regex[1] > 0){
+            if (regex[2].match("hour")) {
+                regex[1] *= 60;
+            }
+            self.setValue(regex[1]);
+        }
     };
 
 }
