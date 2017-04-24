@@ -9,6 +9,6 @@ require.config({
     }
 });
 
-require( ['background'], function(background) {
+require( ['background', 'synchronizer'], function(background, synchronizer) {
 
 });

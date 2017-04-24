@@ -1,29 +1,26 @@
 
-function Synchronizer() {
-    var self = this;
-    this.bg = chrome.extension.getBackgroundPage();
-
-    this.syncBlacklist = function(blockedSiteList) {
+define(['background','storage'], function Synchronizer(background,storage) {
+    var syncBlacklist = function(blockedSiteList) {
         storage.setBlacklist(blockedSiteList);
-        self.bg.setLocalBlacklist(blockedSiteList);
+        background.setLocalBlacklist(blockedSiteList);
     };
 
-    this.syncSettings = function(settings) {
+    var syncSettings = function(settings) {
         storage.setSettings(settings);
-        self.bg.setLocalSettings(settings);
+        background.setLocalSettings(settings);
     };
 
-    this.syncDateList = function(dateList) {
+    var syncDateList = function(dateList) {
         storage.setInterceptDateList(dateList);
-        self.bg.setLocalInterceptDateList(dateList);
+        background.setLocalInterceptDateList(dateList);
     };
 
-    this.syncStatistics = function(statistics) {
+    var syncStatistics = function(statistics) {
         storage.setStatistics(statistics);
-        self.bg.setLocalStatistics(statistics);
+        background.setLocalStatistics(statistics);
     };
 
-    this.addBlockedSiteAndSync = function(blockedSite) {
+    var addBlockedSiteAndSync = function(blockedSite) {
         storage.getBlacklist(function(blacklist) {
             if (blacklist.addToList(blockedSite)) {
                 self.syncBlacklist(blacklist);
@@ -31,6 +28,14 @@ function Synchronizer() {
         })
     }
 
-}
+    return {
+        syncBlacklist           : syncBlacklist,
+        syncSettings            : syncSettings,
+        syncDateList            : syncDateList,
+        syncStatistics          : syncStatistics,
+        addBlockedSiteAndSync   : addBlockedSiteAndSync
+    };
 
-var synchronizer = new Synchronizer();
+});
+
+// var synchronizer = new Synchronizer();

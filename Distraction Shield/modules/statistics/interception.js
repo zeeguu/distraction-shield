@@ -53,7 +53,7 @@ function Interception() {
             .then(function(output){
                 var counter = output.tds_interceptCounter;
                 counter++;
-                storage.setInterceptionCounter(counter);
+                storage.setInterceptCounter(counter);
             });
     };
 

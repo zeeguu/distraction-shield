@@ -43,7 +43,7 @@ initSettings = function(settings) {
 
 initInterceptCounter = function(counter) {
     if (counter == null) {
-        storage.setInterceptionCounter(0);
+        storage.setInterceptCounter(0);
     }
 };
 
