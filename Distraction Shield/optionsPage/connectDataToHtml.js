@@ -22,7 +22,6 @@ loadHtmlBlacklist = function(blockedSiteList, table) {
 };
 
 loadHtmlMode = function(extensionMode, radioGroup) {
-    console.log(extensionMode);
     $("input[name=" + radioGroup + "][value=" + extensionMode.label + "]").prop('checked', true);
 };
 

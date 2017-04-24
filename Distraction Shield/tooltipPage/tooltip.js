@@ -43,8 +43,7 @@ logout = function () {
 };
 
 //Connect functions to HTML elements
-connectButtons = function() {  
-    saveButton.on('click', saveCurrentPageToBlacklist);
+connectButtons = function() {
     optionsButton.on('click', openOptionsPage);
     statisticsButton.on('click', redirectToStatistics);
 };
@@ -77,5 +76,58 @@ checkLoginStatus = function () {
     });
 };
 
+patternMatchUrl = function(url) {
+    var list = bg.blockedSites.getList();
+    var item;
+    list.some(function(bl) {
+        if(stringutil.wildcardStrComp(url, bl.getUrl())) {
+            item = bl;
+            return true;
+        }
+        return false;
+    });
+    return item;
+};
+
+toggleBlockedSite = function(url) {
+    return function() {
+        var list = bg.blockedSites;
+        var newItem;
+        for (var i = 0; i < list.getList().length; i++) {
+            if (stringutil.wildcardStrComp(url, list.getList()[i].getUrl())) {
+                newItem = list.getList()[i];
+                break;
+            }
+        }
+        newItem.setCheckboxVal(!newItem.getCheckboxVal());
+        if (newItem.getCheckboxVal()) {
+            saveButton.text("Disable blocking this page");
+        } else {
+            saveButton.text("Enable blocking this page");
+        }
+        synchronizer.syncBlacklist(list);
+    }
+};
+
+setSaveButtonFunctionality = function() {
+    chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
+        var activeTab = arrayOfTabs[0];
+        var url = activeTab.url;
+        var matchedBlockedSite = patternMatchUrl(url);
+        if (matchedBlockedSite != null) {
+            saveButton.on('click', toggleBlockedSite(url));
+            if(matchedBlockedSite.getCheckboxVal()) {
+                saveButton.text("Disable blocking this page");
+            } else {
+                saveButton.text("Enable blocking this page");
+            }
+        } else {
+            saveButton.on('click', saveCurrentPageToBlacklist);
+            saveButton.text("Save current page");
+        }
+    });
+};
+
 connectButtons();
 checkLoginStatus();
+setSaveButtonFunctionality();

@@ -43,7 +43,7 @@ function Interception() {
     this.incrementInterceptionCounter = function(urlAddress) {
         let urlList = blockedSites.getList();
         for (var i = 0; i < urlList.length; i++) {
-            if (wildcardStrComp(urlAddress, urlList[i].getUrl())) {
+            if (stringutil.wildcardStrComp(urlAddress, urlList[i].getUrl())) {
                 urlList[i].setCounter(urlList[i].getCounter() + 1);
                 break;
             }
