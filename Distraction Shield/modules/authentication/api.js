@@ -16,7 +16,7 @@ function Api() {
             let request = new XMLHttpRequest();
             request.open(method, self.apiUrl+url);
             request.onload = function() {
-                if (request.status === 200) {
+                if (request.status === SUCCESFUL_REQUEST) {
                     resolve(request.response);
                 } else {
                     reject(new Error(request.statusText));

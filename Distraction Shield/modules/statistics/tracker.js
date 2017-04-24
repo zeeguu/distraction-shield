@@ -21,9 +21,11 @@ function Tracker() {
 
     };
 
-    this.fireAlarm = function() {
-        exerciseTime.incrementTodayExerciseTime(self.activeTime);
-        self.activeTime = 0;
+    this.fireAlarm = function () {
+        if (self.activeTime > 0) {
+            exerciseTime.incrementTodayExerciseTime(self.activeTime);
+            self.activeTime = 0;
+        }
     };
 
     // Check if the user is idle. If the user is not idle, and on the zeeguu website, increment the counter.

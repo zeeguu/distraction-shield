@@ -7,7 +7,7 @@ initBasis = function(mode) {
     var message = mode.zeeguuText;
 
     $.ajax({
-        url: chrome.extension.getURL('intercept/inject.html'),
+        url: chrome.extension.getURL('contentInjection/inject.html'),
         type: "GET",
         timeout: 5000,
         datattype: "html",
