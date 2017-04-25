@@ -1,4 +1,5 @@
 var console = chrome.extension.getBackgroundPage().console;
+var alert = chrome.extension.getBackgroundPage().alert;
 
 function GreenToRedSlider(sliderID, saveFunction) {
     var self = this;
@@ -21,8 +22,8 @@ function GreenToRedSlider(sliderID, saveFunction) {
 
     this.updateColor = function(inputValue) {
         var maxSliderVal = (this.sliderRange[0]).max;
-        var redVal = Math.round(inputValue / maxSliderVal * 220);
-        var greenVal = 220 - redVal;
+        var redVal = Math.round(inputValue / maxSliderVal * 120);
+        var greenVal = 120 - redVal;
         this.sliderRange.css('background', 'rgb(' + redVal + ', ' + greenVal + ',0)');
     };
 
@@ -45,20 +46,37 @@ function GreenToRedSlider(sliderID, saveFunction) {
         self.checkTimeValidity($(this).html());
     });
 
-    this.sliderValue.keyup(function (event) {
+    this.sliderValue.keydown(function (event) {
         if (event.keyCode == KEY_ENTER) {
-            self.checkTimeValidity($(this).html());
+            self.sliderValue.blur();
+            event.preventDefault();
         }
     });
 
-    this.checkTimeValidity = function (val) {
-        var regex = (/(\d+)(?:\s*)(hours?|minutes?|$)/m).exec(val);
-        if (regex[1] > 0){
-            if (regex[2].match("hour")) {
-                regex[1] *= 60;
+    this.checkTimeValidity = function (val) {   
+        var regex = (/(\d+|\d+\:\d{2})(?:\s*)(hours?|minutes?|$)/m).exec(val);
+        if (regex != null) {
+            if (regex[1].match(":")) {
+                var split = regex[1].split(":");
+                regex[1] = parseInt(split[0]) + parseInt(split[1]) / 60;
             }
-            self.setValue(regex[1]);
+            if (regex[1] > 0) {
+                if (regex[2].match("hour")) {
+                    regex[1] *= 60;
+                }
+                // round minutes to a valid number.
+                regex[1] = Math.round(regex[1]);
+                self.setValue(this.sliderRange[0].max < regex[1] ? this.sliderRange[0].max : regex[1]);
+            } else {
+                self.timeInputError();
+            }
+        } else {
+            self.timeInputError();
         }
     };
 
+    this.timeInputError = function () {
+        self.setValue(self.sliderRange.val());
+        alert("please input a value blablabla");
+    }
 }

@@ -31,7 +31,7 @@ function TurnOffSlider(sliderID) {
         this.slider.calculateHours = function(val) {
             var hours = Math.floor(val / 60);
             var minutes = val % 60;
-            if (minutes < 10) {
+            if (minutes < 10 && hours > 0) {
                 minutes = "0" + minutes;
             }
             var returnVal = "for " + (hours > 0 ? hours + ":" + minutes + " hours." : minutes + " minute(s).");
