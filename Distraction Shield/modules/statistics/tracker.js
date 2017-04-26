@@ -7,7 +7,7 @@ function Tracker() {
     this.idle = false;
     this.tabActive = null;
     this.activeTime = 0;
-    this.zeeguuRegex = zeeguuExLink+ ".*";
+    this.zeeguuDomain = "zeeguu.herokuapp.com";
 
     // Initialize the alarm, and initialize the idle-checker.
     this.init = function() {
@@ -26,30 +26,27 @@ function Tracker() {
             exerciseTime.incrementTodayExerciseTime(self.activeTime);
             self.activeTime = 0;
         }
+
+        synchronizer.syncBlacklist(blockedSites);
     };
 
-    // Check if the user is idle. If the user is not idle, and on the zeeguu website, increment the counter.
+    // Check if the user is idle. If the user is not idle, increment a counter.
     this.matchUrls = function () {
         if (!self.idle) {
             self.getCurrentTab().then(function(result){
                 self.tabActive = result;
 
+                // If the user is on a blocked website
                 let blockedSitePromise = self.matchUrlToBlockedSite(self.tabActive, blockedSites.getList());
                 blockedSitePromise.then(function(result) {
-                    console.log("Match!");
                     self.increaseTimeCounterBlockedSite(result);
-                    console.log(result);
-                    synchronizer.syncBlacklist();
-                }).catch(function (reject) {
-                    console.log("No match.");
-                });
+                }).catch(function(reject){});
 
-                if (self.compareUrlToRegex(self.tabActive, self.zeeguuRegex)) {
+                // If the user is working on exercises
+                if (self.compareDomain(self.tabActive, self.zeeguuDomain)) {
                     self.increaseTimeCounterExercises()
                 }
             });
-
-
         }
     };
 
@@ -76,8 +73,8 @@ function Tracker() {
         return "^(http[s]?:\\/\\/)?(.*)"+domain+".*$";
     };
 
-    this.compareDomain = function (url, blockedSiteDomain) {
-        return self.compareUrlToRegex(url, self.createRegexFromDomain(blockedSiteDomain));
+    this.compareDomain = function (url, domain) {
+        return self.compareUrlToRegex(url, self.createRegexFromDomain(domain));
     };
 
     // Function attached to the idle-listener. Sets the self.idle variable.
