@@ -14,6 +14,7 @@ function BlockedSite(url, title) {
     this.icon = this.constructIcon(url);
     this.checkboxVal = true;
     this.counter = 0;
+    this.timeSpent = 0;
 
     this.getUrl = function () { return this.url; };
     this.getDomain = function () { return this.domain; };
@@ -21,6 +22,8 @@ function BlockedSite(url, title) {
     this.getName = function() {return this.name;};
     this.setCounter = function(newVal) {this.counter = newVal;};
     this.getCounter = function() {return this.counter;};
+    this.setTimeSpent = function(newVal) {this.timeSpent = newVal;};
+    this.getTimeSpent = function() {return this.timeSpent;};
     this.setCheckboxVal = function(newVal) {this.checkboxVal = newVal;};
     this.getCheckboxVal = function() {return this.checkboxVal;};
 }
@@ -40,6 +43,8 @@ parseBlockedSite = function(blockedSite) {
     b.icon = blockedSite.icon;
     b.checkboxVal = blockedSite.checkboxVal;
     b.counter = blockedSite.counter;
+    b.timeSpent = blockedSite.timeSpent;
+
     return b;
 };
 
