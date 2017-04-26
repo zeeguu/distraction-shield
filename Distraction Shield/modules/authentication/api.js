@@ -10,21 +10,21 @@ define (['constants'], function Api(constants) {
 
         request = function (method, url, parameters) {
             return new Promise(function (resolve, reject) {
-                let request = new XMLHttpRequest();
-                request.open(method, constants.apiUrl + url);
-                request.onload = function () {
-                    if (request.status === 200) {
-                        resolve(request.response);
+                let httpRequest = new XMLHttpRequest();
+                httpRequest.open(method, constants.apiUrl + url);
+                httpRequest.onload = function () {
+                    if (httpRequest.status === 200) {
+                        resolve(httpRequest.response);
                     } else {
-                        reject(new Error(request.statusText));
+                        reject(new Error(httpRequest.statusText));
                     }
                 };
-                request.onerror = function () {
+                httpRequest.onerror = function () {
                     reject(new Error("Network error"));
                 };
-                request.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                request.send(parameters);
+                httpRequest.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                httpRequest.send(parameters);
             });
         };
 

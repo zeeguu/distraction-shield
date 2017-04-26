@@ -1,5 +1,5 @@
-define(['blockedSiteBuilder','BlockedSiteList','interception','UserSettings','synchronizer','constants','storage'],
-function background(blockedSiteBuilder, BlockedSiteList, interception, UserSettings, synchronizer, constants, storage) {
+define(['blockedSiteBuilder','BlockedSiteList','interception','UserSettings','constants','storage'],
+function background(blockedSiteBuilder, BlockedSiteList, interception, UserSettings, constants, storage) {
 //Set that holds the urls to be intercepted
     var blockedSites = new BlockedSiteList.BlockedSiteList();
     var interceptDateList = [];
@@ -8,7 +8,6 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, UserSetti
     // console.log(JSON.stringify(BlockedSiteList)); //TODO remove
     // console.log(JSON.stringify(interception)); //TODO remove
     // console.log(JSON.stringify(UserSettings)); //TODO remove
-    // console.log(JSON.stringify(synchronizer)); //TODO remove
     // console.log(JSON.stringify(constants)); //TODO remove
     // console.log(JSON.stringify(storage)); //TODO remove
     var localSettings = new UserSettings.UserSettings();
@@ -58,7 +57,7 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, UserSetti
     addUrlToBlockedSites = function (unformattedUrl, onSuccess) {
         blockedSiteBuilder.createNewBlockedSite(unformattedUrl, function (newBS) {
             if (blockedSites.addToList(newBS)) {
-                synchronizer.syncBlacklist(blockedSites);
+                storage.setBlacklist(blockedSites);
                 onSuccess();
             }
         });

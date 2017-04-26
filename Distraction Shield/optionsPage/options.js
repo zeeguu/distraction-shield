@@ -59,6 +59,7 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
     //Initialize HTML elements and set the local variables
     initOptionsPage = function () {
         storage.getAll(function (output) {
+            console.log("called");
             setLocalVariables(output);
             connectHtmlFunctionality();
             connectLocalDataToHtml();
@@ -116,6 +117,7 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
     };
     /* -------------------- -------------------------- -------------------- */
 
+    //TODO make sure this is being called!
     //Run this when the page is loaded.
     document.addEventListener("DOMContentLoaded", function () {
         initOptionsPage();

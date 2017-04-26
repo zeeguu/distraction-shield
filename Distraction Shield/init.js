@@ -37,7 +37,7 @@ require( ['background', 'synchronizer', 'storage', 'auth','BlockedSiteList', 'Us
             settings.reInitTimer();
             setLocalSettings(settings);
             retrieveBlockedSites(replaceListener);
-            authenticator.authenticateSession();
+            //authenticator.authenticateSession();
         });
     };
 
