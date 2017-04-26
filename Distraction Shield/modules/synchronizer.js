@@ -1,5 +1,6 @@
 
 define(['background','storage'], function Synchronizer(background, storage) {
+
     var syncBlacklist = function(blockedSiteList) {
         storage.setBlacklist(blockedSiteList);
         background.setLocalBlacklist(blockedSiteList);
@@ -26,7 +27,7 @@ define(['background','storage'], function Synchronizer(background, storage) {
                 syncBlacklist(blacklist);
             }
         })
-    }
+    };
 
     return {
         syncBlacklist           : syncBlacklist,

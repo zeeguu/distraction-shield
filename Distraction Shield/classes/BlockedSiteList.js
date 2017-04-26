@@ -3,13 +3,17 @@ define (['constants', 'BlockedSite'], function BlockedSiteList(constants, Blocke
 
     //Private to this and storage.js
     serializeBlockedSiteList = function (blockedSiteList) {
-        return JSON.stringify(blockedSiteList);
+        var obj = {
+            list: blockedSiteList.getList()
+        };
+        obj.list.map(BlockedSite.serializeBlockedSite);
+        return JSON.stringify(obj);
     };
 
     //Private method
     parseBlockedSiteList = function (blockedSiteList) {
         var bl = new BlockedSiteList();
-        bl.setList(blockedSiteList.getList());
+        bl.setList(blockedSiteList.list);
         return bl;
     };
 

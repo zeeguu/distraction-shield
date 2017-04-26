@@ -4,19 +4,25 @@ define (['constants'], function UserSettings(constants) {
 
     //Private to this and storage.js
     serializeSettings = function(settingsObject) {
-        return JSON.stringify(settingsObject);
+        var obj = {
+            status: settingsObject.getStatusObj(),
+            sessionID: settingsObject.getSessionID(),
+            mode: settingsObject.getMode(),
+            interceptionInterval: settingsObject.getInterceptionInterval()
+        };
+        return JSON.stringify(obj);
     };
 
     //Private method
     parseSettingsObject = function(parsedSettingsObject) {
         var s = new UserSettings();
-        var newStatus = parsedSettingsObject.getStatus();
-        s.getStatus().state = newStatus.state;
-        s.getStatus().setAt = new Date(newStatus.setAt);
-        s.getStatus().offTill = new Date(newStatus.offTill);
-        s.setMode(parsedSettingsObject.getMode());
-        s.setSessionID(parsedSettingsObject.getSessionID());
-        s.setInterceptionInterval(parsedSettingsObject.getInterceptionInterval());
+        var newStatus = parsedSettingsObject.status;
+        newStatus.setAt = new Date(newStatus.setAt);
+        newStatus.offTill = new Date(newStatus.offTill);
+        s.setStatusObj(newStatus);
+        s.setMode(parsedSettingsObject.mode);
+        s.setSessionID(parsedSettingsObject.sessionID);
+        s.setInterceptionInterval(parsedSettingsObject.interceptionInterval);
         return s;
     };
 
@@ -58,12 +64,16 @@ define (['constants'], function UserSettings(constants) {
         this.setMode = function (newMode) {
             mode = newMode;
         };
+
         this.getMode = function () {
             return mode;
         };
 
         this.getStatusObj = function () {
             return status;
+        };
+        this.setStatusObj = function (newStatus) {
+            status = newStatus;
         };
 
         this.getOffTill = function () {
@@ -73,6 +83,7 @@ define (['constants'], function UserSettings(constants) {
         this.getState = function () {
             return status.state ? "On" : "Off";
         };
+
         this.getNotState = function () {
             return status.state ? "Off" : "On";
         };
@@ -135,10 +146,10 @@ define (['constants'], function UserSettings(constants) {
         };
 
         this.copySettings = function (settingsObject) {
-            status = settingsObject.status;
-            sesionID = settingsObject.sessionID;
-            interceptionInterval = settingsObject.interceptionInterval;
-            mode = settingsObject.mode;
+            status = settingsObject.getStatusObj();
+            sesionID = settingsObject.getSessionID();
+            interceptionInterval = settingsObject.getInterceptionInterval();
+            mode = settingsObject.getMode();
         };
 
         this.reInitTimer = function () {

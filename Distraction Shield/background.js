@@ -32,6 +32,9 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, UserSetti
         interceptDateList = dateList;
     };
 
+    getLocalSettings = function() {
+        return localSettings;
+    };
     /* --------------- ------ Storage retrieval ------ ---------------*/
 // Methods here are only used upon initialization of the session.
 // Usage found in init.js
@@ -91,13 +94,13 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, UserSetti
         interception.addToInterceptDateList();
         var redirectLink;
         var params;
-        if (!authenticator.sessionAuthentic) {
-            redirectLink = chrome.extension.getURL('loginPage/login.html');
-            params = "?forceLogin=" + constants.zeeguuExLink;
-        } else {
+        // if (!authenticator.sessionAuthentic) {
+        //     redirectLink = chrome.extension.getURL('loginPage/login.html');
+        //     params = "?forceLogin=" + constants.zeeguuExLink;
+        // } else {
             redirectLink = zeeguuExLink;
             params = "?sessionID=" + localSettings.getSessionID();
-        }
+        // }
         params = params + "&redirect=" + details.url;
 
         return {redirectUrl: redirectLink + params};
@@ -121,6 +124,7 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, UserSetti
     };
 
     return {
+        getLocalSettings            : getLocalSettings,
         setLocalSettings            : setLocalSettings,
         setLocalBlacklist           : setLocalBlacklist,
         setLocalInterceptDateList   : setLocalInterceptDateList,

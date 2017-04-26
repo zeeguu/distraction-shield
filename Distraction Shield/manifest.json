@@ -23,6 +23,7 @@
 
   "background": {
     "scripts": [
+      "eventCathcer.js",
       "require.js",
       "init.js"
     ]

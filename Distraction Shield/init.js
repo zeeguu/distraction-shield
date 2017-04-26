@@ -18,12 +18,14 @@ require.config({
     }
 });
 
+
 require( ['background', 'synchronizer', 'storage', 'auth','BlockedSiteList', 'UserSettings'],
         function(background, synchronizer, storage, auth, BlockedSiteList, UserSettings) {
 
+
     /* --------------- ---- Session initializer ---- ---------------*/
-    // console.log(JSON.stringify(auth)); //TODO remove
-    // console.log(auth); //TODO remove
+    // console.log(JSON.stringify(auth));   //TODO remove
+    // console.log(auth);                   //TODO remove
     var authenticator = new auth.Auth();
 
     //First receive the blacklist and settings from the sync storage,
@@ -41,8 +43,10 @@ require( ['background', 'synchronizer', 'storage', 'auth','BlockedSiteList', 'Us
 
     /* --------------- ---- Run upon installation ---- ---------------*/
 
-    chrome.runtime.onInstalled.addListener(function() {
-        storage.getAll( function(output) {
+    //chrome.runtime.onInstalled.addListener(
+
+    onInstall = function() {
+        storage.getAllUnParsed(function(output) {
             initBlacklist(output.tds_blacklist);
             initInterceptCounter(output.tds_interceptCounter);
             initInterceptDateList(output.tds_interceptDateList);
@@ -50,7 +54,7 @@ require( ['background', 'synchronizer', 'storage', 'auth','BlockedSiteList', 'Us
             initSettings(output.tds_settings);
             runIntroTour();
         });
-    });
+    };
 
     initBlacklist = function(list) {
         if (list == null) {
@@ -90,6 +94,10 @@ require( ['background', 'synchronizer', 'storage', 'auth','BlockedSiteList', 'Us
 
 
     /* --------------- ---- Run upon Start of session ---- ---------------*/
+
+    if (onInstalledFired) {
+        onInstall();
+    }
 
     //fix that checks whether everything that should be is indeed initialized
     storage.getSettings(function(settings) {

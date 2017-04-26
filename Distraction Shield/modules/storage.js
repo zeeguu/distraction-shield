@@ -7,10 +7,19 @@ function SyncStorage(BlockedSite, BlockedSiteList, UserSettings) {
     getAll = function(callback) {
         getStorage(null).then(function(output) {
             output.tds_settings = UserSettings.deserializeSettings(output.tds_settings);
-            output.tds_blacklist = UserSettings.deserializeBlockedSiteList(output.tds_blacklist);
+            output.tds_blacklist = UserSettings.deserializeSettings(output.tds_blacklist);
             return callback(output);
         });
     };
+
+    getAllUnParsed = function(callback) {
+        getStorage(null).then(function(output) {
+            //output.tds_settings = UserSettings.deserializeSettings(output.tds_settings);
+            //output.tds_blacklist = UserSettings.deserializeSettings(output.tds_blacklist);
+            return callback(output);
+        });
+    };
+
 
     /* ---------------- Blacklist --------------- */
 
@@ -128,6 +137,7 @@ function SyncStorage(BlockedSite, BlockedSiteList, UserSettings) {
 
     return {
         getAll                  : getAll,
+        getAllUnParsed                  : getAllUnParsed,
         getBlacklist            : getBlacklist,
         setBlacklist            : setBlacklist,
         getSettings             : getSettings,

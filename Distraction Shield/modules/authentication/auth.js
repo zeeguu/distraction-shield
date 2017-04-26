@@ -1,7 +1,7 @@
-define(['constants','background'], function Auth(constants, background) {
+define(['constants','background','api', 'synchronizer'], function Auth(constants, background, api, synchronizer) {
     function Auth() {
         var self = this;
-        // var settings = background.getLocalSettings();
+        var settings = background.getLocalSettings();
 
         //TODO make getter, setter and enforce private
         this.sessionAuthentic = false;

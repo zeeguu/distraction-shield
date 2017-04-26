@@ -3,17 +3,24 @@ define(['constants'], function BlockedSite(constants) {
     /* --------------- --------------- Serialization --------------- --------------- */
     //Private to this and storage.js
     serializeBlockedSite = function (blockedSite) {
-        return JSON.stringify(blockedSite);
+        var obj = {
+            url: blockedSite.getUrl(),
+            name: blockedSite.getName(),
+            icon: blockedSite.getIcon(),
+            checkboxVal: blockedSite.getCheckboxVal(),
+            counter: blockedSite.getCounter()
+        };
+        return JSON.stringify(obj);
     };
 
     //Private to this and blocked_site_list
     parseBlockedSite = function (blockedSite) {
         var b = new BlockedSite();
-        b.setUrl(blockedSite.getUrl());
-        b.setName(blockedSite.getName());
-        b.setIcon(blockedSite.getIcon());
-        b.setCheckboxVal(blockedSite.getCheckboxVal());
-        b.setCounter(blockedSite.getCounter());
+        b.setUrl(blockedSite.url);
+        b.setName(blockedSite.name);
+        b.setIcon(blockedSite.icon);
+        b.setCheckboxVal(blockedSite.checkboxVal);
+        b.setCounter(blockedSite.counter);
         return b;
     };
 
@@ -86,7 +93,8 @@ define(['constants'], function BlockedSite(constants) {
     return {
         BlockedSite : BlockedSite,
         serializeBlockedSite : serializeBlockedSite,
-        deserializeBlockedSite : deserializeBlockedSite
+        deserializeBlockedSite : deserializeBlockedSite,
+        parseBlockedSite : parseBlockedSite
     }
 
 });
