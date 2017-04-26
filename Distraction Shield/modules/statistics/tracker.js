@@ -33,18 +33,23 @@ function Tracker() {
         if (!self.idle) {
             self.getCurrentTab().then(function(result){
                 self.tabActive = result;
-                let blockedSitePromise = self.matchUrlToBlockedSite(result, blockedSites.getList());
+
+                let blockedSitePromise = self.matchUrlToBlockedSite(self.tabActive, blockedSites.getList());
                 blockedSitePromise.then(function(result) {
-                    console.log("Increment "+result.getDomain());
-                }).catch(function () {
+                    console.log("Match!");
+                    self.increaseTimeCounterBlockedSite(result);
+                    console.log(result);
+                    synchronizer.syncBlacklist();
+                }).catch(function (reject) {
                     console.log("No match.");
                 });
 
+                if (self.compareUrlToRegex(self.tabActive, self.zeeguuRegex)) {
+                    self.increaseTimeCounterExercises()
+                }
             });
 
-            if (self.compareUrlToRegex(self.tabActive, self.zeeguuRegex)) {
-                self.increaseTimeCounterExercises()
-            }
+
         }
     };
 
@@ -52,10 +57,14 @@ function Tracker() {
         self.activeTime = self.activeTime + 1;
     };
 
+    this.increaseTimeCounterBlockedSite = function (blockedSite) {
+        blockedSite.setTimeSpent(blockedSite.getTimeSpent()+1);
+    };
+
     this.matchUrlToBlockedSite = function (url, blockedSites) {
         return new Promise(function(resolve, reject){
             blockedSites.forEach(function(item){
-                if(self.matchUrl(url, item.getDomain())) {
+                if(self.compareDomain(url, item.getDomain())) {
                     resolve(item);
                 }
             });
@@ -63,8 +72,12 @@ function Tracker() {
         });
     };
 
-    this.matchUrl = function (url, blockedSiteDomain) {
-        return self.compareUrlToRegex(url, "^(http[s]?:\\/\\/)?(.*)"+blockedSiteDomain+".*$");
+    this.createRegexFromDomain = function (domain) {
+        return "^(http[s]?:\\/\\/)?(.*)"+domain+".*$";
+    };
+
+    this.compareDomain = function (url, blockedSiteDomain) {
+        return self.compareUrlToRegex(url, self.createRegexFromDomain(blockedSiteDomain));
     };
 
     // Function attached to the idle-listener. Sets the self.idle variable.
