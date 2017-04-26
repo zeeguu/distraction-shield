@@ -5,7 +5,7 @@ require.config({
         'BlockedSiteList'   : 'classes/BlockedSiteList',
         'UserSettings'      : 'classes/UserSettings',
         'api'               : 'modules/authentication/api',
-        'auth'              : 'modules/authentication/api',
+        'auth'              : 'modules/authentication/auth',
         'exerciseTime'      : 'modules/statistics/exerciseTime',
         'interception'      : 'modules/statistics/interception',
         'tracker'           : 'modules/statistics/tracker',
@@ -22,7 +22,8 @@ require( ['background', 'synchronizer', 'storage', 'auth','BlockedSiteList', 'Us
         function(background, synchronizer, storage, auth, BlockedSiteList, UserSettings) {
 
     /* --------------- ---- Session initializer ---- ---------------*/
-
+    // console.log(JSON.stringify(auth)); //TODO remove
+    // console.log(auth); //TODO remove
     var authenticator = new auth.Auth();
 
     //First receive the blacklist and settings from the sync storage,

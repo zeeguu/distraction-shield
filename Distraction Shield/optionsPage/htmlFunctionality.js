@@ -1,68 +1,84 @@
-/**
- * This file contains the specific functionality for the options and some of its elements
- * This file holds all javascript functions used by the html_elements like buttons and fields.
- * Here things like, onClicked or onChanged events are monitored
- */
+define (function htmlFunctionality () {
 
-appendHtmlItemTo = function(html_child, html_parent) {
-    html_parent.append(html_child);
-};
+    /**
+     * This file contains the specific functionality for the options and some of its elements
+     * This file holds all javascript functions used by the html_elements like buttons and fields.
+     * Here things like, onClicked or onChanged events are monitored
+     */
 
-prependHtmlItemTo = function(html_child, html_parent) {
-    html_parent.prepend(html_child);
-};
+    appendHtmlItemTo = function (html_child, html_parent) {
+        html_parent.append(html_child);
+    };
 
-/* -------------------- Button Click functions ----------------------- */
+    prependHtmlItemTo = function (html_child, html_parent) {
+        html_parent.prepend(html_child);
+    };
 
-saveNewUrl = function () {
-    var newUrl = html_txtFld.val();
-    blockedSiteBuilder.createNewBlockedSite(newUrl, addBlockedSiteToAll);
-    html_txtFld.val('');
-};
+    /* -------------------- Button Click functions ----------------------- */
 
-//Connect functions to HTML elements
-connectButton = function(html_button, method) {
-    html_button.on('click', method);
-};
+    saveNewUrl = function () {
+        var newUrl = html_txtFld.val();
+        blockedSiteBuilder.createNewBlockedSite(newUrl, addBlockedSiteToAll);
+        html_txtFld.val('');
+    };
 
-/* -------------------- Keypress events ----------------------- */
+    //Connect functions to HTML elements
+    connectButton = function (html_button, method) {
+        html_button.on('click', method);
+    };
 
-setKeyPressFunctions = function() {
-    submitOnKeyPress(html_txtFld);
-    deleteOnKeyPress(blacklistTable);
-};
+    /* -------------------- Keypress events ----------------------- */
 
-submitOnKeyPress = function(html_elem) {
-    html_elem.keyup(function(event) {
-        if (event.keyCode == KEY_ENTER) {
-            saveNewUrl();
-        }
-    });
-};
+    setKeyPressFunctions = function () {
+        submitOnKeyPress(html_txtFld);
+        deleteOnKeyPress(blacklistTable);
+    };
 
-deleteOnKeyPress = function(blacklistTable) {
-    $('html').keyup(function(e) {
-        if (e.keyCode == KEY_DELETE) {
-            var html = blacklistTable.getSelected();
-            removeBlockedSiteFromAll(html);
-        }
-    });
-};
+    submitOnKeyPress = function (html_elem) {
+        html_elem.keyup(function (event) {
+            if (event.keyCode == KEY_ENTER) {
+                saveNewUrl();
+            }
+        });
+    };
 
-/* -------------------- Logic for the mode selection -------------------- */
+    deleteOnKeyPress = function (blacklistTable) {
+        $('html').keyup(function (e) {
+            if (e.keyCode == KEY_DELETE) {
+                var html = blacklistTable.getSelected();
+                removeBlockedSiteFromAll(html);
+            }
+        });
+    };
 
-initModeSelection = function(buttonGroup) {
-    $("input[name=" + buttonGroup + "]").change( function(){
-        settings_object.setMode($("input[name=" + buttonGroup + "]:checked").val());
-        synchronizer.syncSettings(settings_object);
-    });
-};
+    /* -------------------- Logic for the mode selection -------------------- */
 
-/* -------------------- Interval slider -------------------- */
+    initModeSelection = function (buttonGroup) {
+        $("input[name=" + buttonGroup + "]").change(function () {
+            settings_object.setMode($("input[name=" + buttonGroup + "]:checked").val());
+            synchronizer.syncSettings(settings_object);
+        });
+    };
 
-initIntervalSlider = function() {
-    intervalSlider = new GreenToRedSlider('#interval-slider', function(value) {
-        settings_object.setInterceptionInterval(parseInt(value));
-        synchronizer.syncSettings(settings_object);
-    });
-};
+    /* -------------------- Interval slider -------------------- */
+
+    initIntervalSlider = function () {
+        intervalSlider = new GreenToRedSlider('#interval-slider', function (value) {
+            settings_object.setInterceptionInterval(parseInt(value));
+            synchronizer.syncSettings(settings_object);
+        });
+    };
+
+    return {
+        appendHtmlItemTo : appendHtmlItemTo,
+        prependHtmlItemTo : prependHtmlItemTo,
+        saveNewUrl : saveNewUrl,
+        connectButton : connectButton,
+        setKeyPressFunctions : setKeyPressFunctions,
+        submitOnKeyPress : submitOnKeyPress,
+        deleteOnKeyPress : deleteOnKeyPress,
+        initModeSelection : initModeSelection,
+        initIntervalSlider : initIntervalSlider
+
+    }
+});

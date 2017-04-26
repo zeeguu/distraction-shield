@@ -3,14 +3,14 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, UserSetti
 //Set that holds the urls to be intercepted
     var blockedSites = new BlockedSiteList.BlockedSiteList();
     var interceptDateList = [];
-    // console.log(require.defined('classes/UserSettings'));
-    // console.log(JSON.stringify(blockedSiteBuilder));
-    // console.log(JSON.stringify(BlockedSiteList));
-    // console.log(JSON.stringify(interception));
-    // console.log(JSON.stringify(UserSettings));
-    // console.log(JSON.stringify(synchronizer));
-    // console.log(JSON.stringify(constants));
-    // console.log(JSON.stringify(storage));
+    // console.log("userSettings defined is :" + require.defined('UserSettings')); //TODO remove
+    // console.log(JSON.stringify(blockedSiteBuilder)); //TODO remove
+    // console.log(JSON.stringify(BlockedSiteList)); //TODO remove
+    // console.log(JSON.stringify(interception)); //TODO remove
+    // console.log(JSON.stringify(UserSettings)); //TODO remove
+    // console.log(JSON.stringify(synchronizer)); //TODO remove
+    // console.log(JSON.stringify(constants)); //TODO remove
+    // console.log(JSON.stringify(storage)); //TODO remove
     var localSettings = new UserSettings.UserSettings();
 
     /* --------------- ------ setter for local variables ------ ---------------*/

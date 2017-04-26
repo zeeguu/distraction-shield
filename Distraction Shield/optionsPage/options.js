@@ -1,5 +1,31 @@
-require (['storage','UserSettings','BlockedsiteList', 'BlacklistTable','GreenToRedSlider', 'TurnOffSlider','connectDataToHtml', 'htmlFunctionality'],
-function options (storage, UserSettings, BlockedsiteList, BlacklistTable, GreenToRedSlider, TurnOffSlider, connectDataToHtml, htmlFunctionality) {
+require.config({
+    baseUrl: "./",
+    paths : {
+        'BlockedSite'       : '../classes/BlockedSite',
+        'BlockedSiteList'   : '../classes/BlockedSiteList',
+        'UserSettings'      : '../classes/UserSettings',
+        'api'               : '../modules/authentication/api',
+        'auth'              : '../modules/authentication/auth',
+        'exerciseTime'      : '../modules/statistics/exerciseTime',
+        'interception'      : '../modules/statistics/interception',
+        'tracker'           : '../modules/statistics/tracker',
+        'blockedSiteBuilder': '../modules/blockedSiteBuilder',
+        'dateutil'          : '../modules/dateutil',
+        'storage'           : '../modules/storage',
+        'synchronizer'      : '../modules/synchronizer',
+        'urlFormatter'      : '../modules/urlFormatter',
+        'BlacklistTable'    : 'classes/BlacklistTable',
+        'GreenToRedSlider'  : 'classes/GreenToRedSlider',
+        'TurnOffSlider'     : 'classes/TurnOffSlider',
+        'constants'         : '../constants',
+        'jquery'            : '../dependencies/jquery/jquery-1.10.2',
+        'background'        : '../background'
+
+    }
+});
+
+require (['storage','UserSettings','BlockedSiteList','synchronizer', 'BlacklistTable','GreenToRedSlider', 'TurnOffSlider','connectDataToHtml', 'htmlFunctionality','jquery'],
+function options (storage, UserSettings, BlockedSiteList, synchronizer, BlacklistTable, GreenToRedSlider, TurnOffSlider, connectDataToHtml, htmlFunctionality,$) {
 
     /**
      * This file contains the core functions of the options page. this has all the local variables,
@@ -24,8 +50,8 @@ function options (storage, UserSettings, BlockedsiteList, BlacklistTable, GreenT
     var tr = document.getElementById("tourRestart");
 
     //Local variables that hold all necessary data.
-    var settings_object = new UserSettings();
-    var blacklist = new BlockedSiteList();
+    var settings_object = new UserSettings.UserSettings();
+    var blacklist = new BlockedSiteList.BlockedSiteList();
     var interceptionCounter = 0;
 
     /* -------------------- Initialization of options --------------------- */
@@ -48,20 +74,20 @@ function options (storage, UserSettings, BlockedsiteList, BlacklistTable, GreenT
 
     // functionality from htmlFunctionality, blacklist_table and slider files
     connectHtmlFunctionality = function () {
-        initModeSelection(modeGroup);
-        initIntervalSlider();
-        blacklistTable = new BlacklistTable($('#blacklistTable'));
+        htmlFunctionality.initModeSelection(modeGroup);
+        htmlFunctionality.initIntervalSlider();
+        blacklistTable = new BlacklistTable.BlacklistTable($('#blacklistTable'));
         connectButton(html_saveButton, saveNewUrl);
-        turnOffSlider = new TurnOffSlider('#turnOff-slider');
-        setKeyPressFunctions();
+        turnOffSlider = new TurnOffSlider.TurnOffSlider('#turnOff-slider');
+        htmlFunctionality.setKeyPressFunctions();
     };
 
     // functionality from connectDataToHtml file
     connectLocalDataToHtml = function () {
-        loadHtmlInterceptCounter(interceptionCounter, html_intCnt);
-        loadHtmlBlacklist(blacklist, blacklistTable);
-        loadHtmlMode(settings_object.getMode(), modeGroup);
-        loadHtmlInterval(settings_object.getInterceptionInterval(), intervalSlider);
+        connectDataToHtml.loadHtmlInterceptCounter(interceptionCounter, html_intCnt);
+        connectDataToHtml.loadHtmlBlacklist(blacklist, blacklistTable);
+        connectDataToHtml.loadHtmlMode(settings_object.getMode(), modeGroup);
+        connectDataToHtml.loadHtmlInterval(settings_object.getInterceptionInterval(), intervalSlider);
     };
 
     /* -------------------- Manipulate local variables ------------------- */
@@ -100,4 +126,4 @@ function options (storage, UserSettings, BlockedsiteList, BlacklistTable, GreenT
         chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
     };
 
-}
+});
