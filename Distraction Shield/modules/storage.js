@@ -1,11 +1,13 @@
-define ([], function SyncStorage() {
-    var self = this;
+
+//TODO write a serializer module
+define (['BlockedSite', 'BlockedSiteList', 'UserSettings'],
+function SyncStorage(BlockedSite, BlockedSiteList, UserSettings) {
 
     /* ---------------- TDS_Storage --------------- */
     getAll = function(callback) {
-        self.getStorage(null).then(function(output) {
-            output.tds_settings = deserializeSettings(output.tds_settings);
-            output.tds_blacklist = deserializeBlockedSiteList(output.tds_blacklist);
+        getStorage(null).then(function(output) {
+            output.tds_settings = UserSettings.deserializeSettings(output.tds_settings);
+            output.tds_blacklist = UserSettings.deserializeBlockedSiteList(output.tds_blacklist);
             return callback(output);
         });
     };
@@ -13,33 +15,33 @@ define ([], function SyncStorage() {
     /* ---------------- Blacklist --------------- */
 
     getBlacklist = function(callback) {
-        self.getStorage("tds_blacklist").then(function(output) {
-            output.tds_blacklist = deserializeBlockedSiteList(output.tds_blacklist);
+        getStorage("tds_blacklist").then(function(output) {
+            output.tds_blacklist = BlockedSiteList.deserializeBlockedSiteList(output.tds_blacklist);
             return callback(output.tds_blacklist);
         });
     };
 
     setBlacklist = function(blockedSiteList) {
-        var serializedList = serializeBlockedSiteList(blockedSiteList);
-        self.setStorage("tds_blacklist", serializedList);
+        var serializedList = BlockedSiteList.serializeBlockedSiteList(blockedSiteList);
+        setStorage("tds_blacklist", serializedList);
     };
 
     /* ---------------- Settings Object --------------- */
 
     getSettings = function(callback) {
-        self.getStorage("tds_settings").then(function(output) {
-            var deserializedSettings = deserializeSettings(output.tds_settings);
+        getStorage("tds_settings").then(function(output) {
+            var deserializedSettings = UserSettings.deserializeSettings(output.tds_settings);
             return callback(deserializedSettings);
         });
     };
 
     setSettings = function(settingsObject) {
-        self.setStorage("tds_settings", serializeSettings(settingsObject));
+        setStorage("tds_settings", UserSettings.serializeSettings(settingsObject));
     };
 
     setSettingsWithCallback = function(settingsObject, callback) {
-        var serializedSettings = serializeSettings(settingsObject);
-        self.setStorage("tds_settings", serializedSettings).then(function(){
+        var serializedSettings = UserSettings.serializeSettings(settingsObject);
+        setStorage("tds_settings", serializedSettings).then(function(){
             return callback()
         });
     };
@@ -53,27 +55,27 @@ define ([], function SyncStorage() {
     /* ---------------- Statistics --------------- */
 
     getInterceptCounter = function() {
-        return self.getStorage("tds_interceptCounter");
+        return getStorage("tds_interceptCounter");
     };
 
     setInterceptCounter = function(number) {
-        return self.setStorage("tds_interceptCounter", number);
+        return setStorage("tds_interceptCounter", number);
     };
 
     getInterceptDateList = function(){
-        return self.getStorage("tds_interceptDateList");
+        return getStorage("tds_interceptDateList");
     };
 
     setInterceptDateList = function(dateList) {
-        return self.setStorage("tds_interceptDateList", dateList);
+        return setStorage("tds_interceptDateList", dateList);
     };
 
     getExerciseTimeList = function(){
-        return self.getStorage(["tds_exerciseTime"]);
+        return getStorage(["tds_exerciseTime"]);
     };
 
     setExerciseTimeList = function(statList){
-        return self.setStorage("tds_exerciseTime", statList);
+        return setStorage("tds_exerciseTime", statList);
     };
 
 
@@ -124,11 +126,6 @@ define ([], function SyncStorage() {
         return true;
     };
 
-    //Fancy string comparison with wildcards
-    wildcardStrComp = function(str, rule) {
-        return new RegExp("^" + rule.split("*").join(".*") + "$").test(str);
-    };
-
     return {
         getAll                  : getAll,
         getBlacklist            : getBlacklist,
@@ -144,7 +141,7 @@ define ([], function SyncStorage() {
         getExerciseTimeList     : getExerciseTimeList,
         setExerciseTimeList     : setExerciseTimeList,
         setStorage              : setStorage,
-        getStorage              : getStorage,
+        getStorage              : getStorage
     }
 });
 

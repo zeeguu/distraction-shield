@@ -24,24 +24,6 @@
   "background": {
     "scripts": [
       "require.js",
-      "main.js",
-      "dependencies/jquery/jquery-1.10.2.js",
-      "dependencies/bootstrapTour/bootstrap-tour-standalone.min.js",
-      "constants.js",
-      "modules/dateutil.js",
-      "modules/urlFormatter.js",
-      "modules/storage.js",
-      "modules/synchronizer.js",
-      "modules/blockedSiteBuilder.js",
-      "classes/BlockedSite.js",
-      "classes/BlockedSiteList.js",
-      "classes/UserSettings.js",
-      "modules/statistics/tracker.js",
-      "modules/statistics/interception.js",
-      "modules/statistics/exerciseTime.js",
-      "background.js",
-      "modules/authentication/api.js",
-      "modules/authentication/auth.js",
       "init.js"
     ]
   },

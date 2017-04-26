@@ -1,13 +1,14 @@
-
+//TODO fix require for this module
+define (['constants'], function Tracker(constants) {
 // The tracker tracks whether you are currently working on exercises.
 // Every second, the "alarm" is fired, and the url of the current tab is examined.
 // If this url corresponds with the zeeguu url, the time spent on exercises counter is incremented.
-function Tracker() {
+
     var self = this;
     this.idle = false;
     this.tabActive = null;
     this.activeTime = 0;
-    this.zeeguuRegex = zeeguuExLink+ ".*";
+    this.zeeguuRegex = constants.zeeguuExLink + ".*";
 
     // Initialize the alarm, and initialize the idle-checker.
     this.init = function() {
@@ -58,7 +59,11 @@ function Tracker() {
     this.compareUrlToRegex = function(regex, url) {
         return RegExp(regex).test(url);
     };
-}
+
+    return {
+
+    }
+});
 
 
 var tracker = new Tracker();

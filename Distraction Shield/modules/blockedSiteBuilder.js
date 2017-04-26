@@ -1,13 +1,18 @@
-function BlockedSiteBuilder() {
-    var self = this;
+define(['urlFormatter', 'BlockedSite'], function BlockedSiteBuilder(urlFormatter, BlockedSite) {
 
     // this requires a callback since the getUrlFromServer is asynchronous
-    this.createNewBlockedSite = function(newUrl, callback) {
-        urlFormatter.getUrlFromServer(newUrl, function(url, title) {
-            var bs = new BlockedSite(url, title);
+    createNewBlockedSite = function (newUrl, callback) {
+        urlFormatter.getUrlFromServer(newUrl, function (url, title) {
+            var bs = BlockedSite.BlockedSite(url, title);
             callback(bs);
         });
     };
-}
 
-var blockedSiteBuilder = new BlockedSiteBuilder();
+
+    return {
+        createNewBlockedSite: createNewBlockedSite
+    }
+
+});
+
+//var blockedSiteBuilder = new BlockedSiteBuilder();

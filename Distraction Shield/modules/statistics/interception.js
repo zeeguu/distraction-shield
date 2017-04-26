@@ -1,13 +1,13 @@
+define(['storage', 'constants'], function Interception(storage, constants) {
 
-function Interception() {
-    var self = this;
-
-    // The amount of milliseconds in one day
-    this.oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+    //Fancy string comparison with wildcards
+    wildcardStrComp = function(str, rule) {
+        return new RegExp("^" + rule.split("*").join(".*") + "$").test(str);
+    };
 
     // This method goes through the interceptDateList and count how many times the user was intercepted last day,
     // last week, last month and the total amount of interceptions.
-    this.calcInterceptData = function(dateList) {
+    calcInterceptData = function(dateList) {
         var tmp = dateList;
         let countDay = 0, countWeek = 0, countMonth = 0, countTotal = 0;
 
@@ -16,7 +16,7 @@ function Interception() {
             var length = tmp.length;
             for (var i = 0; i < length; i++) {
                 let secondDate = new Date(tmp.pop());
-                var diffDays = Math.floor(Math.abs((firstDate.getTime() - secondDate.getTime()) / (self.oneDay)));
+                var diffDays = Math.floor(Math.abs((firstDate.getTime() - secondDate.getTime()) / (constants.oneDay)));
                 if (diffDays == 0) {
                     countDay++;
                 }
@@ -40,7 +40,7 @@ function Interception() {
     // Receives the url from the parameter, and searches the correct blockedSite item from the blockedsite list.
     // Then the interceptioncounter for this item is incremented by 1.
     // Also the global interceptioncounter is incremented by one.
-    this.incrementInterceptionCounter = function(urlAddress) {
+    incrementInterceptionCounter = function(urlAddress) {
         let urlList = blockedSites.getList();
         for (var i = 0; i < urlList.length; i++) {
             if (wildcardStrComp(urlAddress, urlList[i].getUrl())) {
@@ -58,7 +58,7 @@ function Interception() {
     };
 
     // This function adds the current time+date to the saved time+date list
-    this.addToInterceptDateList = function() {
+    addToInterceptDateList = function() {
         let interceptDateList;
         storage.getInterceptDateList()
         .then(function(result){
@@ -76,7 +76,13 @@ function Interception() {
             storage.setInterceptDateList(interceptDateList);
         });
     };
-}
 
-var interception = new Interception();
+    return {
+        calcInterceptData : calcInterceptData,
+        incrementInterceptionCounter : incrementInterceptionCounter,
+        addToInterceptDateList : addToInterceptDateList
+    }
+});
+
+//var interception = new Interception();
 

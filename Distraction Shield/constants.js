@@ -43,6 +43,10 @@ define([], function () {
     var KEY_ENTER  = 13;
 
     /* -------------------- Number constants ----------------------- */
+
+    // The amount of milliseconds in one day
+    var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+
     /* ---------- ----- turnoffSlider ----- ---------- */
     var MAX_TURN_OFF_TIME = 480;
 
@@ -56,7 +60,8 @@ define([], function () {
         zeeguuInfoText          : zeeguuInfoText,
         KEY_DELETE              : KEY_DELETE,
         KEY_ENTER               : KEY_ENTER,
-        MAX_TURN_OFF_TIME       : MAX_TURN_OFF_TIME
+        MAX_TURN_OFF_TIME       : MAX_TURN_OFF_TIME,
+        oneDay                  : oneDay
     }
 });
 

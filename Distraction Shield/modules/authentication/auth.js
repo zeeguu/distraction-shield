@@ -1,7 +1,9 @@
-define(['constants','classes/UserSettings'], function (constants,userSettings) {
-    return function Auth() {
+define(['constants','background'], function Auth(constants, background) {
+    function Auth() {
         var self = this;
+        // var settings = background.getLocalSettings();
 
+        //TODO make getter, setter and enforce private
         this.sessionAuthentic = false;
 
         this.loginAnon = function (username, password) {
@@ -52,14 +54,15 @@ define(['constants','classes/UserSettings'], function (constants,userSettings) {
         };
 
         this.getSession = function () {
-            return localSettings.getSessionID();
+            return settings.getSessionID();
         };
 
         this.setSession = function (session) {
             oldSession = self.getSession();
             if (self.sessionAuthentic) {
                 self.logout().then(function () {
-                    localSettings.setSessionID(session);
+                    settings.setSessionID(session);
+                    synchronizer.syncSettings(settings);
                     if (session) {
                         self.sessionAuthentic = true;
                     } else {
@@ -67,7 +70,8 @@ define(['constants','classes/UserSettings'], function (constants,userSettings) {
                     }
                 });
             } else {
-                localSettings.setSessionID(session);
+                settings.setSessionID(session);
+                synchronizer.syncSettings(settings);
                 if (session) {
                     self.sessionAuthentic = true;
                 } else {
@@ -75,7 +79,10 @@ define(['constants','classes/UserSettings'], function (constants,userSettings) {
                 }
             }
         };
+    }
 
+    return {
+        Auth: Auth
     }
 });
 // var auth = new Auth();

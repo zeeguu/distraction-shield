@@ -1,5 +1,5 @@
 
-define(['background','storage'], function Synchronizer(background,storage) {
+define(['background','storage'], function Synchronizer(background, storage) {
     var syncBlacklist = function(blockedSiteList) {
         storage.setBlacklist(blockedSiteList);
         background.setLocalBlacklist(blockedSiteList);
@@ -23,7 +23,7 @@ define(['background','storage'], function Synchronizer(background,storage) {
     var addBlockedSiteAndSync = function(blockedSite) {
         storage.getBlacklist(function(blacklist) {
             if (blacklist.addToList(blockedSite)) {
-                self.syncBlacklist(blacklist);
+                syncBlacklist(blacklist);
             }
         })
     }

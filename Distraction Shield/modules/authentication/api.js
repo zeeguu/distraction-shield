@@ -1,16 +1,14 @@
-define (['constants'], function (constants) {
-    return function Api() {
-        var self = this;
+define (['constants'], function Api(constants) {
 
-        this.postRequest = function (url, parameters) {
-            return self.request("POST", url, parameters);
+        postRequest = function (url, parameters) {
+            return request("POST", url, parameters);
         };
 
-        this.getRequest = function (url, parameters) {
-            return self.request("GET", url, parameters);
+        getRequest = function (url, parameters) {
+            return request("GET", url, parameters);
         };
 
-        this.request = function (method, url, parameters) {
+        request = function (method, url, parameters) {
             return new Promise(function (resolve, reject) {
                 let request = new XMLHttpRequest();
                 request.open(method, constants.apiUrl + url);
@@ -29,6 +27,11 @@ define (['constants'], function (constants) {
                 request.send(parameters);
             });
         };
+
+    return {
+        postRequest: postRequest,
+        getRequest: getRequest,
+        request: request
     }
 });
 

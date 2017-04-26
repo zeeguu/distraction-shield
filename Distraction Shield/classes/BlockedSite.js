@@ -1,4 +1,4 @@
-define(function () {
+define(['constants'], function BlockedSite(constants) {
 
     /* --------------- --------------- Serialization --------------- --------------- */
     //Private to this and storage.js
@@ -9,11 +9,11 @@ define(function () {
     //Private to this and blocked_site_list
     parseBlockedSite = function (blockedSite) {
         var b = new BlockedSite();
-        b.url = blockedSite.url;
-        b.name = blockedSite.name;
-        b.icon = blockedSite.icon;
-        b.checkboxVal = blockedSite.checkboxVal;
-        b.counter = blockedSite.counter;
+        b.setUrl(blockedSite.getUrl());
+        b.setName(blockedSite.getName());
+        b.setIcon(blockedSite.getIcon());
+        b.setCheckboxVal(blockedSite.getCheckboxVal());
+        b.setCounter(blockedSite.getCounter());
         return b;
     };
 
@@ -27,47 +27,66 @@ define(function () {
     };
 
     /* --------------- --------------- --------------- --------------- --------------- */
-    return function BlockedSite(url, title) {
-        this.constructUrl = function (url) {
+
+    function BlockedSite(url, title) {
+        constructUrl = function (url) {
             return "*://" + url + "/*";
         };
 
-        this.constructIcon = function (url) {
-            return "<img style=\"-webkit-user-select: none\" src=\"" + FAVICONLINK + url + "\">"
+        constructIcon = function (url) {
+            return "<img style=\"-webkit-user-select: none\" src=\"" + constants.FAVICONLINK + url + "\">"
         };
 
-        this.url = this.constructUrl(url);
-        this.domain = url;
-        this.name = title;
-        this.icon = this.constructIcon(url);
-        this.checkboxVal = true;
-        this.counter = 0;
+        var url = this.constructUrl(url);
+        var domain = url;
+        var name = title;
+        var icon = this.constructIcon(url);
+        var checkboxVal = true;
+        var counter = 0;
 
         this.getUrl = function () {
-            return this.url;
+            return url;
+        };
+        this.setUrl = function (newUrl) {
+            url = newUrl;
         };
         this.getDomain = function () {
-            return this.domain;
+            return domain;
+        };
+        this.setDomain = function (newDomain) {
+            domain = newDomain;
         };
         this.getIcon = function () {
-            return this.icon;
+            return icon;
+        };
+        this.setIcon = function (newIcon) {
+            icon = newIcon;
         };
         this.getName = function () {
-            return this.name;
+            return name;
         };
-        this.setCounter = function (newVal) {
-            this.counter = newVal;
+        this.setName = function (newName) {
+            name = newName;
         };
         this.getCounter = function () {
-            return this.counter;
+            return counter;
         };
-        this.setCheckboxVal = function (newVal) {
-            this.checkboxVal = newVal;
+        this.setCounter = function (newVal) {
+            counter = newVal;
         };
         this.getCheckboxVal = function () {
-            return this.checkboxVal;
+            return checkboxVal;
+        };
+        this.setCheckboxVal = function (newVal) {
+            checkboxVal = newVal;
         };
 
+    }
+
+    return {
+        BlockedSite : BlockedSite,
+        serializeBlockedSite : serializeBlockedSite,
+        deserializeBlockedSite : deserializeBlockedSite
     }
 
 });

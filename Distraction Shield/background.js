@@ -1,8 +1,17 @@
-define(['blockedSiteBuilder','BlockedSiteList','interception','UserSettings',''], function background(blockedSiteBuilder, BlockedSiteList, interception, UserSettings) {
+define(['blockedSiteBuilder','BlockedSiteList','interception','UserSettings','synchronizer','constants','storage'],
+function background(blockedSiteBuilder, BlockedSiteList, interception, UserSettings, synchronizer, constants, storage) {
 //Set that holds the urls to be intercepted
-    var blockedSites = new BlockedSiteList();
+    var blockedSites = new BlockedSiteList.BlockedSiteList();
     var interceptDateList = [];
-    var localSettings = new UserSettings();
+    // console.log(require.defined('classes/UserSettings'));
+    // console.log(JSON.stringify(blockedSiteBuilder));
+    // console.log(JSON.stringify(BlockedSiteList));
+    // console.log(JSON.stringify(interception));
+    // console.log(JSON.stringify(UserSettings));
+    // console.log(JSON.stringify(synchronizer));
+    // console.log(JSON.stringify(constants));
+    // console.log(JSON.stringify(storage));
+    var localSettings = new UserSettings.UserSettings();
 
     /* --------------- ------ setter for local variables ------ ---------------*/
 
@@ -82,9 +91,9 @@ define(['blockedSiteBuilder','BlockedSiteList','interception','UserSettings','']
         interception.addToInterceptDateList();
         var redirectLink;
         var params;
-        if (!auth.sessionAuthentic) {
+        if (!authenticator.sessionAuthentic) {
             redirectLink = chrome.extension.getURL('loginPage/login.html');
-            params = "?forceLogin=" + zeeguuExLink;
+            params = "?forceLogin=" + constants.zeeguuExLink;
         } else {
             redirectLink = zeeguuExLink;
             params = "?sessionID=" + localSettings.getSessionID();
@@ -114,7 +123,7 @@ define(['blockedSiteBuilder','BlockedSiteList','interception','UserSettings','']
     return {
         setLocalSettings            : setLocalSettings,
         setLocalBlacklist           : setLocalBlacklist,
-        setLocalInterceptDateList   :setLocalInterceptDateList,
+        setLocalInterceptDateList   : setLocalInterceptDateList,
         retrieveSettings            : retrieveSettings,
         retrieveBlockedSites        : retrieveBlockedSites,
         addUrlToBlockedSites        : addUrlToBlockedSites,
