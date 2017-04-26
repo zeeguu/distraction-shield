@@ -54,7 +54,7 @@ function GreenToRedSlider(sliderID, saveFunction) {
     });
 
     this.checkTimeValidity = function (val) {   
-        var regex = (/(\d+|\d+\:\d{2})(?:\s*)(hours?|minutes?|$)/m).exec(val);
+        var regex = (/(\d+|\d\:\d{2})(?:\s*)(h(?:our)?s?|m(?:inute|in)?s?|$)/m).exec(val);
         if (regex != null) {
             if (regex[1].match(":")) {
                 var split = regex[1].split(":");
