@@ -13,7 +13,7 @@ function Tracker() {
     this.init = function() {
 
         setInterval(self.fireAlarm, 5000);
-        setInterval(self.increaseTimeCounter, 1000);
+        setInterval(self.matchUrls, 1000);
 
         // When the user does not input anything for 15 seconds, set the state to idle.
         chrome.idle.setDetectionInterval(15);
@@ -29,13 +29,42 @@ function Tracker() {
     };
 
     // Check if the user is idle. If the user is not idle, and on the zeeguu website, increment the counter.
-    this.increaseTimeCounter = function () {
+    this.matchUrls = function () {
         if (!self.idle) {
-            self.getCurrentTab().then(function(result){ self.tabActive = result});
-            if (self.compareUrlToRegex(self.zeeguuRegex, self.tabActive)) {
-                self.activeTime = self.activeTime + 1;
+            self.getCurrentTab().then(function(result){
+                self.tabActive = result;
+                let blockedSitePromise = self.matchUrlToBlockedSite(result, blockedSites.getList());
+                blockedSitePromise.then(function(result) {
+                    console.log("Increment "+result.getDomain());
+                }).catch(function () {
+                    console.log("No match.");
+                });
+
+            });
+
+            if (self.compareUrlToRegex(self.tabActive, self.zeeguuRegex)) {
+                self.increaseTimeCounterExercises()
             }
         }
+    };
+
+    this.increaseTimeCounterExercises = function () {
+        self.activeTime = self.activeTime + 1;
+    };
+
+    this.matchUrlToBlockedSite = function (url, blockedSites) {
+        return new Promise(function(resolve, reject){
+            blockedSites.forEach(function(item){
+                if(self.matchUrl(url, item.getDomain())) {
+                    resolve(item);
+                }
+            });
+            reject();
+        });
+    };
+
+    this.matchUrl = function (url, blockedSiteDomain) {
+        return self.compareUrlToRegex(url, "^(http[s]?:\\/\\/)?(.*)"+blockedSiteDomain+".*$");
     };
 
     // Function attached to the idle-listener. Sets the self.idle variable.
@@ -55,7 +84,7 @@ function Tracker() {
     };
 
     // Compare regex to url.
-    this.compareUrlToRegex = function(regex, url) {
+    this.compareUrlToRegex = function(url, regex) {
         return RegExp(regex).test(url);
     };
 }

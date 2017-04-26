@@ -40,6 +40,7 @@ parseBlockedSite = function(blockedSite) {
     var b = new BlockedSite();
     b.url = blockedSite.url;
     b.name = blockedSite.name;
+    b.domain = blockedSite.domain;
     b.icon = blockedSite.icon;
     b.checkboxVal = blockedSite.checkboxVal;
     b.counter = blockedSite.counter;
