@@ -1,85 +1,109 @@
+require.config({
+    baseUrl: "./",
+    paths : {
+        'BlockedSite'       : '../classes/BlockedSite',
+        'BlockedSiteList'   : '../classes/BlockedSiteList',
+        'UserSettings'      : '../classes/UserSettings',
+        'api'               : '../modules/authentication/api',
+        'auth'              : '../modules/authentication/auth',
+        'exerciseTime'      : '../modules/statistics/exerciseTime',
+        'interception'      : '../modules/statistics/interception',
+        'tracker'           : '../modules/statistics/tracker',
+        'blockedSiteBuilder': '../modules/blockedSiteBuilder',
+        'dateutil'          : '../modules/dateutil',
+        'storage'           : '../modules/storage',
+        'synchronizer'      : '../modules/synchronizer',
+        'urlFormatter'      : '../modules/urlFormatter',
+        'constants'         : '../constants',
+        'jquery'            : '../dependencies/jquery/jquery-1.10.2',
+        'background'        : '../background'
 
-var bg = chrome.extension.getBackgroundPage();
+    }
+});
 
-var auth = bg.auth;
+require(['background','auth','jquery'], function(background, authm,$) {
+    // var bg = chrome.extension.getBackgroundPage();
 
-var saveButton = $('#saveBtn');
-var sessionBtn = $('#sessionBtn');
-var optionsButton = $('#optionsBtn');
-var statisticsButton = $('#statisticsBtn');
+    var auth = new authm.Auth();
 
-saveCurrentPageToBlacklist = function() {
-    chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
-        var activeTab = arrayOfTabs[0];
-        bg.addUrlToBlockedSites(activeTab.url, setSaveButtonToSuccess);
-    });
-};
+    var saveButton = $('#saveBtn');
+    var sessionBtn = $('#sessionBtn');
+    var optionsButton = $('#optionsBtn');
+    var statisticsButton = $('#statisticsBtn');
 
-setSaveButtonToSuccess = function () {
-    saveButton.attr('class', 'btn btn-success');
-    saveButton.html('Successfully added!');
-    setTimeout(function () {
-        saveButton.attr('class', 'btn btn-info');
-        saveButton.html(' Save current page ');
-    }, 4000);
-};
+    saveCurrentPageToBlacklist = function () {
+        chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
+            var activeTab = arrayOfTabs[0];
+            background.addUrlToBlockedSites(activeTab.url, setSaveButtonToSuccess);
+        });
+    };
 
-redirectToStatistics = function() {
-    chrome.tabs.create({'url': chrome.runtime.getURL('statisticsPage/statistics.html')});
-};
+    setSaveButtonToSuccess = function () {
+        saveButton.attr('class', 'btn btn-success');
+        saveButton.html('Successfully added!');
+        setTimeout(function () {
+            saveButton.attr('class', 'btn btn-info');
+            saveButton.html(' Save current page ');
+        }, 4000);
+    };
 
-openOptionsPage = function() {
-    chrome.tabs.create({'url': chrome.runtime.getURL('optionsPage/options.html')});
-};
+    redirectToStatistics = function () {
+        chrome.tabs.create({'url': chrome.runtime.getURL('statisticsPage/statistics.html')});
+    };
 
-redirectToLogin = function() {
-    chrome.tabs.create({'url': chrome.runtime.getURL('loginPage/login.html')});
-};
+    openOptionsPage = function () {
+        chrome.tabs.create({'url': chrome.runtime.getURL('optionsPage/options.html')});
+    };
 
-logout = function () {
-    auth.logout().then(function () {
-        updateSessionbutton();
-    }, function () {
-        updateSessionbutton();
-    });
-};
+    redirectToLogin = function () {
+        chrome.tabs.create({'url': chrome.runtime.getURL('loginPage/login.html')});
+    };
+
+    logout = function () {
+        auth.logout().then(function () {
+            updateSessionbutton();
+        }, function () {
+            updateSessionbutton();
+        });
+    };
 
 //Connect functions to HTML elements
-connectButtons = function() {  
-    saveButton.on('click', saveCurrentPageToBlacklist);
-    optionsButton.on('click', openOptionsPage);
-    statisticsButton.on('click', redirectToStatistics);
-};
+    connectButtons = function () {
+        saveButton.on('click', saveCurrentPageToBlacklist);
+        optionsButton.on('click', openOptionsPage);
+        statisticsButton.on('click', redirectToStatistics);
+    };
 
-connectLogin = function () {
-    sessionBtn.html('Login page');
-    sessionBtn.off('click',  logout);
-    sessionBtn.on('click', redirectToLogin);
-};
+    connectLogin = function () {
+        sessionBtn.html('Login page');
+        sessionBtn.off('click', logout);
+        sessionBtn.on('click', redirectToLogin);
+    };
 
-connectLogout = function () {
-    sessionBtn.html('Logout');
-    sessionBtn.off('click',  redirectToLogin);
-    sessionBtn.on('click', logout);
-};
+    connectLogout = function () {
+        sessionBtn.html('Logout');
+        sessionBtn.off('click', redirectToLogin);
+        sessionBtn.on('click', logout);
+    };
 
-updateSessionbutton = function() {
-    if (auth.sessionAuthentic) {
-        //logout button active
-        connectLogout();
-    } else {
-        //login button active
-        connectLogin();
-    }
-};
+    updateSessionbutton = function () {
+        if (auth.sessionAuthentic) {
+            //logout button active
+            connectLogout();
+        } else {
+            //login button active
+            connectLogin();
+        }
+    };
 
-checkLoginStatus = function () {
-    auth.authenticateSession().then( function () {
-        updateSessionbutton();
-    }, function () {
-        updateSessionbutton();
-    })
-};
+    checkLoginStatus = function () {
+        auth.authenticateSession().then(function () {
+            updateSessionbutton();
+        }, function () {
+            updateSessionbutton();
+        })
+    };
 
-connectButtons();
-checkLoginStatus();
+    connectButtons();
+    checkLoginStatus();
+});

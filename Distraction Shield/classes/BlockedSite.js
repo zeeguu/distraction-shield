@@ -44,10 +44,10 @@ define(['constants'], function BlockedSite(constants) {
             return "<img style=\"-webkit-user-select: none\" src=\"" + constants.FAVICONLINK + url + "\">"
         };
 
-        var url = this.constructUrl(url);
+        var url = constructUrl(url);
         var domain = url;
         var name = title;
-        var icon = this.constructIcon(url);
+        var icon = constructIcon(url);
         var checkboxVal = true;
         var counter = 0;
 

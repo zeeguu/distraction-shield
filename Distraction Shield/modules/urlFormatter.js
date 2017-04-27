@@ -2,35 +2,36 @@ define(['constants'], function UrlFormatter(constants) {
     // use alert for warning popups
     alert = chrome.extension.getBackgroundPage().alert;
 
-    function UrlRequester() {
-        var self = this;
+    // function UrlRequester() {
+    //     var self = this;
 
-        //Fire a request for the actual url from server. Then go on to fire the passed callback with the newly found url
-        this.httpGetAsync = function (theUrlToGet, callback) {
-            var xmlHttp = new XMLHttpRequest();
-            xmlHttp.open("GET", theUrlToGet, true); // true for asynchronous
-            xmlHttp.onreadystatechange = function () {
-                self.readyStateChange(xmlHttp, callback);
-            };
-            xmlHttp.send(null);
+    //Fire a request for the actual url from server. Then go on to fire the passed callback with the newly found url
+    httpGetAsync = function (theUrlToGet, callback) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open("GET", theUrlToGet, true); // true for asynchronous
+        xmlHttp.onreadystatechange = function () {
+            readyStateChange(xmlHttp, callback);
         };
+        xmlHttp.send(null);
+    };
 
-        this.readyStateChange = function (xmlHttp, callback) {
-            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                // simple regex to extract data from title tags, ignoring newlines, tabs and returns
-                var titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
-                if (titleTags != null) {
-                    var title = titleTags[1];
-                    callback(xmlHttp.responseURL, title);
-                } else {
-                    callback(xmlHttp.responseURL, theUrlToGet);
-                }
-            } else if (xmlHttp.readyState == 4) {
-                self.errorHandler(xmlHttp.status);
+    readyStateChange = function (xmlHttp, callback) {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            // simple regex to extract data from title tags, ignoring newlines, tabs and returns
+            var titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
+            if (titleTags != null) {
+                var title = titleTags[1];
+                callback(xmlHttp.responseURL, title);
+            } else {
+                // console.log('urlToGet: ' + theUrlToGet )
+                callback(xmlHttp.responseURL, theUrlToGet);
             }
-        };
+        } else if (xmlHttp.readyState == 4) {
+            errorHandler(xmlHttp.status);
+        }
+    };
 
-        this.errorHandler = function (status) {
+    errorHandler = function (status) {
             switch (status) {
                 case 404:
                     alert(INVALID_URL_MESSAGE + 'File not found');
@@ -45,9 +46,9 @@ define(['constants'], function UrlFormatter(constants) {
                     alert(INVALID_URL_MESSAGE + 'Unknown error ' + status);
             }
         };
-    }
+    // }
 
-    var urlRequester = new UrlRequester();
+    // var urlRequester = new UrlRequester();
 
     stripOfFinalSlash = function (url) {
         if (url[url.length - 1] == '/') {
@@ -126,9 +127,9 @@ define(['constants'], function UrlFormatter(constants) {
 
     getUrlFromServer = function (url, callback) {
         var urlToGet = this.formatForGetRequest(url);
-        urlRequester.httpGetAsync(urlToGet, function (url, title) {
-            url = urlFormatter.stripOfScheme(url);
-            url = urlFormatter.stripOfFileName(url);
+        httpGetAsync(urlToGet, function (url, title) {
+            url = stripOfScheme(url);
+            url = stripOfFileName(url);
             callback(url, title);
         });
     };

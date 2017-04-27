@@ -7,8 +7,8 @@ define(['background','storage'], function Synchronizer(background, storage) {
     };
 
     var syncSettings = function(settings) {
-        console.log(storage);
-        console.log(background);
+        // console.log(storage);//todo remove
+        // console.log(background);//todo remove
         storage.setSettings(settings);
         background.setLocalSettings(settings);
     };
