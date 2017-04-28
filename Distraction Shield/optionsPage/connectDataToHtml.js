@@ -22,7 +22,7 @@ loadHtmlBlacklist = function(blockedSiteList, table) {
 };
 
 loadHtmlMode = function(extensionMode, radioGroup) {
-    $("input[name=" + radioGroup + "][value=" + extensionMode + "]").prop('checked', true);
+    $("input[name=" + radioGroup + "][value=" + extensionMode.label + "]").prop('checked', true);
 };
 
 loadHtmlInterval = function(interceptInterval, html_slider) {

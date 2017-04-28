@@ -7,8 +7,8 @@
  */
 
 // Log console messages to the background page console instead of the content page.
- var console = chrome.extension.getBackgroundPage().console;
-
+var console = chrome.extension.getBackgroundPage().console;
+var auth = chrome.extension.getBackgroundPage().auth;
 //Local variables that hold the html elements
 var html_txtFld = $('#textFld');
 var html_intCnt = $('#iCounter');
@@ -33,6 +33,7 @@ initOptionsPage = function() {
         setLocalVariables(output);
         connectHtmlFunctionality();
         connectLocalDataToHtml();
+        checkLoginStatus();
     });
 };
 
@@ -85,6 +86,62 @@ addBlockedSiteToAll = function (newItem) {
         synchronizer.syncBlacklist(blacklist);
     }
 };
+
+login = function() {
+    console.log('login'); //todo remove
+    var email = $('#emailFld').val();
+    var password = $('#passwordFld').val();
+    auth.login(email, password).then(function (response) {
+        localSettings.setSessionID(response);
+        auth.authenticateSession().then(function () {
+            $('#sessionMessage').html('You logged in succesfully');
+            $('#sessionBtn').removeClass('btn-default').addClass('btn-success');
+            $('#sessionGlyphIcon').removeClass('glyphicon-log-in').addClass('glyphicon-ok');
+            setTimeout(updateSessionbutton, 3000);
+        });
+    }, function () {
+        $('#sessionMessage').html('Wrong credentials, please try again...');
+    });
+
+    // chrome.tabs.create({'url': chrome.runtime.getURL('loginPage/login.html')});
+};
+
+logout = function () {
+    console.log('login'); //todo remove
+    auth.logout().then(function () {
+        updateSessionbutton();
+    });
+};
+
+connectLogin = function () {
+    $('#sessionGlyphIcon').removeClass('glyphicon-log-out').addClass('glyphicon-log-in');
+    $('#sessionMessage').html('Enter email and password to login');
+    sessionBtn.off('click', logout);
+    sessionBtn.on('click', login);
+};
+
+connectLogout = function () {
+    $('#sessionGlyphIcon').removeClass('glyphicon-log-in').addClass('glyphicon-log-out');
+    sessionBtn.off('click', login);
+    sessionBtn.on('click', logout);
+};
+
+updateSessionbutton = function() {
+    if (auth.sessionAuthentic) {
+        //logout button active
+        connectLogout();
+    } else {
+        //login button active
+        connectLogin();
+    }
+};
+
+checkLoginStatus = function () {
+    auth.authenticateSession().then(function () {
+        updateSessionbutton();
+    });
+};
+
 /* -------------------- -------------------------- -------------------- */
 
 //Run this when the page is loaded.
