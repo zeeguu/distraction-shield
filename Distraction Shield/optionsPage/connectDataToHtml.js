@@ -1,4 +1,4 @@
-define( function connectDataToHtml () {
+define(['jquery'], function connectDataToHtml ($) {
     /**
      * This file connects the data we read from storage and saved in local variables
      * to the actual html representations of this data.
@@ -23,7 +23,9 @@ define( function connectDataToHtml () {
     };
 
     loadHtmlMode = function (extensionMode, radioGroup) {
-        $("input[name=" + radioGroup + "][value=" + extensionMode + "]").prop('checked', true);
+        console.log('extensionMode: ' + extensionMode.label); //todo remove
+        console.log('radioGroup: ' + radioGroup); //todo remove
+        $("input[name=" + radioGroup + "][value=" + extensionMode.label + "]").prop('checked', true);
     };
 
     loadHtmlInterval = function (interceptInterval, html_slider) {

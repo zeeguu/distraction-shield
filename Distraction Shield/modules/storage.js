@@ -8,7 +8,7 @@ function SyncStorage(BlockedSite, BlockedSiteList, UserSettings) {
         getStorage(null).then(function(output) {
             console.log('output: ' + JSON.stringify(output)); //todo remove
             output.tds_settings = UserSettings.deserializeSettings(output.tds_settings);
-            output.tds_blacklist = UserSettings.deserializeSettings(output.tds_blacklist);
+            output.tds_blacklist = BlockedSiteList.deserializeBlockedSiteList(output.tds_blacklist);
             return callback(output);    
         });
     };

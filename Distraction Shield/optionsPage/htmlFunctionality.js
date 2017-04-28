@@ -1,4 +1,4 @@
-define (function htmlFunctionality () {
+define (['GreenToRedSlider','TurnOffSlider','blockedSiteBuilder','synchronizer','constants','jquery'], function htmlFunctionality (GreenToRedSlider, TurnOffSlider, blockedSiteBuilder, synchronizer,constants,$) {
 
     /**
      * This file contains the specific functionality for the options and some of its elements
@@ -16,8 +16,8 @@ define (function htmlFunctionality () {
 
     /* -------------------- Button Click functions ----------------------- */
 
-    saveNewUrl = function () {
-        console.log('saveNewUrl');//todo remove
+    saveNewUrl = function (html_txtFld) {
+        console.log('saveNewUrl: ' + html_txtFld.val());//todo remove
         var newUrl = html_txtFld.val();
         blockedSiteBuilder.createNewBlockedSite(newUrl, addBlockedSiteToAll);
         html_txtFld.val('');
@@ -30,14 +30,14 @@ define (function htmlFunctionality () {
 
     /* -------------------- Keypress events ----------------------- */
 
-    setKeyPressFunctions = function () {
+    setKeyPressFunctions = function (html_txtFld, blacklistTable) {
         submitOnKeyPress(html_txtFld);
         deleteOnKeyPress(blacklistTable);
     };
 
     submitOnKeyPress = function (html_elem) {
         html_elem.keyup(function (event) {
-            if (event.keyCode == KEY_ENTER) {
+            if (event.keyCode == constants.KEY_ENTER) {
                 saveNewUrl();
             }
         });
@@ -45,7 +45,7 @@ define (function htmlFunctionality () {
 
     deleteOnKeyPress = function (blacklistTable) {
         $('html').keyup(function (e) {
-            if (e.keyCode == KEY_DELETE) {
+            if (e.keyCode == constants.KEY_DELETE) {
                 var html = blacklistTable.getSelected();
                 removeBlockedSiteFromAll(html);
             }
@@ -54,7 +54,7 @@ define (function htmlFunctionality () {
 
     /* -------------------- Logic for the mode selection -------------------- */
 
-    initModeSelection = function (buttonGroup) {
+    initModeSelection = function (buttonGroup, settings_object) {
         $("input[name=" + buttonGroup + "]").change(function () {
             settings_object.setMode($("input[name=" + buttonGroup + "]:checked").val());
             synchronizer.syncSettings(settings_object);
@@ -63,11 +63,12 @@ define (function htmlFunctionality () {
 
     /* -------------------- Interval slider -------------------- */
 
-    initIntervalSlider = function () {
-        intervalSlider = new GreenToRedSlider('#interval-slider', function (value) {
+    initIntervalSlider = function (settings_object) {
+        var intervalSlider = new GreenToRedSlider.GreenToRedSlider('#interval-slider', function (value) {
             settings_object.setInterceptionInterval(parseInt(value));
             synchronizer.syncSettings(settings_object);
         });
+        return intervalSlider;
     };
 
     return {

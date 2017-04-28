@@ -1,9 +1,9 @@
-define (function TurnOffSlider () {
+define (['GreenToRedSlider','constants'], function TurnOffSlider (GreenToRedSlider,constants) {
 
-    function TurnOffSlider(sliderID) {
+    function TurnOffSlider(sliderID, settings_object) {
         var self = this;
         this.selectedTime = 10;
-        this.slider = new GreenToRedSlider(sliderID, function (value) {
+        this.slider = new GreenToRedSlider.GreenToRedSlider(sliderID, function (value) {
             self.selectedTime = parseInt(value);
         });
         this.offButton = $(this.slider.sliderDiv.find(sliderID + "-offBtn"));
@@ -38,7 +38,7 @@ define (function TurnOffSlider () {
                     minutes = "0" + minutes;
                 }
                 var returnVal = "for " + hours + ":" + minutes + " hours.";
-                if (val == MAX_TURN_OFF_TIME) {
+                if (val == constants.MAX_TURN_OFF_TIME) {
                     returnVal = "for the rest of the day";
                 }
                 return returnVal;
@@ -47,7 +47,7 @@ define (function TurnOffSlider () {
 
         this.turnOff = function () {
             if (settings_object.getState() == "On") {
-                if (self.selectedTime == MAX_TURN_OFF_TIME) {
+                if (self.selectedTime == constants.MAX_TURN_OFF_TIME) {
                     settings_object.turnOffForDay();
                 } else {
                     settings_object.turnOffFor(self.selectedTime);
@@ -61,7 +61,7 @@ define (function TurnOffSlider () {
 
         this.init = function () {
             var sl = this.slider;
-            sl.sliderRange[0].max = MAX_TURN_OFF_TIME;
+            sl.sliderRange[0].max = constants.MAX_TURN_OFF_TIME;
             this.setSliderHourFunc();
             sl.sliderValue.html(sl.calculateHours(sl.sliderRange.val()));
             this.toggleShowOffMessage();

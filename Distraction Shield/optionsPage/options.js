@@ -38,7 +38,7 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
     // Log console messages to the background page console instead of the content page.
     // var console = chrome.extension.getBackgroundPage().console;
 
-    console.log('options.js loading...'); //todo remove
+    // console.log('options.js loading...'); //todo remove
 
     //Local variables that hold the html elements
     var html_txtFld = $('#textFld');
@@ -60,9 +60,9 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
 
     //Initialize HTML elements and set the local variables
     initOptionsPage = function () {
-        console.log("called"); //todo remove
+        // console.log("called"); //todo remove
         storage.getAll(function (output) {
-            console.log("storage returned"); //todo remove
+            // console.log("storage returned"); //todo remove
             setLocalVariables(output);
             connectHtmlFunctionality();
             connectLocalDataToHtml();
@@ -78,13 +78,14 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
 
     // functionality from htmlFunctionality, blacklist_table and slider files
     connectHtmlFunctionality = function () {
-        console.log('connectHtmlFunctionality');//todo remove
-        htmlFunctionality.initModeSelection(modeGroup);
-        htmlFunctionality.initIntervalSlider();
+        // console.log('connectHtmlFunctionality');//todo remove
+        htmlFunctionality.initModeSelection(modeGroup, settings_object);
+        intervalSlider = htmlFunctionality.initIntervalSlider(settings_object);
         blacklistTable = new BlacklistTable.BlacklistTable($('#blacklistTable'));
-        connectButton(html_saveButton, htmlFunctionality.saveNewUrl);
-        turnOffSlider = new TurnOffSlider.TurnOffSlider('#turnOff-slider');
-        htmlFunctionality.setKeyPressFunctions();
+        // connectButton(html_saveButton, htmlFunctionality.saveNewUrl);
+        html_saveButton.on('click', htmlFunctionality.saveNewUrl(html_txtFld));
+        turnOffSlider = new TurnOffSlider.TurnOffSlider('#turnOff-slider',settings_object);
+        htmlFunctionality.setKeyPressFunctions(html_txtFld, blacklistTable);
     };
 
     // functionality from connectDataToHtml file
@@ -123,7 +124,7 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
 
     // document.addEventListener("DOMContentLoaded", function () {
     if (DOMContentLoadedFired) {
-        console.log('initoptions added as listener'); //todo remove
+        // console.log('initoptions added as listener'); //todo remove
         initOptionsPage();
         DOMContentLoadedFired = false;
     };
