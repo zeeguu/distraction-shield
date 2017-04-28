@@ -2,6 +2,7 @@ define(['blockedSiteBuilder','BlockedSiteList','interception','UserSettings','co
 function background(blockedSiteBuilder, BlockedSiteList, interception, UserSettings, constants, storage) {
 //Set that holds the urls to be intercepted
     var blockedSites = new BlockedSiteList.BlockedSiteList();
+    // console.log('loading background, blockedSites: ' + JSON.stringify(blockedSites)); //TODO remove
     var interceptDateList = [];
     // console.log("userSettings defined is :" + require.defined('UserSettings')); //TODO remove
     // console.log(JSON.stringify(blockedSiteBuilder)); //TODO remove
@@ -57,8 +58,10 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, UserSetti
     addUrlToBlockedSites = function (unformattedUrl, onSuccess) {
         blockedSiteBuilder.createNewBlockedSite(unformattedUrl, function (newBS) {
             if (blockedSites.addToList(newBS)) {
+                console.log('adding ' + newBS.getUrl() + ' to blockedSites: ' + JSON.stringify(blockedSites));//todo remove
                 storage.setBlacklist(blockedSites);
                 onSuccess();
+                console.log(JSON.stringify(blockedSites));//todo remove
             }
         });
     };

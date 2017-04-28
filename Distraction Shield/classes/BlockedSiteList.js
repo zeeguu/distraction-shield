@@ -42,6 +42,8 @@ define (['constants', 'BlockedSite'], function BlockedSiteList(constants, Blocke
 
         this.addToList = function (newBlockedSite) {
             var currentUrls = this.getUrls();
+            console.log('currentUrls : ' + (currentUrls == null ? "null" : "not null")); //todo remove
+            console.log('newBlockedSite : ' + (newBlockedSite== null ? "null" : "not null")); //todo remove
             var unique = currentUrls.every(function (urlFromList) {
                 return urlFromList != newBlockedSite.getUrl();
             });

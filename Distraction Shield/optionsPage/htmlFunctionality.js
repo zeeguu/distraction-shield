@@ -17,6 +17,7 @@ define (function htmlFunctionality () {
     /* -------------------- Button Click functions ----------------------- */
 
     saveNewUrl = function () {
+        console.log('saveNewUrl');//todo remove
         var newUrl = html_txtFld.val();
         blockedSiteBuilder.createNewBlockedSite(newUrl, addBlockedSiteToAll);
         html_txtFld.val('');

@@ -34,7 +34,9 @@ require(['background','auth','jquery'], function(background, authm,$) {
     saveCurrentPageToBlacklist = function () {
         chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
             var activeTab = arrayOfTabs[0];
-            background.addUrlToBlockedSites(activeTab.url, setSaveButtonToSuccess);
+            console.log('sending activeTab.url: ' + activeTab.url); //todo remove
+            // background.addUrlToBlockedSites(activeTab.url, setSaveButtonToSuccess);
+            chrome.runtime.sendMessage({title : "newUrl", unformattedUrl : activeTab.url}, setSaveButtonToSuccess());
         });
     };
 

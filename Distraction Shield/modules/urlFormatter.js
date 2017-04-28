@@ -19,11 +19,14 @@ define(['constants'], function UrlFormatter(constants) {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
             // simple regex to extract data from title tags, ignoring newlines, tabs and returns
             var titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
+            // console.log('titleTags: ' + titleTags); //todo remove
+            // console.log('titleTags: ' + (titleTags != null)); //todo remove
+            // console.log('responseURL: ' + xmlHttp.responseURL); //todo remove
             if (titleTags != null) {
                 var title = titleTags[1];
                 callback(xmlHttp.responseURL, title);
             } else {
-                // console.log('urlToGet: ' + theUrlToGet )
+                // console.log('urlToGet: ' + theUrlToGet); //todo remove
                 callback(xmlHttp.responseURL, theUrlToGet);
             }
         } else if (xmlHttp.readyState == 4) {
@@ -34,16 +37,16 @@ define(['constants'], function UrlFormatter(constants) {
     errorHandler = function (status) {
             switch (status) {
                 case 404:
-                    alert(INVALID_URL_MESSAGE + 'File not found');
+                    alert(constants.INVALID_URL_MESSAGE + 'File not found');
                     break;
                 case 500:
-                    alert(INVALID_URL_MESSAGE + 'Server error');
+                    alert(constants.INVALID_URL_MESSAGE + 'Server error');
                     break;
                 case 0:
-                    alert(INVALID_URL_MESSAGE + 'Request aborted');
+                    alert(constants.INVALID_URL_MESSAGE + 'Request aborted');
                     break;
                 default:
-                    alert(INVALID_URL_MESSAGE + 'Unknown error ' + status);
+                    alert(constants.INVALID_URL_MESSAGE + 'Unknown error ' + status);
             }
         };
     // }
@@ -64,7 +67,7 @@ define(['constants'], function UrlFormatter(constants) {
         if (url.indexOf("://") > -1) {
             schemeless = url.split('://')[1];
         }
-        schemeless = this.stripOfFinalSlash(schemeless);
+        schemeless = stripOfFinalSlash(schemeless);
         return schemeless;
     };
 
@@ -80,7 +83,7 @@ define(['constants'], function UrlFormatter(constants) {
             portless.push('/' + splittedUrl + '/');
             url = portless.join("");
         }
-        url = this.stripOfFinalSlash(url);
+        url = stripOfFinalSlash(url);
         return url;
     };
 
@@ -94,10 +97,10 @@ define(['constants'], function UrlFormatter(constants) {
                 stripped.push(nameless[i]);
             }
             stripped = stripped.join("").split("").reverse().join("");
-            stripped = this.stripOfFinalSlash(stripped);
+            stripped = stripOfFinalSlash(stripped);
             return stripped;
         } else {
-            url = this.stripOfFinalSlash(url);
+            url = stripOfFinalSlash(url);
             return url;
         }
     };
@@ -111,22 +114,23 @@ define(['constants'], function UrlFormatter(constants) {
     };
 
     stripOfAll = function (url) {
-        url = this.stripOfScheme(url);
-        url = this.stripOfFinalSlash(url);
-        url = this.stripOfPort(url);
-        url = this.stripOfFileName(url);
-        url = this.stripOfFinalSlash(url);
+        url = stripOfScheme(url);
+        url = stripOfFinalSlash(url);
+        url = stripOfPort(url);
+        url = stripOfFileName(url);
+        url = stripOfFinalSlash(url);
         //return a tuple of the actual url and only the =: "www.website.com"
-        return [url, this.getDomainOnly(url)];
+        return [url, getDomainOnly(url)];
     };
 
     formatForGetRequest = function (url) {
-        var strippedUrl = this.stripOfAll(url);
+        var strippedUrl = stripOfAll(url);
         return "http://" + strippedUrl[0];
     };
 
     getUrlFromServer = function (url, callback) {
-        var urlToGet = this.formatForGetRequest(url);
+        var urlToGet = formatForGetRequest(url);
+        // console.log('urlToGet: ' + urlToGet); //todo remove
         httpGetAsync(urlToGet, function (url, title) {
             url = stripOfScheme(url);
             url = stripOfFileName(url);

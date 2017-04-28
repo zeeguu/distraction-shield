@@ -93,11 +93,20 @@ require( ['background', 'synchronizer', 'storage', 'auth','BlockedSiteList', 'Us
     };
 
 
+
+
     /* --------------- ---- Run upon Start of session ---- ---------------*/
 
     if (onInstalledFired) {
         onInstall();
     }
+
+    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+        if (request.title == "newUrl") {
+            // console.log('received : ' + request.unformattedUrl);
+            background.addUrlToBlockedSites(request.unformattedUrl, sendResponse);
+        }
+    })
 
     //fix that checks whether everything that should be is indeed initialized
     storage.getSettings(function(settings) {

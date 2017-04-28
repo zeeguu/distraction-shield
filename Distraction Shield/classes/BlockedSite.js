@@ -51,6 +51,8 @@ define(['constants'], function BlockedSite(constants) {
         var checkboxVal = true;
         var counter = 0;
 
+        console.log('BlockedSite constructed with url: ' + url); //todo remove
+
         this.getUrl = function () {
             return url;
         };
