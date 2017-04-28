@@ -39,7 +39,7 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
      */
 
     // Log console messages to the background page console instead of the content page.
-    var console = chrome.extension.getBackgroundPage().console;
+  //  var console = chrome.extension.getBackgroundPage().console;
 
     //Local variables that hold the html elements
     var html_txtFld = $('#textFld');
@@ -62,7 +62,6 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
     //Initialize HTML elements and set the local variables
     initOptionsPage = function () {
         storage.getAll(function (output) {
-            console.log("called");
             setLocalVariables(output);
             connectHtmlFunctionality();
             connectLocalDataToHtml();
@@ -79,11 +78,13 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
     // functionality from htmlFunctionality, blacklist_table and slider files
     connectHtmlFunctionality = function () {
         htmlFunctionality.initModeSelection(modeGroup);
-        intervalSlider = htmlFunctionality.initIntervalSlider();
+        intervalSlider = htmlFunctionality.initIntervalSlider(settings_object);
+
         blacklistTable = new BlacklistTable.BlacklistTable($('#blacklistTable'));
-        connectButton(html_saveButton, saveNewUrl);
-        turnOffSlider = new TurnOffSlider.TurnOffSlider('#turnOff-slider', settings_object);
-        htmlFunctionality.setKeyPressFunctions(html_txtFld,blacklistTable );
+       htmlFunctionality.connectButton(html_saveButton, htmlFunctionality.saveNewUrl);
+
+       turnOffSlider = new TurnOffSlider.TurnOffSlider('#turnOff-slider', settings_object);
+       htmlFunctionality.setKeyPressFunctions(html_txtFld,blacklistTable );
     };
 
     // functionality from connectDataToHtml file
@@ -123,6 +124,7 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
     //TODO make sure this is being called!
     //Run this when the page is loaded.
     domReady(function () {
+        console.log("here");
         initOptionsPage();
     });
 

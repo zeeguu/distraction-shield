@@ -108,7 +108,6 @@ require (['background','auth', 'jquery', 'domReady', 'constants'], function (bac
     };
 
     domReady(function () {
-            console.log("blabla");
             instructions = getExtraInstructions();
             connectHtmlFunctionality();
     });

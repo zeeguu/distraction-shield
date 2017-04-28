@@ -1,10 +1,12 @@
-define (['GreenToRedSlider','TurnOffSlider','blockedSiteBuilder','synchronizer','constants','jquery'], function htmlFunctionality (GreenToRedSlider, TurnOffSlider, blockedSiteBuilder, synchronizer,constants,$) {
+define (['GreenToRedSlider','TurnOffSlider','blockedSiteBuilder','synchronizer','constants','jquery'],
+    function htmlFunctionality (GreenToRedSlider, TurnOffSlider, blockedSiteBuilder, synchronizer,constants,$) {
 
     /**
      * This file contains the specific functionality for the options and some of its elements
      * This file holds all javascript functions used by the html_elements like buttons and fields.
      * Here things like, onClicked or onChanged events are monitored
      */
+    var html_txtFld = $('#textFld');
 
     appendHtmlItemTo = function (html_child, html_parent) {
         html_parent.append(html_child);
@@ -16,7 +18,7 @@ define (['GreenToRedSlider','TurnOffSlider','blockedSiteBuilder','synchronizer',
 
     /* -------------------- Button Click functions ----------------------- */
 
-    saveNewUrl = function (html_txtFld) {
+    saveNewUrl = function () {
         console.log('saveNewUrl: ' + html_txtFld.val());//todo remove
         var newUrl = html_txtFld.val();
         blockedSiteBuilder.createNewBlockedSite(newUrl, addBlockedSiteToAll);
