@@ -138,7 +138,7 @@ define (['BlockedSite', 'BlockedSiteList', 'UserSettings'],
 
     return {
         getAll                  : getAll,
-        getAllUnParsed                  : getAllUnParsed,
+        getAllUnParsed          : getAllUnParsed,
         getBlacklist            : getBlacklist,
         setBlacklist            : setBlacklist,
         getSettings             : getSettings,

@@ -17,6 +17,7 @@ define (['constants'], function UserSettings(constants) {
     parseSettingsObject = function(parsedSettingsObject) {
         var s = new UserSettings();
         var newStatus = parsedSettingsObject.status;
+        console.log(newStatus);
         newStatus.setAt = new Date(newStatus.setAt);
         newStatus.offTill = new Date(newStatus.offTill);
         s.setStatusObj(newStatus);
@@ -28,7 +29,7 @@ define (['constants'], function UserSettings(constants) {
 
     //Private to this and storage.js
     deserializeSettings = function(serializedSettingsObject) {
-        if (serializedSettingsObject != null) {
+        if (serializedSettingsObject !== null) {
             var parsed = JSON.parse(serializedSettingsObject);
             return parseSettingsObject(parsed);
         }

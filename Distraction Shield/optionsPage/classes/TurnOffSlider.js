@@ -1,4 +1,5 @@
-define (['GreenToRedSlider','constants'], function TurnOffSlider (GreenToRedSlider,constants) {
+define (['GreenToRedSlider','constants', 'jquery'],
+    function TurnOffSlider (GreenToRedSlider,constants, $) {
 
     function TurnOffSlider(sliderID, settings_object) {
         var self = this;
@@ -37,7 +38,7 @@ define (['GreenToRedSlider','constants'], function TurnOffSlider (GreenToRedSlid
                 if (minutes < 10) {
                     minutes = "0" + minutes;
                 }
-                var returnVal = "for " + hours + ":" + minutes + " hours.";
+                var returnVal = "for " + (hours > 0 ? hours + ":" + minutes + " hours." : minutes + " minute(s).");
                 if (val == constants.MAX_TURN_OFF_TIME) {
                     returnVal = "for the rest of the day";
                 }

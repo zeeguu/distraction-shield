@@ -23,8 +23,6 @@ define(['jquery'], function connectDataToHtml ($) {
     };
 
     loadHtmlMode = function (extensionMode, radioGroup) {
-        console.log('extensionMode: ' + extensionMode.label); //todo remove
-        console.log('radioGroup: ' + radioGroup); //todo remove
         $("input[name=" + radioGroup + "][value=" + extensionMode.label + "]").prop('checked', true);
     };
 
