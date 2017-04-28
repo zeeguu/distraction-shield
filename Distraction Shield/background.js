@@ -122,6 +122,10 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, UserSetti
         storage.setSettings(localSettings);
     };
 
+    getConsole = function(){
+        return this.console;
+    }
+
     return {
         getLocalSettings            : getLocalSettings,
         setLocalSettings            : setLocalSettings,
@@ -135,7 +139,8 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, UserSetti
         removeWebRequestListener    : removeWebRequestListener,
         intercept                   : intercept,
         handleInterception          : handleInterception,
-        turnOffInterception         : turnOffInterception
+        turnOffInterception         : turnOffInterception,
+        getConsole                  : getConsole
     }
 
 });

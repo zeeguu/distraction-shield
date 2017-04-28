@@ -1,5 +1,30 @@
-require (['background','auth'], function login (background,auth) {
+require.config({
+    baseUrl: "./",
+    paths : {
+        'BlockedSite'       : '../classes/BlockedSite',
+        'BlockedSiteList'   : '../classes/BlockedSiteList',
+        'UserSettings'      : '../classes/UserSettings',
+        'api'               : '../modules/authentication/api',
+        'auth'              : '../modules/authentication/auth',
+        'exerciseTime'      : '../modules/statistics/exerciseTime',
+        'interception'      : '../modules/statistics/interception',
+        'tracker'           : '../modules/statistics/tracker',
+        'blockedSiteBuilder': '../modules/blockedSiteBuilder',
+        'dateutil'          : '../modules/dateutil',
+        'storage'           : '../modules/storage',
+        'synchronizer'      : '../modules/synchronizer',
+        'urlFormatter'      : '../modules/urlFormatter',
+        'background'        : '../background',
+        'constants'         : '../constants',
+        'jquery'            : '../dependencies/jquery/jquery-1.10.2',
+        'domReady'          : '../domReady'
+
+    }
+});
+
+require (['background','auth', 'jquery', 'domReady', 'constants'], function (background,auth, $, domReady, constants) {
     /* -------------------- -------------------------- -------------------- */
+
     var instructions;
 
     var html_emailLoginFld = $('#emailLoginFld');
@@ -9,21 +34,25 @@ require (['background','auth'], function login (background,auth) {
     var messageDialog = $('#message');
     var spinner = $('.spinner');
 
+    var authenticator = new auth.Auth();
+
 
     login = function () {
+
         messageDialog.text("");
 
         var email = html_emailLoginFld.val();
         var password = html_passwordLoginFld.val();
 
         spinner.show();
-        auth.login(email, password).then(function (response) {
-            auth.setSession(response);
+
+        authenticator.login(email, password).then(function (response) {
+            authenticator.setSession(response);
             messageDialog.text("You logged in!");
             html_emailLoginFld.val('');
             if ("forceLogin" in instructions) {
                 url = instructions["forceLogin"];
-                url = url + "?sessionID=" + background.localSettings.getSessionID() + "&redirect=" + instructions["redirect"];
+                url = url + "?sessionID=" + background.getLocalSettings.getSessionID() + "&redirect=" + instructions["redirect"];
                 window.location = url;
             }
         }, function (error) {
@@ -42,10 +71,10 @@ require (['background','auth'], function login (background,auth) {
         var cleanUrl = urlParts[0];
         var params = urlParts[1];
         setUrlInAddressbar(cleanUrl);
-        return getparametersDictionary(params);
+        return getParametersDictionary(params);
     };
 
-    getparametersDictionary = function (unsplitParams) {
+    getParametersDictionary = function (unsplitParams) {
         if (!unsplitParams) return {};
         var unsplitParamPairs = unsplitParams.split(/&/);
         var params = {};
@@ -62,7 +91,7 @@ require (['background','auth'], function login (background,auth) {
 
     loginOnEnter = function (html_elem) {
         html_elem.keyup(function (event) {
-            if (event.keyCode == KEY_ENTER) {
+            if (event.keyCode == constants.KEY_ENTER) {
                 login();
             }
         });
@@ -78,10 +107,9 @@ require (['background','auth'], function login (background,auth) {
         loginOnEnter(html_passwordLoginFld.parent());
     };
 
-    //Run this when the page is loaded.
-    document.addEventListener("DOMContentLoaded", function () {
-        instructions = getExtraInstructions();
-        connectHtmlFunctionality();
+    domReady(function () {
+            console.log("blabla");
+            instructions = getExtraInstructions();
+            connectHtmlFunctionality();
     });
-
 });
