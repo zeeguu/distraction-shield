@@ -103,6 +103,8 @@ define (['constants', 'BlockedSite'], function BlockedSiteList(constants, Blocke
         };
     }
 
+
+
     return {
         BlockedSiteList : BlockedSiteList,
         serializeBlockedSiteList : serializeBlockedSiteList,

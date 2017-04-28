@@ -1,11 +1,18 @@
-define([], function () {
+define('constants', function () {
     /* ---------- ----- auth/api-- ----- ---------- */
-    this.apiUrl = "https://zeeguu.unibe.ch/api";
-    this.loginUrl = "/session";
-    this.loginAnonUrl = "/get_anon_session";
-    this.signinAnonUrl = "/add_anon_user";
-    this.validateUrl = "/validate";
-    this.logoutUrl = "/logout_session";
+    // this.apiUrl = "https://zeeguu.unibe.ch/api";
+    // this.loginUrl = "/session";
+    // this.loginAnonUrl = "/get_anon_session";
+    // this.signinAnonUrl = "/add_anon_user";
+    // this.validateUrl = "/validate";
+    // this.logoutUrl = "/logout_session";
+
+    var apiUrl = "https://zeeguu.unibe.ch/api";
+    var loginUrl = "/session";
+    var loginAnonUrl = "/get_anon_session";
+    var signinAnonUrl = "/add_anon_user";
+    var validateUrl = "/validate";
+    var logoutUrl = "/logout_session";
 
     /* ---------- ----- background ----- ---------- */
     var zeeguuExLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
@@ -61,7 +68,14 @@ define([], function () {
         KEY_DELETE              : KEY_DELETE,
         KEY_ENTER               : KEY_ENTER,
         MAX_TURN_OFF_TIME       : MAX_TURN_OFF_TIME,
-        oneDay                  : oneDay
+        oneDay                  : oneDay,
+
+        apiUrl                  : apiUrl,
+        loginUrl                : loginUrl,
+        loginAnonUrl            : loginAnonUrl,
+        signinAnonUrl           : signinAnonUrl,
+        validateUrl             : validateUrl,
+        logoutUrl               : logoutUrl
     }
 });
 

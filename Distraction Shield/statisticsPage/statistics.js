@@ -1,38 +1,67 @@
+require.config({
+    baseUrl: "./",
+    paths : {
+        'BlockedSite'               : '../classes/BlockedSite',
+        'BlockedSiteList'           : '../classes/BlockedSiteList',
+        'UserSettings'              : '../classes/UserSettings',
+        'api'                       : '../modules/authentication/api',
+        'auth'                      : '../modules/authentication/auth',
+        'exerciseTime'              : '../modules/statistics/exerciseTime',
+        'interception'              : '../modules/statistics/interception',
+        'tracker'                   : '../modules/statistics/tracker',
+        'blockedSiteBuilder'        : '../modules/blockedSiteBuilder',
+        'dateutil'                  : '../modules/dateutil',
+        'storage'                   : '../modules/storage',
+        'synchronizer'              : '../modules/synchronizer',
+        'urlFormatter'              : '../modules/urlFormatter',
+        'background'                : '../background',
+        'constants'                 : '../constants',
+        'BlacklistStatsTable'       : 'classes/BlacklistStatsTable',
+        'ExerciseTimeTable'         : 'classes/ExerciseTimeTable',
+        'InterceptionCounterTable'  : 'classes/InterceptionCounterTable',
+        'jquery'                    : '../dependencies/jquery/jquery-1.10.2',
+        'domReady'                  : '../domReady'
 
-// Log console messages to the background page console instead of the content page.
-var bg = chrome.extension.getBackgroundPage();
-var console = bg.console;
-
-var interceptionCounterTable = null;
-var blacklistTable = null;
-var exerciseTimeTable = null;
-
-saveCurrentPageToBlacklist = function() {
-    bg.tracker.getCurrentTab().then(bg.addToBlockedSites(result));
-};
-
-//Initialize HTML elements and set the data in the tables.
-initStatisticsPage = function() {
-    Promise.all([bg.storage.getInterceptDateList(), bg.storage.getExerciseTimeList()])
-        .then(function(response){
-            let counters = bg.interception.calcInterceptData(response[0].tds_interceptDateList);
-            interceptionCounterTable.setDataAndRender(counters);
-            blacklistTable.setDataAndRender(bg.blockedSites.getList());
-            exerciseTimeTable.setDataAndRender(response[1]);
-        });
-};
-
-// Connects html items to the tables.
-connectHtmlFunctionality = function() {
-    interceptionCounterTable = new InterceptionCounterTable();
-    blacklistTable = new BlacklistStatsTable($('#interceptTable'));
-    exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
-};
-
-
-//Run this when the page is loaded.
-document.addEventListener("DOMContentLoaded", function(){
-    connectHtmlFunctionality();
-    initStatisticsPage();
+    }
 });
 
+require(['background', 'BlacklistStatsTable' , 'ExerciseTimeTable', 'InterceptionCounterTable', 'storage', 'interception',
+    'jquery', 'domReady'],
+    function (background, BlacklistStatsTable, ExerciseTimeTable, InterceptionCounterTable, storage, interception, $, domReady) {
+
+
+    // Log console messages to the background page console instead of the content page.
+    var console = background.getConsole();
+
+    var interceptionCounterTable = null;
+    var blacklistTable = null;
+    var exerciseTimeTable = null;
+
+
+
+    //Initialize HTML elements and set the data in the tables.
+    initStatisticsPage = function() {
+        Promise.all([storage.getInterceptDateList(), storage.getExerciseTimeList()])
+            .then(function(response){
+                let counters = interception.calcInterceptData(response[0].tds_interceptDateList);
+                //TODO : are the setDataAndRender calls right?
+                interceptionCounterTable.setDataAndRender(counters);
+                blacklistTable.setDataAndRender(background.retrieveBlockedSites());
+                exerciseTimeTable.setDataAndRender(response[1]);
+            });
+    };
+
+    // Connects html items to the tables.
+    connectHtmlFunctionality = function() {
+        interceptionCounterTable = new InterceptionCounterTable.InterceptionCounterTable();
+        blacklistTable = new BlacklistStatsTable.BlacklistStatsTable($('#interceptTable'));
+        exerciseTimeTable = new ExerciseTimeTable.ExerciseTimeTable($('#exerciseTime'));
+    };
+
+
+    //Run this when the page is loaded.
+    domReady( function(){
+        connectHtmlFunctionality();
+        initStatisticsPage();
+    });
+});

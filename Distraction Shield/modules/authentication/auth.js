@@ -85,4 +85,6 @@ define(['constants','background','api', 'synchronizer'], function Auth(constants
         Auth: Auth
     }
 });
+
+
 // var auth = new Auth();

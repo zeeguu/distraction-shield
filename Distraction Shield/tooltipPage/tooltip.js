@@ -1,22 +1,26 @@
 require.config({
     baseUrl: "./",
     paths : {
-        'BlockedSite'       : '../classes/BlockedSite',
-        'BlockedSiteList'   : '../classes/BlockedSiteList',
-        'UserSettings'      : '../classes/UserSettings',
-        'api'               : '../modules/authentication/api',
-        'auth'              : '../modules/authentication/auth',
-        'exerciseTime'      : '../modules/statistics/exerciseTime',
-        'interception'      : '../modules/statistics/interception',
-        'tracker'           : '../modules/statistics/tracker',
-        'blockedSiteBuilder': '../modules/blockedSiteBuilder',
-        'dateutil'          : '../modules/dateutil',
-        'storage'           : '../modules/storage',
-        'synchronizer'      : '../modules/synchronizer',
-        'urlFormatter'      : '../modules/urlFormatter',
-        'constants'         : '../constants',
-        'jquery'            : '../dependencies/jquery/jquery-1.10.2',
-        'background'        : '../background'
+        'BlockedSite'               : '../classes/BlockedSite',
+        'BlockedSiteList'           : '../classes/BlockedSiteList',
+        'UserSettings'              : '../classes/UserSettings',
+        'api'                       : '../modules/authentication/api',
+        'auth'                      : '../modules/authentication/auth',
+        'exerciseTime'              : '../modules/statistics/exerciseTime',
+        'interception'              : '../modules/statistics/interception',
+        'tracker'                   : '../modules/statistics/tracker',
+        'blockedSiteBuilder'        : '../modules/blockedSiteBuilder',
+        'dateutil'                  : '../modules/dateutil',
+        'storage'                   : '../modules/storage',
+        'synchronizer'              : '../modules/synchronizer',
+        'urlFormatter'              : '../modules/urlFormatter',
+        'background'                : '../background',
+        'constants'                 : '../constants',
+        'BlacklistStatsTable'       : '../statisticsPage/classes/BlacklistStatsTable',
+        'ExerciseTimeTable'         : '../statisticsPage/classes/ExerciseTimeTable',
+        'InterceptionCounterTable'  : '../statisticsPage/classes/InterceptionCounterTable',
+        'jquery'                    : '../dependencies/jquery/jquery-1.10.2',
+        'domReady'                  : '../domReady'
 
     }
 });
@@ -109,3 +113,4 @@ require(['background','auth','jquery'], function(background, authm,$) {
     connectButtons();
     checkLoginStatus();
 });
+
