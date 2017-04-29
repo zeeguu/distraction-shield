@@ -1,8 +1,6 @@
 
 var bg = chrome.extension.getBackgroundPage();
 
-var auth = bg.auth;
-
 var saveButton = $('#saveBtn');
 var optionsButton = $('#optionsBtn');
 var statisticsButton = $('#statisticsBtn');

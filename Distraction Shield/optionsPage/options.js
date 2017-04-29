@@ -7,9 +7,10 @@
  */
 
 // Log console messages to the background page console instead of the content page.
-// var console = chrome.extension.getBackgroundPage().console;
+var console = chrome.extension.getBackgroundPage().console;
 var auth = chrome.extension.getBackgroundPage().auth;
 var localSettings = chrome.extension.getBackgroundPage().localSettings;
+
 //Local variables that hold the html elements
 var html_txtFld = $('#textFld');
 var html_intCnt = $('#iCounter');
@@ -93,7 +94,6 @@ addBlockedSiteToAll = function (newItem) {
 
 
 updateSessionbutton = function() {
-    console.log('updateSessionButton');
     if (auth.sessionAuthentic) {
         //logout button active
         connectLogout();
@@ -104,7 +104,6 @@ updateSessionbutton = function() {
 };
 
 checkLoginStatus = function () {
-    console.log('checkLoginStatus');
     auth.authenticateSession().then(updateSessionbutton);
 };
 
