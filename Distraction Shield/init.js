@@ -19,14 +19,14 @@ require.config({
 });
 
 
-require( ['background', 'synchronizer', 'storage', 'auth','BlockedSiteList', 'UserSettings'],
-        function(background, synchronizer, storage, auth, BlockedSiteList, UserSettings) {
+require( ['background', 'storage', 'BlockedSiteList', 'UserSettings'],
+        function(background, storage, BlockedSiteList, UserSettings) {
 
 
     /* --------------- ---- Session initializer ---- ---------------*/
     // console.log(JSON.stringify(auth));   //TODO remove
     // console.log(auth);                   //TODO remove
-    var authenticator = new auth.Auth();
+    //var authenticator = new auth.Auth();
 
     //First receive the blacklist and settings from the sync storage,
     //then create a onBeforeRequest listener using this list and the settings.
@@ -37,8 +37,8 @@ require( ['background', 'synchronizer', 'storage', 'auth','BlockedSiteList', 'Us
             settings.reInitTimer();
             setLocalSettings(settings);
             retrieveBlockedSites(replaceListener);
-            authenticator.authenticateSession();
-            setLocalAuthenticator(authenticator);
+            //authenticator.authenticateSession();
+            //setLocalAuthenticator(authenticator);
         });
     };
 
@@ -96,13 +96,6 @@ require( ['background', 'synchronizer', 'storage', 'auth','BlockedSiteList', 'Us
     if (onInstalledFired) {
         onInstall();
     }
-
-    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-        if (request.title == "newUrl") {
-            // console.log('received : ' + request.unformattedUrl);
-            background.addUrlToBlockedSites(request.unformattedUrl, sendResponse);
-        }
-    });
 
     //fix that checks whether everything that should be is indeed initialized
     storage.getSettingsUnParsed(function(settings) {

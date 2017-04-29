@@ -25,7 +25,7 @@ require.config({
     }
 });
 
-require(['background','auth','jquery'], function(background, authm, $) {
+require(['auth','jquery'], function(authm, $) {
     // var bg = chrome.extension.getBackgroundPage();
 
     var auth = new authm.Auth();
@@ -38,9 +38,7 @@ require(['background','auth','jquery'], function(background, authm, $) {
     saveCurrentPageToBlacklist = function () {
         chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
             var activeTab = arrayOfTabs[0];
-            console.log('sending activeTab.url: ' + activeTab.url); //todo remove
-            // background.addUrlToBlockedSites(activeTab.url, setSaveButtonToSuccess);
-            chrome.runtime.sendMessage({title : "newUrl", unformattedUrl : activeTab.url}, setSaveButtonToSuccess());
+            chrome.runtime.sendMessage({message : "newUrl", unformattedUrl : activeTab.url}, setSaveButtonToSuccess());
         });
     };
 

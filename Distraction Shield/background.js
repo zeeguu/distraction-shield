@@ -53,9 +53,9 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, UserSetti
     /* --------------- ------ Updating of variables ------ ---------------*/
 
     addUrlToBlockedSites = function (unformattedUrl, onSuccess) {
-        blockedSiteBuilder.createNewBlockedSite(unformattedUrl, function (newBS) {
+        blockedSiteBuilder.createNewBlockedSite(unformattedUrl, function(newBS) {
             if (blockedSites.addToList(newBS)) {
-                console.log('adding ' + newBS.getUrl() + ' to blockedSites: ' + JSON.stringify(blockedSites));//todo remove
+                replaceListener();
                 storage.setBlacklist(blockedSites);
                 onSuccess();
             }
@@ -130,6 +130,8 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, UserSetti
             setLocalBlacklist(BlockedSiteList.deserializeBlockedSiteList(request.siteList));
         } else if (request.message == "updateSettings") {
             setLocalSettings(UserSettings.deserializeSettings(request.settings));
+        } else if (request.message == "newUrl") {
+            addUrlToBlockedSites(request.unformattedUrl, sendResponse);
         }
     });
 
