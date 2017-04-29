@@ -1,4 +1,3 @@
-var console = chrome.extension.getBackgroundPage().console;
 var alert = chrome.extension.getBackgroundPage().alert;
 
 function GreenToRedSlider(sliderID, saveFunction) {
@@ -22,8 +21,8 @@ function GreenToRedSlider(sliderID, saveFunction) {
 
     this.updateColor = function(inputValue) {
         var maxSliderVal = (this.sliderRange[0]).max;
-        var redVal = Math.round(inputValue / maxSliderVal * 120);
-        var greenVal = 120 - redVal;
+        var redVal = Math.round(inputValue / maxSliderVal * 180);
+        var greenVal = 180 - redVal;
         this.sliderRange.css('background', 'rgb(' + redVal + ', ' + greenVal + ',0)');
     };
 
@@ -77,6 +76,6 @@ function GreenToRedSlider(sliderID, saveFunction) {
 
     this.timeInputError = function () {
         self.setValue(self.sliderRange.val());
-        alert("please input a value blablabla");
+        alert("please input a supported time format");
     }
 }
