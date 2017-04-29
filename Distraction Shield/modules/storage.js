@@ -124,9 +124,4 @@ function SyncStorage() {
     };
 }
 
-//Fancy string comparison with wildcards
-wildcardStrComp = function(str, rule) {
-    return new RegExp("^" + rule.split("*").join(".*") + "$").test(str);
-};
-
 var storage = new SyncStorage();
