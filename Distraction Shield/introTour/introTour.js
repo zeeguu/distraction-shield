@@ -22,25 +22,25 @@ var tour = new Tour({
         title: "Save Button",
         content: "Clicking this button will add the current website to the blacklist. The Distraction Shield will redirect " +
         "you from all of the websites in your blacklist. Click 'Next' to continue.",
-        placement: "right"
+        placement: "left"
     }, {
         path: "/introTour/tooltipcopy.html",
         element: "#statisticsBtn",
         title: "Statistics Button",
         content: "Clicking this button will show you some statistics about your Distraction Shield usage." +
         " Click 'Next' to continue.",
-        placement: "right"
+        placement: "left"
     }, {
         path: "/introTour/tooltipcopy.html",
         element: "#optionsBtn",
         title: "Options Button",
         content: "Clicking this button open the options page. We will have a look at this next." +
         " Click 'Next' to continue.",
-        placement: "right"
+        placement: "left"
     }, {
         path: "/introTour/optionscopy.html",
         element: "#modeSelector",
-        title: "Mode",
+        title: "Modes",
         content: "Here you can select which mode you want The Distraction Shield to use. Lazy Mode adds an option to " +
         "skip an exercise if you wish, while in Pro Mode you cannot continue to your destination until you have " +
         "completed the exercise. Click 'Next' to continue.",
