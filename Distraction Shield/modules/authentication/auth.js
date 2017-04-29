@@ -7,6 +7,7 @@ function Auth() {
     this.signinAnonUrl = "/add_anon_user";
     this.validateUrl = "/validate";
     this.logoutUrl = "/logout_session";
+    this.detailsUrl = "/get_user_details";
 
     this.sessionAuthentic = false;
 
@@ -35,6 +36,11 @@ function Auth() {
         var url = self.validateUrl + "?session="+self.getSession();
         return api.getRequest(url, "");
     };
+
+    this.getDetails = function () {
+        var url = self.detailsUrl + "?session="+self.getSession();
+        return api.getRequest(url, "");
+    }
 
     this.logout = function(){
         var url = self.logoutUrl + "?session="+self.getSession();
