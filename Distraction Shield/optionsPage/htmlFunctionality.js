@@ -70,9 +70,11 @@ initIntervalSlider = function() {
 login = function() {
     var email = $('#emailFld').val();
     var password = $('#passwordFld').val();
+    $('#passwordFld').val('');
     auth.login(email, password).then(function (response) {
         localSettings.setSessionID(response);
         auth.authenticateSession().then(function () {
+            $('#emailFld').val('');
             $('#sessionMessage').html('You logged in succesfully');
             $('#html_sessionBtn').removeClass('btn-default').addClass('btn-success');
             $('#sessionGlyphIcon').removeClass('glyphicon-log-in').addClass('glyphicon-ok');
