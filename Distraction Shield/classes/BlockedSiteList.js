@@ -6,7 +6,7 @@ define (['constants', 'BlockedSite'], function BlockedSiteList(constants, Blocke
         var obj = {
             list: blockedSiteList.getList()
         };
-        obj.list.map(BlockedSite.serializeBlockedSite);
+        obj.list = obj.list.map(BlockedSite.serializeBlockedSite);
         return JSON.stringify(obj);
     };
 
@@ -21,8 +21,7 @@ define (['constants', 'BlockedSite'], function BlockedSiteList(constants, Blocke
     deserializeBlockedSiteList = function (serializedBlockedSiteList) {
         if (serializedBlockedSiteList != null) {
             var parsed = JSON.parse(serializedBlockedSiteList);
-            //TODO check if this works
-            parsed.list = parsed.list.map(BlockedSite.parseBlockedSite);
+            parsed.list = parsed.list.map(BlockedSite.deserializeBlockedSite);
             return parseBlockedSiteList(parsed);
         }
         return null;
@@ -42,8 +41,6 @@ define (['constants', 'BlockedSite'], function BlockedSiteList(constants, Blocke
 
         this.addToList = function (newBlockedSite) {
             var currentUrls = this.getUrls();
-            console.log('currentUrls : ' + (currentUrls == null ? "null" : "not null")); //todo remove
-            console.log('newBlockedSite : ' + (newBlockedSite== null ? "null" : "not null")); //todo remove
             var unique = currentUrls.every(function (urlFromList) {
                 return urlFromList != newBlockedSite.getUrl();
             });
@@ -75,7 +72,7 @@ define (['constants', 'BlockedSite'], function BlockedSiteList(constants, Blocke
         this.filterOnChecked = function () {
             if (list != []) {
                 return list.filter(function (a) {
-                    return a.checkboxVal == true;
+                    return a.getCheckboxVal() == true;
                 });
             }
             return [];
@@ -84,7 +81,7 @@ define (['constants', 'BlockedSite'], function BlockedSiteList(constants, Blocke
         this.getUrls = function () {
             if (list != []) {
                 return list.map(function (a) {
-                    return a.url;
+                    return a.getUrl();
                 });
             }
             return [];
@@ -95,7 +92,7 @@ define (['constants', 'BlockedSite'], function BlockedSiteList(constants, Blocke
                 var urlList = this.filterOnChecked();
                 if (urlList != []) {
                     return urlList.map(function (a) {
-                        return a.url;
+                        return a.getUrl();
                     });
                 }
             }

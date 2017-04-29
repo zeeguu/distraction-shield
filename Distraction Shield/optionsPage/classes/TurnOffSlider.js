@@ -1,5 +1,5 @@
-define (['GreenToRedSlider','constants', 'jquery'],
-    function TurnOffSlider (GreenToRedSlider,constants, $) {
+define (['GreenToRedSlider','constants', 'synchronizer', 'jquery'],
+    function TurnOffSlider (GreenToRedSlider,constants, synchronizer, $) {
 
     function TurnOffSlider(sliderID, settings_object) {
         var self = this;
@@ -58,6 +58,7 @@ define (['GreenToRedSlider','constants', 'jquery'],
             }
             self.toggleShowOffMessage();
             self.offButton.text("Turn " + settings_object.getNotState());
+            synchronizer.syncSettings(settings_object);
         };
 
         this.init = function () {

@@ -2,16 +2,9 @@ define(['blockedSiteBuilder','BlockedSiteList','interception','UserSettings','co
 function background(blockedSiteBuilder, BlockedSiteList, interception, UserSettings, constants, storage) {
 //Set that holds the urls to be intercepted
     var blockedSites = new BlockedSiteList.BlockedSiteList();
-    // console.log('loading background, blockedSites: ' + JSON.stringify(blockedSites)); //TODO remove
     var interceptDateList = [];
-    // console.log("userSettings defined is :" + require.defined('UserSettings')); //TODO remove
-    // console.log(JSON.stringify(blockedSiteBuilder)); //TODO remove
-    // console.log(JSON.stringify(BlockedSiteList)); //TODO remove
-    // console.log(JSON.stringify(interception)); //TODO remove
-    // console.log(JSON.stringify(UserSettings)); //TODO remove
-    // console.log(JSON.stringify(constants)); //TODO remove
-    // console.log(JSON.stringify(storage)); //TODO remove
     var localSettings = new UserSettings.UserSettings();
+    var authenticator;
 
     /* --------------- ------ setter for local variables ------ ---------------*/
 
@@ -26,6 +19,10 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, UserSetti
     setLocalBlacklist = function (newList) {
         blockedSites.setList(newList.getList());
         replaceListener();
+    };
+
+    setLocalAuthenticator = function (newAuthenticator) {
+        authenticator = newAuthenticator;
     };
 
     setLocalInterceptDateList = function (dateList) {
@@ -61,7 +58,6 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, UserSetti
                 console.log('adding ' + newBS.getUrl() + ' to blockedSites: ' + JSON.stringify(blockedSites));//todo remove
                 storage.setBlacklist(blockedSites);
                 onSuccess();
-                console.log(JSON.stringify(blockedSites));//todo remove
             }
         });
     };
@@ -92,18 +88,18 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, UserSetti
     };
 
     intercept = function (details) {
-        interception.incrementInterceptionCounter(details.url);
+        interception.incrementInterceptionCounter(details.url, blockedSites);
         interception.addToInterceptDateList();
         var redirectLink;
         var params;
-        // if (!authenticator.sessionAuthentic) {
-        //     redirectLink = chrome.extension.getURL('loginPage/login.html');
-        //     params = "?forceLogin=" + constants.zeeguuExLink;
-        // } else {
-            redirectLink = zeeguuExLink;
-            params = "?sessionID=" + localSettings.getSessionID();
-        // }
-        params = params + "&redirect=" + details.url;
+        //if (!authenticator.sessionAuthentic) {
+        //    redirectLink = chrome.extension.getURL('loginPage/login.html');
+        //    params = "?forceLogin=" + constants.zeeguuExLink;
+        //} else {
+            redirectLink = constants.zeeguuExLink;
+        //    params = "?sessionID=" + localSettings.getSessionID();
+        //}
+        params = "?redirect=" + details.url;
 
         return {redirectUrl: redirectLink + params};
     };
@@ -127,7 +123,15 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, UserSetti
 
     getConsole = function(){
         return this.console;
-    }
+    };
+
+    chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
+        if (request.message == "replaceListener") {
+            setLocalBlacklist(BlockedSiteList.deserializeBlockedSiteList(request.siteList));
+        } else if (request.message == "updateSettings") {
+            setLocalSettings(UserSettings.deserializeSettings(request.settings));
+        }
+    });
 
     return {
         getLocalSettings            : getLocalSettings,
@@ -144,6 +148,6 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, UserSetti
         handleInterception          : handleInterception,
         turnOffInterception         : turnOffInterception,
         getConsole                  : getConsole
-    }
+    };
 
 });

@@ -77,9 +77,9 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
 
     // functionality from htmlFunctionality, blacklist_table and slider files
     connectHtmlFunctionality = function () {
-        htmlFunctionality.initModeSelection(modeGroup);
+        htmlFunctionality.initModeSelection(modeGroup, settings_object);
         intervalSlider = htmlFunctionality.initIntervalSlider(settings_object);
-        blacklistTable = new BlacklistTable.BlacklistTable($('#blacklistTable'));
+        blacklistTable = new BlacklistTable.BlacklistTable($('#blacklistTable'), syncBlockedSiteList);
         htmlFunctionality.connectButton(html_saveButton, htmlFunctionality.saveNewUrl);
         turnOffSlider = new TurnOffSlider.TurnOffSlider('#turnOff-slider', settings_object);
         htmlFunctionality.setKeyPressFunctions(html_txtFld,blacklistTable );
@@ -118,6 +118,10 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
         }
     };
     /* -------------------- -------------------------- -------------------- */
+
+    syncBlockedSiteList = function() {
+        synchronizer.syncBlacklist(blacklist);
+    };
 
     //Run this when the page is loaded.
     domReady(function () {

@@ -1,26 +1,19 @@
 
-define(['background','storage'], function Synchronizer(background, storage) {
+define(['storage', 'BlockedSiteList', 'UserSettings'],
+    function Synchronizer(storage, BlockedSiteList, UserSettings) {
 
     var syncBlacklist = function(blockedSiteList) {
         storage.setBlacklist(blockedSiteList);
-        background.setLocalBlacklist(blockedSiteList);
+        chrome.runtime.sendMessage( {   message: "replaceListener",
+                                        siteList: BlockedSiteList.serializeBlockedSiteList(blockedSiteList)
+                                    });
     };
 
     var syncSettings = function(settings) {
-        // console.log(storage);//todo remove
-        // console.log(background);//todo remove
         storage.setSettings(settings);
-        background.setLocalSettings(settings);
-    };
-
-    var syncDateList = function(dateList) {
-        storage.setInterceptDateList(dateList);
-        background.setLocalInterceptDateList(dateList);
-    };
-
-    var syncStatistics = function(statistics) {
-        storage.setStatistics(statistics);
-        background.setLocalStatistics(statistics);
+        chrome.runtime.sendMessage( {   message: "updateSettings",
+                                        settings: UserSettings.serializeSettings(settings)
+        });
     };
 
     var addBlockedSiteAndSync = function(blockedSite) {
@@ -34,8 +27,6 @@ define(['background','storage'], function Synchronizer(background, storage) {
     return {
         syncBlacklist           : syncBlacklist,
         syncSettings            : syncSettings,
-        syncDateList            : syncDateList,
-        syncStatistics          : syncStatistics,
         addBlockedSiteAndSync   : addBlockedSiteAndSync
     };
 

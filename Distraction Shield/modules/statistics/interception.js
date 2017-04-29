@@ -40,7 +40,7 @@ define(['storage', 'constants'], function Interception(storage, constants) {
     // Receives the url from the parameter, and searches the correct blockedSite item from the blockedsite list.
     // Then the interceptioncounter for this item is incremented by 1.
     // Also the global interceptioncounter is incremented by one.
-    incrementInterceptionCounter = function(urlAddress) {
+    incrementInterceptionCounter = function(urlAddress, blockedSites) {
         let urlList = blockedSites.getList();
         for (var i = 0; i < urlList.length; i++) {
             if (wildcardStrComp(urlAddress, urlList[i].getUrl())) {

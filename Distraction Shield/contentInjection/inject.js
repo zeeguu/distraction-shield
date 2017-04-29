@@ -22,7 +22,7 @@ require.config({
     }
 });
 
-require (['jquery', 'storage'], function ( $, storage) {
+require (['jquery', 'storage', 'constants'], function ($, storage, constants) {
 
     mainFlow = function () {
         storage.getMode(initBasis);
@@ -38,9 +38,9 @@ require (['jquery', 'storage'], function ( $, storage) {
             datattype: "html",
             success: function (data) {
                 infoDiv = $.parseHTML(data);
-                $("body").prepend(infoDiv);
+                $(".body").prepend(infoDiv);
                 $("#tds").width(window.innerWidth + "px");
-                $("#tds_generalInfoText").append(zeeguuInfoText);
+                $("#tds_generalInfoText").append(constants.zeeguuInfoText);
                 $("#tds_modeSpecificText").append(message);
                 $("#originalDestination").attr("href", getDest());
             }

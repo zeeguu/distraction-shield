@@ -1,5 +1,5 @@
 define (['GreenToRedSlider','TurnOffSlider','blockedSiteBuilder','synchronizer','constants','jquery'],
-    function htmlFunctionality (GreenToRedSlider, TurnOffSlider, blockedSiteBuilder, synchronizer,constants,$) {
+    function htmlFunctionality (GreenToRedSlider, TurnOffSlider, blockedSiteBuilder, synchronizer, constants, $) {
 
     /**
      * This file contains the specific functionality for the options and some of its elements
@@ -19,7 +19,6 @@ define (['GreenToRedSlider','TurnOffSlider','blockedSiteBuilder','synchronizer',
     /* -------------------- Button Click functions ----------------------- */
 
     saveNewUrl = function () {
-        console.log('saveNewUrl: ' + html_txtFld.val());//todo remove
         var newUrl = html_txtFld.val();
         blockedSiteBuilder.createNewBlockedSite(newUrl, addBlockedSiteToAll);
         html_txtFld.val('');
@@ -58,7 +57,12 @@ define (['GreenToRedSlider','TurnOffSlider','blockedSiteBuilder','synchronizer',
 
     initModeSelection = function (buttonGroup, settings_object) {
         $("input[name=" + buttonGroup + "]").change(function () {
-            settings_object.setMode($("input[name=" + buttonGroup + "]:checked").val());
+            var selectedMode = $("input[name=" + buttonGroup + "]:checked").val();
+            if (selectedMode == 'pro') {
+                settings_object.setMode(constants.modes.pro);
+            } else {
+                settings_object.setMode(constants.modes.lazy);
+            }
             synchronizer.syncSettings(settings_object);
         });
     };

@@ -25,7 +25,7 @@ require.config({
     }
 });
 
-require(['background','auth','jquery'], function(background, authm,$) {
+require(['background','auth','jquery'], function(background, authm, $) {
     // var bg = chrome.extension.getBackgroundPage();
 
     var auth = new authm.Auth();

@@ -1,7 +1,8 @@
-define (['synchronizer'], function BlacklistTable (synchronizer) {
-    function BlacklistTable(html_element) {
+define (['synchronizer', 'jquery'], function BlacklistTable (synchronizer, $) {
+    function BlacklistTable(html_element, syncFunction) {
         var self = this;
         this.table = html_element;
+        var syncBlockedSiteList = syncFunction;
 
         this.addToTable = function (tableRow) {
             tableRow.hide().appendTo(this.table).fadeIn();
@@ -36,7 +37,7 @@ define (['synchronizer'], function BlacklistTable (synchronizer) {
                 var selected_blockedSite = selected_row.data('blockedSite');
                 selected_blockedSite.setCheckboxVal(!selected_blockedSite.getCheckboxVal());
                 //no need to set localBlacklist cause it holds pointers so they get updated automatically
-                synchronizer.syncBlacklist(blacklist);
+                syncBlockedSiteList();
             });
         };
 

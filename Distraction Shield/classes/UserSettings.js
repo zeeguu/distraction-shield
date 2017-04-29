@@ -10,7 +10,6 @@ define (['constants'], function UserSettings(constants) {
             mode: settingsObject.getMode(),
             interceptionInterval: settingsObject.getInterceptionInterval()
         };
-        console.log(obj);
         return JSON.stringify(obj);
     };
 
@@ -92,7 +91,6 @@ define (['constants'], function UserSettings(constants) {
         this.turnOn = function () {
             if (this.getState() == "Off") {
                 status = {state: true, setAt: new Date(), offTill: new Date()};
-                this.forwardToBackground();
             } else {
                 console.log("Already turned on, should not happen!");
             }
@@ -101,8 +99,7 @@ define (['constants'], function UserSettings(constants) {
         this.turnOff = function () {
             if (this.getState() == "On") {
                 status = {state: false, setAt: new Date(), offTill: status.offTill};
-                this.setTimer();
-                this.forwardToBackground();
+                setTimer();
             } else {
                 console.log("Already turned off, should not happen!");
             }
@@ -117,11 +114,6 @@ define (['constants'], function UserSettings(constants) {
         this.turnOffForDay = function () {
             status.offTill = new Date(new Date().setHours(24, 0, 0, 0));
             this.turnOff();
-        };
-
-        //Private method
-        forwardToBackground = function () {
-            synchronizer.syncSettings(self);
         };
 
         this.turnOffFromBackground = function () {
@@ -158,7 +150,7 @@ define (['constants'], function UserSettings(constants) {
                 if (this.getOffTill() < new Date()) {
                     self.turnOn();
                 } else {
-                    this.setTimer();
+                    setTimer();
                 }
             }
         };

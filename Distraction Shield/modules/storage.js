@@ -6,7 +6,6 @@ define (['BlockedSite', 'BlockedSiteList', 'UserSettings'],
     /* ---------------- TDS_Storage --------------- */
     getAll = function(callback) {
         getStorage(null).then(function(output) {
-            console.log('output: ' + JSON.stringify(output)); //todo remove
             output.tds_settings = UserSettings.deserializeSettings(output.tds_settings);
             output.tds_blacklist = BlockedSiteList.deserializeBlockedSiteList(output.tds_blacklist);
             return callback(output);    
@@ -15,8 +14,6 @@ define (['BlockedSite', 'BlockedSiteList', 'UserSettings'],
 
     getAllUnParsed = function(callback) {
         getStorage(null).then(function(output) {
-            //output.tds_settings = UserSettings.deserializeSettings(output.tds_settings);
-            //output.tds_blacklist = UserSettings.deserializeSettings(output.tds_blacklist);
             return callback(output);
         });
     };
@@ -42,6 +39,12 @@ define (['BlockedSite', 'BlockedSiteList', 'UserSettings'],
         getStorage("tds_settings").then(function(output) {
             var deserializedSettings = UserSettings.deserializeSettings(output.tds_settings);
             return callback(deserializedSettings);
+        });
+    };
+
+    getSettingsUnParsed = function(callback) {
+        getStorage("tds_settings").then(function(output) {
+            return callback(output.tds_settings);
         });
     };
 
@@ -142,6 +145,7 @@ define (['BlockedSite', 'BlockedSiteList', 'UserSettings'],
         getBlacklist            : getBlacklist,
         setBlacklist            : setBlacklist,
         getSettings             : getSettings,
+        getSettingsUnParsed     : getSettingsUnParsed,
         setSettings             : setSettings,
         setSettingsWithCallback : setSettingsWithCallback,
         getMode                 : getMode,

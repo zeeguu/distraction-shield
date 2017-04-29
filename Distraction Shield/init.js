@@ -37,13 +37,12 @@ require( ['background', 'synchronizer', 'storage', 'auth','BlockedSiteList', 'Us
             settings.reInitTimer();
             setLocalSettings(settings);
             retrieveBlockedSites(replaceListener);
-            //authenticator.authenticateSession();
+            authenticator.authenticateSession();
+            setLocalAuthenticator(authenticator);
         });
     };
 
     /* --------------- ---- Run upon installation ---- ---------------*/
-
-    //chrome.runtime.onInstalled.addListener(
 
     onInstall = function() {
         storage.getAllUnParsed(function(output) {
@@ -92,9 +91,6 @@ require( ['background', 'synchronizer', 'storage', 'auth','BlockedSiteList', 'Us
         chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
     };
 
-
-
-
     /* --------------- ---- Run upon Start of session ---- ---------------*/
 
     if (onInstalledFired) {
@@ -106,10 +102,10 @@ require( ['background', 'synchronizer', 'storage', 'auth','BlockedSiteList', 'Us
             // console.log('received : ' + request.unformattedUrl);
             background.addUrlToBlockedSites(request.unformattedUrl, sendResponse);
         }
-    })
+    });
 
     //fix that checks whether everything that should be is indeed initialized
-    storage.getSettings(function(settings) {
+    storage.getSettingsUnParsed(function(settings) {
         if (settings != null) {
             initSession();
         }

@@ -29,15 +29,9 @@ require(['background', 'BlacklistStatsTable' , 'ExerciseTimeTable', 'Interceptio
     'jquery', 'domReady'],
     function (background, BlacklistStatsTable, ExerciseTimeTable, InterceptionCounterTable, storage, interception, $, domReady) {
 
-
-    // Log console messages to the background page console instead of the content page.
-    var console = background.getConsole();
-
     var interceptionCounterTable = null;
     var blacklistTable = null;
     var exerciseTimeTable = null;
-
-
 
     //Initialize HTML elements and set the data in the tables.
     initStatisticsPage = function() {
@@ -46,7 +40,7 @@ require(['background', 'BlacklistStatsTable' , 'ExerciseTimeTable', 'Interceptio
                 let counters = interception.calcInterceptData(response[0].tds_interceptDateList);
                 //TODO : are the setDataAndRender calls right?
                 interceptionCounterTable.setDataAndRender(counters);
-                blacklistTable.setDataAndRender(background.retrieveBlockedSites());
+                storage.getBlacklist(blacklistTable.setDataAndRender);
                 exerciseTimeTable.setDataAndRender(response[1]);
             });
     };
