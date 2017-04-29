@@ -7,13 +7,17 @@
  */
 
 // Log console messages to the background page console instead of the content page.
- var console = chrome.extension.getBackgroundPage().console;
+var console = chrome.extension.getBackgroundPage().console;
+var auth = chrome.extension.getBackgroundPage().auth;
+var localSettings = chrome.extension.getBackgroundPage().localSettings;
 
 //Local variables that hold the html elements
 var html_txtFld = $('#textFld');
 var html_intCnt = $('#iCounter');
 var html_saveButton = $('#saveBtn');
+var html_sessionBtn = $('#sessionBtn');
 var modeGroup = "modeOptions";
+
 
 var blacklistTable;
 var intervalSlider;
@@ -33,6 +37,7 @@ initOptionsPage = function() {
         setLocalVariables(output);
         connectHtmlFunctionality();
         connectLocalDataToHtml();
+        checkLoginStatus();
     });
 };
 
@@ -85,6 +90,23 @@ addBlockedSiteToAll = function (newItem) {
         synchronizer.syncBlacklist(blacklist);
     }
 };
+
+
+
+updateSessionbutton = function() {
+    if (auth.sessionAuthentic) {
+        //logout button active
+        connectLogout();
+    } else {
+        //login button active
+        connectLogin();
+    }
+};
+
+checkLoginStatus = function () {
+    auth.authenticateSession().then(updateSessionbutton);
+};
+
 /* -------------------- -------------------------- -------------------- */
 
 //Run this when the page is loaded.
@@ -96,4 +118,3 @@ document.addEventListener("DOMContentLoaded", function() {
 tr.onclick = function(){
     chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
 };
-
