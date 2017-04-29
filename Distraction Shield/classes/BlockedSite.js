@@ -5,6 +5,7 @@ define(['constants'], function BlockedSite(constants) {
     serializeBlockedSite = function (blockedSite) {
         var obj = {
             url: blockedSite.getUrl(),
+            domain: blockedSite.getDomain(),
             name: blockedSite.getName(),
             icon: blockedSite.getIcon(),
             checkboxVal: blockedSite.getCheckboxVal(),
@@ -17,6 +18,7 @@ define(['constants'], function BlockedSite(constants) {
     parseBlockedSite = function (blockedSite) {
         var b = new BlockedSite();
         b.setUrl(blockedSite.url);
+        b.setDomain(blockedSite.domain);
         b.setName(blockedSite.name);
         b.setIcon(blockedSite.icon);
         b.setCheckboxVal(blockedSite.checkboxVal);
@@ -35,7 +37,7 @@ define(['constants'], function BlockedSite(constants) {
 
     /* --------------- --------------- --------------- --------------- --------------- */
 
-    function BlockedSite(url, title) {
+    function BlockedSite(urlBase, title) {
         constructUrl = function (url) {
             return "*://" + url + "/*";
         };
@@ -44,10 +46,10 @@ define(['constants'], function BlockedSite(constants) {
             return "<img style=\"-webkit-user-select: none\" src=\"" + constants.FAVICONLINK + url + "\">"
         };
 
-        var url = constructUrl(url);
-        var domain = url;
+        var url = constructUrl(urlBase);
+        var domain = urlBase;
         var name = title;
-        var icon = constructIcon(url);
+        var icon = constructIcon(urlBase);
         var checkboxVal = true;
         var counter = 0;
 

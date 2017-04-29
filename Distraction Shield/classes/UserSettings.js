@@ -10,6 +10,7 @@ define (['constants'], function UserSettings(constants) {
             mode: settingsObject.getMode(),
             interceptionInterval: settingsObject.getInterceptionInterval()
         };
+        console.log(obj);
         return JSON.stringify(obj);
     };
 
@@ -17,7 +18,6 @@ define (['constants'], function UserSettings(constants) {
     parseSettingsObject = function(parsedSettingsObject) {
         var s = new UserSettings();
         var newStatus = parsedSettingsObject.status;
-        console.log(newStatus);
         newStatus.setAt = new Date(newStatus.setAt);
         newStatus.offTill = new Date(newStatus.offTill);
         s.setStatusObj(newStatus);

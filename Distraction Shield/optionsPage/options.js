@@ -79,12 +79,10 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
     connectHtmlFunctionality = function () {
         htmlFunctionality.initModeSelection(modeGroup);
         intervalSlider = htmlFunctionality.initIntervalSlider(settings_object);
-
         blacklistTable = new BlacklistTable.BlacklistTable($('#blacklistTable'));
-       htmlFunctionality.connectButton(html_saveButton, htmlFunctionality.saveNewUrl);
-
-       turnOffSlider = new TurnOffSlider.TurnOffSlider('#turnOff-slider', settings_object);
-       htmlFunctionality.setKeyPressFunctions(html_txtFld,blacklistTable );
+        htmlFunctionality.connectButton(html_saveButton, htmlFunctionality.saveNewUrl);
+        turnOffSlider = new TurnOffSlider.TurnOffSlider('#turnOff-slider', settings_object);
+        htmlFunctionality.setKeyPressFunctions(html_txtFld,blacklistTable );
     };
 
     // functionality from connectDataToHtml file
@@ -121,10 +119,8 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
     };
     /* -------------------- -------------------------- -------------------- */
 
-    //TODO make sure this is being called!
     //Run this when the page is loaded.
     domReady(function () {
-        console.log("here");
         initOptionsPage();
     });
 

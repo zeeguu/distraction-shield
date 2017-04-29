@@ -66,11 +66,10 @@ define (['GreenToRedSlider','TurnOffSlider','blockedSiteBuilder','synchronizer',
     /* -------------------- Interval slider -------------------- */
 
     initIntervalSlider = function (settings_object) {
-        var intervalSlider = new GreenToRedSlider.GreenToRedSlider('#interval-slider', function (value) {
+        return new GreenToRedSlider.GreenToRedSlider('#interval-slider', function (value) {
             settings_object.setInterceptionInterval(parseInt(value));
             synchronizer.syncSettings(settings_object);
         });
-        return intervalSlider;
     };
 
     return {
