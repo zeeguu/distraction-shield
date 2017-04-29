@@ -4,6 +4,18 @@ var zeeguuExLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
 /* ---------- ----- BlockedSite ----- ---------- */
 var FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
 
+/* ---------- ----- Constants for statistics ----- ---------- */
+var zeeguuDomain = "zeeguu.herokuapp.com";
+
+// The time in seconds after which a user is considered to be idle. Important for tracking the amount of time spent on a url.
+// Minimum value is 15 seconds.
+var idleTime = 15;
+
+// The time in milliseconds of how many times the url of the website is compared to the blacklist or the exercise page.
+var measureFrequency = 1000;
+
+// The time in milliseconds after which the time tracking variables are saved to the local or sync storage.
+var savingFrequency = 5000;
 
 /* ---------- ----- UserSettings, inject ----- ---------- */
 var modes = {

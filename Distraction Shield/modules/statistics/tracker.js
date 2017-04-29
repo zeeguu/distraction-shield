@@ -7,27 +7,31 @@ function Tracker() {
     this.idle = false;
     this.tabActive = null;
     this.activeTime = 0;
-    this.zeeguuDomain = "zeeguu.herokuapp.com";
+    this.updatedExerciseTime = false;
+    this.updatedBlockedSiteTime = false;
 
     // Initialize the alarm, and initialize the idle-checker.
     this.init = function() {
-
-        setInterval(self.fireAlarm, 5000);
-        setInterval(self.matchUrls, 1000);
+        setInterval(self.fireAlarm, savingFrequency);
+        setInterval(self.matchUrls, measureFrequency);
 
         // When the user does not input anything for 15 seconds, set the state to idle.
-        chrome.idle.setDetectionInterval(15);
+        chrome.idle.setDetectionInterval(idleTime);
         chrome.idle.onStateChanged.addListener(self.checkIdle);
 
     };
 
     this.fireAlarm = function () {
-        if (self.activeTime > 0) {
+        if (self.updatedExerciseTime) {
             exerciseTime.incrementTodayExerciseTime(self.activeTime);
             self.activeTime = 0;
+            self.updatedExerciseTime = false;
+        }
+        if (self.updatedBlockedSiteTime) {
+            synchronizer.syncBlacklist(blockedSites);
+            self.updatedExerciseTime = false;
         }
 
-        synchronizer.syncBlacklist(blockedSites);
     };
 
     // Check if the user is idle. If the user is not idle, increment a counter.
@@ -43,7 +47,7 @@ function Tracker() {
                 }).catch(function(reject){});
 
                 // If the user is working on exercises
-                if (self.compareDomain(self.tabActive, self.zeeguuDomain)) {
+                if (self.compareDomain(self.tabActive, zeeguuDomain)) {
                     self.increaseTimeCounterExercises()
                 }
             });
@@ -51,10 +55,12 @@ function Tracker() {
     };
 
     this.increaseTimeCounterExercises = function () {
+        self.updatedExerciseTime = true;
         self.activeTime = self.activeTime + 1;
     };
 
     this.increaseTimeCounterBlockedSite = function (blockedSite) {
+        self.updatedBlockedSiteTime = true;
         blockedSite.setTimeSpent(blockedSite.getTimeSpent()+1);
     };
 
@@ -69,10 +75,12 @@ function Tracker() {
         });
     };
 
+    // Creates a regex string which using the domain of an url.
     this.createRegexFromDomain = function (domain) {
         return "^(http[s]?:\\/\\/)?(.*)"+domain+".*$";
     };
 
+    // Compares the domain of an url to another domain using a regex.
     this.compareDomain = function (url, domain) {
         return self.compareUrlToRegex(url, self.createRegexFromDomain(domain));
     };
