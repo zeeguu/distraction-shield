@@ -4,7 +4,6 @@ var bg = chrome.extension.getBackgroundPage();
 var auth = bg.auth;
 
 var saveButton = $('#saveBtn');
-var sessionBtn = $('#sessionBtn');
 var optionsButton = $('#optionsBtn');
 var statisticsButton = $('#statisticsBtn');
 
@@ -40,4 +39,3 @@ connectButtons = function() {
 };
 
 connectButtons();
-checkLoginStatus();

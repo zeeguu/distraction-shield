@@ -33,3 +33,29 @@ loadHtmlInterceptCounter = function(count, html_counter) {
     html_counter.text(count);
 };
 
+connectLogin = function () {
+    $('#sessionGlyphIcon').removeClass('glyphicon-log-out').addClass('glyphicon-log-in');
+    $('#sessionMessage').html('Enter email and password to login');
+    $('#emailFld').show();
+    $('#addon').removeClass('input-group-addon-logout-version');
+    $('#addon').html('');
+    $('#passwordFld').show();
+    html_sessionBtn.off('click', logout);
+    html_sessionBtn.on('click', login);
+};
+
+connectLogout = function () {
+    auth.getDetails().then(function (response) {
+        //resolution
+        var details = JSON.parse(response);
+        console.log(details);
+        $('#sessionMessage').html('');
+        $('#sessionGlyphIcon').removeClass('glyphicon-log-in').addClass('glyphicon-log-out');
+        $('#addon').addClass('input-group-addon-logout-version');
+        $('#addon').html('You are logged in as ' + details.name);
+        $('#emailFld').hide();
+        $('#passwordFld').hide();
+        html_sessionBtn.off('click', login);
+        html_sessionBtn.on('click', logout);
+    });
+};

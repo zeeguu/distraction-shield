@@ -101,3 +101,8 @@ input[type=range]::-webkit-slider-thumb {
     cursor: pointer;
     -webkit-appearance: none;
 }
+
+/* ---------- ---------- Slider ---------- ---------- */
+.input-group-addon-logout-version{
+    background: #c8e5bc;
+}
