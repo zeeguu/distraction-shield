@@ -47,6 +47,9 @@ body {
     display:block;
     max-width:200px;
     white-space: nowrap;
+}
+
+.editable-span:focus {
     overflow: hidden;
 }
 
@@ -57,7 +60,7 @@ body {
 }
 
 .table-striped>tbody>tr:nth-of-type(odd).highlight {
-        background-color: lightskyblue;
+    background-color: lightskyblue;
 }
 
 .pageTitle {
