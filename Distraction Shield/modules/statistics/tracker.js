@@ -40,16 +40,19 @@ function Tracker() {
             self.getCurrentTab().then(function(result){
                 self.tabActive = result;
 
-                // If the user is on a blocked website
-                let blockedSitePromise = self.matchUrlToBlockedSite(self.tabActive, blockedSites.getList());
-                blockedSitePromise.then(function(result) {
-                    self.increaseTimeCounterBlockedSite(result);
-                }).catch(function(reject){});
-
                 // If the user is working on exercises
-                if (self.compareDomain(self.tabActive, zeeguuDomain)) {
+                if (self.compareDomain(self.tabActive, zeeguuExDomain)) {
                     self.increaseTimeCounterExercises()
+                } else {
+                // If the user is on a blocked website
+                    let blockedSitePromise = self.matchUrlToBlockedSite(self.tabActive, blockedSites.getList());
+                    blockedSitePromise.then(function(result) {
+                        self.increaseTimeCounterBlockedSite(result);
+                    }).catch(function(reject){});
                 }
+
+
+
             });
         }
     };

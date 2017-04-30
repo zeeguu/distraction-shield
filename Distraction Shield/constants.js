@@ -1,11 +1,11 @@
 /* ---------- ----- background ----- ---------- */
-var zeeguuExLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
+var zeeguuExDomain = "www.zeeguu.unibe.ch/practice/get-ex";
+var zeeguuExLink = "https://"+zeeguuExDomain;
 
 /* ---------- ----- BlockedSite ----- ---------- */
 var FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
 
 /* ---------- ----- Constants for statistics ----- ---------- */
-var zeeguuDomain = "zeeguu.herokuapp.com";
 
 // The time in seconds after which a user is considered to be idle. Important for tracking the amount of time spent on a url.
 // Minimum value is 15 seconds.
