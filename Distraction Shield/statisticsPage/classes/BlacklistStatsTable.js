@@ -20,6 +20,7 @@ function BlacklistStatsTable(html_element) {
                 "<td>"+site.getIcon()+"</td>" +
                 "<td>"+site.getName()+"</td>" +
                 "<td>"+site.getCounter()+"</td>" +
+                "<td>"+bg.dateUtil.secondsToHHMMSS(site.getTimeSpent())+"</td>" +
                 "</tr>");
         return row;
     };
