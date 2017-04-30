@@ -11,10 +11,12 @@ function TurnOffSlider(sliderID) {
             sl.sliderValue.html(self.createHtmlOffMessage());
             sl.sliderRange.css('visibility', 'hidden').parent().css('display', 'none');
             sl.sliderValue.parent().css('width', '50%');
+            sl.sliderValue.prop('contenteditable', false );
         } else {
             sl.sliderValue.html(sl.calculateHours(self.selectedTime));
             sl.sliderRange.css('visibility', 'visible').parent().css('display', 'initial');
             sl.sliderValue.parent().css('width', '30%');
+            sl.sliderValue.prop('contenteditable', true);
         }
     };
 
