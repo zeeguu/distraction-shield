@@ -48,7 +48,6 @@ connectLogout = function () {
     auth.getDetails().then(function (response) {
         //resolution
         var details = JSON.parse(response);
-        console.log(details);
         $('#sessionMessage').html('');
         $('#sessionGlyphIcon').removeClass('glyphicon-log-in').addClass('glyphicon-log-out');
         $('#addon').addClass('input-group-addon-logout-version');
