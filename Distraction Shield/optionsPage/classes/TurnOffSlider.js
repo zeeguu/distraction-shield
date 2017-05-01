@@ -64,12 +64,12 @@ function TurnOffSlider(sliderID) {
         sl.sliderRange[0].max = MAX_TURN_OFF_TIME;
         this.setSliderHourFunc();
         sl.sliderValue.html(sl.calculateHours(sl.sliderRange.val()));
+        sl.setValue(sl.sliderRange.val());
         this.toggleShowOffMessage();
         this.offButton.text("Turn " + settings_object.getNotState());
         connectButton(this.offButton, this.turnOff);
     };
 
     this.init();
-    this.slider.setValue(this.selectedTime);
 }
 
