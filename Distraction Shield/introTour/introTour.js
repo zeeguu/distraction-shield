@@ -87,7 +87,7 @@ var tour = new Tour({
     }],
     onEnd: function () {
         chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
-            chrome.tabs.update(tab.id, {url: chrome.runtime.getURL('loginPage/login.html')});
+            chrome.tabs.update(tab.id, {url: chrome.runtime.getURL('optionsPage/options.html')});
         });
     }
 });
