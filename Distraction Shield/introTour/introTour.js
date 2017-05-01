@@ -8,7 +8,7 @@ var tour = new Tour({
         path: "/introTour/introTour.html",
         title: "Welcome to The Distaction Shield",
         content: "Wanna know how Distraction Shield protects you ? " +
-        " Click <b> ‘Next’ </b> ( here you discover the main features and best usage) "+
+        " Click <b> ‘Next’ </b> "+
         "If you want to use it right away, click <b>‘End tour’</b>"
     }, {
         path: "/introTour/introTour.html",
@@ -35,7 +35,7 @@ var tour = new Tour({
         path: "/introTour/tooltipcopy.html",
         element: "#optionsBtn",
         title: "Options Button",
-        content: "Do you want to <b>customize your experience</b>? <br> By entering this button you can open the <b>options page</b>.",
+        content: "Do you want to <b>customize your experience</b>? <br> By pressing this button you can open the <b>options page</b>.",
         placement: "left"
     }, {
         path: "/introTour/optionscopy.html",
@@ -76,6 +76,10 @@ var tour = new Tour({
         content: "You can use this slider to <b>disable</b> The Distraction Shield temporarily. Select the" +
         "amount of time you want and click <b>’Turn Off’</b>.",
         placement: "bottom"
+    }, {
+    path: "/introTour/optionscopy.html",
+        title: "Thank You!",
+        content: "Thanks for choosing The Distraction Shield and Happy Learning!"
     }],
     onEnd: function () {
         chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
