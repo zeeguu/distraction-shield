@@ -74,16 +74,8 @@ var tour = new Tour({
         element: "#turnOff-slider",
         title: "Turn Off",
         content: "Need to do some important work and don't want to be redirected? You can use this slider to disable" +
-        " The Distraction Shield temporarily. Select the amount of time you want and click 'Turn Off'." +
-        " Click 'Next' to continue.",
+        " The Distraction Shield temporarily. Select the amount of time you want and click 'Turn Off'.",
         placement: "bottom"
-    }, {
-        path: "/introTour/logincopy.html",
-        element: "#loginForm",
-        title: "Login",
-        content: "Finally, login with your existing Zeeguu account, or create a new one here to get started." +
-        " Good luck learning your new language!",
-        placement: "left"
     }],
     onEnd: function () {
         chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
