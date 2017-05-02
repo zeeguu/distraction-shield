@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "Distraction Shield!",
   "scripts": {
+    "start": "broccoli serve",
+    "build": "rm -rf dist && broccoli build dist"
   },
   "repository": {
     "type": "git",
@@ -10,5 +12,6 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "broccoli": "^1.1.1"
   }
 }
