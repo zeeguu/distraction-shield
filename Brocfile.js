@@ -4,7 +4,9 @@ var Funnel = require('broccoli-funnel');
 var BroccoliMergeTrees = require('broccoli-merge-trees');
 
 // babel transpilation: grab the source and transpile in 1 step
-var project = babel('Distraction Shield');
+var project = babel('Distraction\ Shield', {
+  presets: [ 'env' ]
+});
 
 // copy dependencies into build
 var dependencies = new Funnel('bower_components', {
