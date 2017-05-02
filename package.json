@@ -5,7 +5,7 @@
   "scripts": {
     "start": "broccoli serve",
     "build": "rm -rf dist && broccoli build dist",
-    "test": "mocha test/**/*-test.js"
+    "test": "mocha \"test/**/*-test.js\""
   },
   "repository": {
     "type": "git",
