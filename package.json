@@ -12,6 +12,8 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "broccoli": "^1.1.1"
+    "babel-preset-env": "^1.4.0",
+    "broccoli": "^1.1.1",
+    "broccoli-babel-transpiler": "^6.0.0"
   }
 }
