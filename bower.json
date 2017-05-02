@@ -1,0 +1,18 @@
+{
+  "name": "distraction-shield",
+  "description": "Distraction Shield!",
+  "main": "",
+  "authors": [
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/RUGSoftEng/2017-The-Distraction-Shield",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+  }
+}
