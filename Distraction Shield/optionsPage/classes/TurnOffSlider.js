@@ -1,4 +1,4 @@
-define (['GreenToRedSlider','constants', 'synchronizer', 'jquery'],
+define ('TurnOffSlider', ['GreenToRedSlider','constants', 'synchronizer', 'jquery'],
     function TurnOffSlider (GreenToRedSlider,constants, synchronizer, $) {
 
     function TurnOffSlider(sliderID, settings_object) {

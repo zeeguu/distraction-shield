@@ -1,4 +1,4 @@
-define(['constants'], function UrlFormatter(constants) {
+define('urlFormatter', ['constants'], function UrlFormatter(constants) {
     // use alert for warning popups
     alert = chrome.extension.getBackgroundPage().alert;
 

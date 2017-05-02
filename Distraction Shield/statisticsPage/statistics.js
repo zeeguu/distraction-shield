@@ -4,17 +4,8 @@ require.config({
         'BlockedSite'               : '../classes/BlockedSite',
         'BlockedSiteList'           : '../classes/BlockedSiteList',
         'UserSettings'              : '../classes/UserSettings',
-        'api'                       : '../modules/authentication/api',
-        'auth'                      : '../modules/authentication/auth',
-        'exerciseTime'              : '../modules/statistics/exerciseTime',
         'interception'              : '../modules/statistics/interception',
-        'tracker'                   : '../modules/statistics/tracker',
-        'blockedSiteBuilder'        : '../modules/blockedSiteBuilder',
-        'dateutil'                  : '../modules/dateutil',
         'storage'                   : '../modules/storage',
-        'synchronizer'              : '../modules/synchronizer',
-        'urlFormatter'              : '../modules/urlFormatter',
-        'background'                : '../background',
         'constants'                 : '../constants',
         'BlacklistStatsTable'       : 'classes/BlacklistStatsTable',
         'ExerciseTimeTable'         : 'classes/ExerciseTimeTable',
@@ -25,9 +16,9 @@ require.config({
     }
 });
 
-require(['background', 'BlacklistStatsTable' , 'ExerciseTimeTable', 'InterceptionCounterTable', 'storage', 'interception',
+require(['BlacklistStatsTable' , 'ExerciseTimeTable', 'InterceptionCounterTable', 'storage', 'interception',
     'jquery', 'domReady'],
-    function (background, BlacklistStatsTable, ExerciseTimeTable, InterceptionCounterTable, storage, interception, $, domReady) {
+    function (BlacklistStatsTable, ExerciseTimeTable, InterceptionCounterTable, storage, interception, $, domReady) {
 
     var interceptionCounterTable = null;
     var blacklistTable = null;
@@ -54,8 +45,10 @@ require(['background', 'BlacklistStatsTable' , 'ExerciseTimeTable', 'Interceptio
 
 
     //Run this when the page is loaded.
-    domReady( function(){
+    domReady(function () {
         connectHtmlFunctionality();
         initStatisticsPage();
     });
+
+
 });

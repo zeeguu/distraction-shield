@@ -1,4 +1,4 @@
-define (['jquery'], function BlacklistStatsTable($) {
+define ('BlacklistStatsTable', ['jquery'], function BlacklistStatsTable($) {
     function BlacklistStatsTable(html_element) {
         var self = this;
         this.table = html_element;
@@ -25,11 +25,11 @@ define (['jquery'], function BlacklistStatsTable($) {
         };
 
         this.render = function () {
-            self.createBlockedSiteTable(self.blacklist);
+            self.createBlockedSiteTable(self.blacklist.getList());
         };
 
         this.setDataAndRender = function (data) {
-            Promise.resolve(this.setData(data)).then(self.render());
+            Promise.resolve(self.setData(data)).then(self.render());
         };
     }
 

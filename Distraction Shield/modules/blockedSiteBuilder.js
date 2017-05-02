@@ -1,4 +1,4 @@
-define(['urlFormatter', 'BlockedSite'], function BlockedSiteBuilder(urlFormatter, BlockedSite) {
+define('blockedSiteBuilder', ['urlFormatter', 'BlockedSite'], function BlockedSiteBuilder(urlFormatter, BlockedSite) {
 
     // this requires a callback since the getUrlFromServer is asynchronous
     createNewBlockedSite = function (newUrl, callback) {

@@ -1,4 +1,4 @@
-define(['constants'], function BlockedSite(constants) {
+define('BlockedSite', ['constants'], function BlockedSite(constants) {
 
     /* --------------- --------------- Serialization --------------- --------------- */
     //Private to this and storage.js

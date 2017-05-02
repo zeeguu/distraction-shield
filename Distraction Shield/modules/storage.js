@@ -1,7 +1,7 @@
 
 //TODO write a serializer module
-define (['BlockedSite', 'BlockedSiteList', 'UserSettings'],
-    function(BlockedSite, BlockedSiteList, UserSettings) {
+define ('storage', ['BlockedSite', 'BlockedSiteList', 'UserSettings'],
+    function storage(BlockedSite, BlockedSiteList, UserSettings) {
 
     /* ---------------- TDS_Storage --------------- */
     getAll = function(callback) {

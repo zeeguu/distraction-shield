@@ -1,4 +1,4 @@
-define(['storage', 'constants'], function Interception(storage, constants) {
+define('interception', ['storage', 'constants'], function Interception(storage, constants) {
 
     //Fancy string comparison with wildcards
     wildcardStrComp = function(str, rule) {

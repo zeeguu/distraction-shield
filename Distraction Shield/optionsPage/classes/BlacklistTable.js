@@ -1,4 +1,4 @@
-define (['synchronizer', 'jquery'], function BlacklistTable (synchronizer, $) {
+define ('BlacklistTable', ['synchronizer', 'jquery'], function BlacklistTable (synchronizer, $) {
     function BlacklistTable(html_element, syncFunction) {
         var self = this;
         this.table = html_element;

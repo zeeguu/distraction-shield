@@ -1,4 +1,4 @@
-define(function DateUtil() {
+define('dateutil', function DateUtil() {
 // This module is an utility to help get the correct format for dates which are used in the codebase.
 
     // Converts seconds to the format HH:MM:SS

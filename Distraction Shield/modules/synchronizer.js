@@ -1,5 +1,5 @@
 
-define(['storage', 'BlockedSiteList', 'UserSettings'],
+define('synchronizer', ['storage', 'BlockedSiteList', 'UserSettings'],
     function Synchronizer(storage, BlockedSiteList, UserSettings) {
 
     var syncBlacklist = function(blockedSiteList) {

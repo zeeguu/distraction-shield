@@ -1,4 +1,4 @@
-define(['blockedSiteBuilder','BlockedSiteList','interception','UserSettings','constants','storage'],
+define('background', ['blockedSiteBuilder','BlockedSiteList','interception','UserSettings','constants','storage'],
 function background(blockedSiteBuilder, BlockedSiteList, interception, UserSettings, constants, storage) {
 //Set that holds the urls to be intercepted
     var blockedSites = new BlockedSiteList.BlockedSiteList();

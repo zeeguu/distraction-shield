@@ -1,4 +1,4 @@
-define(['constants','background','api', 'synchronizer'], function Auth(constants, background, api, synchronizer) {
+define('auth', ['constants','background','api', 'synchronizer'], function Auth(constants, background, api, synchronizer) {
     function Auth() {
         var self = this;
         var settings = background.getLocalSettings();

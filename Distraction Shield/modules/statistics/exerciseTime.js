@@ -1,4 +1,4 @@
-define(['storage', 'dateutil'], function ExerciseTime(storage, dateutil) {
+define('exerciseTime', ['storage', 'dateutil'], function ExerciseTime(storage, dateutil) {
 
     // Increments the counter for time spent on exercises today with 'amount'.
     // When there the current day does not exist in the storage yet, initialize the counter for this day at 0.

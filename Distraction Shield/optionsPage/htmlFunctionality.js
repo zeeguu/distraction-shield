@@ -1,4 +1,4 @@
-define (['GreenToRedSlider','TurnOffSlider','blockedSiteBuilder','synchronizer','constants','jquery'],
+define ('htmlFunctionality', ['GreenToRedSlider','TurnOffSlider','blockedSiteBuilder','synchronizer','constants','jquery'],
     function htmlFunctionality (GreenToRedSlider, TurnOffSlider, blockedSiteBuilder, synchronizer, constants, $) {
 
     /**

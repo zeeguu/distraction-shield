@@ -22,7 +22,7 @@ require.config({
     }
 });
 
-require (['background','auth', 'jquery', 'domReady', 'constants'], function (background,auth, $, domReady, constants) {
+require ('login', ['background','auth', 'jquery', 'domReady', 'constants'], function (background,auth, $, domReady, constants) {
     /* -------------------- -------------------------- -------------------- */
 
     var instructions;

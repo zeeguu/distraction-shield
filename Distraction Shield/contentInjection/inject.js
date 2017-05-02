@@ -1,28 +1,17 @@
 require.config({
     baseUrl: "./",
     paths : {
+        'constants'         : '../constants',
         'BlockedSite'       : '../classes/BlockedSite',
         'BlockedSiteList'   : '../classes/BlockedSiteList',
         'UserSettings'      : '../classes/UserSettings',
-        'api'               : '../modules/authentication/api',
-        'auth'              : '../modules/authentication/auth',
-        'exerciseTime'      : '../modules/statistics/exerciseTime',
-        'interception'      : '../modules/statistics/interception',
-        'tracker'           : '../modules/statistics/tracker',
-        'blockedSiteBuilder': '../modules/blockedSiteBuilder',
-        'dateutil'          : '../modules/dateutil',
         'storage'           : '../modules/storage',
-        'synchronizer'      : '../modules/synchronizer',
-        'urlFormatter'      : '../modules/urlFormatter',
-        'background'        : '../background',
-        'constants'         : '../constants',
-        'jquery'            : '../dependencies/jquery/jquery-1.10.2',
-        'domReady'          : '../domReady'
+        'jquery'            : '../dependencies/jquery/jquery-1.10.2'
 
     }
 });
 
-require (['jquery', 'storage', 'constants'], function ($, storage, constants) {
+require(['jquery', 'storage', 'constants'], function inject($, storage, constants) {
 
     mainFlow = function () {
         storage.getMode(initBasis);
@@ -38,7 +27,7 @@ require (['jquery', 'storage', 'constants'], function ($, storage, constants) {
             datattype: "html",
             success: function (data) {
                 infoDiv = $.parseHTML(data);
-                $(".body").prepend(infoDiv);
+                $("body").prepend(infoDiv);
                 $("#tds").width(window.innerWidth + "px");
                 $("#tds_generalInfoText").append(constants.zeeguuInfoText);
                 $("#tds_modeSpecificText").append(message);

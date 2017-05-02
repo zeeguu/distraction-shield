@@ -32,8 +32,12 @@
   "content_scripts": [
     {
       "matches" : ["*://www.zeeguu.unibe.ch/practice*"],
-      "js" : ["dependencies/jquery/jquery-1.10.2.js",
+      "js" : ["require.js",
+              "dependencies/jquery/jquery-1.10.2.js",
               "constants.js",
+              "classes/BlockedSite.js",
+              "classes/BlockedSiteList.js",
+              "classes/UserSettings.js",
               "modules/storage.js",
               "contentInjection/inject.js"]
     }
@@ -51,6 +55,6 @@
   "web_accessible_resources": [
     "contentInjection/inject.html",
     "loginPage/login.html"
-  ]
+    ]
 
 }

@@ -1,4 +1,4 @@
-define (['constants'], function Api(constants) {
+define ('api', ['constants'], function Api(constants) {
 
         postRequest = function (url, parameters) {
             return request("POST", url, parameters);

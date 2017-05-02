@@ -1,4 +1,4 @@
-define (['jquery', 'constants'], function GreenToRedSlider($, constants) {
+define ('GreenToRedSlider', ['jquery', 'constants'], function GreenToRedSlider($, constants) {
     function GreenToRedSlider(sliderID, saveFunction) {
         var self = this;
 

@@ -1,4 +1,4 @@
-define(['jquery'], function connectDataToHtml ($) {
+define('connectDataToHtml', ['jquery'], function connectDataToHtml ($) {
     /**
      * This file connects the data we read from storage and saved in local variables
      * to the actual html representations of this data.

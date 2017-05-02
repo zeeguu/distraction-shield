@@ -1,4 +1,4 @@
-define (['constants'], function UserSettings(constants) {
+define ('UserSettings', ['constants'], function UserSettings(constants) {
 
     /* --------------- --------------- Serialization --------------- --------------- */
 
@@ -119,9 +119,9 @@ define (['constants'], function UserSettings(constants) {
         this.turnOffFromBackground = function () {
             if (self.getState() == "On") {
                 var curDate = new Date();
-                var newOffTill = new Date(curDate.setMinutes(self.interceptionInterval + curDate.getMinutes()));
-                self.status = {state: false, setAt: new Date(), offTill: newOffTill};
-                self.setTimer();
+                var newOffTill = new Date(curDate.setMinutes(interceptionInterval + curDate.getMinutes()));
+                status = {state: false, setAt: new Date(), offTill: newOffTill};
+                setTimer();
             }
         };
 
@@ -131,11 +131,9 @@ define (['constants'], function UserSettings(constants) {
             }
         };
 
-        //Private method
         setTimer = function () {
             var timerInMS = status.offTill - new Date();
-            var MSint = timerInMS.toFixed();
-            setTimeout(this.turnExtensionBackOn, MSint);
+            setTimeout(self.turnExtensionBackOn, timerInMS);
         };
 
         this.copySettings = function (settingsObject) {

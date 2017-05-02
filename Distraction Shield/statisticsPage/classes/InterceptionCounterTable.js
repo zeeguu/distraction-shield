@@ -1,4 +1,4 @@
-define(['jquery'], function InterceptionCounterTable ($) {
+define('InterceptionCounterTable', ['jquery'], function InterceptionCounterTable ($) {
     function InterceptionCounterTable() {
         var self = this;
         this.counters = null;

@@ -1,5 +1,5 @@
 //TODO fix require for this module
-define (['constants'], function Tracker(constants) {
+define ('tracker', ['constants'], function Tracker(constants) {
 // The tracker tracks whether you are currently working on exercises.
 // Every second, the "alarm" is fired, and the url of the current tab is examined.
 // If this url corresponds with the zeeguu url, the time spent on exercises counter is incremented.
