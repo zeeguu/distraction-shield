@@ -19,8 +19,8 @@ require.config({
 });
 
 
-require( ['background', 'storage', 'BlockedSiteList', 'UserSettings'],
-        function(background, storage, BlockedSiteList, UserSettings) {
+require( ['background', 'storage', 'BlockedSiteList', 'UserSettings', 'tracker'],
+        function(background, storage, BlockedSiteList, UserSettings, tracker) {
 
 
     /* --------------- ---- Session initializer ---- ---------------*/
@@ -40,6 +40,7 @@ require( ['background', 'storage', 'BlockedSiteList', 'UserSettings'],
             //authenticator.authenticateSession();
             //setLocalAuthenticator(authenticator);
         });
+        tracker.init();
     };
 
     /* --------------- ---- Run upon installation ---- ---------------*/

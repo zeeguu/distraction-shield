@@ -1,4 +1,4 @@
-define ('ExerciseTimeTable', ['jquery'], function ExerciseTimeTable($) {
+define ('ExerciseTimeTable', ['jquery', 'dateutil'], function ExerciseTimeTable($, dateutil) {
     function ExerciseTimeTable(html_element) {
         var self = this;
         this.table = html_element;
@@ -17,7 +17,7 @@ define ('ExerciseTimeTable', ['jquery'], function ExerciseTimeTable($) {
             var tableRow =
                 $("<tr>" +
                     "<td>"+date+"</td>" +
-                    "<td>"+bg.dateUtil.secondsToHHMMSS(exerciseTime)+"</td>" +
+                    "<td>"+dateutil.secondsToHHMMSS(exerciseTime)+"</td>" +
                     "</tr>");
             return tableRow;
         };
