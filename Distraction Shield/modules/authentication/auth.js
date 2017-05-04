@@ -50,18 +50,28 @@ function Auth() {
     };
 
     this.authenticateSession = function () {
-        return self.validate().then(function (response) {
-            if (response !== "OK") {
-                self.setSession(null);
-                self.sessionAuthentic = false;
-            } else {
-                self.sessionAuthentic = true;
-            }
-        }, function (error) {
-            self.setSession(null);
-            self.sessionAuthentic = false;
-        });
+        if (self.getSession() != null && self.getSession() != undefined) {
+            return self.validate().then(function (response) {
+                if (response !== "OK") {
+                    self.invalidateSession();
+                } else {
+                    self.sessionAuthentic = true;
+                }
+            }, function (error) {
+                self.invalidateSession();
+            });
+        } else {
+            return new Promise(function (resolve, reject) {
+                resolve("No valid session");
+                self.invalidateSession();
+            });
+        }
     };
+
+    this.invalidateSession = function () {
+        self.setSession(null);
+        self.sessionAuthentic = false;
+    }
 
     this.getSession = function(){
         return localSettings.getSessionID();
