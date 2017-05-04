@@ -10,7 +10,6 @@ initSession = function () {
         settings.reInitTimer();
         setLocalSettings(settings);
         retrieveBlockedSites(replaceListener);
-        auth.authenticateSession();
     });
 };
 

@@ -79,17 +79,8 @@ removeWebRequestListener = function() {
 intercept = function(details) {
     interception.incrementInterceptionCounter(details.url);
     interception.addToInterceptDateList();
-    var redirectLink;
-    var params;
-    if (!auth.sessionAuthentic) {
-        redirectLink = chrome.extension.getURL('loginPage/login.html');
-        params = "?forceLogin=" + zeeguuExLink;
-    } else {
-        redirectLink = zeeguuExLink;
-        params = "?sessionID=" + localSettings.getSessionID();
-    }
-    params = params+"&redirect="+details.url;
-
+    var redirectLink = zeeguuExLink;
+    var params = "?redirect="+details.url;
     return {redirectUrl: redirectLink + params};
 };
 

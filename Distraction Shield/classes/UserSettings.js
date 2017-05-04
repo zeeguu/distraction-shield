@@ -6,12 +6,9 @@ function UserSettings () {
                     setAt: new Date(),
                     offTill: new Date()
                   };
-    this.sessionID = undefined;
     this.mode = modes.lazy;
     this.interceptionInterval = 1;
 
-    this.setSessionID = function(newID) {this.sessionID = newID;};
-    this.getSessionID = function() {return this.sessionID;};
     this.setInterceptionInterval = function(val) {this.interceptionInterval = val;};
     this.getInterceptionInterval = function() {return this.interceptionInterval;};
     this.setMode = function(newMode) {this.mode = newMode;};
@@ -78,7 +75,6 @@ function UserSettings () {
 
     this.copySettings = function(settingsObject) {
         this.status = settingsObject.status;
-        this.sessionID = settingsObject.sessionID;
         this.interceptionInterval = settingsObject.interceptionInterval;
         this.mode = settingsObject.mode;
     };
@@ -108,7 +104,6 @@ parseSettingsObject = function(parsedSettingsObject) {
     s.status.setAt = new Date(parsedSettingsObject.status.setAt);
     s.status.offTill = new Date(parsedSettingsObject.status.offTill);
     s.mode = parsedSettingsObject.mode;
-    s.sessionID = parsedSettingsObject.sessionID;
     s.interceptionInterval = parsedSettingsObject.interceptionInterval;
     return s;
 };
