@@ -12,7 +12,6 @@ define ('tracker', ['constants', 'exerciseTime'], function Tracker(constants, ex
 
     // Initialize the alarm, and initialize the idle-checker.
     init = function() {
-        console.log("Tracker initialized.");
         setInterval(fireAlarm, 5000);
         setInterval(increaseTimeCounter, 1000);
 
