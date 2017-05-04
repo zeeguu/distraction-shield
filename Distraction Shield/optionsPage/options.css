@@ -8,6 +8,7 @@ body {
 }
 
 .page-header {
+    margin: 0 auto 0 auto;
     text-align:center;
 }
 
@@ -79,6 +80,11 @@ body {
 .panel {
     padding-top:5px;
     padding-bottom:5px;
+}
+
+.panel-primary {
+    padding-top:0px;
+    padding-bottom:0px;
 }
 
 /* ---------- ---------- Slider ---------- ---------- */
