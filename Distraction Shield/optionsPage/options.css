@@ -1,4 +1,4 @@
-body{
+body {
     margin: 0 auto;
     min-width:1000px;
 }
@@ -43,6 +43,16 @@ body{
     overflow:visible;
 }
 
+.editable-span {
+    display:block;
+    max-width:200px;
+    white-space: nowrap;
+}
+
+.editable-span:focus {
+    overflow: hidden;
+}
+
 /* ---------- ---------- table ---------- ---------- */
 
 .highlight {
@@ -50,7 +60,7 @@ body{
 }
 
 .table-striped>tbody>tr:nth-of-type(odd).highlight {
-        background-color: lightskyblue;
+    background-color: lightskyblue;
 }
 
 .pageTitle {
@@ -84,7 +94,7 @@ input[type=range] {
     height:16px;
     border: 1px solid #000;
     border-radius: 6px;
-    background: rgb(0,255,0);
+    /*background: rgb(0,220,0);*/
     background-size: cover; 
 }
 
@@ -100,4 +110,10 @@ input[type=range]::-webkit-slider-thumb {
     background: #DADADA;
     cursor: pointer;
     -webkit-appearance: none;
+}
+
+/* ---------- ---------- Slider ---------- ---------- */
+.input-group-addon-logout-version{
+    background: #c8e5bc;
+    width: 100%;
 }

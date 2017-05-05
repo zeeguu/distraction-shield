@@ -34,7 +34,7 @@
                         <div id="interval-slider" class="range-slider">
                             <input id="interval-slider-range" class="range-slider__range" type="range" value="15" min="1" max="90"
                                    step="1">
-                            <span id="interval-slider-value" class="range-slider__value">00:15</span>
+                            <span contenteditable id="interval-slider-value" class="range-slider__value editable-span">00:15 minute(s)</span>
                         </div>
                     </div>
                 </div>
@@ -59,17 +59,35 @@
                     </div>
                 </div>
 
-            <div id="modeWrapper" class="row">
+            <div id="turnOffWrapper" class="row">
                 <div id="turnOff-slider" class="panel panel-default col-md-offset-2 col-md-8">
                     <div id="offBtnDiv" class="col-md-2">
                         <button id="turnOff-slider-offBtn" class="btn btn-default" type="button">Turn Off</button>
                     </div>
-                    <div id="offValDiv" class="col-md-3"><span id="turnOff-slider-value" class="range-slider__value">00:10 hours.</span></div>
+                    <div id="offValDiv" class="col-md-3">
+                        <span contenteditable id="turnOff-slider-value" class="range-slider__value editable-span">00:10 hours.</span>
+                    </div>
                     <div id="offRanDiv" class="col-md-10">
-                        <input id="turnOff-slider-range" class="range-slider__range" type="range" value="10" min="10" max="10" step="10" />
+                        <input id="turnOff-slider-range" class="range-slider__range" type="range" value="10" min="10" max="10" step="5" />
                     </div>
                 </div>
             </div>
+            <div id="sessionWrapper" class="row">
+                <div id="session" class="panel panel-default col-md-offset-2 col-md-8">
+                    <span id="sessionMessage"></span>
+                    <div class="input-group">
+                        <input id="emailFld" type="text" class="form-control" placeholder="E-mail">
+                        <span id="addon" class="input-group-addon"></span>
+                        <input id="passwordFld" type="password" class="form-control" placeholder="Password">
+                        <span class="input-group-btn">
+                                <button id="sessionBtn" class="btn btn-default " type="button">
+                                    <span id="sessionGlyphIcon" class="glyphicon" aria-hidden="true"></span>
+                                </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
             <div class="link1">
                 <a id="tourRestart" href="../optionsPage/options.html">Click to take the welcome tour again.</a>
             </div>

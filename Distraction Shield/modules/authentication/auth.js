@@ -7,6 +7,7 @@ function Auth() {
     this.signinAnonUrl = "/add_anon_user";
     this.validateUrl = "/validate";
     this.logoutUrl = "/logout_session";
+    this.detailsUrl = "/get_user_details";
 
     this.sessionAuthentic = false;
 
@@ -36,6 +37,11 @@ function Auth() {
         return api.getRequest(url, "");
     };
 
+    this.getDetails = function () {
+        var url = self.detailsUrl + "?session="+self.getSession();
+        return api.getRequest(url, "");
+    }
+
     this.logout = function(){
         var url = self.logoutUrl + "?session="+self.getSession();
         self.sessionAuthentic = false;
@@ -44,18 +50,28 @@ function Auth() {
     };
 
     this.authenticateSession = function () {
-        return self.validate().then(function (response) {
-            if (response !== "OK") {
-                self.setSession(null);
-                self.sessionAuthentic = false;
-            } else {
-                self.sessionAuthentic = true;
-            }
-        }, function (error) {
-            self.setSession(null);
-            self.sessionAuthentic = false;
-        });
+        if (self.getSession() != null && self.getSession() != undefined) {
+            return self.validate().then(function (response) {
+                if (response !== "OK") {
+                    self.invalidateSession();
+                } else {
+                    self.sessionAuthentic = true;
+                }
+            }, function (error) {
+                self.invalidateSession();
+            });
+        } else {
+            return new Promise(function (resolve, reject) {
+                resolve("No valid session");
+                self.invalidateSession();
+            });
+        }
     };
+
+    this.invalidateSession = function () {
+        self.setSession(null);
+        self.sessionAuthentic = false;
+    }
 
     this.getSession = function(){
         return localSettings.getSessionID();
