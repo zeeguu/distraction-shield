@@ -39,8 +39,6 @@
       "modules/statistics/interception.js",
       "modules/statistics/exerciseTime.js",
       "background.js",
-      "modules/authentication/api.js",
-      "modules/authentication/auth.js",
       "init.js"
     ]
   },
@@ -66,8 +64,7 @@
   ],
 
   "web_accessible_resources": [
-    "contentInjection/inject.html",
-    "loginPage/login.html"
+    "contentInjection/inject.html"
   ]
 
 }

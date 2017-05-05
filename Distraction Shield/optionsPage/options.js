@@ -8,14 +8,12 @@
 
 // Log console messages to the background page console instead of the content page.
 var console = chrome.extension.getBackgroundPage().console;
-var auth = chrome.extension.getBackgroundPage().auth;
 var localSettings = chrome.extension.getBackgroundPage().localSettings;
 
 //Local variables that hold the html elements
 var html_txtFld = $('#textFld');
 var html_intCnt = $('#iCounter');
 var html_saveButton = $('#saveBtn');
-var html_sessionBtn = $('#sessionBtn');
 var modeGroup = "modeOptions";
 
 
@@ -37,7 +35,6 @@ initOptionsPage = function() {
         setLocalVariables(output);
         connectHtmlFunctionality();
         connectLocalDataToHtml();
-        checkLoginStatus();
     });
 };
 
@@ -89,22 +86,6 @@ addBlockedSiteToAll = function (newItem) {
         blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
         synchronizer.syncBlacklist(blacklist);
     }
-};
-
-
-
-updateSessionbutton = function() {
-    if (auth.sessionAuthentic) {
-        //logout button active
-        connectLogout();
-    } else {
-        //login button active
-        connectLogin();
-    }
-};
-
-checkLoginStatus = function () {
-    auth.authenticateSession().then(updateSessionbutton);
 };
 
 /* -------------------- -------------------------- -------------------- */
