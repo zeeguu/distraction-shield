@@ -113,7 +113,3 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 /* ---------- ---------- Slider ---------- ---------- */
-.input-group-addon-logout-version{
-    background: #c8e5bc;
-    width: 100%;
-}
