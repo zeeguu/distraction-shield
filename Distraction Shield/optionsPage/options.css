@@ -7,11 +7,6 @@ body {
     margin-bottom: 15px;
 }
 
-.page-header {
-    margin: 0 auto 0 auto;
-    text-align:center;
-}
-
 /* ---------- ---------- options alignment ---------- ---------- */
 
 #modeRadioDiv {
@@ -85,6 +80,12 @@ body {
 .panel-primary {
     padding-top:0px;
     padding-bottom:0px;
+}
+
+.page-header {
+    margin: 0 auto 0 auto;
+    text-align:center;
+    border-bottom: 2px solid;
 }
 
 /* ---------- ---------- Slider ---------- ---------- */
