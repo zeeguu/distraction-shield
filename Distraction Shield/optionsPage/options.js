@@ -21,6 +21,7 @@ var blacklistTable;
 var intervalSlider;
 var turnOffSlider;
 var tr = document.getElementById("tourRestart");
+var feedback = document.getElementById("feedback");
 
 //Local variables that hold all necessary data.
 var settings_object = new UserSettings();
@@ -98,4 +99,9 @@ document.addEventListener("DOMContentLoaded", function() {
 //Tour Restart Function
 tr.onclick = function(){
     chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
+};
+
+//Feedback Function
+feedback.onclick = function(){
+    chrome.tabs.create({'url': chrome.runtime.getURL('feedbackPage/feedback.html')});
 };
