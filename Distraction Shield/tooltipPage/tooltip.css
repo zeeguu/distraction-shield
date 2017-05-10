@@ -12,3 +12,6 @@ body {
     border-radius: 7px !important;
 }
 
+.btn {
+    min-width:150px;
+}

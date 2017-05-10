@@ -69,12 +69,15 @@ setSaveButtonToSuccess = function () {
     }, 3000);
 };
 
+
+
 setSaveButtonFunctionality = function() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         var activeTab = arrayOfTabs[0];
         var url = activeTab.url;
         var matchedBlockedSite = patternMatchUrl(url);
         if (matchedBlockedSite != null) {
+            saveButton.unbind('click', saveCurrentPageToBlacklist);
             saveButton.on('click', toggleBlockedSite(url));
             if(matchedBlockedSite.getCheckboxVal()) {
                 saveButton.text("Unblock");
@@ -82,6 +85,7 @@ setSaveButtonFunctionality = function() {
                 saveButton.text("Block");
             }
         } else {
+            saveButton.unbind('click', toggleBlockedSite(url));
             saveButton.on('click', saveCurrentPageToBlacklist);
             saveButton.text("Block");
         }
