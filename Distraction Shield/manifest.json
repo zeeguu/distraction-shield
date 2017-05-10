@@ -5,7 +5,7 @@
   "description": "Divert attention from social media websites towards learning a new language",
   "version": "1.1.0",
   //Icon's shown in chrome://extensions
-  "icons": {"128": "aikido_icon.png"},
+  "icons": {"128": "aikido.png"},
   "offline_enabled": false,
 
   //what pops up once we hit the options
@@ -16,7 +16,7 @@
 
   //Icon in the browser specification
   "browser_action": {
-    "default_icon": "aikido_icon.png",
+    "default_icon": "aikido.png",
     "default_title": "Distraction Shield Settings",
     "default_popup": "tooltipPage/tooltip.html"
   },

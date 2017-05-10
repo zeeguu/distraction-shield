@@ -45,9 +45,9 @@ toggleBlockedSite = function(url) {
         }
         newItem.setCheckboxVal(!newItem.getCheckboxVal());
         if (newItem.getCheckboxVal()) {
-            saveButton.text("Disable blocking this page");
+            saveButton.text("Unblock");
         } else {
-            saveButton.text("Enable blocking this page");
+            saveButton.text("Block");
         }
         synchronizer.syncBlacklist(list);
     }
@@ -65,8 +65,8 @@ setSaveButtonToSuccess = function () {
     saveButton.html('Successfully added!');
     setTimeout(function () {
         saveButton.attr('class', 'btn btn-info');
-        saveButton.html(' Save current page ');
-    }, 4000);
+        setSaveButtonFunctionality();
+    }, 3000);
 };
 
 setSaveButtonFunctionality = function() {
@@ -77,13 +77,13 @@ setSaveButtonFunctionality = function() {
         if (matchedBlockedSite != null) {
             saveButton.on('click', toggleBlockedSite(url));
             if(matchedBlockedSite.getCheckboxVal()) {
-                saveButton.text("Disable blocking this page");
+                saveButton.text("Unblock");
             } else {
-                saveButton.text("Enable blocking this page");
+                saveButton.text("Block");
             }
         } else {
             saveButton.on('click', saveCurrentPageToBlacklist);
-            saveButton.text("Save current page");
+            saveButton.text("Block");
         }
     });
 };
