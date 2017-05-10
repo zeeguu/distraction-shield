@@ -5,6 +5,11 @@ body {
     text-align: center;
 }
 
+.form-control {
+    display: inline;
+    max-width: 600px;
+}
+
 .submitMessage {
     display:none;
 }
