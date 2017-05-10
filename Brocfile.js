@@ -16,7 +16,10 @@ var dependencies = new Funnel('bower_components', {
     '**/*/bootstrap-tour-standalone.min.js',
     '**/*/bootstrap.min.css',
     '**/*/bootstrap.min.js',
-    '**/*/jquery.min.js'
+    '**/*/jquery.min.js',
+    '**/*/glyphicons-halflings-regular.woff2',
+    '**/*/glyphicons-halflings-regular.woff',
+    '**/*/glyphicons-halflings-regular.ttf'
   ],
 
   //  make sure for backwards compatibility with current project
