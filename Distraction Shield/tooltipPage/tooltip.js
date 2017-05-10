@@ -62,7 +62,7 @@ saveCurrentPageToBlacklist = function() {
 
 setSaveButtonToSuccess = function () {
     saveButton.attr('class', 'btn btn-success');
-    saveButton.html('Successfully added!');
+    saveButton.html('Added!');
     setTimeout(function () {
         saveButton.attr('class', 'btn btn-info');
         setSaveButtonFunctionality();
