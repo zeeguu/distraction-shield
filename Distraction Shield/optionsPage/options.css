@@ -1,14 +1,10 @@
-body{
+body {
     margin: 0 auto;
     min-width:1000px;
 }
 
 #addUrlDiv {
     margin-bottom: 15px;
-}
-
-.page-header {
-    text-align:center;
 }
 
 /* ---------- ---------- options alignment ---------- ---------- */
@@ -34,13 +30,23 @@ body{
 #offRanDiv{
     margin-top:3px;
     margin-bottom:3px;
-    width:50%; 
+    width:50%;
 }
 
 #offValDiv{
     margin-top:11px;
     width:30%;
     overflow:visible;
+}
+
+.editable-span {
+    display:block;
+    max-width:200px;
+    white-space: nowrap;
+}
+
+.editable-span:focus {
+    overflow: hidden;
 }
 
 /* ---------- ---------- table ---------- ---------- */
@@ -50,7 +56,7 @@ body{
 }
 
 .table-striped>tbody>tr:nth-of-type(odd).highlight {
-        background-color: lightskyblue;
+    background-color: lightskyblue;
 }
 
 .pageTitle {
@@ -71,6 +77,17 @@ body{
     padding-bottom:5px;
 }
 
+.panel-primary {
+    padding-top:0px;
+    padding-bottom:0px;
+}
+
+.page-header {
+    margin: 0 auto 0 auto;
+    text-align:center;
+    border-bottom: 2px solid;
+}
+
 /* ---------- ---------- Slider ---------- ---------- */
 
 .amountColumn {
@@ -84,12 +101,12 @@ input[type=range] {
     height:16px;
     border: 1px solid #000;
     border-radius: 6px;
-    background: rgb(0,255,0);
-    background-size: cover; 
+    /*background: rgb(0,220,0);*/
+    background-size: cover;
 }
 
 input[type=range]:focus {
-  outline: none;
+    outline: none;
 }
 
 input[type=range]::-webkit-slider-thumb {
@@ -101,3 +118,5 @@ input[type=range]::-webkit-slider-thumb {
     cursor: pointer;
     -webkit-appearance: none;
 }
+
+/* ---------- ---------- Slider ---------- ---------- */

@@ -1,4 +1,3 @@
-//TODO fix require for this module
 define ('tracker', ['constants', 'exerciseTime'], function Tracker(constants, exerciseTime) {
 // The tracker tracks whether you are currently working on exercises.
 // Every second, the "alarm" is fired, and the url of the current tab is examined.
@@ -8,19 +7,33 @@ define ('tracker', ['constants', 'exerciseTime'], function Tracker(constants, ex
     this.idle = false;
     this.tabActive = null;
     this.activeTime = 0;
-    this.zeeguuRegex = constants.zeeguuExLink + ".*";
+    this.updatedExerciseTime = false;
+    this.updatedBlockedSiteTime = false;
+    ///TODO remove this.zeeguuRegex = constants.zeeguuExLink + ".*";
 
     // Initialize the alarm, and initialize the idle-checker.
     init = function() {
-        setInterval(fireAlarm, 5000);
-        setInterval(increaseTimeCounter, 1000);
+        setInterval(fireAlarm, constants.savingFrequency);
+        setInterval(increaseTimeCounter, constants.measureFrequency);
 
         // When the user does not input anything for 15 seconds, set the state to idle.
-        chrome.idle.setDetectionInterval(15);
+        chrome.idle.setDetectionInterval(constants.idleTime);
         chrome.idle.onStateChanged.addListener(checkIdle);
 
     };
-
+    // TODO replace old function with this one
+    // fireAlarm = function () {
+    //     if (self.updatedExerciseTime) {
+    //         exerciseTime.incrementTodayExerciseTime(self.activeTime);
+    //         self.activeTime = 0;
+    //         self.updatedExerciseTime = false;
+    //     }
+    //     if (self.updatedBlockedSiteTime) {
+    //         synchronizer.syncBlacklist(blockedSites);
+    //         self.updatedExerciseTime = false;
+    //     }
+    // };
+    // TODO REMOVE
     fireAlarm = function () {
         if (self.activeTime > 0) {
             exerciseTime.incrementTodayExerciseTime(self.activeTime);
@@ -38,7 +51,59 @@ define ('tracker', ['constants', 'exerciseTime'], function Tracker(constants, ex
         }
     };
 
-    // Function attached to the idle-listener. Sets the self.idle variable.
+    //TODO implement tracker for websites
+    // // Check if the user is idle. If the user is not idle, increment a counter.
+    // matchUrls = function () {
+    //     if (!self.idle) {
+    //         self.getCurrentTab().then(function(result){
+    //             self.tabActive = result;
+    //
+    //             // If the user is working on exercises
+    //             if (self.compareDomain(self.tabActive, constants.zeeguuExLink)) {
+    //                 self.increaseTimeCounterExercises()
+    //             } else {
+    //                 // If the user is on a blocked website
+    //                 let blockedSitePromise = self.matchUrlToBlockedSite(self.tabActive, blockedSites.getList());
+    //                 blockedSitePromise.then(function(result) {
+    //                     self.increaseTimeCounterBlockedSite(result);
+    //                 }).catch(function(reject){});
+    //             }
+    //         });
+    //     }
+    // };
+    //
+    // this.increaseTimeCounterExercises = function () {
+    //     self.updatedExerciseTime = true;
+    //     self.activeTime = self.activeTime + 1;
+    // };
+    //
+    // this.increaseTimeCounterBlockedSite = function (blockedSite) {
+    //     self.updatedBlockedSiteTime = true;
+    //     blockedSite.setTimeSpent(blockedSite.getTimeSpent()+1);
+    // };
+    //
+    // this.matchUrlToBlockedSite = function (url, blockedSites) {
+    //     return new Promise(function(resolve, reject){
+    //         blockedSites.forEach(function(item){
+    //             if(self.compareDomain(url, item.getDomain())) {
+    //                 resolve(item);
+    //             }
+    //         });
+    //         reject();
+    //     });
+    // };
+    //
+    // // Creates a regex string which using the domain of an url.
+    // this.createRegexFromDomain = function (domain) {
+    //     return "^(http[s]?:\\/\\/)?(.*)"+domain+".*$";
+    // };
+    //
+    // // Compares the domain of an url to another domain using a regex.
+    // this.compareDomain = function (url, domain) {
+    //     return self.compareUrlToRegex(url, self.createRegexFromDomain(domain));
+    // };
+
+        // Function attached to the idle-listener. Sets the self.idle variable.
     checkIdle = function(idleState) {
         self.idle = (idleState != "active");
     };

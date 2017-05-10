@@ -1,5 +1,6 @@
 define ('GreenToRedSlider', ['jquery', 'constants'], function GreenToRedSlider($, constants) {
     function GreenToRedSlider(sliderID, saveFunction) {
+        var alert = chrome.extension.getBackgroundPage().alert;
         var self = this;
 
         this.saveValue = saveFunction;
@@ -75,7 +76,7 @@ define ('GreenToRedSlider', ['jquery', 'constants'], function GreenToRedSlider($
 
         this.timeInputError = function () {
             self.setValue(self.sliderRange.val());
-            alert("please input a value blablabla");
+            alert("please input a supported time format");
         }
     }
 

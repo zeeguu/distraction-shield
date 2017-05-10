@@ -1,4 +1,4 @@
-define ('BlacklistStatsTable', ['jquery'], function BlacklistStatsTable($) {
+define ('BlacklistStatsTable', ['jquery', 'dateutil'], function BlacklistStatsTable($, dateutil) {
     function BlacklistStatsTable(html_element) {
         var self = this;
         this.table = html_element;
@@ -20,6 +20,7 @@ define ('BlacklistStatsTable', ['jquery'], function BlacklistStatsTable($) {
                     "<td>" + site.getIcon() + "</td>" +
                     "<td>" + site.getName() + "</td>" +
                     "<td>" + site.getCounter() + "</td>" +
+                    "<td>"+ dateutil.secondsToHHMMSS(site.getTimeSpent())+"</td>" +
                     "</tr>");
             return row;
         };

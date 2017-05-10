@@ -9,7 +9,8 @@ define('BlockedSite', ['constants'], function BlockedSite(constants) {
             name: blockedSite.getName(),
             icon: blockedSite.getIcon(),
             checkboxVal: blockedSite.getCheckboxVal(),
-            counter: blockedSite.getCounter()
+            counter: blockedSite.getCounter(),
+            timeSpent: blockedSite.getTimeSpent()
         };
         return JSON.stringify(obj);
     };
@@ -23,6 +24,7 @@ define('BlockedSite', ['constants'], function BlockedSite(constants) {
         b.setIcon(blockedSite.icon);
         b.setCheckboxVal(blockedSite.checkboxVal);
         b.setCounter(blockedSite.counter);
+        b.setTimeSpent(blockedSite.timeSpent);
         return b;
     };
 
@@ -52,6 +54,7 @@ define('BlockedSite', ['constants'], function BlockedSite(constants) {
         var icon = constructIcon(urlBase);
         var checkboxVal = true;
         var counter = 0;
+        var timeSpent = 0;
 
         this.getUrl = function () {
             return url;
@@ -83,6 +86,15 @@ define('BlockedSite', ['constants'], function BlockedSite(constants) {
         this.setCounter = function (newVal) {
             counter = newVal;
         };
+
+        this.setTimeSpent = function(newVal) {
+            timeSpent = newVal;
+        };
+
+        this.getTimeSpent = function() {
+            return timeSpent;
+        };
+
         this.getCheckboxVal = function () {
             return checkboxVal;
         };

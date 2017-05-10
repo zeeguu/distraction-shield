@@ -14,5 +14,3 @@ define('blockedSiteBuilder', ['urlFormatter', 'BlockedSite'], function BlockedSi
     }
 
 });
-
-//var blockedSiteBuilder = new BlockedSiteBuilder();

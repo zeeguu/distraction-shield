@@ -16,6 +16,7 @@ define('synchronizer', ['storage', 'BlockedSiteList', 'UserSettings'],
         });
     };
 
+    //TODO remove (unused)
     var addBlockedSiteAndSync = function(blockedSite) {
         storage.getBlacklist(function(blacklist) {
             if (blacklist.addToList(blockedSite)) {

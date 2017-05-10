@@ -1,25 +1,20 @@
 define('constants', function () {
-    /* ---------- ----- auth/api-- ----- ---------- */
-    // this.apiUrl = "https://zeeguu.unibe.ch/api";
-    // this.loginUrl = "/session";
-    // this.loginAnonUrl = "/get_anon_session";
-    // this.signinAnonUrl = "/add_anon_user";
-    // this.validateUrl = "/validate";
-    // this.logoutUrl = "/logout_session";
-
-    var apiUrl = "https://zeeguu.unibe.ch/api";
-    var loginUrl = "/session";
-    var loginAnonUrl = "/get_anon_session";
-    var signinAnonUrl = "/add_anon_user";
-    var validateUrl = "/validate";
-    var logoutUrl = "/logout_session";
-
     /* ---------- ----- background ----- ---------- */
     var zeeguuExLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
 
-
     /* ---------- ----- BlockedSite ----- ---------- */
     var FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
+    /* ---------- ----- Constants for statistics ----- ---------- */
+
+    // The time in seconds after which a user is considered to be idle. Important for tracking the amount of time spent on a url.
+    // Minimum value is 15 seconds.
+    var idleTime = 15;
+
+    // The time in milliseconds of how many times the url of the website is compared to the blacklist or the exercise page.
+    var measureFrequency = 1000;
+
+    // The time in milliseconds after which the time tracking variables are saved to the local or sync storage.
+    var savingFrequency = 5000;
 
     /* ---------- ----- UserSettings, inject ----- ---------- */
     var modes = {
@@ -61,6 +56,10 @@ define('constants', function () {
     return {
         zeeguuExLink            : zeeguuExLink,
         FAVICONLINK             : FAVICONLINK,
+        idleTime                : idleTime,
+        savingFrequency         : savingFrequency,
+        measureFrequency        : measureFrequency,
+
         modes                   : modes,
         newUrlNotUniqueError    : newUrlNotUniqueError,
         INVALID_URL_MESSAGE     : INVALID_URL_MESSAGE,
@@ -69,13 +68,6 @@ define('constants', function () {
         KEY_ENTER               : KEY_ENTER,
         MAX_TURN_OFF_TIME       : MAX_TURN_OFF_TIME,
         oneDay                  : oneDay,
-
-        apiUrl                  : apiUrl,
-        loginUrl                : loginUrl,
-        loginAnonUrl            : loginAnonUrl,
-        signinAnonUrl           : signinAnonUrl,
-        validateUrl             : validateUrl,
-        logoutUrl               : logoutUrl
     }
 });
 

@@ -92,13 +92,7 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, tracker, 
         interception.addToInterceptDateList();
         var redirectLink;
         var params;
-        //if (!authenticator.sessionAuthentic) {
-        //    redirectLink = chrome.extension.getURL('loginPage/login.html');
-        //    params = "?forceLogin=" + constants.zeeguuExLink;
-        //} else {
             redirectLink = constants.zeeguuExLink;
-        //    params = "?sessionID=" + localSettings.getSessionID();
-        //}
         params = "?redirect=" + details.url;
 
         return {redirectUrl: redirectLink + params};

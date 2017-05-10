@@ -1,9 +1,4 @@
-define('interception', ['storage', 'constants'], function Interception(storage, constants) {
-
-    //Fancy string comparison with wildcards
-    wildcardStrComp = function(str, rule) {
-        return new RegExp("^" + rule.split("*").join(".*") + "$").test(str);
-    };
+define('interception', ['storage', 'constants', 'stringutil'], function Interception(storage, constants, stringutil) {
 
     // This method goes through the interceptDateList and count how many times the user was intercepted last day,
     // last week, last month and the total amount of interceptions.
@@ -43,7 +38,7 @@ define('interception', ['storage', 'constants'], function Interception(storage, 
     incrementInterceptionCounter = function(urlAddress, blockedSites) {
         let urlList = blockedSites.getList();
         for (var i = 0; i < urlList.length; i++) {
-            if (wildcardStrComp(urlAddress, urlList[i].getUrl())) {
+            if (stringutil.wildcardStrComp(urlAddress, urlList[i].getUrl())) {
                 urlList[i].setCounter(urlList[i].getCounter() + 1);
                 break;
             }
@@ -83,6 +78,4 @@ define('interception', ['storage', 'constants'], function Interception(storage, 
         addToInterceptDateList : addToInterceptDateList
     }
 });
-
-//var interception = new Interception();
 

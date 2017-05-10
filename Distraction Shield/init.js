@@ -11,6 +11,7 @@ require.config({
         'tracker'           : 'modules/statistics/tracker',
         'blockedSiteBuilder': 'modules/blockedSiteBuilder',
         'dateutil'          : 'modules/dateutil',
+        'stringutil'          : 'modules/stringutil',
         'storage'           : 'modules/storage',
         'synchronizer'      : 'modules/synchronizer',
         'urlFormatter'      : 'modules/urlFormatter'
@@ -23,10 +24,6 @@ require( ['background', 'storage', 'BlockedSiteList', 'UserSettings', 'tracker']
         function(background, storage, BlockedSiteList, UserSettings, tracker) {
 
 
-    /* --------------- ---- Session initializer ---- ---------------*/
-    // console.log(JSON.stringify(auth));   //TODO remove
-    // console.log(auth);                   //TODO remove
-    //var authenticator = new auth.Auth();
 
     //First receive the blacklist and settings from the sync storage,
     //then create a onBeforeRequest listener using this list and the settings.
@@ -37,8 +34,6 @@ require( ['background', 'storage', 'BlockedSiteList', 'UserSettings', 'tracker']
             settings.reInitTimer();
             setLocalSettings(settings);
             retrieveBlockedSites(replaceListener);
-            //authenticator.authenticateSession();
-            //setLocalAuthenticator(authenticator);
         });
         tracker.init();
     };

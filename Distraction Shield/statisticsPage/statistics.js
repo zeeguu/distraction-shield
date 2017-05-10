@@ -7,6 +7,7 @@ require.config({
         'interception'              : '../modules/statistics/interception',
         'storage'                   : '../modules/storage',
         'dateutil'                   : '../modules/dateutil',
+        'stringutil'                   : '../modules/stringutil',
         'constants'                 : '../constants',
         'BlacklistStatsTable'       : 'classes/BlacklistStatsTable',
         'ExerciseTimeTable'         : 'classes/ExerciseTimeTable',

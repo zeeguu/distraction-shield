@@ -19,14 +19,10 @@ define('urlFormatter', ['constants'], function UrlFormatter(constants) {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
             // simple regex to extract data from title tags, ignoring newlines, tabs and returns
             var titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
-            // console.log('titleTags: ' + titleTags); //todo remove
-            // console.log('titleTags: ' + (titleTags != null)); //todo remove
-            // console.log('responseURL: ' + xmlHttp.responseURL); //todo remove
             if (titleTags != null) {
                 var title = titleTags[1];
                 callback(xmlHttp.responseURL, title);
             } else {
-                // console.log('urlToGet: ' + theUrlToGet); //todo remove
                 callback(xmlHttp.responseURL, theUrlToGet);
             }
         } else if (xmlHttp.readyState == 4) {
@@ -35,23 +31,20 @@ define('urlFormatter', ['constants'], function UrlFormatter(constants) {
     };
 
     errorHandler = function (status) {
-            switch (status) {
-                case 404:
-                    alert(constants.INVALID_URL_MESSAGE + 'File not found');
-                    break;
-                case 500:
-                    alert(constants.INVALID_URL_MESSAGE + 'Server error');
-                    break;
-                case 0:
-                    alert(constants.INVALID_URL_MESSAGE + 'Request aborted');
-                    break;
-                default:
-                    alert(constants.INVALID_URL_MESSAGE + 'Unknown error ' + status);
-            }
-        };
-    // }
-
-    // var urlRequester = new UrlRequester();
+        switch (status) {
+            case 404:
+                alert(constants.INVALID_URL_MESSAGE + 'File not found');
+                break;
+            case 500:
+                alert(constants.INVALID_URL_MESSAGE + 'Server error');
+                break;
+            case 0:
+                alert(constants.INVALID_URL_MESSAGE + 'Request aborted');
+                break;
+            default:
+                alert(constants.INVALID_URL_MESSAGE + 'Unknown error ' + status);
+        }
+    };
 
     stripOfFinalSlash = function (url) {
         if (url[url.length - 1] == '/') {
@@ -130,7 +123,6 @@ define('urlFormatter', ['constants'], function UrlFormatter(constants) {
 
     getUrlFromServer = function (url, callback) {
         var urlToGet = formatForGetRequest(url);
-        // console.log('urlToGet: ' + urlToGet); //todo remove
         httpGetAsync(urlToGet, function (url, title) {
             url = stripOfScheme(url);
             url = stripOfFileName(url);
@@ -151,4 +143,3 @@ define('urlFormatter', ['constants'], function UrlFormatter(constants) {
     }
 
 });
-// var urlFormatter = new UrlFormatter();
