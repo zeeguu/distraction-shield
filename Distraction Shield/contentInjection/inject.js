@@ -29,7 +29,7 @@ require(['jquery', 'storage', 'constants'], function inject($, storage, constant
                 infoDiv = $.parseHTML(data);
                 $("body").after(infoDiv);
                 $("#tds_infoDiv").css('max-width', '800px');
-                $("#tds_generalInfoText").append(zeeguuInfoText);
+                $("#tds_generalInfoText").append(constants.zeeguuInfoText);
                 $("#tds_modeSpecificText").append(message);
                 $("#originalDestination").attr("href", getDest());
             }
