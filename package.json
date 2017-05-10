@@ -16,6 +16,7 @@
     "babel-preset-env": "^1.4.0",
     "broccoli": "^1.1.1",
     "broccoli-babel-transpiler": "^6.0.0",
+    "broccoli-cli": "^1.0.0",
     "broccoli-funnel": "^1.2.0",
     "broccoli-merge-trees": "^2.0.0",
     "mocha": "^3.3.0"
