@@ -24,7 +24,7 @@ define ('TurnOffSlider', ['GreenToRedSlider','constants', 'synchronizer', 'jquer
             }
         };
         this.createHtmlOffMessage = function () {
-            return "Turned off until: " + this.formatDate(settings_object.getOffTill());
+            return "Turned off until: " + this.formatDate(UserSettings.getOffTill());
         };
 
         this.formatDate = function (date) {
