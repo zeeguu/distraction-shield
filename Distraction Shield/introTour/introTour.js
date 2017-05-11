@@ -1,8 +1,8 @@
-var console = chrome.extension.getBackgroundPage().console;
+let console = chrome.extension.getBackgroundPage().console;
 
-var id;
+let id;
 
-var tour = new Tour({
+let tour = new Tour({
     orphan: true,
     steps: [{
         path: "/introTour/introTour.html",
