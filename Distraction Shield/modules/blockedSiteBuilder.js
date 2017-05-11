@@ -1,16 +1,10 @@
-define('blockedSiteBuilder', ['urlFormatter', 'BlockedSite'], function BlockedSiteBuilder(urlFormatter, BlockedSite) {
+import * as urlFormatter from "./urlFormatter.js";
+import * as BlockedSite from "../classes/BlockedSite.js";
 
     // this requires a callback since the getUrlFromServer is asynchronous
-    createNewBlockedSite = function (newUrl, callback) {
+    export function createNewBlockedSite(newUrl, callback) {
         urlFormatter.getUrlFromServer(newUrl, function (url, title) {
-            var bs = new BlockedSite.BlockedSite(url, title);
+            let bs = new BlockedSite.BlockedSite(url, title);
             callback(bs);
         });
-    };
-
-
-    return {
-        createNewBlockedSite: createNewBlockedSite
     }
-
-});

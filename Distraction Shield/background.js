@@ -120,12 +120,14 @@ function background(blockedSiteBuilder, BlockedSiteList, interception, tracker, 
     };
 
     chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
-        if (request.message == "replaceListener") {
+        if (request.message == "updateListener") {
             setLocalBlacklist(BlockedSiteList.deserializeBlockedSiteList(request.siteList));
         } else if (request.message == "updateSettings") {
             setLocalSettings(UserSettings.deserializeSettings(request.settings));
         } else if (request.message == "newUrl") {
             addUrlToBlockedSites(request.unformattedUrl, sendResponse);
+        } else if (request.message == "requestBlockedSites") {
+            sendResponse({blockedSiteList: blockedSites});
         }
     });
 
