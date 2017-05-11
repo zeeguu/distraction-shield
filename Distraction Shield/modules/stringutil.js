@@ -1,10 +1,4 @@
-define('stringutil', function stringutil() {
     //Fancy string comparison with wildcards
-    wildcardStrComp = function (str, rule) {
+    export function wildcardStrComp(str, rule) {
         return new RegExp("^" + rule.split("*").join(".*") + "$").test(str);
-    };
-
-    return {
-        wildcardStrComp     : wildcardStrComp
     }
-});
