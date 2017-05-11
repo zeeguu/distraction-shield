@@ -1,16 +1,12 @@
-define('blockedSiteBuilder', ['urlFormatter', 'BlockedSite'], function BlockedSiteBuilder(urlFormatter, BlockedSite) {
+import * as urlFormatter from '/Distraction Shield/modules/urlFormatter';
+import '/Distraction Shield/classes/BlockedSite';
 
-    // this requires a callback since the getUrlFromServer is asynchronous
-    createNewBlockedSite = function (newUrl, callback) {
-        urlFormatter.getUrlFromServer(newUrl, function (url, title) {
-            var bs = new BlockedSite.BlockedSite(url, title);
-            callback(bs);
-        });
-    };
+// this requires a callback since the getUrlFromServer is asynchronous
+export default function createNewBlockedSite(newUrl, callback) {
+    urlFormatter.getUrlFromServer(newUrl, function (url, title) {
+        var bs = new BlockedSite(url, title);
+        callback(bs);
+    });
+}
 
 
-    return {
-        createNewBlockedSite: createNewBlockedSite
-    }
-
-});

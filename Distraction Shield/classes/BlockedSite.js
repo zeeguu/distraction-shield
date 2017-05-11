@@ -3,7 +3,7 @@ import * as constants from '/Distraction Shield/constants';
 /* --------------- --------------- Serialization --------------- --------------- */
 //Private to this and storage.js
 export function serializeBlockedSite (blockedSite) {
-    var obj = {
+    let obj = {
         url: blockedSite.url,
         domain: blockedSite.domain,
         name: blockedSite.name,
@@ -13,7 +13,7 @@ export function serializeBlockedSite (blockedSite) {
         timeSpent: blockedSite.timeSpent
     };
     return JSON.stringify(obj);
-};
+}
 
 //Private to this and blocked_site_list
 export function parseBlockedSite (blockedSite) {
@@ -26,7 +26,7 @@ export function parseBlockedSite (blockedSite) {
     b.counter = blockedSite.counter;
     b.timeSpent = blockedSite.timeSpent;
     return b;
-};
+}
 
 //Private to this and storage.js
 export function deserializeBlockedSite (serializedBlockedSite) {
@@ -35,7 +35,7 @@ export function deserializeBlockedSite (serializedBlockedSite) {
         return parseBlockedSite(parsed);
     }
     return null;
-};
+}
 
 /* --------------- --------------- --------------- --------------- --------------- */
 

@@ -1,3 +1,5 @@
+
+
 define('interception', ['storage', 'constants', 'stringutil'], function Interception(storage, constants, stringutil) {
 
     // This method goes through the interceptDateList and count how many times the user was intercepted last day,

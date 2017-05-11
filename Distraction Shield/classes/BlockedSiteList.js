@@ -10,15 +10,13 @@ export function serializeBlockedSiteList (blockedSiteList) {
     };
     obj.list = obj.list.map(BlockedSite.serializeBlockedSite);
     return JSON.stringify(obj);
-};
-
+}
 //Private method
 export function parseBlockedSiteList (blockedSiteList) {
     var bl = new BlockedSiteList();
     bl.setList(blockedSiteList.list);
     return bl;
-};
-
+}
 //Private to this and storage.js
 export function deserializeBlockedSiteList(serializedBlockedSiteList) {
     if (serializedBlockedSiteList != null) {
@@ -27,8 +25,7 @@ export function deserializeBlockedSiteList(serializedBlockedSiteList) {
         return parseBlockedSiteList(parsed);
     }
     return null;
-};
-
+}
 /* --------------- --------------- --------------- --------------- --------------- */
 
 export class BlockedSiteList {
