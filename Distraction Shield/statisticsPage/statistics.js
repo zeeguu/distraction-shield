@@ -1,30 +1,15 @@
-require.config({
-    baseUrl: "./",
-    paths : {
-        'BlockedSite'               : '../classes/BlockedSite',
-        'BlockedSiteList'           : '../classes/BlockedSiteList',
-        'UserSettings'              : '../classes/UserSettings',
-        'interception'              : '../modules/statistics/interception',
-        'storage'                   : '../modules/storage',
-        'dateutil'                   : '../modules/dateutil',
-        'stringutil'                   : '../modules/stringutil',
-        'constants'                 : '../constants',
-        'BlacklistStatsTable'       : 'classes/BlacklistStatsTable',
-        'ExerciseTimeTable'         : 'classes/ExerciseTimeTable',
-        'InterceptionCounterTable'  : 'classes/InterceptionCounterTable',
-        'jquery'                    : '../dependencies/jquery/jquery-1.10.2',
-        'domReady'                  : '../domReady'
+import BlacklistStatsTable from '/classes/BlacklistStatsTable'
+import ExerciseTimeTable from '/classes/ExerciseTimeTable'
+import InterceptionCounterTable from '/classes/InterceptionCounterTable'
+import * as storage from '../modules/storage'
+import * as interception from '../modules/statistics/interception'
+import * as $ from "../dependencies/jquery/jquery-1.10.2";
+import * as domReady from '../domReady'
 
-    }
-});
 
-require(['BlacklistStatsTable' , 'ExerciseTimeTable', 'InterceptionCounterTable', 'storage', 'interception',
-    'jquery', 'domReady'],
-    function (BlacklistStatsTable, ExerciseTimeTable, InterceptionCounterTable, storage, interception, $, domReady) {
-
-    var interceptionCounterTable = null;
-    var blacklistTable = null;
-    var exerciseTimeTable = null;
+    let interceptionCounterTable = null;
+    let blacklistTable = null;
+    let exerciseTimeTable = null;
 
     //Initialize HTML elements and set the data in the tables.
     initStatisticsPage = function() {
@@ -40,17 +25,14 @@ require(['BlacklistStatsTable' , 'ExerciseTimeTable', 'InterceptionCounterTable'
 
     // Connects html items to the tables.
     connectHtmlFunctionality = function() {
-        interceptionCounterTable = new InterceptionCounterTable.InterceptionCounterTable();
-        blacklistTable = new BlacklistStatsTable.BlacklistStatsTable($('#interceptTable'));
-        exerciseTimeTable = new ExerciseTimeTable.ExerciseTimeTable($('#exerciseTime'));
+        interceptionCounterTable = new InterceptionCounterTable();
+        blacklistTable = new BlacklistStatsTable($('#interceptTable'));
+        exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
     };
 
-
+    //TODO how should this be done now?
     //Run this when the page is loaded.
     domReady(function () {
         connectHtmlFunctionality();
         initStatisticsPage();
     });
-
-
-});

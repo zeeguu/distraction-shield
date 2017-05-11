@@ -1,47 +1,40 @@
-define ('ExerciseTimeTable', ['jquery', 'dateutil'], function ExerciseTimeTable($, dateutil) {
-    function ExerciseTimeTable(html_element) {
-        var self = this;
-        this.table = html_element;
-        this.timeSpentData = null;
+import * as $ from "../../dependencies/jquery/jquery-1.10.2";
+import * as dateutil from "../../modules/dateutil"
 
-        this.setData = function(data){
-            self.timeSpentData = data;
+    export default class ExerciseTimeTable{
+        constructor(html_element){
+            this._table = html_element;
+            this._timeSpentData = null;
+        }
+
+        // This has to be a function because it is called in a Promise
+        setData(data){
+            this._timeSpentData = data;
         };
 
-        this.addToTable = function(tableRow) {
-            html_element.append(tableRow);
-
+        addToTable(tableRow) {
+            this._table.append(tableRow);
         };
 
-        this.generateExerciseTimeHtmlRow = function(date, exerciseTime) {
-            var tableRow =
-                $("<tr>" +
-                    "<td>"+date+"</td>" +
-                    "<td>"+dateutil.secondsToHHMMSS(exerciseTime)+"</td>" +
-                    "</tr>");
-            return tableRow;
+        generateExerciseTimeHtmlRow(date, exerciseTime) {
+            return $("<tr>" +
+                     "<td>"+date+"</td>" +
+                     "<td>"+dateutil.secondsToHHMMSS(exerciseTime)+"</td>" +
+                     "</tr>");
         };
 
-        this.createExerciseTimeTable = function(list) {
+        createExerciseTimeTable(list) {
             let keys = Object.keys(list);
-            for(var i = keys.length-1; i >= 0; i--){
-                self.addToTable(self.generateExerciseTimeHtmlRow(keys[i], list[keys[i]]));
+            for(let i = keys.length-1; i >= 0; i--){
+                this.addToTable(this.generateExerciseTimeHtmlRow(keys[i], list[keys[i]]));
             }
         };
 
-        this.render = function(){
-            self.createExerciseTimeTable(self.timeSpentData);
+        render(){
+            this.createExerciseTimeTable(this.timeSpentData);
         };
 
-        this.setDataAndRender = function(data){
-            Promise.resolve(self.setData(data)).then(self.render());
+        setDataAndRender(data){
+            Promise.resolve(this.setData(data)).then(this.render());
         };
     }
-
-    return{
-        ExerciseTimeTable :  ExerciseTimeTable
-    }
-
-});
-
-
