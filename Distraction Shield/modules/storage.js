@@ -118,9 +118,6 @@ import * as UserSettings    from '../classes/UserSettings'
         return setStorage("tds_exerciseTime", statList);
     }
 
-
-
-
     /* ---------------- not exported--------------- */
     //Check for a runtime error
      handleRuntimeError = function() {

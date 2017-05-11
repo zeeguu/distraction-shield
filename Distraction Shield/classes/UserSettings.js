@@ -29,6 +29,8 @@ class UserSettings{
     set offTill(time) { this._status.offTill = time;}
 
     get state() {return this._status.state ? "On" : "Off";};
+
+    //TODO  remove - unused?
     get notState() {return this._status.state ? "Off" : "On"; };
 
     turnOn() {
