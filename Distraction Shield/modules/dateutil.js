@@ -12,6 +12,6 @@
 
     // Function which returns the current date, formatted in the correct format.
     export function getToday(){
-        var dateObject = new Date();
+        let dateObject = new Date();
         return formatDate(dateObject);
     }

@@ -44,6 +44,7 @@ import * as UserSettings    from '../classes/UserSettings'
     /* ---------------- TDS_Storage --------------- */
     export function getAll(callback) {
         getStorage(null).then(function(output) {
+            //TODO this is not recognised?
             output.tds_settings = UserSettings.deserializeSettings(output.tds_settings);
             output.tds_blacklist = BlockedSiteList.deserializeBlockedSiteList(output.tds_blacklist);
             return callback(output);    

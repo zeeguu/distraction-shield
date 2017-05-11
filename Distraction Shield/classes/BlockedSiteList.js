@@ -5,30 +5,27 @@ import * as constants from '/Distraction Shield/constants';
 
 //Private to this and storage.js
 export function serializeBlockedSiteList (blockedSiteList) {
-    var obj = {
+    let obj = {
         list: blockedSiteList.getList()
     };
     obj.list = obj.list.map(BlockedSite.serializeBlockedSite);
     return JSON.stringify(obj);
-};
-
+}
 //Private method
 export function parseBlockedSiteList (blockedSiteList) {
-    var bl = new BlockedSiteList();
+    let bl = new BlockedSiteList();
     bl.setList(blockedSiteList.list);
     return bl;
-};
-
+}
 //Private to this and storage.js
 export function deserializeBlockedSiteList(serializedBlockedSiteList) {
     if (serializedBlockedSiteList != null) {
-        var parsed = JSON.parse(serializedBlockedSiteList);
+        let parsed = JSON.parse(serializedBlockedSiteList);
         parsed.list = parsed.list.map(BlockedSite.deserializeBlockedSite);
         return parseBlockedSiteList(parsed);
     }
     return null;
-};
-
+}
 /* --------------- --------------- --------------- --------------- --------------- */
 
 export class BlockedSiteList {
@@ -51,7 +48,7 @@ export class BlockedSiteList {
 
     get activeUrls () {
         if (list != []) {
-            var urlList = this.filterOnChecked();
+            let urlList = this.filterOnChecked();
             if (urlList != []) {
                 return urlList.map(function (bs) {
                     return bs.url();
@@ -62,27 +59,27 @@ export class BlockedSiteList {
     }
 
     addToList (newBlockedSite) {
-        var currentUrls = this.urls;
-        var unique = currentUrls.every(function (urlFromList) {
-            return urlFromList != newBlockedSite.getUrl();
+        let currentUrls = this.urls;
+        let unique = currentUrls.every(function (urlFromList) {
+            return urlFromList !== newBlockedSite.url;
         });
         if (unique) {
             list.push(newBlockedSite);
             return true;
-        } else {
-            alert(constants.newUrlNotUniqueError + newBlockedSite.getDomain());
+        } else {   //TODO "newUrlNotUniqueError"  is not recognized?
+            alert( constants.newUrlNotUniqueError + newBlockedSite.domain);
             return false;
         }
     };
 
     addAllToList (blockedSiteList) {
-        for (var i = 0; i < blockedSiteList.getList().length; i++) {
-            this.addToList(blockedSiteList.getList()[i]);
+        for (let i = 0; i < blockedSiteList.list.length; i++) {
+            this.addToList(blockedSiteList.list[i]);
         }
     };
 
     removeFromList (blockedSiteToDelete) {
-        var urlKey = list.indexOf(blockedSiteToDelete);
+        let urlKey = list.indexOf(blockedSiteToDelete);
         if (urlKey > -1) {
             list.splice(urlKey, 1);
             return true;
