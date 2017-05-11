@@ -1,36 +1,18 @@
+import * as storage from '../modules/storage'
+import * as BlockedSiteList from '../classes/BlockedSiteList'
+import * as UserSettings from '../classes/UserSettings'
 
-define('synchronizer', ['storage', 'BlockedSiteList', 'UserSettings'],
-    function Synchronizer(storage, BlockedSiteList, UserSettings) {
 
-    var syncBlacklist = function(blockedSiteList) {
+    export function syncBlacklist (blockedSiteList) {
         storage.setBlacklist(blockedSiteList);
         chrome.runtime.sendMessage( {   message: "replaceListener",
                                         siteList: BlockedSiteList.serializeBlockedSiteList(blockedSiteList)
                                     });
-    };
+    }
 
-    var syncSettings = function(settings) {
+    export function syncSettings (settings) {
         storage.setSettings(settings);
         chrome.runtime.sendMessage( {   message: "updateSettings",
                                         settings: UserSettings.serializeSettings(settings)
         });
-    };
-
-    //TODO remove (unused)
-    var addBlockedSiteAndSync = function(blockedSite) {
-        storage.getBlacklist(function(blacklist) {
-            if (blacklist.addToList(blockedSite)) {
-                syncBlacklist(blacklist);
-            }
-        })
-    };
-
-    return {
-        syncBlacklist           : syncBlacklist,
-        syncSettings            : syncSettings,
-        addBlockedSiteAndSync   : addBlockedSiteAndSync
-    };
-
-});
-
-// var synchronizer = new Synchronizer();
+    }
