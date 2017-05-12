@@ -1,144 +1,200 @@
 "use strict";
 
-function UserSettings() {
-    var self = this;
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
-    this.status = { state: true,
-        setAt: new Date(),
-        offTill: new Date()
-    };
-    this.sessionID = undefined;
-    this.mode = modes.lazy;
-    this.interceptionInterval = 1;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    this.setSessionID = function (newID) {
-        this.sessionID = newID;
-    };
-    this.getSessionID = function () {
-        return this.sessionID;
-    };
-    this.setInterceptionInterval = function (val) {
-        this.interceptionInterval = val;
-    };
-    this.getInterceptionInterval = function () {
-        return this.interceptionInterval;
-    };
-    this.setMode = function (newMode) {
-        this.mode = newMode;
-    };
-    this.getMode = function () {
-        return this.mode;
-    };
-    this.getOffTill = function () {
-        return this.status.offTill;
-    };
+exports.serializeSettings = serializeSettings;
+exports.parseSettingsObject = parseSettingsObject;
+exports.deserializeSettings = deserializeSettings;
 
-    this.getState = function () {
-        return this.status.state ? "On" : "Off";
-    };
-    this.getNotState = function () {
-        return this.status.state ? "Off" : "On";
-    };
+var _constants = require("../constants");
 
-    this.turnOn = function () {
-        if (this.getState() == "Off") {
-            this.status = { state: true, setAt: new Date(), offTill: new Date() };
-            this.forwardToBackground();
-        } else {
-            console.log("Already turned on, should not happen!");
-        }
-    };
+var constants = _interopRequireWildcard(_constants);
 
-    this.turnOff = function () {
-        if (this.getState() == "On") {
-            this.status = { state: false, setAt: new Date(), offTill: this.status.offTill };
-            this.setTimer();
-            this.forwardToBackground();
-        } else {
-            console.log("Already turned off, should not happen!");
-        }
-    };
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-    this.turnOffFor = function (minutes) {
-        var curDate = new Date();
-        this.status.offTill = new Date(curDate.setMinutes(minutes + curDate.getMinutes()));
-        this.turnOff();
-    };
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    this.turnOffForDay = function () {
-        this.status.offTill = new Date(new Date().setHours(24, 0, 0, 0));
-        this.turnOff();
-    };
+var UserSettings = function () {
+    function UserSettings() {
+        _classCallCheck(this, UserSettings);
 
-    this.forwardToBackground = function () {
-        synchronizer.syncSettings(self);
-    };
+        this._status = {
+            state: true,
+            setAt: new Date(),
+            offTill: new Date()
+        };
 
-    this.turnOffFromBackground = function () {
-        if (self.getState() == "On") {
-            var curDate = new Date();
-            var newOffTill = new Date(curDate.setMinutes(self.interceptionInterval + curDate.getMinutes()));
-            self.status = { state: false, setAt: new Date(), offTill: newOffTill };
-            self.setTimer();
-        }
-    };
+        this._sesionID = undefined;
+        this._mode = constants.modes.lazy;
+        this._interceptionInterval = 1;
+    }
 
-    this.turnExtensionBackOn = function () {
-        if (self.getState() == "Off") {
-            self.turnOn();
-        }
-    };
-
-    this.setTimer = function () {
-        var timerInMS = self.status.offTill - new Date();
-        var MSint = timerInMS.toFixed();
-        setTimeout(self.turnExtensionBackOn, MSint);
-    };
-
-    this.copySettings = function (settingsObject) {
-        this.status = settingsObject.status;
-        this.sessionID = settingsObject.sessionID;
-        this.interceptionInterval = settingsObject.interceptionInterval;
-        this.mode = settingsObject.mode;
-    };
-
-    this.reInitTimer = function () {
-        if (this.getState() == "Off") {
-            if (this.getOffTill() < new Date()) {
-                self.turnOn();
+    _createClass(UserSettings, [{
+        key: "turnOn",
+        value: function turnOn() {
+            if (this.state() === "Off") {
+                this._status = { state: true, setAt: new Date(), offTill: new Date() };
             } else {
+                console.log("Already turned on, should not happen!");
+            }
+        }
+    }, {
+        key: "turnOff",
+        value: function turnOff() {
+            if (this.state() === "On") {
+                this._status = { state: false, setAt: new Date(), offTill: status.offTill };
+                this.setTimer();
+            } else {
+                console.log("Already turned off, should not happen!");
+            }
+        }
+    }, {
+        key: "turnOffFor",
+        value: function turnOffFor(minutes) {
+            var curDate = new Date();
+            this.offTill = new Date(curDate.setMinutes(minutes + curDate.getMinutes()));
+            this.turnOff();
+        }
+    }, {
+        key: "turnOffForDay",
+        value: function turnOffForDay() {
+            this.offTill = new Date(new Date().setHours(24, 0, 0, 0));
+            this.turnOff();
+        }
+    }, {
+        key: "turnOffFromBackground",
+        value: function turnOffFromBackground() {
+            if (this.state() === "On") {
+                var curDate = new Date();
+                var newOffTill = new Date(curDate.setMinutes(this.interceptionInterval + curDate.getMinutes()));
+                this._status = { state: false, setAt: new Date(), offTill: newOffTill };
                 this.setTimer();
             }
         }
-    };
-}
+    }, {
+        key: "turnExtensionBackOn",
+        value: function turnExtensionBackOn() {
+            if (this.state === "Off") {
+                this.turnOn();
+            }
+        }
+    }, {
+        key: "setTimer",
+        value: function setTimer() {
+            var timerInMS = this._status.offTill - new Date();
+            setTimeout(this.turnExtensionBackOn, timerInMS);
+        }
+    }, {
+        key: "copySettings",
+        value: function copySettings(settingsObject) {
+            this._status = settingsObject.status;
+            this._sesionID = settingsObject.sessionID;
+            this._interceptionInterval = settingsObject.interceptionInterval;
+            this.mode = settingsObject.mode;
+        }
+    }, {
+        key: "reInitTimer",
+        value: function reInitTimer() {
+            if (this.state() === "Off") {
+                if (this.offTill < new Date()) {
+                    this.turnOn();
+                } else {
+                    this.setTimer();
+                }
+            }
+        }
+    }, {
+        key: "sessionID",
+        set: function set(newID) {
+            this._sesionID = newID;
+        },
+        get: function get() {
+            return this._sesionID;
+        }
+    }, {
+        key: "interceptionInterval",
+        set: function set(val) {
+            this._interceptionInterval = val;
+        },
+        get: function get() {
+            return this._interceptionInterval;
+        }
+    }, {
+        key: "mode",
+        set: function set(newMode) {
+            this._mode = newMode;
+        },
+        get: function get() {
+            return this._mode;
+        }
+    }, {
+        key: "status",
+        set: function set(newStatus) {
+            this._status = newStatus;
+        },
+        get: function get() {
+            return this._status;
+        }
+    }, {
+        key: "offTill",
+        get: function get() {
+            return this._status.offTill;
+        },
+        set: function set(time) {
+            this._status.offTill = time;
+        }
+    }, {
+        key: "state",
+        get: function get() {
+            return this._status.state ? "On" : "Off";
+        }
+    }, {
+        key: "notState",
+        get: function get() {
+            return this._status.state ? "Off" : "On";
+        }
+    }]);
+
+    return UserSettings;
+}();
 
 /* --------------- --------------- Serialization --------------- --------------- */
 
 //Private to this and storage.js
-serializeSettings = function serializeSettings(settingsObject) {
-    return JSON.stringify(settingsObject);
-};
+
+
+function serializeSettings(settingsObject) {
+    var obj = {
+        status: settingsObject.status,
+        sessionID: settingsObject.sessionID,
+        mode: settingsObject.mode,
+        interceptionInterval: settingsObject.interceptionInterval
+    };
+    return JSON.stringify(obj);
+}
 
 //Private method
-parseSettingsObject = function parseSettingsObject(parsedSettingsObject) {
+function parseSettingsObject(parsedSettingsObject) {
     var s = new UserSettings();
-    s.status.state = parsedSettingsObject.status.state;
-    s.status.setAt = new Date(parsedSettingsObject.status.setAt);
-    s.status.offTill = new Date(parsedSettingsObject.status.offTill);
+    var newStatus = parsedSettingsObject.status;
+    newStatus.setAt = new Date(newStatus.setAt);
+    newStatus.offTill = new Date(newStatus.offTill);
+
+    s.status = newStatus;
     s.mode = parsedSettingsObject.mode;
     s.sessionID = parsedSettingsObject.sessionID;
     s.interceptionInterval = parsedSettingsObject.interceptionInterval;
     return s;
-};
-
+}
 //Private to this and storage.js
-deserializeSettings = function deserializeSettings(serializedSettingsObject) {
-    if (serializedSettingsObject != null) {
+function deserializeSettings(serializedSettingsObject) {
+    if (serializedSettingsObject !== null) {
         var parsed = JSON.parse(serializedSettingsObject);
         return parseSettingsObject(parsed);
     }
     return null;
-};
-
-/* --------------- --------------- --------------- --------------- --------------- */
+}

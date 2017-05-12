@@ -1,4 +1,4 @@
-import * as constants from '/Distraction Shield/constants';
+import * as constants from '../constants';
 
 /* --------------- --------------- Serialization --------------- --------------- */
 //Private to this and storage.js
@@ -30,8 +30,8 @@ export function parseBlockedSite (blockedSite) {
 
 //Private to this and storage.js
 export function deserializeBlockedSite (serializedBlockedSite) {
-    if (serializedBlockedSite != null) {
-        var parsed = JSON.parse(serializedBlockedSite);
+    if (serializedBlockedSite !== null) {
+        let parsed = JSON.parse(serializedBlockedSite);
         return parseBlockedSite(parsed);
     }
     return null;
@@ -45,7 +45,7 @@ export default class BlockedSite {
         this._url = this.constructUrl(urlBase);
         this._domain = urlBase;
         this._name = title;
-        this._icon = constructIcon(urlBase);
+        this._icon = this.constructIcon(urlBase);
         this._checkboxVal = true;
         this._counter = 0;
         this._timeSpent = 0;
@@ -63,7 +63,7 @@ export default class BlockedSite {
     get url         ()              { return this._url }
 
     set domain      (domain)        { this._domain = domain }
-    get domain      ()              { return domain }
+    get domain      ()              { return this._domain }
 
     set icon        (icon)          { this._icon = icon }
     get icon        ()              { return this._icon }

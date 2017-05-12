@@ -1,36 +1,47 @@
-"use strict";
+'use strict';
 
-function Synchronizer() {
-    var self = this;
-    this.bg = chrome.extension.getBackgroundPage();
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.syncBlacklist = syncBlacklist;
+exports.syncSettings = syncSettings;
+exports.addSiteAndSync = addSiteAndSync;
 
-    this.syncBlacklist = function (blockedSiteList) {
-        storage.setBlacklist(blockedSiteList);
-        self.bg.setLocalBlacklist(blockedSiteList);
-    };
+var _storage = require('../modules/storage');
 
-    this.syncSettings = function (settings) {
-        storage.setSettings(settings);
-        self.bg.setLocalSettings(settings);
-    };
+var storage = _interopRequireWildcard(_storage);
 
-    this.syncDateList = function (dateList) {
-        storage.setInterceptDateList(dateList);
-        self.bg.setLocalInterceptDateList(dateList);
-    };
+var _BlockedSiteList = require('../classes/BlockedSiteList');
 
-    this.syncStatistics = function (statistics) {
-        storage.setStatistics(statistics);
-        self.bg.setLocalStatistics(statistics);
-    };
+var BlockedSiteList = _interopRequireWildcard(_BlockedSiteList);
 
-    this.addBlockedSiteAndSync = function (blockedSite) {
-        storage.getBlacklist(function (blacklist) {
-            if (blacklist.addToList(blockedSite)) {
-                self.syncBlacklist(blacklist);
-            }
-        });
-    };
+var _UserSettings = require('../classes/UserSettings');
+
+var UserSettings = _interopRequireWildcard(_UserSettings);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function syncBlacklist(blockedSiteList) {
+    storage.setBlacklist(blockedSiteList);
+    chrome.runtime.sendMessage({ message: "updateListener",
+        siteList: BlockedSiteList.serializeBlockedSiteList(blockedSiteList)
+    });
 }
 
-var synchronizer = new Synchronizer();
+function syncSettings(settings) {
+    storage.setSettings(settings);
+    chrome.runtime.sendMessage({ message: "updateSettings",
+        settings: UserSettings.serializeSettings(settings)
+    });
+}
+
+function addSiteAndSync(blockedSiteItem) {
+    storage.getBlacklist(function (blacklist) {
+        if (blacklist.addToList(blockedSiteItem)) {
+            syncBlacklist(blacklist);
+            return true;
+        } else {
+            return false;
+        }
+    });
+}

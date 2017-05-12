@@ -1,83 +1,113 @@
 "use strict";
 
-var alert = chrome.extension.getBackgroundPage().alert;
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
-function GreenToRedSlider(sliderID, saveFunction) {
-    var self = this;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-    this.saveValue = saveFunction;
-    this.sliderDiv = $(sliderID);
-    this.sliderRange = $(this.sliderDiv.find(sliderID + "-range"));
-    this.sliderValue = $(this.sliderDiv.find(sliderID + "-value"));
+var _jquery = require("../../dependencies/jquery/jquery-1.10.2");
 
-    this.sliderRange.on('input', function () {
-        var inputValue = self.sliderRange.val();
-        self.sliderValue.html(self.calculateHours(inputValue));
-        self.updateColor(inputValue);
-    });
+var $ = _interopRequireWildcard(_jquery);
 
-    this.sliderRange.on('mouseup', function () {
-        var inputValue = self.sliderRange.val();
-        self.saveValue(inputValue);
-    });
+var _constants = require("../../constants");
 
-    this.updateColor = function (inputValue) {
-        var maxSliderVal = this.sliderRange[0].max;
-        var redVal = Math.round(inputValue / maxSliderVal * 180);
-        var greenVal = 180 - redVal;
-        this.sliderRange.css('background', 'rgb(' + redVal + ', ' + greenVal + ',0)');
-    };
+var constants = _interopRequireWildcard(_constants);
 
-    this.setValue = function (val) {
-        this.sliderRange.val(val);
-        this.sliderValue.html(self.calculateHours(val));
-        this.updateColor(val);
-    };
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-    this.calculateHours = function (val) {
-        var hours = Math.floor(val / 60);
-        var minutes = val % 60;
-        if (minutes < 10 && hours > 0) {
-            minutes = "0" + minutes;
-        }
-        return hours > 0 ? hours + ":" + minutes + " hours" : minutes + " minute(s)";
-    };
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    this.sliderValue.on('blur', function () {
-        self.checkTimeValidity($(this).html());
-    });
+var GreenToRedSlider = function () {
+    function GreenToRedSlider(sliderID, saveFunction) {
+        _classCallCheck(this, GreenToRedSlider);
 
-    this.sliderValue.keydown(function (event) {
-        if (event.keyCode == KEY_ENTER) {
-            self.sliderValue.blur();
-            event.preventDefault();
-        }
-    });
+        this.alert = chrome.extension.getBackgroundPage().alert;
+        this.saveValue = saveFunction;
+        this.sliderDiv = $(sliderID);
+        this.sliderRange = $(this.sliderDiv.find(sliderID + "-range"));
+        this.sliderValue = $(this.sliderDiv.find(sliderID + "-value"));
 
-    this.checkTimeValidity = function (val) {
-        var regex = /(\d+|\d\:\d{2})(?:\s*)(h(?:our)?s?|m(?:inute|in)?s?|$)/m.exec(val);
-        if (regex != null) {
-            if (regex[1].match(":")) {
-                var split = regex[1].split(":");
-                regex[1] = parseInt(split[0]) + parseInt(split[1]) / 60;
+        this.sliderRange.on('input', function () {
+            var inputValue = this.sliderRange.val();
+            this.sliderValue.html(this.calculateHours(inputValue));
+            this.updateColor(inputValue);
+        });
+
+        this.sliderRange.on('mouseup', function () {
+            var inputValue = this.sliderRange.val();
+            this.saveValue(inputValue);
+        });
+
+        this.sliderValue.on('blur', function () {
+            this.checkTimeValidity($(this).html());
+        });
+
+        this.sliderValue.keydown(function (event) {
+            if (event.keyCode === constants.KEY_ENTER) {
+                this.sliderValue.blur();
+                event.preventDefault();
             }
-            if (regex[1] > 0) {
-                if (regex[2].match("hour")) {
-                    regex[1] *= 60;
+        });
+    }
+
+    _createClass(GreenToRedSlider, [{
+        key: "updateColor",
+        value: function updateColor(inputValue) {
+            var maxSliderVal = this.sliderRange[0].max;
+            var redVal = Math.round(inputValue / maxSliderVal * 120);
+            var greenVal = 120 - redVal;
+            this.sliderRange.css('background', 'rgb(' + redVal + ', ' + greenVal + ',0)');
+        }
+    }, {
+        key: "setValue",
+        value: function setValue(val) {
+            this.sliderRange.val(val);
+            this.sliderValue.html(this.calculateHours(val));
+            this.updateColor(val);
+        }
+    }, {
+        key: "calculateHours",
+        value: function calculateHours(val) {
+            var hours = Math.floor(val / 60);
+            var minutes = val % 60;
+            if (minutes < 10 && hours > 0) {
+                minutes = "0" + minutes;
+            }
+            return hours > 0 ? hours + ":" + minutes + " hours" : minutes + " minute(s)";
+        }
+    }, {
+        key: "checkTimeValidity",
+        value: function checkTimeValidity(val) {
+            var regex = /(\d+|\d\:\d{2})(?:\s*)(h(?:our)?s?|m(?:inute|in)?s?|$)/m.exec(val);
+            if (regex !== null) {
+                if (regex[1].match(":")) {
+                    var split = regex[1].split(":");
+                    regex[1] = parseInt(split[0]) + parseInt(split[1]) / 60;
                 }
-                // round minutes to a valid number.
-                regex[1] = Math.round(regex[1]);
-                self.setValue(this.sliderRange[0].max < regex[1] ? this.sliderRange[0].max : regex[1]);
+                if (regex[1] > 0) {
+                    if (regex[2].match("hour")) {
+                        regex[1] *= 60;
+                    }
+                    // round minutes to a valid number.
+                    regex[1] = Math.round(regex[1]);
+                    this.setValue(this.sliderRange[0].max < regex[1] ? this.sliderRange[0].max : regex[1]);
+                } else {
+                    this.timeInputError();
+                }
             } else {
-                self.timeInputError();
+                this.timeInputError();
             }
-        } else {
-            self.timeInputError();
         }
-    };
+    }, {
+        key: "timeInputError",
+        value: function timeInputError() {
+            this.setValue(this.sliderRange.val());
+            this.alert("please input a supported time format");
+        }
+    }]);
 
-    this.timeInputError = function () {
-        self.setValue(self.sliderRange.val());
-        alert("please input a supported time format");
-    };
-}
+    return GreenToRedSlider;
+}();
+
+exports.default = GreenToRedSlider;

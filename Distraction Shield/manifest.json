@@ -4,17 +4,14 @@
   "name": "The Distraction Shield",
   "description": "Divert attention from social media websites towards learning a new language",
   "version": "1.3.1",
-  //Icon's shown in chrome://extensions
   "icons": {"128": "aikido.png"},
   "offline_enabled": false,
 
-  //what pops up once we hit the options
   "options_page": "optionsPage/options.html",
   "options_ui": {
     "page": "optionsPage/options.html"
   },
 
-  //Icon in the browser specification
   "browser_action": {
     "default_icon": "aikido.png",
     "default_title": "Distraction Shield Settings",

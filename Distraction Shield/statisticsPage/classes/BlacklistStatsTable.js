@@ -1,44 +1,39 @@
-define ('BlacklistStatsTable', ['jquery', 'dateutil'], function BlacklistStatsTable($, dateutil) {
-    function BlacklistStatsTable(html_element) {
-        var self = this;
-        this.table = html_element;
-        this.blacklist = null;
+import * as $ from "../../dependencies/jquery/jquery-1.10.2";
+import * as dateutil from "../../modules/dateutil"
 
-        this.setData = function (data) {
-            self.blacklist = data;
-        };
+export default  class BlacklistStatsTable{
+        constructor(html_element){
+            this._table = html_element;
+            this._blacklist = null;
+        }
 
-        this.createBlockedSiteTable = function (siteList) {
+        // This has to be a function because it is called in a Promise
+        setData(data){
+            this._blacklist = data;
+        }
+
+        createBlockedSiteTable(siteList) {
             $.each(siteList, function (k, site) {
-                self.table.append(self.generateTableRow(site));
+                this._table.append(this.generateTableRow(site));
             });
         };
 
-        this.generateTableRow = function (site) {
-            var row =
-                $("<tr class='table-row' >" +
-                    "<td>" + site.getIcon() + "</td>" +
-                    "<td>" + site.getName() + "</td>" +
-                    "<td>" + site.getCounter() + "</td>" +
-                    "<td>"+ dateutil.secondsToHHMMSS(site.getTimeSpent())+"</td>" +
+        generateTableRow(site) {
+            return $("<tr class='table-row' >" +
+                    "<td>" + site.icon + "</td>" +
+                    "<td>" + site.name + "</td>" +
+                    "<td>" + site.counter + "</td>" +
+                    "<td>"+ dateutil.secondsToHHMMSS(site.timeSpent)+"</td>" +
                     "</tr>");
-            return row;
         };
 
-        this.render = function () {
-            self.createBlockedSiteTable(self.blacklist.getList());
+        render() {
+            this.createBlockedSiteTable(this._blacklist.list);
         };
 
-        this.setDataAndRender = function (data) {
-            Promise.resolve(self.setData(data)).then(self.render());
+        setDataAndRender(data) {
+            Promise.resolve(this.setData(data)).then(this.render());
         };
     }
-
-    return{
-        BlacklistStatsTable : BlacklistStatsTable
-    }
-
-});
-
 
 

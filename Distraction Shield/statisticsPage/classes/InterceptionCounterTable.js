@@ -1,34 +1,30 @@
-define('InterceptionCounterTable', ['jquery'], function InterceptionCounterTable ($) {
-    function InterceptionCounterTable() {
-        var self = this;
-        this.counters = null;
+import * as $ from "../../dependencies/jquery/jquery-1.10.2";
 
-        this.html_countDay = $('#countDay');
-        this.html_countWeek = $('#countWeek');
-        this.html_countMonth = $('#countMonth');
-        this.html_countTotal = $('#countTotal');
+export default class InterceptionCounterTable{
+        constructor(){
+            this._counters = null;
 
-        this.setData = function (data) {
-            self.counters = data;
+            this._html_countDay = $('#countDay');
+            this._html_countWeek = $('#countWeek');
+            this._html_countMonth = $('#countMonth');
+            this._html_countTotal = $('#countTotal');
+        }
+
+        setData(data) {
+            this.counters = data;
         };
 
-        this.render = function () {
-            self.html_countDay.text(self.counters.countDay);
-            self.html_countWeek.text(self.counters.countWeek);
-            self.html_countMonth.text(self.counters.countMonth);
-            self.html_countTotal.text(self.counters.countTotal);
+        render() {
+            this._html_countDay.text(this.counters.countDay);
+            this._html_countWeek.text(this.counters.countWeek);
+            this._html_countMonth.text(this.counters.countMonth);
+            this._html_countTotal.text(this.counters.countTotal);
         };
 
-        this.setDataAndRender = function (data) {
-            Promise.resolve(this.setData(data)).then(self.render());
+        setDataAndRender(data) {
+            Promise.resolve(this.setData(data)).then(this.render());
         }
     }
-
-    return {
-        InterceptionCounterTable: InterceptionCounterTable
-    }
-});
-
 
 
 

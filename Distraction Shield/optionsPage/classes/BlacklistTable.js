@@ -1,27 +1,34 @@
-define ('BlacklistTable', ['synchronizer', 'jquery'], function BlacklistTable (synchronizer, $) {
-    function BlacklistTable(html_element, syncFunction) {
-        var self = this;
-        this.table = html_element;
-        var syncBlockedSiteList = syncFunction;
+import * as synchronizer from '../../modules/synchronizer'
+import * as $ from "../../dependencies/jquery/jquery-1.10.2";
 
-        this.addToTable = function (tableRow) {
+export default class BlacklistTable{
+        constructor(html_element, syncFunction)
+        {
+            this.table = html_element;
+            this._syncBlockedSiteListFunc = syncFunction;
+
+            this.setCheckboxFunction();
+            this.setDeleteButtonFunction();
+            this.enableTableSelection();
+        }
+        addToTable(tableRow) {
             tableRow.hide().appendTo(this.table).fadeIn();
         };
 
-        this.removeFromTable = function (html_item) {
+        removeFromTable(html_item) {
             html_item.fadeOut(function () {
                 html_item.remove();
             });
         };
 
-        this.getSelected = function () {
+        getSelected() {
             return this.table.find('.highlight');
         };
 
         //this function makes the passed table single row selection only
-        this.enableTableSelection = function () {
+        enableTableSelection() {
             this.table.on('click', '.table-row', function () {
-                var row = $(this);
+                let row = $(this);
                 if (row.hasClass('highlight'))
                     row.removeClass('highlight');
                 else
@@ -30,49 +37,42 @@ define ('BlacklistTable', ['synchronizer', 'jquery'], function BlacklistTable (s
         };
 
         // set functionality for all checkboxes found within the html_table
-        this.setCheckboxFunction = function () {
-            self.table.on('change', 'input[type="checkbox"]', function () {
+        setCheckboxFunction() {
+            this.table.on('change', 'input[type="checkbox"]', function () {
                 //Clicking the checkbox automatically selects the row, so we use this to our advantage
-                var selected_row = $(this).parent().parent();
-                var selected_blockedSite = selected_row.data('blockedSite');
-                selected_blockedSite.setCheckboxVal(!selected_blockedSite.getCheckboxVal());
+                let selected_row = $(this).parent().parent();
+                let selected_blockedSite = selected_row.data('blockedSite');
+                selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
                 //no need to set localBlacklist cause it holds pointers so they get updated automatically
-                syncBlockedSiteList();
+                synchronizer.syncBlacklist();
             });
         };
 
         // if a delete button is clicked, the closest tr element is deleted.
-        this.setDeleteButtonFunction = function () {
+        setDeleteButtonFunction() {
             this.table.on('click', '.delete-button', function () {
-                var rowToDelete = $(this).closest('tr');
+                let rowToDelete = $(this).closest('tr');
                 removeBlockedSiteFromAll(rowToDelete);
+
+                if (removeFromLocalBlacklist(rowToDelete)) {
+                    this.removeFromTable(rowToDelete);
+                    synchronizer.syncBlacklist(this.syn);
+                }
             });
         };
 
         //Returns an html table row object
-        this.generateTableRow = function (blockedSite) {
-            var tableRow =
+        generateTableRow(blockedSite) {
+            let tableRow =
                 $("<tr class='table-row' >" +
                     "<td width='50'>" + blockedSite.getIcon() + "</td>" +
                     "<td class='pageTitle'>" + blockedSite.getName() + "</td>" +
                     "<td width='25'>" + "<input class='checkbox-toggle' type='checkbox' name='state'>" + "</td>" +
                     "<td width='25'>" + "<img class='delete-button' type='deleteButton' src='../optionsPage/classes/tableRow_delete_button.png' width='16' height='16'>" + "</td>" +
                     "</tr>");
-            tableRow.find('.checkbox-toggle').prop('checked', blockedSite.getCheckboxVal());
+            tableRow.find('.checkbox-toggle').prop('checked', blockedSite.checkboxVal);
             //add the actual object to the html_element
             tableRow.data('blockedSite', blockedSite);
             return tableRow;
         };
-
-        this.setCheckboxFunction();
-        this.setDeleteButtonFunction();
-        this.enableTableSelection();
     }
-
-    return {
-        BlacklistTable : BlacklistTable
-    }
-});
-
-
-
