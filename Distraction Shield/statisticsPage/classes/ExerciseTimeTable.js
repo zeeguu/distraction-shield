@@ -1,42 +1,40 @@
+import * as $ from "../../dependencies/jquery/jquery-1.10.2";
+import * as dateutil from "../../modules/dateutil"
 
-function ExerciseTimeTable(html_element) {
-    var self = this;
-    this.table = html_element;
-    this.timeSpentData = null;
-
-    this.setData = function(data){
-        self.timeSpentData = data;
-    };
-
-    this.addToTable = function(tableRow) {
-        html_element.append(tableRow);
-
-    };
-
-    this.generateExerciseTimeHtmlRow = function(date, exerciseTime) {
-        var tableRow =
-            $("<tr>" +
-                "<td>"+date+"</td>" +
-                "<td>"+bg.dateUtil.secondsToHHMMSS(exerciseTime)+"</td>" +
-                "</tr>");
-        return tableRow;
-    };
-
-    this.createExerciseTimeTable = function(list) {
-        let keys = Object.keys(list);
-        for(var i = keys.length-1; i >= 0; i--){
-            self.addToTable(self.generateExerciseTimeHtmlRow(keys[i], list[keys[i]]));
+    export default class ExerciseTimeTable{
+        constructor(html_element){
+            this._table = html_element;
+            this._timeSpentData = null;
         }
-    };
 
-    this.render = function(){
-        self.createExerciseTimeTable(self.timeSpentData);
-    };
+        // This has to be a function because it is called in a Promise
+        setData(data){
+            this._timeSpentData = data;
+        };
 
-    this.setDataAndRender = function(data){
-        Promise.resolve(this.setData(data)).then(self.render());
-    };
-}
+        addToTable(tableRow) {
+            this._table.append(tableRow);
+        };
 
+        generateExerciseTimeHtmlRow(date, exerciseTime) {
+            return $("<tr>" +
+                     "<td>"+date+"</td>" +
+                     "<td>"+dateutil.secondsToHHMMSS(exerciseTime)+"</td>" +
+                     "</tr>");
+        };
 
+        createExerciseTimeTable(list) {
+            let keys = Object.keys(list);
+            for(let i = keys.length-1; i >= 0; i--){
+                this.addToTable(this.generateExerciseTimeHtmlRow(keys[i], list[keys[i]]));
+            }
+        };
 
+        render(){
+            this.createExerciseTimeTable(this.timeSpentData);
+        };
+
+        setDataAndRender(data){
+            Promise.resolve(this.setData(data)).then(this.render());
+        };
+    }

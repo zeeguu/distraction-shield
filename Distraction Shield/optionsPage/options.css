@@ -7,10 +7,6 @@ body {
     margin-bottom: 15px;
 }
 
-.page-header {
-    text-align:center;
-}
-
 /* ---------- ---------- options alignment ---------- ---------- */
 
 #modeRadioDiv {
@@ -34,7 +30,7 @@ body {
 #offRanDiv{
     margin-top:3px;
     margin-bottom:3px;
-    width:50%; 
+    width:50%;
 }
 
 #offValDiv{
@@ -81,6 +77,17 @@ body {
     padding-bottom:5px;
 }
 
+.panel-primary {
+    padding-top:0px;
+    padding-bottom:0px;
+}
+
+.page-header {
+    margin: 0 auto 0 auto;
+    text-align:center;
+    border-bottom: 2px solid;
+}
+
 /* ---------- ---------- Slider ---------- ---------- */
 
 .amountColumn {
@@ -95,11 +102,11 @@ input[type=range] {
     border: 1px solid #000;
     border-radius: 6px;
     /*background: rgb(0,220,0);*/
-    background-size: cover; 
+    background-size: cover;
 }
 
 input[type=range]:focus {
-  outline: none;
+    outline: none;
 }
 
 input[type=range]::-webkit-slider-thumb {
@@ -113,7 +120,3 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 /* ---------- ---------- Slider ---------- ---------- */
-.input-group-addon-logout-version{
-    background: #c8e5bc;
-    width: 100%;
-}

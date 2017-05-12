@@ -1,60 +1,37 @@
-/**
- * This file connects the data we read from storage and saved in local variables
- * to the actual html representations of this data.
- */
+import * as $ from "../dependencies/jquery/jquery-1.10.2";
 
-sortListOnCheckboxVal = function(bsA, bsB) {
-    var valueOfA = bsA.getCheckboxVal();
-    var valueOfB = bsB.getCheckboxVal();
-    if (valueOfA && !valueOfB)
-        return -1;
-    if (!valueOfA && valueOfB)
-        return 1;
-    return 0;
-};
+    /**
+     * This file connects the data we read from storage and saved in local variables
+     * to the actual html representations of this data.
+     */
 
-loadHtmlBlacklist = function(blockedSiteList, table) {
-    var list = blockedSiteList.getList();
-    list.sort(sortListOnCheckboxVal);
-    $.each(list, function(key, value) {
-        table.addToTable(table.generateTableRow(value));
-    });
-};
+    export function sortListOnCheckboxVal(bsA, bsB) {
+        let valueOfA = bsA.checkboxVal;
+        let valueOfB = bsB.checkboxVal;
+        if (valueOfA && !valueOfB)
+            return -1;
+        if (!valueOfA && valueOfB)
+            return 1;
+        return 0;
+    }
 
-loadHtmlMode = function(extensionMode, radioGroup) {
-    $("input[name=" + radioGroup + "][value=" + extensionMode.label + "]").prop('checked', true);
-};
+    export function loadHtmlBlacklist(blockedSiteList, table) {
+        let list = blockedSiteList.list;
+        list.sort(sortListOnCheckboxVal);
+        $.each(list, function (key, value) {
+            table.addToTable(table.generateTableRow(value));
+        });
+    }
 
-loadHtmlInterval = function(interceptInterval, html_slider) {
-    html_slider.setValue(interceptInterval);
-};
+    export function loadHtmlMode(extensionMode, radioGroup){
+        $("input[name=" + radioGroup + "][value=" + extensionMode.label + "]").prop('checked', true);
+    }
 
-loadHtmlInterceptCounter = function(count, html_counter) {
-    html_counter.text(count);
-};
+    export function loadHtmlInterval(interceptInterval, html_slider) {
+        html_slider.setValue(interceptInterval);
+    }
 
-connectLogin = function () {
-    $('#sessionGlyphIcon').removeClass('glyphicon-log-out').addClass('glyphicon-log-in');
-    $('#sessionMessage').html('Enter email and password to login');
-    $('#emailFld').show();
-    $('#addon').removeClass('input-group-addon-logout-version');
-    $('#addon').html('');
-    $('#passwordFld').show();
-    html_sessionBtn.off('click', logout);
-    html_sessionBtn.on('click', login);
-};
+    export function loadHtmlInterceptCounter(count, html_counter) {
+        html_counter.text(count);
+    }
 
-connectLogout = function () {
-    auth.getDetails().then(function (response) {
-        //resolution
-        var details = JSON.parse(response);
-        $('#sessionMessage').html('');
-        $('#sessionGlyphIcon').removeClass('glyphicon-log-in').addClass('glyphicon-log-out');
-        $('#addon').addClass('input-group-addon-logout-version');
-        $('#addon').html('You are logged in as ' + details.name);
-        $('#emailFld').hide();
-        $('#passwordFld').hide();
-        html_sessionBtn.off('click', login);
-        html_sessionBtn.on('click', logout);
-    });
-};

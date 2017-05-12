@@ -1,120 +1,107 @@
-/**
- * This file contains the core functions of the options page. this has all the local variables,
- * initializes everything javascript related and connects the syncStorage,
- * connectDataToHtml, blacklistTable and HtmlFunctionality
- * to one smoothly running file. Besides the initialization it contains the functions to manipulate the local variables
- * found here
- */
+import * as storage from '../modules/storage'
+import * as UserSettings    from '../classes/UserSettings'
+import * as BlockedSiteList from '../classes/BlockedSiteList'
+import * as synchronizer from '../modules/synchronizer'
+import BlacklistTable from '/classes/BlacklistTable'
+import TurnOffSlider from '/classes/TurnOffSlider'
+import * as connectDataToHtml from 'connectDataToHtml'
+import * as htmlFunctionality from 'htmlFunctionality'
+import * as $ from "../dependencies/jquery/jquery-1.10.2";
 
-// Log console messages to the background page console instead of the content page.
-var console = chrome.extension.getBackgroundPage().console;
-var auth = chrome.extension.getBackgroundPage().auth;
-var localSettings = chrome.extension.getBackgroundPage().localSettings;
+    /**
+     * This file contains the core functions of the options page. this has all the local variables,
+     * initializes everything javascript related and connects the syncStorage,
+     * connectDataToHtml, blacklistTable and HtmlFunctionality
+     * to one smoothly running file. Besides the initialization it contains the functions to manipulate the local variables
+     * found here
+     */
+    let html_txtFld = $('#textFld');
+    let html_intCnt = $('#iCounter');
+    let html_saveButton = $('#saveBtn');
+    let modeGroup = "modeOptions";
 
-//Local variables that hold the html elements
-var html_txtFld = $('#textFld');
-var html_intCnt = $('#iCounter');
-var html_saveButton = $('#saveBtn');
-var html_sessionBtn = $('#sessionBtn');
-var modeGroup = "modeOptions";
+    let blacklistTable;
+    let intervalSlider;
+    let turnOffSlider;
+    let tr = document.getElementById("tourRestart");
 
+    //Local variables that hold all necessary data.
+    let settings_object = new UserSettings();
+    let blacklist = new BlockedSiteList();
+    let interceptionCounter = 0;
 
-var blacklistTable;
-var intervalSlider;
-var turnOffSlider;
-var tr = document.getElementById("tourRestart");
+    /* -------------------- Initialization of options --------------------- */
 
-//Local variables that hold all necessary data.
-var settings_object = new UserSettings();
-var blacklist = new BlockedSiteList();
-var interceptionCounter = 0;
+    //Initialize HTML elements and set the local variables
+    initOptionsPage = function () {
+        storage.getAll(function (output) {
+            setLocalVariables(output);
+            connectHtmlFunctionality();
+            connectLocalDataToHtml();
+        });
+    };
 
-/* -------------------- Initialization of options --------------------- */
+    //Retrieve data from storage and store in local variables
+    setLocalVariables = function (storage_output) {
+        blacklist.addAllToList(storage_output.tds_blacklist);
+        settings_object.copySettings(storage_output.tds_settings);
+        interceptionCounter = storage_output.tds_interceptCounter;
+    };
 
-//Initialize HTML elements and set the local variables
-initOptionsPage = function() {
-    storage.getAll(function(output) {
-        setLocalVariables(output);
-        connectHtmlFunctionality();
-        connectLocalDataToHtml();
-        checkLoginStatus();
+    // functionality from htmlFunctionality, blacklist_table and slider files
+    connectHtmlFunctionality = function () {
+        htmlFunctionality.initModeSelection(modeGroup, settings_object);
+        intervalSlider = htmlFunctionality.initIntervalSlider(settings_object);
+        blacklistTable = new BlacklistTable($('#blacklistTable'), syncBlockedSiteList);
+        htmlFunctionality.connectButton(html_saveButton, htmlFunctionality.saveNewUrl);
+        turnOffSlider = new TurnOffSlider.TurnOffSlider('#turnOff-slider', settings_object);
+        htmlFunctionality.setKeyPressFunctions(html_txtFld,blacklistTable );
+    };
+
+    // functionality from connectDataToHtml file
+    connectLocalDataToHtml = function () {
+        connectDataToHtml.loadHtmlInterceptCounter(interceptionCounter, html_intCnt);
+        connectDataToHtml.loadHtmlBlacklist(blacklist, blacklistTable);
+        connectDataToHtml.loadHtmlMode(settings_object.mode, modeGroup);
+        connectDataToHtml.loadHtmlInterval(settings_object.interceptionInterval, intervalSlider);
+    };
+
+    /* -------------------- Manipulate local variables ------------------- */
+
+    removeFromLocalBlacklist = function (html_item) {
+        let blockedSiteToDelete = html_item.data('blockedSite');
+        return blacklist.removeFromList(blockedSiteToDelete);
+    };
+
+    addToLocalBlacklist = function (blockedSite_item) {
+        return blacklist.addToList(blockedSite_item);
+    };
+
+    removeBlockedSiteFromAll = function (html_item) {
+        if (removeFromLocalBlacklist(html_item)) {
+            blacklistTable.removeFromTable(html_item);
+            synchronizer.syncBlacklist(blacklist);
+        }
+    };
+
+    addBlockedSiteToAll = function (newItem) {
+        if (addToLocalBlacklist(newItem)) {
+            blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
+            synchronizer.syncBlacklist(blacklist);
+        }
+    };
+    /* -------------------- -------------------------- -------------------- */
+
+    syncBlockedSiteList = function() {
+        synchronizer.syncBlacklist(blacklist);
+    };
+
+    //Run this when the page is loaded.
+    domReady(function () {
+        initOptionsPage();
     });
-};
 
-//Retrieve data from storage and store in local variables
-setLocalVariables = function(storage_output) {
-    blacklist.addAllToList(storage_output.tds_blacklist);
-    settings_object.copySettings(storage_output.tds_settings);
-    interceptionCounter = storage_output.tds_interceptCounter;
-};
-
-// functionality from htmlFunctionality, blacklist_table and slider files
-connectHtmlFunctionality = function() {
-    initModeSelection(modeGroup);
-    initIntervalSlider();
-    blacklistTable = new BlacklistTable($('#blacklistTable'));
-    connectButton(html_saveButton, saveNewUrl);
-    turnOffSlider = new TurnOffSlider('#turnOff-slider');
-    setKeyPressFunctions();
-};
-
-// functionality from connectDataToHtml file
-connectLocalDataToHtml = function() {
-    loadHtmlInterceptCounter(interceptionCounter, html_intCnt);
-    loadHtmlBlacklist(blacklist, blacklistTable);
-    loadHtmlMode(settings_object.getMode(), modeGroup);
-    loadHtmlInterval(settings_object.getInterceptionInterval(), intervalSlider);
-};
-
-/* -------------------- Manipulate local variables ------------------- */
-
-removeFromLocalBlacklist = function(html_item) {
-    var blockedSiteToDelete = html_item.data('blockedSite');
-    return blacklist.removeFromList(blockedSiteToDelete);
-};
-
-addToLocalBlacklist = function(blockedSite_item) {
-    return blacklist.addToList(blockedSite_item);
-};
-
-removeBlockedSiteFromAll = function (html_item) {
-    if (removeFromLocalBlacklist(html_item)) {
-        blacklistTable.removeFromTable(html_item);
-        synchronizer.syncBlacklist(blacklist);
-    }
-};
-
-addBlockedSiteToAll = function (newItem) {
-    if (addToLocalBlacklist(newItem)) {
-        blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
-        synchronizer.syncBlacklist(blacklist);
-    }
-};
-
-
-
-updateSessionbutton = function() {
-    if (auth.sessionAuthentic) {
-        //logout button active
-        connectLogout();
-    } else {
-        //login button active
-        connectLogin();
-    }
-};
-
-checkLoginStatus = function () {
-    auth.authenticateSession().then(updateSessionbutton);
-};
-
-/* -------------------- -------------------------- -------------------- */
-
-//Run this when the page is loaded.
-document.addEventListener("DOMContentLoaded", function() {
-    initOptionsPage();
-});
-
-//Tour Restart Function
-tr.onclick = function(){
-    chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
-};
+    //Tour Restart Function
+    tr.onclick = function () {
+        chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
+    };

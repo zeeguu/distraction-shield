@@ -1,8 +1,6 @@
-var console = chrome.extension.getBackgroundPage().console;
+let id;
 
-var id;
-
-var tour = new Tour({
+let tour = new Tour({
     orphan: true,
     steps: [{
         path: "/introTour/introTour.html",
@@ -77,7 +75,7 @@ var tour = new Tour({
         "amount of time you want and click <b>’Turn Off’</b>.",
         placement: "bottom"
     }, {
-    path: "/introTour/optionscopy.html",
+        path: "/introTour/optionscopy.html",
         title: "Thank You!",
         content: "Thanks for choosing The Distraction Shield and Happy Learning!"
     }],
@@ -97,7 +95,7 @@ tour.start();
 //Restart tour link
 if(tour.ended()) {
     chrome.tabs.getSelected(null, function(tab) {
-        if (tab.url.indexOf('/introTour/introTour.html') != -1) {
+        if (tab.url.indexOf('/introTour/introTour.html') !== -1) {
             tour.restart();
         }
     });
@@ -110,9 +108,8 @@ chrome.tabs.getSelected(null, function(tab) {
 
 //end tour if tab closed
 chrome.tabs.onRemoved.addListener(function(tabId) {
-    if(tabId == id) {
+    if(tabId === id) {
         tour.end();
     }
 });
-
 

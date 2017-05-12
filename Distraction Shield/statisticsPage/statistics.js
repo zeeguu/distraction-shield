@@ -1,38 +1,38 @@
-
-// Log console messages to the background page console instead of the content page.
-var bg = chrome.extension.getBackgroundPage();
-var console = bg.console;
-
-var interceptionCounterTable = null;
-var blacklistTable = null;
-var exerciseTimeTable = null;
-
-saveCurrentPageToBlacklist = function() {
-    bg.tracker.getCurrentTab().then(bg.addToBlockedSites(result));
-};
-
-//Initialize HTML elements and set the data in the tables.
-initStatisticsPage = function() {
-    Promise.all([bg.storage.getInterceptDateList(), bg.storage.getExerciseTimeList()])
-        .then(function(response){
-            let counters = bg.interception.calcInterceptData(response[0].tds_interceptDateList);
-            interceptionCounterTable.setDataAndRender(counters);
-            blacklistTable.setDataAndRender(bg.blockedSites.getList());
-            exerciseTimeTable.setDataAndRender(response[1]);
-        });
-};
-
-// Connects html items to the tables.
-connectHtmlFunctionality = function() {
-    interceptionCounterTable = new InterceptionCounterTable();
-    blacklistTable = new BlacklistStatsTable($('#interceptTable'));
-    exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
-};
+import BlacklistStatsTable from '/classes/BlacklistStatsTable'
+import ExerciseTimeTable from '/classes/ExerciseTimeTable'
+import InterceptionCounterTable from '/classes/InterceptionCounterTable'
+import * as storage from '../modules/storage'
+import * as interception from '../modules/statistics/interception'
+import * as $ from "../dependencies/jquery/jquery-1.10.2";
+import * as domReady from '../domReady'
 
 
-//Run this when the page is loaded.
-document.addEventListener("DOMContentLoaded", function(){
-    connectHtmlFunctionality();
-    initStatisticsPage();
-});
+    let interceptionCounterTable = null;
+    let blacklistTable = null;
+    let exerciseTimeTable = null;
 
+    //Initialize HTML elements and set the data in the tables.
+    initStatisticsPage = function() {
+        Promise.all([storage.getInterceptDateList(), storage.getExerciseTimeList()])
+            .then(function(response){
+                let counters = interception.calcInterceptData(response[0].tds_interceptDateList);
+                //TODO : are the setDataAndRender calls right?
+                interceptionCounterTable.setDataAndRender(counters);
+                storage.getBlacklist(blacklistTable.setDataAndRender);
+                exerciseTimeTable.setDataAndRender(response[1]);
+            });
+    };
+
+    // Connects html items to the tables.
+    connectHtmlFunctionality = function() {
+        interceptionCounterTable = new InterceptionCounterTable();
+        blacklistTable = new BlacklistStatsTable($('#interceptTable'));
+        exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
+    };
+
+    //TODO how should this be done now?
+    //Run this when the page is loaded.
+    domReady(function () {
+        connectHtmlFunctionality();
+        initStatisticsPage();
+    });
