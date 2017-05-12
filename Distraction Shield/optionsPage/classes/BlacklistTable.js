@@ -21,7 +21,7 @@ export default class BlacklistTable{
             });
         };
 
-        getSelected = function () {
+        getSelected() {
             return this.table.find('.highlight');
         };
 
@@ -76,6 +76,3 @@ export default class BlacklistTable{
             return tableRow;
         };
     }
-
-
-
