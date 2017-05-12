@@ -8,10 +8,10 @@ import * as dateutil from '../dateutil'
         storage.getExerciseTimeList().then(function(response){
             exerciseTimeList = response;
             let today = dateutil.getToday();
-            if(exerciseTimeList == null){
+            if(exerciseTimeList === null){
                 exerciseTimeList = {};
             }
-            if(exerciseTimeList[today] == null){
+            if(exerciseTimeList[today] === null){
                 exerciseTimeList[today] = 0;
             }
             exerciseTimeList[today] += amount;

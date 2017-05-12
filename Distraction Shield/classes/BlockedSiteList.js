@@ -1,12 +1,12 @@
-import BlockedSite from './BlockedSite';
-import * as constants from '/Distraction Shield/constants';
+import * as constants from '../constants';
+import * as BlockedSite from '../classes/BlockedSite'
 
 /* --------------- --------------- Serialization --------------- --------------- */
 
 //Private to this and storage.js
 export function serializeBlockedSiteList (blockedSiteList) {
     let obj = {
-        list: blockedSiteList.getList()
+        list: blockedSiteList.list
     };
     obj.list = obj.list.map(BlockedSite.serializeBlockedSite);
     return JSON.stringify(obj);
@@ -14,12 +14,12 @@ export function serializeBlockedSiteList (blockedSiteList) {
 //Private method
 export function parseBlockedSiteList (blockedSiteList) {
     let bl = new BlockedSiteList();
-    bl.setList(blockedSiteList.list);
+    bl.list = blockedSiteList.list;
     return bl;
 }
 //Private to this and storage.js
 export function deserializeBlockedSiteList(serializedBlockedSiteList) {
-    if (serializedBlockedSiteList != null) {
+    if (serializedBlockedSiteList !== null) {
         let parsed = JSON.parse(serializedBlockedSiteList);
         parsed.list = parsed.list.map(BlockedSite.deserializeBlockedSite);
         return parseBlockedSiteList(parsed);
@@ -38,7 +38,7 @@ export class BlockedSiteList {
     get list ()                 { return this._list }
 
     get urls () {
-        if (list != []) {
+        if (list !== []) {
             return list.map(function (bs) {
                 return bs.url();
             });
@@ -47,9 +47,9 @@ export class BlockedSiteList {
     }
 
     get activeUrls () {
-        if (list != []) {
+        if (list !== []) {
             let urlList = this.filterOnChecked();
-            if (urlList != []) {
+            if (urlList !== []) {
                 return urlList.map(function (bs) {
                     return bs.url();
                 });
@@ -66,7 +66,7 @@ export class BlockedSiteList {
         if (unique) {
             list.push(newBlockedSite);
             return true;
-        } else {   //TODO "newUrlNotUniqueError"  is not recognized?
+        } else {
             alert( constants.newUrlNotUniqueError + newBlockedSite.domain);
             return false;
         }
@@ -89,9 +89,9 @@ export class BlockedSiteList {
     };
 
     filterOnChecked () {
-        if (list != []) {
+        if (list !== []) {
             return list.filter(function (a) {
-                return a.getCheckboxVal() == true;
+                return a.checkboxVal === true;
             });
         }
         return [];

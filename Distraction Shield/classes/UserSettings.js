@@ -29,8 +29,6 @@ class UserSettings{
     set offTill(time) { this._status.offTill = time;}
 
     get state() {return this._status.state ? "On" : "Off";};
-
-    //TODO  remove - unused?
     get notState() {return this._status.state ? "Off" : "On"; };
 
     turnOn() {
@@ -52,14 +50,12 @@ class UserSettings{
 
     turnOffFor(minutes) {
         let curDate = new Date();
-        let timer = new Date(curDate.setMinutes(minutes + curDate.getMinutes()));
-        this.offTill = timer;
+        this.offTill = new Date(curDate.setMinutes(minutes + curDate.getMinutes()));
         this.turnOff();
     };
 
     turnOffForDay  () {
-        let time = new Date(new Date().setHours(24, 0, 0, 0));
-        this.offTill = time;
+        this.offTill = new Date(new Date().setHours(24, 0, 0, 0));
         this.turnOff();
     };
 

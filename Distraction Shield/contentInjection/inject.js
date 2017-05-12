@@ -1,24 +1,13 @@
-require.config({
-    baseUrl: "./",
-    paths : {
-        'constants'         : '../constants',
-        'BlockedSite'       : '../classes/BlockedSite',
-        'BlockedSiteList'   : '../classes/BlockedSiteList',
-        'UserSettings'      : '../classes/UserSettings',
-        'storage'           : '../modules/storage',
-        'jquery'            : '../dependencies/jquery/jquery-1.10.2'
-
-    }
-});
-
-require(['jquery', 'storage', 'constants'], function inject($, storage, constants) {
+import * as constants from '../constants'
+import * as storage from '../modules/storage'
+import * as $ from "../dependencies/jquery/jquery-1.10.2";
 
     mainFlow = function () {
         storage.getMode(initBasis);
     };
 
     initBasis = function (mode) {
-        var message = mode.zeeguuText;
+        let message = mode.zeeguuText;
 
         $.ajax({
             url: chrome.extension.getURL('contentInjection/inject.html'),
@@ -37,13 +26,13 @@ require(['jquery', 'storage', 'constants'], function inject($, storage, constant
     };
 
     getDest = function () {
-        var url = window.location.href;
-        var regex = new RegExp("[?&]redirect(=([^&#]*)|&|#|$)");
-        var results = regex.exec(url);
+        let url = window.location.href;
+        let regex = new RegExp("[?&]redirect(=([^&#]*)|&|#|$)");
+        let results = regex.exec(url);
         if (!results || !results[2]) {
             return null;
         }
-        var newUrl = decodeURIComponent(results[2].replace(/\+/g, " "));
+        let newUrl = decodeURIComponent(results[2].replace(/\+/g, " "));
         if (newUrl.indexOf("?") > -1) {
             newUrl += "&tds_exComplete=true";
         } else {
@@ -53,4 +42,3 @@ require(['jquery', 'storage', 'constants'], function inject($, storage, constant
     };
 
     mainFlow();
-});

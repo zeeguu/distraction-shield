@@ -1,5 +1,3 @@
-let console = chrome.extension.getBackgroundPage().console;
-
 let id;
 
 let tour = new Tour({
@@ -97,7 +95,7 @@ tour.start();
 //Restart tour link
 if(tour.ended()) {
     chrome.tabs.getSelected(null, function(tab) {
-        if (tab.url.indexOf('/introTour/introTour.html') != -1) {
+        if (tab.url.indexOf('/introTour/introTour.html') !== -1) {
             tour.restart();
         }
     });
@@ -110,9 +108,8 @@ chrome.tabs.getSelected(null, function(tab) {
 
 //end tour if tab closed
 chrome.tabs.onRemoved.addListener(function(tabId) {
-    if(tabId == id) {
+    if(tabId === id) {
         tour.end();
     }
 });
-
 

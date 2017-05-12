@@ -9,7 +9,7 @@ import * as stringutil from '../stringutil'
         let tmp = dateList;
         let countDay = 0, countWeek = 0, countMonth = 0, countTotal = 0;
 
-        if (tmp != null) {
+        if (tmp !== null) {
             let firstDate = new Date();
             let length = tmp.length;
             for (let i = 0; i < length; i++) {
@@ -64,7 +64,7 @@ import * as stringutil from '../stringutil'
         })
         .then(function(){
             let newDate = new Date().toDateString();
-            if (interceptDateList == null) {
+            if (interceptDateList === null) {
                 interceptDateList = [newDate];
             } else {
                 interceptDateList.push(newDate);

@@ -1,34 +1,12 @@
-require.config({
-    baseUrl: "./",
-    paths : {
-        'BlockedSite'       : '../classes/BlockedSite',
-        'BlockedSiteList'   : '../classes/BlockedSiteList',
-        'UserSettings'      : '../classes/UserSettings',
-        'api'               : '../modules/authentication/api',
-        'auth'              : '../modules/authentication/auth',
-        'exerciseTime'      : '../modules/statistics/exerciseTime',
-        'interception'      : '../modules/statistics/interception',
-        'tracker'           : '../modules/statistics/tracker',
-        'blockedSiteBuilder': '../modules/blockedSiteBuilder',
-        'dateutil'          : '../modules/dateutil',
-        'storage'           : '../modules/storage',
-        'synchronizer'      : '../modules/synchronizer',
-        'urlFormatter'      : '../modules/urlFormatter',
-        'BlacklistTable'    : 'classes/BlacklistTable',
-        'GreenToRedSlider'  : 'classes/GreenToRedSlider',
-        'TurnOffSlider'     : 'classes/TurnOffSlider',
-        'constants'         : '../constants',
-        'jquery'            : '../dependencies/jquery/jquery-1.10.2',
-        'background'        : '../background',
-        'domReady'          : '../domReady'
-
-    }
-});
-
-require (['storage','UserSettings','BlockedSiteList','synchronizer', 'BlacklistTable','GreenToRedSlider', 'TurnOffSlider',
-'connectDataToHtml', 'htmlFunctionality','jquery', 'domReady'],
-function options (storage, UserSettings, BlockedSiteList, synchronizer, BlacklistTable, GreenToRedSlider, TurnOffSlider,
-                  connectDataToHtml, htmlFunctionality, $, domReady) {
+import * as storage from '../modules/storage'
+import * as UserSettings    from '../classes/UserSettings'
+import * as BlockedSiteList from '../classes/BlockedSiteList'
+import * as synchronizer from '../modules/synchronizer'
+import BlacklistTable from '/classes/BlacklistTable'
+import TurnOffSlider from '/classes/TurnOffSlider'
+import * as connectDataToHtml from 'connectDataToHtml'
+import * as htmlFunctionality from 'htmlFunctionality'
+import * as $ from "../dependencies/jquery/jquery-1.10.2";
 
     /**
      * This file contains the core functions of the options page. this has all the local variables,
@@ -37,25 +15,20 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
      * to one smoothly running file. Besides the initialization it contains the functions to manipulate the local variables
      * found here
      */
+    let html_txtFld = $('#textFld');
+    let html_intCnt = $('#iCounter');
+    let html_saveButton = $('#saveBtn');
+    let modeGroup = "modeOptions";
 
-    // Log console messages to the background page console instead of the content page.
-  //  var console = chrome.extension.getBackgroundPage().console;
-
-    //Local variables that hold the html elements
-    var html_txtFld = $('#textFld');
-    var html_intCnt = $('#iCounter');
-    var html_saveButton = $('#saveBtn');
-    var modeGroup = "modeOptions";
-
-    var blacklistTable;
-    var intervalSlider;
-    var turnOffSlider;
-    var tr = document.getElementById("tourRestart");
+    let blacklistTable;
+    let intervalSlider;
+    let turnOffSlider;
+    let tr = document.getElementById("tourRestart");
 
     //Local variables that hold all necessary data.
-    var settings_object = new UserSettings.UserSettings();
-    var blacklist = new BlockedSiteList.BlockedSiteList();
-    var interceptionCounter = 0;
+    let settings_object = new UserSettings();
+    let blacklist = new BlockedSiteList();
+    let interceptionCounter = 0;
 
     /* -------------------- Initialization of options --------------------- */
 
@@ -79,7 +52,7 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
     connectHtmlFunctionality = function () {
         htmlFunctionality.initModeSelection(modeGroup, settings_object);
         intervalSlider = htmlFunctionality.initIntervalSlider(settings_object);
-        blacklistTable = new BlacklistTable.BlacklistTable($('#blacklistTable'), syncBlockedSiteList);
+        blacklistTable = new BlacklistTable($('#blacklistTable'), syncBlockedSiteList);
         htmlFunctionality.connectButton(html_saveButton, htmlFunctionality.saveNewUrl);
         turnOffSlider = new TurnOffSlider.TurnOffSlider('#turnOff-slider', settings_object);
         htmlFunctionality.setKeyPressFunctions(html_txtFld,blacklistTable );
@@ -89,14 +62,14 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
     connectLocalDataToHtml = function () {
         connectDataToHtml.loadHtmlInterceptCounter(interceptionCounter, html_intCnt);
         connectDataToHtml.loadHtmlBlacklist(blacklist, blacklistTable);
-        connectDataToHtml.loadHtmlMode(settings_object.getMode(), modeGroup);
-        connectDataToHtml.loadHtmlInterval(settings_object.getInterceptionInterval(), intervalSlider);
+        connectDataToHtml.loadHtmlMode(settings_object.mode, modeGroup);
+        connectDataToHtml.loadHtmlInterval(settings_object.interceptionInterval, intervalSlider);
     };
 
     /* -------------------- Manipulate local variables ------------------- */
 
     removeFromLocalBlacklist = function (html_item) {
-        var blockedSiteToDelete = html_item.data('blockedSite');
+        let blockedSiteToDelete = html_item.data('blockedSite');
         return blacklist.removeFromList(blockedSiteToDelete);
     };
 
@@ -132,5 +105,3 @@ function options (storage, UserSettings, BlockedSiteList, synchronizer, Blacklis
     tr.onclick = function () {
         chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
     };
-
-});
