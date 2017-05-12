@@ -1,67 +1,66 @@
+import * as constants from '/Distraction Shield/constants';
+import * as storage from '/Distraction Shield/modules/storage';
+import * as stringutil from '/Distraction Shield/modules/stringutil';
 
 
-define('interception', ['storage', 'constants', 'stringutil'], function Interception(storage, constants, stringutil) {
+// This method goes through the interceptDateList and count how many times the user was intercepted last day,
+// last week, last month and the total amount of interceptions.
+export function calcInterceptData (dateList) {
+    var tmp = dateList;
+    let countDay = 0, countWeek = 0, countMonth = 0, countTotal = 0;
 
-    // This method goes through the interceptDateList and count how many times the user was intercepted last day,
-    // last week, last month and the total amount of interceptions.
-    calcInterceptData = function(dateList) {
-        var tmp = dateList;
-        let countDay = 0, countWeek = 0, countMonth = 0, countTotal = 0;
-
-        if (tmp != null) {
-            var firstDate = new Date();
-            var length = tmp.length;
-            for (var i = 0; i < length; i++) {
-                let secondDate = new Date(tmp.pop());
-                var diffDays = Math.floor(Math.abs((firstDate.getTime() - secondDate.getTime()) / (constants.oneDay)));
-                if (diffDays == 0) {
-                    countDay++;
-                }
-                if (diffDays <= 7) {
-                    countWeek++;
-                }
-                if (diffDays <= 31) {
-                    countMonth++
-                }
-                countTotal++;
+    if (tmp != null) {
+        var firstDate = new Date();
+        var length = tmp.length;
+        for (var i = 0; i < length; i++) {
+            let secondDate = new Date(tmp.pop());
+            var diffDays = Math.floor(Math.abs((firstDate.getTime() - secondDate.getTime()) / (constants.oneDay)));
+            if (diffDays == 0) {
+                countDay++;
             }
-        }
-        return {
-            countDay: countDay,
-            countWeek: countWeek,
-            countMonth: countMonth,
-            countTotal: countTotal
-        }
-    };
-
-    // Receives the url from the parameter, and searches the correct blockedSite item from the blockedsite list.
-    // Then the interceptioncounter for this item is incremented by 1.
-    // Also the global interceptioncounter is incremented by one.
-    incrementInterceptionCounter = function(urlAddress, blockedSites) {
-        let urlList = blockedSites.getList();
-        for (var i = 0; i < urlList.length; i++) {
-            if (stringutil.wildcardStrComp(urlAddress, urlList[i].getUrl())) {
-                urlList[i].setCounter(urlList[i].getCounter() + 1);
-                break;
+            if (diffDays <= 7) {
+                countWeek++;
             }
+            if (diffDays <= 31) {
+                countMonth++
+            }
+            countTotal++;
         }
-        storage.setBlacklist(blockedSites);
-        storage.getInterceptCounter()
-            .then(function(output){
-                var counter = output.tds_interceptCounter;
-                counter++;
-                storage.setInterceptCounter(counter);
-            });
-    };
-
-    // This function adds the current time+date to the saved time+date list
-    addToInterceptDateList = function() {
-        let interceptDateList;
-        storage.getInterceptDateList()
-        .then(function(result){
+    }
+    return {
+        countDay: countDay,
+        countWeek: countWeek,
+        countMonth: countMonth,
+        countTotal: countTotal
+    }
+}
+// Receives the url from the parameter, and searches the correct blockedSite item from the blockedsite list.
+// Then the interceptioncounter for this item is incremented by 1.
+// Also the global interceptioncounter is incremented by one.
+export function incrementInterceptionCounter (urlAddress, blockedSites) {
+    let urlList = blockedSites.getList();
+    for (var i = 0; i < urlList.length; i++) {
+        if (stringutil.wildcardStrComp(urlAddress, urlList[i].getUrl())) {
+            urlList[i].setCounter(urlList[i].getCounter() + 1);
+            break;
+        }
+    }
+    storage.setBlacklist(blockedSites);
+    storage.getInterceptCounter()
+        .then(function (output) {
+            var counter = output.tds_interceptCounter;
+            counter++;
+            storage.setInterceptCounter(counter);
+        });
+}
+// This function adds the current time+date to the saved time+date list
+export function addToInterceptDateList () {
+    let interceptDateList;
+    storage.getInterceptDateList()
+        .then(function (result) {
             interceptDateList = result.tds_interceptDateList;
         })
-        .then(function(){
+        .then(function () {
             var newDate = new Date().toDateString();
             if (interceptDateList == null) {
                 interceptDateList = [newDate];
@@ -69,15 +68,8 @@ define('interception', ['storage', 'constants', 'stringutil'], function Intercep
                 interceptDateList.push(newDate);
             }
         })
-        .then(function(){
+        .then(function () {
             storage.setInterceptDateList(interceptDateList);
         });
-    };
-
-    return {
-        calcInterceptData : calcInterceptData,
-        incrementInterceptionCounter : incrementInterceptionCounter,
-        addToInterceptDateList : addToInterceptDateList
-    }
-});
+}
 

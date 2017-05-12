@@ -1,0 +1,73 @@
+{
+  "manifest_version": 2,
+
+  "name": "The Distraction Shield",
+  "description": "Divert attention from social media websites towards learning a new language",
+  "version": "1.1.0",
+  //Icon's shown in chrome://extensions
+  "icons": {"128": "aikido_icon.png"},
+  "offline_enabled": false,
+
+  //what pops up once we hit the options
+  "options_page": "optionsPage/options.html",
+  "options_ui": {
+    "page": "optionsPage/options.html"
+  },
+
+  //Icon in the browser specification
+  "browser_action": {
+    "default_icon": "aikido_icon.png",
+    "default_title": "Distraction Shield Settings",
+    "default_popup": "tooltipPage/tooltip.html"
+  },
+
+  "background": {
+    "scripts": [
+      "dependencies/jquery/jquery-1.10.2.js",
+      "dependencies/bootstrapTour/bootstrap-tour-standalone.min.js",
+      "constants.js",
+      "modules/stringutil.js",
+      "modules/dateutil.js",
+      "modules/urlFormatter.js",
+      "modules/storage.js",
+      "modules/synchronizer.js",
+      "modules/blockedSiteBuilder.js",
+      "classes/BlockedSite.js",
+      "classes/BlockedSiteList.js",
+      "classes/UserSettings.js",
+      "modules/statistics/tracker.js",
+      "modules/statistics/interception.js",
+      "modules/statistics/exerciseTime.js",
+      "background.js",
+      "modules/authentication/api.js",
+      "modules/authentication/auth.js",
+      "init.js"
+    ]
+  },
+
+  "content_scripts": [
+    {
+      "matches" : ["*://www.zeeguu.unibe.ch/practice*"],
+      "js" : ["dependencies/jquery/jquery-1.10.2.js",
+              "constants.js",
+              "modules/storage.js",
+              "classes/UserSettings.js",
+              "contentInjection/inject.js"]
+    }
+  ],
+
+  "permissions": [
+    "tabs",
+    "storage",
+    "webRequest",
+    "webRequestBlocking",
+    "idle",
+    "<all_urls>"
+  ],
+
+  "web_accessible_resources": [
+    "contentInjection/inject.html",
+    "loginPage/login.html"
+  ]
+
+}
