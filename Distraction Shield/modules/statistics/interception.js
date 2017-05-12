@@ -2,7 +2,6 @@ import * as storage from '../storage'
 import * as constants from '../../constants'
 import * as stringutil from '../stringutil'
 
-
 // This method goes through the interceptDateList and count how many times the user was intercepted last day,
 // last week, last month and the total amount of interceptions.
 export function calcInterceptData(dateList) {

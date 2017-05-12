@@ -1,4 +1,7 @@
-define ('tracker', ['constants', 'exerciseTime'], function Tracker(constants, exerciseTime) {
+import * as constants from '../../constants';
+import * as exerciseTime from './exerciseTime';
+
+
 // The tracker tracks whether you are currently working on exercises.
 // Every second, the "alarm" is fired, and the url of the current tab is examined.
 // If this url corresponds with the zeeguu url, the time spent on exercises counter is incremented.
@@ -12,7 +15,7 @@ define ('tracker', ['constants', 'exerciseTime'], function Tracker(constants, ex
     ///TODO remove this.zeeguuRegex = constants.zeeguuExLink + ".*";
 
     // Initialize the alarm, and initialize the idle-checker.
-    init = function() {
+    export function init () {
         setInterval(fireAlarm, constants.savingFrequency);
         setInterval(increaseTimeCounter, constants.measureFrequency);
 
@@ -21,6 +24,7 @@ define ('tracker', ['constants', 'exerciseTime'], function Tracker(constants, ex
         chrome.idle.onStateChanged.addListener(checkIdle);
 
     };
+
     // TODO replace old function with this one
     // fireAlarm = function () {
     //     if (self.updatedExerciseTime) {
@@ -33,6 +37,7 @@ define ('tracker', ['constants', 'exerciseTime'], function Tracker(constants, ex
     //         self.updatedExerciseTime = false;
     //     }
     // };
+
     // TODO REMOVE
     fireAlarm = function () {
         if (self.activeTime > 0) {
@@ -124,11 +129,6 @@ define ('tracker', ['constants', 'exerciseTime'], function Tracker(constants, ex
         return RegExp(regex).test(url);
     };
 
-    return {
-        init : init,
-
-    }
-});
 
 
 // var tracker = new Tracker();

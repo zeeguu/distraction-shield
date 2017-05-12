@@ -1,151 +1,131 @@
-define('background', ['blockedSiteBuilder','BlockedSiteList','interception', 'tracker', 'UserSettings','constants','storage'],
-function background(blockedSiteBuilder, BlockedSiteList, interception, tracker, UserSettings, constants, storage) {
+import {createNewBlockedSite} from '/Distraction Shield/modules/blockedSiteBuilder';
+import {BlockedSiteList, deserializeBlockedSiteList} from '/Distraction Shield/classes/BlockedSiteList';
+import * as interception from '/Distraction Shield/modules/statistics/interception';
+import * as storage from './modules/storage';
+import * as UserSettings from  '/Distraction Shield'
+import * as constants from'./constants';
+
 //Set that holds the urls to be intercepted
-    var blockedSites = new BlockedSiteList.BlockedSiteList();
-    var interceptDateList = [];
-    var localSettings = new UserSettings.UserSettings();
-    var authenticator;
+let blockedSites = new BlockedSiteList();
+let interceptDateList = [];
+let localSettings = new UserSettings.UserSettings();
 
-    /* --------------- ------ setter for local variables ------ ---------------*/
+/* --------------- ------ setter for local variables ------ ---------------*/
 
-    setLocalSettings = function (newSettings) {
-        var oldState = localSettings.getState();
-        localSettings.copySettings(newSettings);
-        if (oldState != localSettings.getState()) {
-            replaceListener();
-        }
-    };
-
-    setLocalBlacklist = function (newList) {
-        blockedSites.setList(newList.getList());
+export function setLocalSettings(newSettings) {
+    let oldState = localSettings.getState();
+    localSettings.copySettings(newSettings);
+    if (oldState !== localSettings.getState()) {
         replaceListener();
-    };
+    }
+}
 
-    setLocalAuthenticator = function (newAuthenticator) {
-        authenticator = newAuthenticator;
-    };
+export function setLocalBlacklist(newList) {
+    blockedSites.list = newList.list();
+    replaceListener();
+}
 
-    setLocalInterceptDateList = function (dateList) {
-        interceptDateList = dateList;
-    };
+export function setLocalInterceptDateList(dateList) {
+    interceptDateList = dateList;
+}
 
-    getLocalSettings = function() {
-        return localSettings;
-    };
-    /* --------------- ------ Storage retrieval ------ ---------------*/
+export function getLocalSettings() {
+    return localSettings;
+}
+
+/* --------------- ------ Storage retrieval ------ ---------------*/
 // Methods here are only used upon initialization of the session.
 // Usage found in init.js
 
-    retrieveSettings = function (callback, param) {
-        storage.getSettings(function (settingsObject) {
-            localSettings = settingsObject;
-            return callback(param);
-        });
-    };
+export function retrieveSettings(callback, param) {
+    storage.getSettings(function (settingsObject) {
+        localSettings = settingsObject;
+        return callback(param);
+    });
+}
 
-    retrieveBlockedSites = function (callback) {
-        storage.getBlacklist(function (blacklist) {
-            blockedSites.setList(blacklist.getList());
-            return callback();
-        });
-    };
+export function retrieveBlockedSites(callback) {
+    storage.getBlacklist(function (blacklist) {
+        blockedSites.list = blacklist.list;
+        return callback();
+    });
+}
+/* --------------- ------ Updating of variables ------ ---------------*/
 
-    /* --------------- ------ Updating of variables ------ ---------------*/
-
-    addUrlToBlockedSites = function (unformattedUrl, onSuccess) {
-        blockedSiteBuilder.createNewBlockedSite(unformattedUrl, function(newBS) {
-            if (blockedSites.addToList(newBS)) {
-                replaceListener();
-                storage.setBlacklist(blockedSites);
-                onSuccess();
-            }
-        });
-    };
-
-    /* --------------- ------ webRequest functions ------ ---------------*/
-
-    replaceListener = function () {
-        removeWebRequestListener();
-        var urlList = blockedSites.getActiveUrls();
-        if (localSettings.getState() == "On" && urlList.length > 0) {
-            addWebRequestListener(urlList);
-        }
-    };
-
-    addWebRequestListener = function (urlList) {
-        chrome.webRequest.onBeforeRequest.addListener(
-            handleInterception
-            , {
-                urls: urlList
-                , types: ["main_frame"]
-            }
-            , ["blocking"]
-        );
-    };
-
-    removeWebRequestListener = function () {
-        chrome.webRequest.onBeforeRequest.removeListener(handleInterception);
-    };
-
-    intercept = function (details) {
-        interception.incrementInterceptionCounter(details.url, blockedSites);
-        interception.addToInterceptDateList();
-        var redirectLink;
-        var params;
-            redirectLink = constants.zeeguuExLink;
-        params = "?redirect=" + details.url;
-
-        return {redirectUrl: redirectLink + params};
-    };
-
-    handleInterception = function (details) {
-        if (localSettings.getState() == "On") {
-            if (details.url.indexOf("tds_exComplete=true") > -1) {
-                turnOffInterception();
-                var url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
-                return {redirectUrl: url};
-            } else {
-                return intercept(details);
-            }
-        }
-    };
-
-    turnOffInterception = function () {
-        localSettings.turnOffFromBackground();
-        storage.setSettings(localSettings);
-    };
-
-    getConsole = function(){
-        return this.console;
-    };
-
-    chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
-        if (request.message == "updateListener") {
-            setLocalBlacklist(BlockedSiteList.deserializeBlockedSiteList(request.siteList));
-        } else if (request.message == "updateSettings") {
-            setLocalSettings(UserSettings.deserializeSettings(request.settings));
-        } else if (request.message == "newUrl") {
-            addUrlToBlockedSites(request.unformattedUrl, sendResponse);
-        } else if (request.message == "requestBlockedSites") {
-            sendResponse({blockedSiteList: blockedSites});
+export function addUrlToBlockedSites(unformattedUrl, onSuccess) {
+    createNewBlockedSite(unformattedUrl, function (newBS) {
+        if (blockedSites.addToList(newBS)) {
+            replaceListener();
+            storage.setBlacklist(blockedSites);
+            onSuccess();
         }
     });
+}
+/* --------------- ------ webRequest functions ------ ---------------*/
 
-    return {
-        getLocalSettings            : getLocalSettings,
-        setLocalSettings            : setLocalSettings,
-        setLocalBlacklist           : setLocalBlacklist,
-        setLocalInterceptDateList   : setLocalInterceptDateList,
-        retrieveSettings            : retrieveSettings,
-        retrieveBlockedSites        : retrieveBlockedSites,
-        addUrlToBlockedSites        : addUrlToBlockedSites,
-        replaceListener             : replaceListener,
-        addWebRequestListener       : addWebRequestListener,
-        removeWebRequestListener    : removeWebRequestListener,
-        intercept                   : intercept,
-        handleInterception          : handleInterception,
-        turnOffInterception         : turnOffInterception,
-        getConsole                  : getConsole
-    };
+export function replaceListener() {
+    removeWebRequestListener();
+    let urlList = blockedSites.getActiveUrls();
+    if (localSettings.getState() === "On" && urlList.length > 0) {
+        addWebRequestListener(urlList);
+    }
+}
 
+export function addWebRequestListener(urlList) {
+    chrome.webRequest.onBeforeRequest.addListener(
+        handleInterception
+        , {
+            urls: urlList
+            , types: ["main_frame"]
+        }
+        , ["blocking"]
+    );
+}
+
+export function removeWebRequestListener() {
+    chrome.webRequest.onBeforeRequest.removeListener(handleInterception);
+}
+
+export function intercept(details) {
+    interception.incrementInterceptionCounter(details.url, blockedSites);
+    interception.addToInterceptDateList();
+    let redirectLink;
+    let params;
+    redirectLink = constants.zeeguuExLink;
+    params = "?redirect=" + details.url;
+
+    return {redirectUrl: redirectLink + params};
+}
+
+export function handleInterception(details) {
+    if (localSettings.getState() === "On") {
+        if (details.url.indexOf("tds_exComplete=true") > -1) {
+            turnOffInterception();
+            let url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
+            return {redirectUrl: url};
+        } else {
+            return intercept(details);
+        }
+    }
+}
+
+export function turnOffInterception() {
+    localSettings.turnOffFromBackground();
+    storage.setSettings(localSettings);
+}
+
+export function getConsole() {
+    return this.console;
+}
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if (request.message === "updateListener") {
+        setLocalBlacklist(deserializeBlockedSiteList(request.siteList));
+    } else if (request.message === "updateSettings") {
+        setLocalSettings(UserSettings.deserializeSettings(request.settings));
+    } else if (request.message === "newUrl") {
+        addUrlToBlockedSites(request.unformattedUrl, sendResponse);
+    } else if (request.message === "requestBlockedSites") {
+        sendResponse({blockedSiteList: blockedSites});
+    }
 });

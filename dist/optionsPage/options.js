@@ -16,19 +16,19 @@ var _synchronizer = require('../modules/synchronizer');
 
 var synchronizer = _interopRequireWildcard(_synchronizer);
 
-var _BlacklistTable = require('/classes/BlacklistTable');
+var _BlacklistTable = require('./classes/BlacklistTable');
 
 var _BlacklistTable2 = _interopRequireDefault(_BlacklistTable);
 
-var _TurnOffSlider = require('/classes/TurnOffSlider');
+var _TurnOffSlider = require('./classes/TurnOffSlider');
 
 var _TurnOffSlider2 = _interopRequireDefault(_TurnOffSlider);
 
-var _connectDataToHtml = require('connectDataToHtml');
+var _connectDataToHtml = require('./connectDataToHtml');
 
 var connectDataToHtml = _interopRequireWildcard(_connectDataToHtml);
 
-var _htmlFunctionality = require('htmlFunctionality');
+var _htmlFunctionality = require('./htmlFunctionality');
 
 var htmlFunctionality = _interopRequireWildcard(_htmlFunctionality);
 
@@ -65,7 +65,7 @@ var interceptionCounter = 0;
 /* -------------------- Initialization of options --------------------- */
 
 //Initialize HTML elements and set the local variables
-initOptionsPage = function initOptionsPage() {
+function initOptionsPage() {
     storage.getAll(function (output) {
         setLocalVariables(output);
         connectHtmlFunctionality();
@@ -74,14 +74,14 @@ initOptionsPage = function initOptionsPage() {
 };
 
 //Retrieve data from storage and store in local variables
-setLocalVariables = function setLocalVariables(storage_output) {
+function setLocalVariables(storage_output) {
     blacklist.addAllToList(storage_output.tds_blacklist);
     settings_object.copySettings(storage_output.tds_settings);
     interceptionCounter = storage_output.tds_interceptCounter;
 };
 
 // functionality from htmlFunctionality, blacklist_table and slider files
-connectHtmlFunctionality = function connectHtmlFunctionality() {
+function connectHtmlFunctionality() {
     htmlFunctionality.initModeSelection(modeGroup, settings_object);
     intervalSlider = htmlFunctionality.initIntervalSlider(settings_object);
     blacklistTable = new _BlacklistTable2.default($('#blacklistTable'), syncBlockedSiteList);
@@ -91,7 +91,7 @@ connectHtmlFunctionality = function connectHtmlFunctionality() {
 };
 
 // functionality from connectDataToHtml file
-connectLocalDataToHtml = function connectLocalDataToHtml() {
+function connectLocalDataToHtml() {
     connectDataToHtml.loadHtmlInterceptCounter(interceptionCounter, html_intCnt);
     connectDataToHtml.loadHtmlBlacklist(blacklist, blacklistTable);
     connectDataToHtml.loadHtmlMode(settings_object.mode, modeGroup);
@@ -100,23 +100,23 @@ connectLocalDataToHtml = function connectLocalDataToHtml() {
 
 /* -------------------- Manipulate local variables ------------------- */
 
-removeFromLocalBlacklist = function removeFromLocalBlacklist(html_item) {
+function removeFromLocalBlacklist(html_item) {
     var blockedSiteToDelete = html_item.data('blockedSite');
     return blacklist.removeFromList(blockedSiteToDelete);
 };
 
-addToLocalBlacklist = function addToLocalBlacklist(blockedSite_item) {
+function addToLocalBlacklist(blockedSite_item) {
     return blacklist.addToList(blockedSite_item);
 };
 
-removeBlockedSiteFromAll = function removeBlockedSiteFromAll(html_item) {
+function removeBlockedSiteFromAll(html_item) {
     if (removeFromLocalBlacklist(html_item)) {
         blacklistTable.removeFromTable(html_item);
         synchronizer.syncBlacklist(blacklist);
     }
 };
 
-addBlockedSiteToAll = function addBlockedSiteToAll(newItem) {
+function addBlockedSiteToAll(newItem) {
     if (addToLocalBlacklist(newItem)) {
         blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
         synchronizer.syncBlacklist(blacklist);
@@ -124,7 +124,7 @@ addBlockedSiteToAll = function addBlockedSiteToAll(newItem) {
 };
 /* -------------------- -------------------------- -------------------- */
 
-syncBlockedSiteList = function syncBlockedSiteList() {
+function syncBlockedSiteList() {
     synchronizer.syncBlacklist(blacklist);
 };
 

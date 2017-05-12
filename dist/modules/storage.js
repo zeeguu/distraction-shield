@@ -35,7 +35,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 // General function which is used to set items stored in the storage of the chrome api.
 // Returns a promise.
-
 //TODO write a serializer module
 
 function setStorage(dataKey, dataValue) {

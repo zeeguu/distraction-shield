@@ -39,7 +39,7 @@ export function deserializeBlockedSite (serializedBlockedSite) {
 
 /* --------------- --------------- --------------- --------------- --------------- */
 
-export default class BlockedSite {
+export class BlockedSite {
 
     constructor (urlBase, title) {
         this._url = this.constructUrl(urlBase);

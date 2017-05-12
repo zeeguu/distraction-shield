@@ -27,12 +27,11 @@ export function deserializeBlockedSiteList(serializedBlockedSiteList) {
     return null;
 }
 /* --------------- --------------- --------------- --------------- --------------- */
-
 export class BlockedSiteList {
+
     constructor () {
         this._list = [];
     }
-
 
     set list (blockedSiteArr)   { this._list = blockedSiteArr }
     get list ()                 { return this._list }
