@@ -1,28 +1,7 @@
-require.config({
-    baseUrl: "./",
-    paths : {
-        'BlockedSite'       : 'classes/BlockedSite',
-        'BlockedSiteList'   : 'classes/BlockedSiteList',
-        'UserSettings'      : 'classes/UserSettings',
-        'api'               : 'modules/authentication/api',
-        'auth'              : 'modules/authentication/auth',
-        'exerciseTime'      : 'modules/statistics/exerciseTime',
-        'interception'      : 'modules/statistics/interception',
-        'tracker'           : 'modules/statistics/tracker',
-        'blockedSiteBuilder': 'modules/blockedSiteBuilder',
-        'dateutil'          : 'modules/dateutil',
-        'stringutil'          : 'modules/stringutil',
-        'storage'           : 'modules/storage',
-        'synchronizer'      : 'modules/synchronizer',
-        'urlFormatter'      : 'modules/urlFormatter'
-
-    }
-});
-
-
-require( ['background', 'storage', 'BlockedSiteList', 'UserSettings', 'tracker'],
-        function(background, storage, BlockedSiteList, UserSettings, tracker) {
-
+import * as storage from '/modules/storage'
+import * as BlockedSiteList from '/classes/BlockedSiteList'
+import * as UserSettings from '/classes/UserSettings'
+import Tracker from '/modules/statistics/tracker'
 
 
     //First receive the blacklist and settings from the sync storage,
@@ -32,9 +11,10 @@ require( ['background', 'storage', 'BlockedSiteList', 'UserSettings', 'tracker']
         // requires the blocked sites to be loaded, so these weird callbacks are required.
         storage.getSettings(function(settings) {
             settings.reInitTimer();
-            setLocalSettings(settings);
-            retrieveBlockedSites(replaceListener);
+            this.setLocalSettings(settings);
+            this.retrieveBlockedSites(replaceListener);
         });
+        let tracker = new Tracker();
         tracker.init();
     };
 
@@ -52,33 +32,33 @@ require( ['background', 'storage', 'BlockedSiteList', 'UserSettings', 'tracker']
     };
 
     initBlacklist = function(list) {
-        if (list == null) {
-            var blacklistToStore = new BlockedSiteList.BlockedSiteList();
+        if (list === null) {
+            let blacklistToStore = new BlockedSiteList();
             storage.setBlacklist(blacklistToStore);
         }
     };
 
     initSettings = function(settings) {
-        if (settings == null) {
-            var settingsToStore = new UserSettings.UserSettings();
+        if (settings === null) {
+            let settingsToStore = new UserSettings();
             storage.setSettingsWithCallback(settingsToStore, initSession);
         }
     };
 
     initInterceptCounter = function(counter) {
-        if (counter == null) {
+        if (counter === null) {
             storage.setInterceptCounter(0);
         }
     };
 
     initInterceptDateList = function(dateList) {
-        if (dateList == null) {
+        if (dateList === null) {
             storage.setInterceptDateList([]);
         }
     };
 
     initExerciseTime = function(exerciseTime){
-        if (exerciseTime == null) {
+        if (exerciseTime === null) {
             storage.setExerciseTimeList({});
         }
     };
@@ -95,9 +75,8 @@ require( ['background', 'storage', 'BlockedSiteList', 'UserSettings', 'tracker']
 
     //fix that checks whether everything that should be is indeed initialized
     storage.getSettingsUnParsed(function(settings) {
-        if (settings != null) {
+        if (settings !== null) {
             initSession();
         }
     });
 
-});
