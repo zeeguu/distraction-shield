@@ -1,31 +1,6 @@
 import * as constants from '../constants';
 import * as BlockedSite from '../classes/BlockedSite'
 
-/* --------------- --------------- Serialization --------------- --------------- */
-
-//Private to this and storage.js
-export function serializeBlockedSiteList (blockedSiteList) {
-    let obj = {
-        list: blockedSiteList.list
-    };
-    obj.list = obj.list.map(BlockedSite.serializeBlockedSite);
-    return JSON.stringify(obj);
-}
-//Private method
-export function parseBlockedSiteList (blockedSiteList) {
-    let bl = new BlockedSiteList();
-    bl.list = blockedSiteList.list;
-    return bl;
-}
-//Private to this and storage.js
-export function deserializeBlockedSiteList(serializedBlockedSiteList) {
-    if (serializedBlockedSiteList !== null) {
-        let parsed = JSON.parse(serializedBlockedSiteList);
-        parsed.list = parsed.list.map(BlockedSite.deserializeBlockedSite);
-        return parseBlockedSiteList(parsed);
-    }
-    return null;
-}
 /* --------------- --------------- --------------- --------------- --------------- */
 export class BlockedSiteList {
 
@@ -37,20 +12,20 @@ export class BlockedSiteList {
     get list ()                 { return this._list }
 
     get urls () {
-        if (list !== []) {
-            return list.map(function (bs) {
-                return bs.url();
+        if (this.list != []) {
+            return _list.map(function (bs) {
+                return bs.url;
             });
         }
         return [];
     }
 
     get activeUrls () {
-        if (list !== []) {
+        if (this.list != []) {
             let urlList = this.filterOnChecked();
             if (urlList !== []) {
                 return urlList.map(function (bs) {
-                    return bs.url();
+                    return bs.url;
                 });
             }
         }
@@ -63,7 +38,7 @@ export class BlockedSiteList {
             return urlFromList !== newBlockedSite.url;
         });
         if (unique) {
-            list.push(newBlockedSite);
+            _list.push(newBlockedSite);
             return true;
         } else {
             alert( constants.newUrlNotUniqueError + newBlockedSite.domain);
@@ -78,9 +53,9 @@ export class BlockedSiteList {
     };
 
     removeFromList (blockedSiteToDelete) {
-        let urlKey = list.indexOf(blockedSiteToDelete);
+        let urlKey = _list.indexOf(blockedSiteToDelete);
         if (urlKey > -1) {
-            list.splice(urlKey, 1);
+            _list.splice(urlKey, 1);
             return true;
         } else {
             return false;
@@ -88,13 +63,38 @@ export class BlockedSiteList {
     };
 
     filterOnChecked () {
-        if (list !== []) {
-            return list.filter(function (a) {
-                return a.checkboxVal === true;
+        if (this.list != []) {
+            return _list.filter(function (a) {
+                return a.checkboxVal == true;
             });
         }
         return [];
     };
 
+    /* --------------- --------------- Serialization --------------- --------------- */
+    
+    static serializeBlockedSiteList (blockedSiteList) {
+        let obj = {
+            list: blockedSiteList.list
+        };
+        obj.list = obj.list.map(BlockedSite.serializeBlockedSite);
+        return JSON.stringify(obj);
+    }
+
+    static parseBlockedSiteList (blockedSiteList) {
+        let bl = new BlockedSiteList();
+        bl.setList(blockedSiteList.list);
+        return bl;
+    }
+
+    static deserializeBlockedSiteList(serializedBlockedSiteList) {
+        if (serializedBlockedSiteList != null) {
+            let parsed = JSON.parse(serializedBlockedSiteList);
+            parsed.list = parsed.list.map(BlockedSite.deserializeBlockedSite);
+            return parseBlockedSiteList(parsed);
+        }
+        return null;
+    }
+    
 }
 

@@ -5,7 +5,7 @@ import * as tracker from './modules/statistics/tracker';
 
 /* --------------- ---- Run upon installation ---- ---------------*/
 
-function onInstall () {
+function onInstall() {
     storage.getAllUnParsed(function (output) {
         initBlacklist(output.tds_blacklist);
         initInterceptCounter(output.tds_interceptCounter);
@@ -16,39 +16,40 @@ function onInstall () {
     });
 }
 
-function initBlacklist (list) {
+function initBlacklist(list) {
     if (list === null) {
         let blacklistToStore = new BlockedSiteList.BlockedSiteList();
         storage.setBlacklist(blacklistToStore);
     }
 }
 
-function initSettings (settings) {
+function initSettings(settings) {
     if (settings === null) {
         let settingsToStore = new UserSettings.UserSettings();
         storage.setSettingsWithCallback(settingsToStore, initSession);
     }
 }
 
-function initInterceptCounter (counter) {
+
+function initInterceptCounter(counter) {
     if (counter === null) {
         storage.setInterceptCounter(0);
     }
 }
 
-function initInterceptDateList (dateList) {
+function initInterceptDateList(dateList) {
     if (dateList === null) {
         storage.setInterceptDateList([]);
     }
 }
 
-function initExerciseTime (exerciseTime) {
+function initExerciseTime(exerciseTime) {
     if (exerciseTime === null) {
         storage.setExerciseTimeList({});
     }
 }
 
-function runIntroTour () {
+function runIntroTour() {
     chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
 }
 
@@ -56,7 +57,7 @@ function runIntroTour () {
 
 //First receive the blacklist and settings from the sync storage,
 //then create a onBeforeRequest listener using this list and the settings.
-function initSession () {
+function initSession() {
     // Settings need to be loaded before the listener is replaced. The replaceListener
     // requires the blocked sites to be loaded, so these weird callbacks are required.
     storage.getSettings(function (settings) {
@@ -77,3 +78,4 @@ storage.getSettingsUnParsed(function (settings) {
         initSession();
     }
 });
+

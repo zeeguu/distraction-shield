@@ -1,7 +1,7 @@
 import * as constants from '../constants'
 
 class UserSettings{
-    constructor(){
+    constructor() {
         this._status = {
             state: true,
             setAt: new Date(),
@@ -25,15 +25,17 @@ class UserSettings{
     set status(newStatus) {this._status = newStatus;};
     get status() { return this._status;};
 
-    get offTill(){return this._status.offTill;}
+    get offTill() {return this._status.offTill;}
     set offTill(time) { this._status.offTill = time;}
 
     get state() {return this._status.state ? "On" : "Off";};
+
+    //TODO  remove? - not unused, used in one of the intervalSliders, could do it through getState though
     get notState() {return this._status.state ? "Off" : "On"; };
 
     turnOn() {
         if (this.state() === "Off") {
-            this._status = {state: true, setAt: new Date(), offTill: new Date()};
+            this.status = {state: true, setAt: new Date(), offTill: new Date()};
         } else {
             console.log("Already turned on, should not happen!");
         }
@@ -41,7 +43,7 @@ class UserSettings{
 
     turnOff() {
         if (this.state() === "On") {
-            this._status = {state: false, setAt: new Date(), offTill: status.offTill};
+            this.status = {state: false, setAt: new Date(), offTill: status.offTill};
             this.setTimer();
         } else {
             console.log("Already turned off, should not happen!");
@@ -54,39 +56,39 @@ class UserSettings{
         this.turnOff();
     };
 
-    turnOffForDay  () {
+    turnOffForDay() {
         this.offTill = new Date(new Date().setHours(24, 0, 0, 0));
         this.turnOff();
     };
 
-    turnOffFromBackground  () {
+    turnOffFromBackground() {
         if (this.state() === "On") {
             let curDate = new Date();
             let newOffTill = new Date(curDate.setMinutes(this.interceptionInterval + curDate.getMinutes()));
-            this._status = {state: false, setAt: new Date(), offTill: newOffTill};
+            this.status = {state: false, setAt: new Date(), offTill: newOffTill};
             this.setTimer();
         }
     };
 
-    turnExtensionBackOn  () {
+    turnExtensionBackOn() {
         if (this.state === "Off") {
             this.turnOn();
         }
     };
 
     setTimer() {
-        let timerInMS = this._status.offTill - new Date();
+        let timerInMS = this.status.offTill - new Date();
         setTimeout(this.turnExtensionBackOn, timerInMS);
     };
 
-    copySettings  (settingsObject) {
-        this._status = settingsObject.status;
-        this._sesionID = settingsObject.sessionID;
-        this._interceptionInterval = settingsObject.interceptionInterval;
+    copySettings(settingsObject) {
+        this.status = settingsObject.status;
+        this.sesionID = settingsObject.sessionID;
+        this.interceptionInterval = settingsObject.interceptionInterval;
         this.mode = settingsObject.mode;
     };
 
-    reInitTimer  () {
+    reInitTimer() {
         if (this.state() === "Off") {
             if (this.offTill < new Date()) {
                 this.turnOn();
@@ -95,39 +97,34 @@ class UserSettings{
             }
         }
     };
-}
 
     /* --------------- --------------- Serialization --------------- --------------- */
 
-    //Private to this and storage.js
-export function serializeSettings (settingsObject){
-        let obj = {
-            status: settingsObject.status,
-            sessionID: settingsObject.sessionID,
-            mode: settingsObject.mode,
-            interceptionInterval: settingsObject.interceptionInterval
-        };
-        return JSON.stringify(obj);
+    static serializeSettings(settingsObject) {
+            // let obj = {
+            //     status: settingsObject.status,
+            //     sessionID: settingsObject.sessionID,
+            //     mode: settingsObject.mode,
+            //     interceptionInterval: settingsObject.interceptionInterval
+            // };
+            return JSON.stringify(settingsObject); //TODO check if this works
+    }
+
+    static parseSettingsObject(parsedSettingsObject) {
+            let s = new UserSettings();
+            parsedSettingsObject.status.setAt = new Date(newStatus.setAt);
+            parsedSettingsObject.status.offTill = new Date(newStatus.offTill);
+            s.copySettings(parsedSettingsObject);
+            return s;
+    }
+
+    static deserializeSettings (serializedSettingsObject) {
+            if (serializedSettingsObject !== null) {
+                let parsed = JSON.parse(serializedSettingsObject);
+                return this.parseSettingsObject(parsed);
+            }
+            return null;
+    }
+
 }
 
-    //Private method
-export function parseSettingsObject (parsedSettingsObject){
-        let s = new UserSettings();
-        let newStatus = parsedSettingsObject.status;
-        newStatus.setAt = new Date(newStatus.setAt);
-        newStatus.offTill = new Date(newStatus.offTill);
-
-        s.status = newStatus;
-        s.mode = parsedSettingsObject.mode;
-        s.sessionID = parsedSettingsObject.sessionID;
-        s.interceptionInterval = parsedSettingsObject.interceptionInterval;
-        return s;
-}
-//Private to this and storage.js
-export function deserializeSettings (serializedSettingsObject){
-        if (serializedSettingsObject !== null) {
-            let parsed = JSON.parse(serializedSettingsObject);
-            return parseSettingsObject(parsed);
-        }
-        return null;
-}
