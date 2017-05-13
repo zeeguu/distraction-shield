@@ -1,7 +1,7 @@
 //TODO write a serializer module
 
-import * as BlockedSiteList from '../classes/BlockedSiteList'
-import * as UserSettings    from '../classes/UserSettings'
+import BlockedSiteList from '../classes/BlockedSiteList'
+import UserSettings    from '../classes/UserSettings'
 
 /* ---------------- General methods --------------- */
 
@@ -120,7 +120,7 @@ export function setExerciseTimeList(statList) {
 
 /* ---------------- not exported--------------- */
 //Check for a runtime error
-handleRuntimeError = function () {
+function handleRuntimeError () {
     if (chrome.runtime.error) {
         console.log("Runtime error.\n" + chrome.runtime.error);
         return false;

@@ -1,9 +1,5 @@
 "use strict";
 
-var _jquery = require("../dependencies/jquery/jquery-1.10.2.js");
-
-var $ = _interopRequireWildcard(_jquery);
-
 var _synchronizer = require("../modules/synchronizer.js");
 
 var synchronizer = _interopRequireWildcard(_synchronizer);
@@ -14,11 +10,12 @@ var blockedSiteBuilder = _interopRequireWildcard(_blockedSiteBuilder);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+//import * as $ from "../dependencies/jquery/jquery-1.10.2.js";
 var saveButton = $('#saveBtn');
 var optionsButton = $('#optionsBtn');
 var statisticsButton = $('#statisticsBtn');
 
-saveCurrentPageToBlacklist = function saveCurrentPageToBlacklist() {
+function saveCurrentPageToBlacklist() {
     chrome.tabs.query({ active: true, currentWindow: true }, function (arrayOfTabs) {
         var activeTab = arrayOfTabs[0];
         blockedSiteBuilder.createNewBlockedSite(activeTab.url, function (blockedSite) {
@@ -27,37 +24,40 @@ saveCurrentPageToBlacklist = function saveCurrentPageToBlacklist() {
             }
         });
     });
-};
+}
 
-redirectToStatistics = function redirectToStatistics() {
+function redirectToStatistics() {
     chrome.tabs.create({ 'url': chrome.runtime.getURL('statisticsPage/statistics.html') });
-};
+}
 
-openOptionsPage = function openOptionsPage() {
+function openOptionsPage() {
     chrome.tabs.create({ 'url': chrome.runtime.getURL('optionsPage/options.html') });
-};
+}
 
 //Connect functions to HTML elements
-connectButtons = function connectButtons() {
+function connectButtons() {
     optionsButton.on('click', openOptionsPage);
     statisticsButton.on('click', redirectToStatistics);
+    saveButton.on('click');
     setSaveButtonFunctionality();
-};
+}
 
-patternMatchUrl = function patternMatchUrl(url) {
-    var list = bg.blockedSites.getList();
-    var item = void 0;
-    list.some(function (bl) {
-        if (stringutil.wildcardStrComp(url, bl.getUrl())) {
-            item = bl;
-            return true;
-        }
-        return false;
+function patternMatchUrl(url, callback) {
+    chrome.runtime.sendMessage({ message: "requestBlockedSites" }, function (response) {
+        var list = response.blockedSiteList;
+        var item = null;
+        list.some(function (bl) {
+            if (stringutil.wildcardStrComp(url, bl.getUrl())) {
+                item = bl;
+                return true;
+            }
+            return false;
+        });
+        callback(item);
     });
-    return item;
-};
+}
 
-toggleBlockedSite = function toggleBlockedSite(url) {
+function toggleBlockedSite(url) {
     return function () {
         chrome.runtime.sendMessage({ message: "requestBlockedSites" }, function (response) {
             var list = response.blockedSiteList;
@@ -77,36 +77,40 @@ toggleBlockedSite = function toggleBlockedSite(url) {
             synchronizer.syncBlacklist(list);
         });
     };
-};
+}
 
-setSaveButtonToSuccess = function setSaveButtonToSuccess() {
+function setSaveButtonToSuccess() {
     saveButton.attr('class', 'btn btn-success');
     saveButton.html('Added!');
     setTimeout(function () {
         saveButton.attr('class', 'btn btn-info');
         setSaveButtonFunctionality();
     }, 3000);
-};
+}
 
-setSaveButtonFunctionality = function setSaveButtonFunctionality() {
+function saveButtonClick() {}
+
+function setSaveButtonFunctionality(matchedBlockedSite) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (arrayOfTabs) {
         var activeTab = arrayOfTabs[0];
         var url = activeTab.url;
-        var matchedBlockedSite = patternMatchUrl(url);
-        if (matchedBlockedSite != null) {
-            saveButton.unbind('click', saveCurrentPageToBlacklist);
-            saveButton.on('click', toggleBlockedSite(url));
-            if (matchedBlockedSite.getCheckboxVal()) {
-                saveButton.text("Unblock");
+        patternMatchUrl(url, function (matchedBlockedSite) {
+
+            if (matchedBlockedSite != null) {
+                saveButton.unbind('click', saveCurrentPageToBlacklist);
+                saveButton.on('click', toggleBlockedSite(url));
+                if (matchedBlockedSite.getCheckboxVal()) {
+                    saveButton.text("Unblock");
+                } else {
+                    saveButton.text("Block");
+                }
             } else {
+                saveButton.unbind('click', toggleBlockedSite(url));
+                saveButton.on('click', saveCurrentPageToBlacklist);
                 saveButton.text("Block");
             }
-        } else {
-            saveButton.unbind('click', toggleBlockedSite(url));
-            saveButton.on('click', saveCurrentPageToBlacklist);
-            saveButton.text("Block");
-        }
+        });
     });
-};
+}
 
 connectButtons();

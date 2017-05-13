@@ -3,12 +3,9 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.BlockedSiteList = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-exports.serializeBlockedSiteList = serializeBlockedSiteList;
-exports.parseBlockedSiteList = parseBlockedSiteList;
-exports.deserializeBlockedSiteList = deserializeBlockedSiteList;
 
 var _constants = require('../constants');
 
@@ -22,34 +19,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* --------------- --------------- Serialization --------------- --------------- */
-
-//Private to this and storage.js
-function serializeBlockedSiteList(blockedSiteList) {
-    var obj = {
-        list: blockedSiteList.list
-    };
-    obj.list = obj.list.map(BlockedSite.serializeBlockedSite);
-    return JSON.stringify(obj);
-}
-//Private method
-function parseBlockedSiteList(blockedSiteList) {
-    var bl = new BlockedSiteList();
-    bl.list = blockedSiteList.list;
-    return bl;
-}
-//Private to this and storage.js
-function deserializeBlockedSiteList(serializedBlockedSiteList) {
-    if (serializedBlockedSiteList !== null) {
-        var parsed = JSON.parse(serializedBlockedSiteList);
-        parsed.list = parsed.list.map(BlockedSite.deserializeBlockedSite);
-        return parseBlockedSiteList(parsed);
-    }
-    return null;
-}
 /* --------------- --------------- --------------- --------------- --------------- */
-
-var BlockedSiteList = function () {
+var BlockedSiteList = exports.BlockedSiteList = function () {
     function BlockedSiteList() {
         _classCallCheck(this, BlockedSiteList);
 
@@ -64,7 +35,7 @@ var BlockedSiteList = function () {
                 return urlFromList !== newBlockedSite.url;
             });
             if (unique) {
-                list.push(newBlockedSite);
+                _list.push(newBlockedSite);
                 return true;
             } else {
                 alert(constants.newUrlNotUniqueError + newBlockedSite.domain);
@@ -81,9 +52,9 @@ var BlockedSiteList = function () {
     }, {
         key: 'removeFromList',
         value: function removeFromList(blockedSiteToDelete) {
-            var urlKey = list.indexOf(blockedSiteToDelete);
+            var urlKey = _list.indexOf(blockedSiteToDelete);
             if (urlKey > -1) {
-                list.splice(urlKey, 1);
+                _list.splice(urlKey, 1);
                 return true;
             } else {
                 return false;
@@ -92,9 +63,9 @@ var BlockedSiteList = function () {
     }, {
         key: 'filterOnChecked',
         value: function filterOnChecked() {
-            if (list !== []) {
-                return list.filter(function (a) {
-                    return a.checkboxVal === true;
+            if (this.list != []) {
+                return _list.filter(function (a) {
+                    return a.checkboxVal == true;
                 });
             }
             return [];
@@ -110,9 +81,9 @@ var BlockedSiteList = function () {
     }, {
         key: 'urls',
         get: function get() {
-            if (list !== []) {
-                return list.map(function (bs) {
-                    return bs.url();
+            if (this.list != []) {
+                return _list.map(function (bs) {
+                    return bs.url;
                 });
             }
             return [];
@@ -120,19 +91,47 @@ var BlockedSiteList = function () {
     }, {
         key: 'activeUrls',
         get: function get() {
-            if (list !== []) {
+            if (this.list != []) {
                 var urlList = this.filterOnChecked();
                 if (urlList !== []) {
                     return urlList.map(function (bs) {
-                        return bs.url();
+                        return bs.url;
                     });
                 }
             }
             return [];
         }
+    }], [{
+        key: 'serializeBlockedSiteList',
+
+
+        /* --------------- --------------- Serialization --------------- --------------- */
+
+        value: function serializeBlockedSiteList(blockedSiteList) {
+            var obj = {
+                list: blockedSiteList.list
+            };
+            obj.list = obj.list.map(BlockedSite.serializeBlockedSite);
+            return JSON.stringify(obj);
+        }
+    }, {
+        key: 'parseBlockedSiteList',
+        value: function parseBlockedSiteList(blockedSiteList) {
+            var bl = new BlockedSiteList();
+            bl.setList(blockedSiteList.list);
+            return bl;
+        }
+    }, {
+        key: 'deserializeBlockedSiteList',
+        value: function deserializeBlockedSiteList(serializedBlockedSiteList) {
+            if (serializedBlockedSiteList != null) {
+                var parsed = JSON.parse(serializedBlockedSiteList);
+                parsed.list = parsed.list.map(BlockedSite.deserializeBlockedSite);
+                return parseBlockedSiteList(parsed);
+            }
+            return null;
+        }
     }]);
 
     return BlockedSiteList;
 }();
-
-exports.default = BlockedSiteList;

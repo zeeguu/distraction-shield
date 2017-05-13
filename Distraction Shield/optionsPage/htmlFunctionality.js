@@ -1,8 +1,8 @@
-import GreenToRedSlider from '/classes/GreenToRedSlider'
+import GreenToRedSlider from './classes/GreenToRedSlider'
 import * as blockedSiteBuilder from '../modules/blockedSiteBuilder'
 import * as constants from '../constants'
 import * as synchronizer from '../modules/synchronizer'
-import * as $ from "../dependencies/jquery/jquery-1.10.2";
+//import * as $ from "../dependencies/jquery/jquery-1.10.2";
 
 /**
  * This file contains the specific functionality for the options and some of its elements

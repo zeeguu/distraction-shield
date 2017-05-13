@@ -1,14 +1,15 @@
-import {createNewBlockedSite} from '/Distraction Shield/modules/blockedSiteBuilder';
-import {BlockedSiteList, deserializeBlockedSiteList} from '/Distraction Shield/classes/BlockedSiteList';
-import * as interception from '/Distraction Shield/modules/statistics/interception';
+import {createNewBlockedSite} from './modules/blockedSiteBuilder';
+import {BlockedSiteList, deserializeBlockedSiteList} from './classes/BlockedSiteList';
+import * as interception from './modules/statistics/interception';
 import * as storage from './modules/storage';
-import * as UserSettings from  '/Distraction Shield'
+import UserSettings from  './classes/UserSettings'
 import * as constants from'./constants';
 
 //Set that holds the urls to be intercepted
 let blockedSites = new BlockedSiteList();
 let interceptDateList = [];
-let localSettings = new UserSettings.UserSettings();
+let localSettings = new UserSettings();
+
 
 /* --------------- ------ setter for local variables ------ ---------------*/
 

@@ -1,4 +1,4 @@
-import * as $ from "../../dependencies/jquery/jquery-1.10.2";
+//import * as $ from "../../dependencies/jquery/jquery-1.10.2";
 import * as dateutil from "../../modules/dateutil"
 
 export default  class BlacklistStatsTable{

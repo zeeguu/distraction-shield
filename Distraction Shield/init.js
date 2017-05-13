@@ -1,7 +1,7 @@
-import {setLocalSettings, retrieveBlockedSites, replaceListener} from '/Distraction Shield/background';
+import {setLocalSettings, retrieveBlockedSites, replaceListener} from './background';
 import * as storage from './modules/storage';
 import {BlockedSiteList} from './classes/BlockedSiteList';
-import * as tracker from './modules/statistics/tracker';
+import Tracker from './modules/statistics/tracker';
 
 /* --------------- ---- Run upon installation ---- ---------------*/
 
@@ -65,6 +65,7 @@ function initSession() {
         setLocalSettings(settings);
         retrieveBlockedSites(replaceListener);
     });
+    let tracker = new Tracker();
     tracker.init();
 }
 

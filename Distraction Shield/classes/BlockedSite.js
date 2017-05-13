@@ -2,7 +2,7 @@ import * as constants from '../constants';
 
 /* --------------- --------------- --------------- --------------- --------------- */
 
-export class BlockedSite {
+export default class BlockedSite {
 
     constructor(urlBase, title) {
         this._url = this.constructUrl(urlBase);

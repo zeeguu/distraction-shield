@@ -1,6 +1,6 @@
 import * as constants from '../constants'
 
-class UserSettings{
+export default class UserSettings{
     constructor() {
         this._status = {
             state: true,
@@ -83,7 +83,7 @@ class UserSettings{
 
     copySettings(settingsObject) {
         this.status = settingsObject.status;
-        this.sesionID = settingsObject.sessionID;
+        this.sessionID = settingsObject.sessionID;
         this.interceptionInterval = settingsObject.interceptionInterval;
         this.mode = settingsObject.mode;
     };
@@ -112,8 +112,8 @@ class UserSettings{
 
     static parseSettingsObject(parsedSettingsObject) {
             let s = new UserSettings();
-            parsedSettingsObject.status.setAt = new Date(newStatus.setAt);
-            parsedSettingsObject.status.offTill = new Date(newStatus.offTill);
+            parsedSettingsObject.status.setAt = new Date(parsedSettingsObject.status.setAt);
+            parsedSettingsObject.status.offTill = new Date(parsedSettingsObject.status.offTill);
             s.copySettings(parsedSettingsObject);
             return s;
     }

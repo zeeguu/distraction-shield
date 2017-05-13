@@ -150,7 +150,7 @@ function setExerciseTimeList(statList) {
 
 /* ---------------- not exported--------------- */
 //Check for a runtime error
-handleRuntimeError = function handleRuntimeError() {
+function handleRuntimeError() {
     if (chrome.runtime.error) {
         console.log("Runtime error.\n" + chrome.runtime.error);
         return false;

@@ -6,10 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-exports.serializeSettings = serializeSettings;
-exports.parseSettingsObject = parseSettingsObject;
-exports.deserializeSettings = deserializeSettings;
-
 var _constants = require("../constants");
 
 var constants = _interopRequireWildcard(_constants);
@@ -37,7 +33,7 @@ var UserSettings = function () {
         key: "turnOn",
         value: function turnOn() {
             if (this.state() === "Off") {
-                this._status = { state: true, setAt: new Date(), offTill: new Date() };
+                this.status = { state: true, setAt: new Date(), offTill: new Date() };
             } else {
                 console.log("Already turned on, should not happen!");
             }
@@ -46,7 +42,7 @@ var UserSettings = function () {
         key: "turnOff",
         value: function turnOff() {
             if (this.state() === "On") {
-                this._status = { state: false, setAt: new Date(), offTill: status.offTill };
+                this.status = { state: false, setAt: new Date(), offTill: status.offTill };
                 this.setTimer();
             } else {
                 console.log("Already turned off, should not happen!");
@@ -71,7 +67,7 @@ var UserSettings = function () {
             if (this.state() === "On") {
                 var curDate = new Date();
                 var newOffTill = new Date(curDate.setMinutes(this.interceptionInterval + curDate.getMinutes()));
-                this._status = { state: false, setAt: new Date(), offTill: newOffTill };
+                this.status = { state: false, setAt: new Date(), offTill: newOffTill };
                 this.setTimer();
             }
         }
@@ -85,15 +81,15 @@ var UserSettings = function () {
     }, {
         key: "setTimer",
         value: function setTimer() {
-            var timerInMS = this._status.offTill - new Date();
+            var timerInMS = this.status.offTill - new Date();
             setTimeout(this.turnExtensionBackOn, timerInMS);
         }
     }, {
         key: "copySettings",
         value: function copySettings(settingsObject) {
-            this._status = settingsObject.status;
-            this._sesionID = settingsObject.sessionID;
-            this._interceptionInterval = settingsObject.interceptionInterval;
+            this.status = settingsObject.status;
+            this.sesionID = settingsObject.sessionID;
+            this.interceptionInterval = settingsObject.interceptionInterval;
             this.mode = settingsObject.mode;
         }
     }, {
@@ -154,47 +150,48 @@ var UserSettings = function () {
         }
     }, {
         key: "notState",
+
+
+        //TODO  remove? - not unused, used in one of the intervalSliders, could do it through getState though
         get: function get() {
             return this._status.state ? "Off" : "On";
+        }
+    }], [{
+        key: "serializeSettings",
+
+
+        /* --------------- --------------- Serialization --------------- --------------- */
+
+        value: function serializeSettings(settingsObject) {
+            // let obj = {
+            //     status: settingsObject.status,
+            //     sessionID: settingsObject.sessionID,
+            //     mode: settingsObject.mode,
+            //     interceptionInterval: settingsObject.interceptionInterval
+            // };
+            return JSON.stringify(settingsObject); //TODO check if this works
+        }
+    }, {
+        key: "parseSettingsObject",
+        value: function parseSettingsObject(parsedSettingsObject) {
+            var s = new UserSettings();
+            parsedSettingsObject.status.setAt = new Date(newStatus.setAt);
+            parsedSettingsObject.status.offTill = new Date(newStatus.offTill);
+            s.copySettings(parsedSettingsObject);
+            return s;
+        }
+    }, {
+        key: "deserializeSettings",
+        value: function deserializeSettings(serializedSettingsObject) {
+            if (serializedSettingsObject !== null) {
+                var parsed = JSON.parse(serializedSettingsObject);
+                return this.parseSettingsObject(parsed);
+            }
+            return null;
         }
     }]);
 
     return UserSettings;
 }();
 
-/* --------------- --------------- Serialization --------------- --------------- */
-
-//Private to this and storage.js
-
-
-function serializeSettings(settingsObject) {
-    var obj = {
-        status: settingsObject.status,
-        sessionID: settingsObject.sessionID,
-        mode: settingsObject.mode,
-        interceptionInterval: settingsObject.interceptionInterval
-    };
-    return JSON.stringify(obj);
-}
-
-//Private method
-function parseSettingsObject(parsedSettingsObject) {
-    var s = new UserSettings();
-    var newStatus = parsedSettingsObject.status;
-    newStatus.setAt = new Date(newStatus.setAt);
-    newStatus.offTill = new Date(newStatus.offTill);
-
-    s.status = newStatus;
-    s.mode = parsedSettingsObject.mode;
-    s.sessionID = parsedSettingsObject.sessionID;
-    s.interceptionInterval = parsedSettingsObject.interceptionInterval;
-    return s;
-}
-//Private to this and storage.js
-function deserializeSettings(serializedSettingsObject) {
-    if (serializedSettingsObject !== null) {
-        var parsed = JSON.parse(serializedSettingsObject);
-        return parseSettingsObject(parsed);
-    }
-    return null;
-}
+exports.default = UserSettings;

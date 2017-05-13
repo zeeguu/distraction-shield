@@ -1,5 +1,5 @@
 import * as synchronizer from '../../modules/synchronizer'
-import * as $ from "../../dependencies/jquery/jquery-1.10.2";
+//import * as $ from "../../dependencies/jquery/jquery-1.10.2";
 
 export default class BlacklistTable {
     constructor(html_element, syncFunction) {

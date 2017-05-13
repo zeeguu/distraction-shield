@@ -18,11 +18,11 @@ exports.handleInterception = handleInterception;
 exports.turnOffInterception = turnOffInterception;
 exports.getConsole = getConsole;
 
-var _blockedSiteBuilder = require('/Distraction Shield/modules/blockedSiteBuilder');
+var _blockedSiteBuilder = require('./modules/blockedSiteBuilder');
 
-var _BlockedSiteList = require('/Distraction Shield/classes/BlockedSiteList');
+var _BlockedSiteList = require('./classes/BlockedSiteList');
 
-var _interception = require('/Distraction Shield/modules/statistics/interception');
+var _interception = require('./modules/statistics/interception');
 
 var interception = _interopRequireWildcard(_interception);
 
@@ -30,20 +30,22 @@ var _storage = require('./modules/storage');
 
 var storage = _interopRequireWildcard(_storage);
 
-var _DistractionShield = require('/Distraction Shield');
+var _UserSettings = require('./classes/UserSettings');
 
-var UserSettings = _interopRequireWildcard(_DistractionShield);
+var _UserSettings2 = _interopRequireDefault(_UserSettings);
 
 var _constants = require('./constants');
 
 var constants = _interopRequireWildcard(_constants);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //Set that holds the urls to be intercepted
 var blockedSites = new _BlockedSiteList.BlockedSiteList();
 var interceptDateList = [];
-var localSettings = new UserSettings.UserSettings();
+var localSettings = new _UserSettings2.default();
 
 /* --------------- ------ setter for local variables ------ ---------------*/
 
@@ -151,9 +153,9 @@ function getConsole() {
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message === "updateListener") {
-        setLocalBlacklist(_BlockedSiteList.BlockedSiteList.deserializeBlockedSiteList(request.siteList));
+        setLocalBlacklist((0, _BlockedSiteList.deserializeBlockedSiteList)(request.siteList));
     } else if (request.message === "updateSettings") {
-        setLocalSettings(UserSettings.deserializeSettings(request.settings));
+        setLocalSettings(_UserSettings2.default.deserializeSettings(request.settings));
     } else if (request.message === "newUrl") {
         addUrlToBlockedSites(request.unformattedUrl, sendResponse);
     } else if (request.message === "requestBlockedSites") {

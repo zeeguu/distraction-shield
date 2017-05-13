@@ -23,14 +23,16 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function syncBlacklist(blockedSiteList) {
     storage.setBlacklist(blockedSiteList);
-    chrome.runtime.sendMessage({ message: "updateListener",
+    chrome.runtime.sendMessage({
+        message: "updateListener",
         siteList: BlockedSiteList.serializeBlockedSiteList(blockedSiteList)
     });
 }
 
 function syncSettings(settings) {
     storage.setSettings(settings);
-    chrome.runtime.sendMessage({ message: "updateSettings",
+    chrome.runtime.sendMessage({
+        message: "updateSettings",
         settings: UserSettings.serializeSettings(settings)
     });
 }

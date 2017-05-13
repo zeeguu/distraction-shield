@@ -1,7 +1,7 @@
-import GreenToRedSlider from '/GreenToRedSlider'
+import GreenToRedSlider from './GreenToRedSlider'
 import * as constants from '../../constants'
 import * as synchronizer from '../../modules/synchronizer'
-import * as $ from "../../dependencies/jquery/jquery-1.10.2";
+//import * as $ from "../../dependencies/jquery/jquery-1.10.2";
 import * as htmlFunctionality from '../htmlFunctionality'
 
 export default class TurnOffSlider {

@@ -1,4 +1,5 @@
 .gitignore
+npm-debug.log
 
 sampleExtension/.idea
 .idea/

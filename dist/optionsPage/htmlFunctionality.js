@@ -13,7 +13,7 @@ exports.deleteOnKeyPress = deleteOnKeyPress;
 exports.initModeSelection = initModeSelection;
 exports.initIntervalSlider = initIntervalSlider;
 
-var _GreenToRedSlider = require('/classes/GreenToRedSlider');
+var _GreenToRedSlider = require('./classes/GreenToRedSlider');
 
 var _GreenToRedSlider2 = _interopRequireDefault(_GreenToRedSlider);
 
@@ -29,13 +29,11 @@ var _synchronizer = require('../modules/synchronizer');
 
 var synchronizer = _interopRequireWildcard(_synchronizer);
 
-var _jquery = require('../dependencies/jquery/jquery-1.10.2');
-
-var $ = _interopRequireWildcard(_jquery);
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//import * as $ from "../dependencies/jquery/jquery-1.10.2";
 
 /**
  * This file contains the specific functionality for the options and some of its elements

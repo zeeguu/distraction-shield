@@ -8,11 +8,9 @@ var _storage = require('../modules/storage');
 
 var storage = _interopRequireWildcard(_storage);
 
-var _jquery = require('../dependencies/jquery/jquery-1.10.2');
-
-var $ = _interopRequireWildcard(_jquery);
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+//import * as $ from "../dependencies/jquery/jquery-1.10.2";
 
 mainFlow = function mainFlow() {
     storage.getMode(initBasis);

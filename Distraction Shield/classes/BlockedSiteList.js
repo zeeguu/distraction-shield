@@ -1,8 +1,8 @@
 import * as constants from '../constants';
-import * as BlockedSite from '../classes/BlockedSite'
+import BlockedSite from '../classes/BlockedSite'
 
 /* --------------- --------------- --------------- --------------- --------------- */
-export class BlockedSiteList {
+export default class BlockedSiteList {
 
     constructor () {
         this._list = [];
@@ -13,7 +13,7 @@ export class BlockedSiteList {
 
     get urls () {
         if (this.list != []) {
-            return _list.map(function (bs) {
+            return this.list.map(function (bs) {
                 return bs.url;
             });
         }
@@ -38,7 +38,7 @@ export class BlockedSiteList {
             return urlFromList !== newBlockedSite.url;
         });
         if (unique) {
-            _list.push(newBlockedSite);
+            this.list.push(newBlockedSite);
             return true;
         } else {
             alert( constants.newUrlNotUniqueError + newBlockedSite.domain);
@@ -53,9 +53,9 @@ export class BlockedSiteList {
     };
 
     removeFromList (blockedSiteToDelete) {
-        let urlKey = _list.indexOf(blockedSiteToDelete);
+        let urlKey = this.list.indexOf(blockedSiteToDelete);
         if (urlKey > -1) {
-            _list.splice(urlKey, 1);
+            this.list.splice(urlKey, 1);
             return true;
         } else {
             return false;
@@ -64,7 +64,7 @@ export class BlockedSiteList {
 
     filterOnChecked () {
         if (this.list != []) {
-            return _list.filter(function (a) {
+            return this.list.filter(function (a) {
                 return a.checkboxVal == true;
             });
         }
@@ -83,7 +83,7 @@ export class BlockedSiteList {
 
     static parseBlockedSiteList (blockedSiteList) {
         let bl = new BlockedSiteList();
-        bl.setList(blockedSiteList.list);
+        bl.list = blockedSiteList.list;
         return bl;
     }
 
@@ -91,7 +91,7 @@ export class BlockedSiteList {
         if (serializedBlockedSiteList != null) {
             let parsed = JSON.parse(serializedBlockedSiteList);
             parsed.list = parsed.list.map(BlockedSite.deserializeBlockedSite);
-            return parseBlockedSiteList(parsed);
+            return this.parseBlockedSiteList(parsed);
         }
         return null;
     }

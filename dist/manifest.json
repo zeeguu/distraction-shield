@@ -21,8 +21,8 @@
   "background": {
     "scripts": [
       "eventCatcher.js",
-      "require.js",
-      "init.js"
+      "./dependencies/jquery/jquery-1.10.2.js",
+      "./js-src/init.bundle.js"
     ]
   },
 

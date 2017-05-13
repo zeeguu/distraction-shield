@@ -1,4 +1,4 @@
-import * as constants from '/Distraction Shield/constants';
+import * as constants from '../constants';
 
 // use alert for warning popups
 alert = chrome.extension.getBackgroundPage().alert;

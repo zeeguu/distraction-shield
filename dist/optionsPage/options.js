@@ -32,13 +32,11 @@ var _htmlFunctionality = require('./htmlFunctionality');
 
 var htmlFunctionality = _interopRequireWildcard(_htmlFunctionality);
 
-var _jquery = require('../dependencies/jquery/jquery-1.10.2');
-
-var $ = _interopRequireWildcard(_jquery);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+//import * as $ from "../dependencies/jquery/jquery-1.10.2";
 
 /**
  * This file contains the core functions of the options page. this has all the local variables,
@@ -71,15 +69,13 @@ function initOptionsPage() {
         connectHtmlFunctionality();
         connectLocalDataToHtml();
     });
-};
-
+}
 //Retrieve data from storage and store in local variables
 function setLocalVariables(storage_output) {
     blacklist.addAllToList(storage_output.tds_blacklist);
     settings_object.copySettings(storage_output.tds_settings);
     interceptionCounter = storage_output.tds_interceptCounter;
-};
-
+}
 // functionality from htmlFunctionality, blacklist_table and slider files
 function connectHtmlFunctionality() {
     htmlFunctionality.initModeSelection(modeGroup, settings_object);
@@ -88,50 +84,50 @@ function connectHtmlFunctionality() {
     htmlFunctionality.connectButton(html_saveButton, htmlFunctionality.saveNewUrl);
     turnOffSlider = new _TurnOffSlider2.default.TurnOffSlider('#turnOff-slider', settings_object);
     htmlFunctionality.setKeyPressFunctions(html_txtFld, blacklistTable);
-};
-
+}
 // functionality from connectDataToHtml file
 function connectLocalDataToHtml() {
     connectDataToHtml.loadHtmlInterceptCounter(interceptionCounter, html_intCnt);
     connectDataToHtml.loadHtmlBlacklist(blacklist, blacklistTable);
     connectDataToHtml.loadHtmlMode(settings_object.mode, modeGroup);
     connectDataToHtml.loadHtmlInterval(settings_object.interceptionInterval, intervalSlider);
-};
-
+}
 /* -------------------- Manipulate local variables ------------------- */
 
 function removeFromLocalBlacklist(html_item) {
     var blockedSiteToDelete = html_item.data('blockedSite');
     return blacklist.removeFromList(blockedSiteToDelete);
-};
-
+}
 function addToLocalBlacklist(blockedSite_item) {
     return blacklist.addToList(blockedSite_item);
-};
-
+}
 function removeBlockedSiteFromAll(html_item) {
     if (removeFromLocalBlacklist(html_item)) {
         blacklistTable.removeFromTable(html_item);
         synchronizer.syncBlacklist(blacklist);
     }
-};
-
+}
 function addBlockedSiteToAll(newItem) {
     if (addToLocalBlacklist(newItem)) {
         blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
         synchronizer.syncBlacklist(blacklist);
     }
-};
+}
 /* -------------------- -------------------------- -------------------- */
 
 function syncBlockedSiteList() {
     synchronizer.syncBlacklist(blacklist);
-};
-
+}
 //Run this when the page is loaded.
-domReady(function () {
+
+document.addEventListener("DOMContentLoaded", function () {
     initOptionsPage();
 });
+
+// domReady(function () {
+//     initOptionsPage();
+// });
+
 
 //Tour Restart Function
 tr.onclick = function () {

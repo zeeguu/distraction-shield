@@ -15,7 +15,7 @@ exports.httpGetAsync = httpGetAsync;
 exports.readyStateChange = readyStateChange;
 exports.errorHandler = errorHandler;
 
-var _constants = require('/Distraction Shield/constants');
+var _constants = require('../constants');
 
 var constants = _interopRequireWildcard(_constants);
 

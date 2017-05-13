@@ -1,11 +1,5 @@
-<<<<<<< HEAD
 import * as constants from '../../constants';
 import * as exerciseTime from './exerciseTime';
-
-=======
-import * as constants from '../../constants'
-import * as exerciseTime from  './exerciseTime'
->>>>>>> 06b0f9d7f4dea63b71d0cadbc28b66347d7aefa4
 
 // The tracker tracks whether you are currently working on exercises.
 // Every second, the "alarm" is fired, and the url of the current tab is examined.
@@ -21,30 +15,30 @@ export default class Tracker {
         this.zeeguuRegex = constants.zeeguuExLink + ".*";
     }
 
+    // Gets the current tab.
+    getCurrentTab() {
+        return new Promise(function (resolve, reject) {
+            chrome.tabs.query({active: true, lastFocusedWindow: true}, function (tabs) {
+                if (tabs.length === 1) {
+                    resolve(tabs[0].url);
+                }
+            });
+        });
+    };
+
     ///TODO remove this.zeeguuRegex = constants.zeeguuExLink + ".*";
 
     // Initialize the alarm, and initialize the idle-checker.
-<<<<<<< HEAD
-    export function init () {
-        setInterval(fireAlarm, constants.savingFrequency);
-        setInterval(increaseTimeCounter, constants.measureFrequency);
-=======
+
     init() {
         setInterval(this.fireAlarm, constants.savingFrequency);
         setInterval(this.increaseTimeCounter, constants.measureFrequency);
->>>>>>> 06b0f9d7f4dea63b71d0cadbc28b66347d7aefa4
-
         // When the user does not input anything for 15 seconds, set the state to idle.
         chrome.idle.setDetectionInterval(constants.idleTime);
         chrome.idle.onStateChanged.addListener(this.checkIdle);
 
     }
 
-<<<<<<< HEAD
-    };
-
-=======
->>>>>>> 06b0f9d7f4dea63b71d0cadbc28b66347d7aefa4
     // TODO replace old function with this one
     // fireAlarm = function () {
     //     if (this.updatedExerciseTime) {
@@ -135,27 +129,9 @@ export default class Tracker {
         this.idle = (idleState !== "active");
     };
 
-    // Gets the current tab.
-    getCurrentTab() {
-        return new Promise(function (resolve, reject) {
-            chrome.tabs.query({active: true, lastFocusedWindow: true}, function (tabs) {
-                if (tabs.length === 1) {
-                    resolve(tabs[0].url);
-                }
-            });
-        });
-    };
-
     // Compare regex to url.
     compareUrlToRegex(regex, url) {
         return RegExp(regex).test(url);
     };
-<<<<<<< HEAD
 
-
-
-// var tracker = new Tracker();
-// tracker.init();
-=======
 }
->>>>>>> 06b0f9d7f4dea63b71d0cadbc28b66347d7aefa4
