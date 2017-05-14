@@ -1,5 +1,5 @@
 import {createNewBlockedSite} from './modules/blockedSiteBuilder';
-import {BlockedSiteList, deserializeBlockedSiteList} from './classes/BlockedSiteList';
+import BlockedSiteList from './classes/BlockedSiteList';
 import * as interception from './modules/statistics/interception';
 import * as storage from './modules/storage';
 import UserSettings from  './classes/UserSettings'
@@ -14,9 +14,9 @@ let localSettings = new UserSettings();
 /* --------------- ------ setter for local variables ------ ---------------*/
 
 export function setLocalSettings(newSettings) {
-    let oldState = localSettings.getState();
+    let oldState = localSettings.state;
     localSettings.copySettings(newSettings);
-    if (oldState !== localSettings.getState()) {
+    if (oldState !== localSettings.state) {
         replaceListener();
     }
 }
@@ -66,8 +66,8 @@ export function addUrlToBlockedSites(unformattedUrl, onSuccess) {
 
 export function replaceListener() {
     removeWebRequestListener();
-    let urlList = blockedSites.getActiveUrls();
-    if (localSettings.getState() === "On" && urlList.length > 0) {
+    let urlList = blockedSites.activeUrls;
+    if (localSettings.state === "On" && urlList.length > 0) {
         addWebRequestListener(urlList);
     }
 }
@@ -99,7 +99,7 @@ export function intercept(details) {
 }
 
 export function handleInterception(details) {
-    if (localSettings.getState() === "On") {
+    if (localSettings.state === "On") {
         if (details.url.indexOf("tds_exComplete=true") > -1) {
             turnOffInterception();
             let url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
@@ -121,7 +121,7 @@ export function getConsole() {
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message === "updateListener") {
-        setLocalBlacklist(deserializeBlockedSiteList(request.siteList));
+        setLocalBlacklist(BlockedSiteList.deserializeBlockedSiteList(request.siteList));
     } else if (request.message === "updateSettings") {
         setLocalSettings(UserSettings.deserializeSettings(request.settings));
     } else if (request.message === "newUrl") {

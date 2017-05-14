@@ -23,20 +23,18 @@ exports.setExerciseTimeList = setExerciseTimeList;
 
 var _BlockedSiteList = require('../classes/BlockedSiteList');
 
-var BlockedSiteList = _interopRequireWildcard(_BlockedSiteList);
+var _BlockedSiteList2 = _interopRequireDefault(_BlockedSiteList);
 
 var _UserSettings = require('../classes/UserSettings');
 
-var UserSettings = _interopRequireWildcard(_UserSettings);
+var _UserSettings2 = _interopRequireDefault(_UserSettings);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /* ---------------- General methods --------------- */
 
 // General function which is used to set items stored in the storage of the chrome api.
 // Returns a promise.
-//TODO write a serializer module
-
 function setStorage(dataKey, dataValue) {
     return new Promise(function (resolve, reject) {
         var newObject = {};
@@ -73,9 +71,8 @@ function getStorage(dataKey) {
 /* ---------------- TDS_Storage --------------- */
 function getAll(callback) {
     getStorage(null).then(function (output) {
-        //TODO this is not recognised? No it is not
-        output.tds_settings = UserSettings.deserializeSettings(output.tds_settings);
-        output.tds_blacklist = BlockedSiteList.deserializeBlockedSiteList(output.tds_blacklist);
+        output.tds_settings = _UserSettings2.default.deserializeSettings(output.tds_settings);
+        output.tds_blacklist = _BlockedSiteList2.default.deserializeBlockedSiteList(output.tds_blacklist);
         return callback(output);
     });
 }
@@ -88,12 +85,12 @@ function getAllUnParsed(callback) {
 
 function getBlacklist(callback) {
     getStorage("tds_blacklist").then(function (output) {
-        output.tds_blacklist = BlockedSiteList.deserializeBlockedSiteList(output.tds_blacklist);
+        output.tds_blacklist = _BlockedSiteList2.default.deserializeBlockedSiteList(output.tds_blacklist);
         return callback(output.tds_blacklist);
     });
 }
 function setBlacklist(blockedSiteList) {
-    var serializedList = BlockedSiteList.serializeBlockedSiteList(blockedSiteList);
+    var serializedList = _BlockedSiteList2.default.serializeBlockedSiteList(blockedSiteList);
     setStorage("tds_blacklist", serializedList);
 }
 
@@ -101,7 +98,7 @@ function setBlacklist(blockedSiteList) {
 
 function getSettings(callback) {
     getStorage("tds_settings").then(function (output) {
-        var deserializedSettings = UserSettings.deserializeSettings(output.tds_settings);
+        var deserializedSettings = _UserSettings2.default.deserializeSettings(output.tds_settings);
         return callback(deserializedSettings);
     });
 }
@@ -112,10 +109,10 @@ function getSettingsUnParsed(callback) {
     });
 }
 function setSettings(settingsObject) {
-    setStorage("tds_settings", UserSettings.serializeSettings(settingsObject));
+    setStorage("tds_settings", _UserSettings2.default.serializeSettings(settingsObject));
 }
 function setSettingsWithCallback(settingsObject, callback) {
-    var serializedSettings = UserSettings.serializeSettings(settingsObject);
+    var serializedSettings = _UserSettings2.default.serializeSettings(settingsObject);
     setStorage("tds_settings", serializedSettings).then(function () {
         return callback();
     });

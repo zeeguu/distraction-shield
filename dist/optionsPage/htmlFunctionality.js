@@ -5,7 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.appendHtmlItemTo = appendHtmlItemTo;
 exports.prependHtmlItemTo = prependHtmlItemTo;
-exports.saveNewUrl = saveNewUrl;
 exports.connectButton = connectButton;
 exports.setKeyPressFunctions = setKeyPressFunctions;
 exports.submitOnKeyPress = submitOnKeyPress;
@@ -16,10 +15,6 @@ exports.initIntervalSlider = initIntervalSlider;
 var _GreenToRedSlider = require('./classes/GreenToRedSlider');
 
 var _GreenToRedSlider2 = _interopRequireDefault(_GreenToRedSlider);
-
-var _blockedSiteBuilder = require('../modules/blockedSiteBuilder');
-
-var blockedSiteBuilder = _interopRequireWildcard(_blockedSiteBuilder);
 
 var _constants = require('../constants');
 
@@ -33,14 +28,11 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//import * as $ from "../dependencies/jquery/jquery-1.10.2";
-
 /**
  * This file contains the specific functionality for the options and some of its elements
  * This file holds all javascript functions used by the html_elements like buttons and fields.
  * Here things like, onClicked or onChanged events are monitored
  */
-var html_txtFld = $('#textFld');
 
 function appendHtmlItemTo(html_child, html_parent) {
     html_parent.append(html_child);
@@ -51,33 +43,28 @@ function prependHtmlItemTo(html_child, html_parent) {
 }
 /* -------------------- Button Click functions ----------------------- */
 
-function saveNewUrl() {
-    var newUrl = html_txtFld.val();
-    blockedSiteBuilder.createNewBlockedSite(newUrl, addBlockedSiteToAll);
-    html_txtFld.val('');
-}
 //Connect functions to HTML elements
 function connectButton(html_button, method) {
     html_button.on('click', method);
 }
 /* -------------------- Keypress events ----------------------- */
 
-function setKeyPressFunctions(html_txtFld, blacklistTable) {
-    submitOnKeyPress(html_txtFld);
-    deleteOnKeyPress(blacklistTable);
+function setKeyPressFunctions(html_txtFld, blacklistTable, submitFunc, deleteFunc) {
+    submitOnKeyPress(html_txtFld, submitFunc);
+    deleteOnKeyPress(blacklistTable, deleteFunc);
 }
-function submitOnKeyPress(html_elem) {
+function submitOnKeyPress(html_elem, submitFunc) {
     html_elem.keyup(function (event) {
         if (event.keyCode === constants.KEY_ENTER) {
-            saveNewUrl();
+            submitFunc();
         }
     });
 }
-function deleteOnKeyPress(blacklistTable) {
+function deleteOnKeyPress(blacklistTable, deleteFunc) {
     $('html').keyup(function (e) {
         if (e.keyCode === constants.KEY_DELETE) {
             var html = blacklistTable.getSelected();
-            removeBlockedSiteFromAll(html);
+            deleteFunc(html);
         }
     });
 }
@@ -97,7 +84,7 @@ function initModeSelection(buttonGroup, settings_object) {
 /* -------------------- Interval slider -------------------- */
 
 function initIntervalSlider(settings_object) {
-    return new _GreenToRedSlider2.default.GreenToRedSlider('#interval-slider', function (value) {
+    return new _GreenToRedSlider2.default('#interval-slider', function (value) {
         settings_object.interceptionInterval = parseInt(value);
         synchronizer.syncSettings(settings_object);
     });

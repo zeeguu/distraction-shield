@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.BlockedSite = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -17,7 +16,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /* --------------- --------------- --------------- --------------- --------------- */
 
-var BlockedSite = exports.BlockedSite = function () {
+var BlockedSite = function () {
     function BlockedSite(urlBase, title) {
         _classCallCheck(this, BlockedSite);
 
@@ -117,13 +116,13 @@ var BlockedSite = exports.BlockedSite = function () {
         key: "parseBlockedSite",
         value: function parseBlockedSite(blockedSite) {
             var b = new BlockedSite();
-            b.url = blockedSite.url;
-            b.domain = blockedSite.domain;
-            b.name = blockedSite.name;
-            b.icon = blockedSite.icon;
-            b.checkboxVal = blockedSite.checkboxVal;
-            b.counter = blockedSite.counter;
-            b.timeSpent = blockedSite.timeSpent;
+            b.url = blockedSite._url;
+            b.domain = blockedSite._domain;
+            b.name = blockedSite._name;
+            b.icon = blockedSite._icon;
+            b.checkboxVal = blockedSite._checkboxVal;
+            b.counter = blockedSite._counter;
+            b.timeSpent = blockedSite._timeSpent;
             return b;
         }
     }, {
@@ -131,7 +130,7 @@ var BlockedSite = exports.BlockedSite = function () {
         value: function deserializeBlockedSite(serializedBlockedSite) {
             if (serializedBlockedSite != null) {
                 var parsed = JSON.parse(serializedBlockedSite);
-                return this.parseBlockedSite(parsed);
+                return BlockedSite.parseBlockedSite(parsed);
             }
             return null;
         }
@@ -139,3 +138,5 @@ var BlockedSite = exports.BlockedSite = function () {
 
     return BlockedSite;
 }();
+
+exports.default = BlockedSite;

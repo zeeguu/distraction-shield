@@ -6,7 +6,7 @@ import BlacklistTable from './classes/BlacklistTable'
 import TurnOffSlider from './classes/TurnOffSlider'
 import * as connectDataToHtml from './connectDataToHtml'
 import * as htmlFunctionality from './htmlFunctionality'
-//import * as $ from "../dependencies/jquery/jquery-1.10.2";
+import * as blockedSiteBuilder from '../modules/blockedSiteBuilder'
 
 /**
  * This file contains the core functions of the options page. this has all the local variables,
@@ -15,15 +15,13 @@ import * as htmlFunctionality from './htmlFunctionality'
  * to one smoothly running file. Besides the initialization it contains the functions to manipulate the local variables
  * found here
  */
-let html_txtFld = $('#textFld');
 let html_intCnt = $('#iCounter');
-let html_saveButton = $('#saveBtn');
 let modeGroup = "modeOptions";
 
 let blacklistTable;
 let intervalSlider;
 let turnOffSlider;
-let tr = document.getElementById("tourRestart");
+let tr = $('#tourRestart');
 
 //Local variables that hold all necessary data.
 let settings_object = new UserSettings();
@@ -50,10 +48,12 @@ function setLocalVariables (storage_output) {
 function connectHtmlFunctionality () {
     htmlFunctionality.initModeSelection(modeGroup, settings_object);
     intervalSlider = htmlFunctionality.initIntervalSlider(settings_object);
-    blacklistTable = new BlacklistTable($('#blacklistTable'), syncBlockedSiteList);
-    htmlFunctionality.connectButton(html_saveButton, htmlFunctionality.saveNewUrl);
-    turnOffSlider = new TurnOffSlider.TurnOffSlider('#turnOff-slider', settings_object);
-    htmlFunctionality.setKeyPressFunctions(html_txtFld, blacklistTable);
+    blacklistTable = new BlacklistTable($('#blacklistTable'), syncBlockedSiteList, removeBlockedSiteFromAll);
+    let html_saveButton = $('#saveBtn');
+    htmlFunctionality.connectButton(html_saveButton, saveNewUrl);
+    turnOffSlider = new TurnOffSlider('#turnOff-slider', settings_object);
+    let html_txtFld = $('#textFld');
+    htmlFunctionality.setKeyPressFunctions(html_txtFld, blacklistTable, saveNewUrl, removeBlockedSiteFromAll);
 }
 // functionality from connectDataToHtml file
 function connectLocalDataToHtml () {
@@ -68,24 +68,35 @@ function removeFromLocalBlacklist (html_item) {
     let blockedSiteToDelete = html_item.data('blockedSite');
     return blacklist.removeFromList(blockedSiteToDelete);
 }
+
 function addToLocalBlacklist (blockedSite_item) {
     return blacklist.addToList(blockedSite_item);
 }
+
 function removeBlockedSiteFromAll (html_item) {
+    console.log(html_item);
     if (removeFromLocalBlacklist(html_item)) {
         blacklistTable.removeFromTable(html_item);
-        synchronizer.syncBlacklist(blacklist);
+        syncBlockedSiteList();
     }
 }
+
 function addBlockedSiteToAll (newItem) {
     if (addToLocalBlacklist(newItem)) {
         blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
-        synchronizer.syncBlacklist(blacklist);
+        syncBlockedSiteList();
     }
+}
+
+function saveNewUrl() {
+    let html_txtFld = $('#textFld');
+    let newUrl = html_txtFld.val();
+    blockedSiteBuilder.createNewBlockedSite(newUrl, addBlockedSiteToAll);
+    html_txtFld.val('');
 }
 /* -------------------- -------------------------- -------------------- */
 
-function  syncBlockedSiteList () {
+function syncBlockedSiteList () {
     synchronizer.syncBlacklist(blacklist);
 }
 //Run this when the page is loaded.
@@ -93,12 +104,6 @@ function  syncBlockedSiteList () {
 document.addEventListener("DOMContentLoaded", function() {
     initOptionsPage();
 });
-
-// domReady(function () {
-//     initOptionsPage();
-// });
-
-
 
 //Tour Restart Function
 tr.onclick = function () {

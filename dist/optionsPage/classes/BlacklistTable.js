@@ -14,14 +14,13 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-//import * as $ from "../../dependencies/jquery/jquery-1.10.2";
-
 var BlacklistTable = function () {
-    function BlacklistTable(html_element, syncFunction) {
+    function BlacklistTable(html_element, syncFunction, removeFunction) {
         _classCallCheck(this, BlacklistTable);
 
         this.table = html_element;
         this._syncBlockedSiteListFunc = syncFunction;
+        this._removeBlockedSiteFunc = removeFunction;
 
         this.setCheckboxFunction();
         this.setDeleteButtonFunction();
@@ -68,7 +67,7 @@ var BlacklistTable = function () {
                 var selected_blockedSite = selected_row.data('blockedSite');
                 selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
                 //no need to set localBlacklist cause it holds pointers so they get updated automatically
-                synchronizer.syncBlacklist();
+                this.blacklistTable._syncBlockedSiteListFunc();
             });
         }
     }, {
@@ -79,12 +78,8 @@ var BlacklistTable = function () {
         value: function setDeleteButtonFunction() {
             this.table.on('click', '.delete-button', function () {
                 var rowToDelete = $(this).closest('tr');
-                removeBlockedSiteFromAll(rowToDelete);
-
-                if (removeFromLocalBlacklist(rowToDelete)) {
-                    this.removeFromTable(rowToDelete);
-                    synchronizer.syncBlacklist(this.syn);
-                }
+                this.blacklistTable._removeBlockedSiteFunc(rowToDelete);
+                this.blacklistTable.removeFromTable(rowToDelete);
             });
         }
     }, {
@@ -93,8 +88,10 @@ var BlacklistTable = function () {
 
         //Returns an html table row object
         value: function generateTableRow(blockedSite) {
-            var tableRow = $("<tr class='table-row' >" + "<td width='50'>" + blockedSite.getIcon() + "</td>" + "<td class='pageTitle'>" + blockedSite.getName() + "</td>" + "<td width='25'>" + "<input class='checkbox-toggle' type='checkbox' name='state'>" + "</td>" + "<td width='25'>" + "<img class='delete-button' type='deleteButton' src='../optionsPage/classes/tableRow_delete_button.png' width='16' height='16'>" + "</td>" + "</tr>");
+            var tableRow = $("<tr class='table-row' >" + "<td width='50'>" + blockedSite.icon + "</td>" + "<td class='pageTitle'>" + blockedSite.name + "</td>" + "<td width='25'>" + "<input class='checkbox-toggle' type='checkbox' name='state'>" + "</td>" + "<td width='25'>" + "<img class='delete-button' type='deleteButton' src='../optionsPage/classes/tableRow_delete_button.png' width='16' height='16'>" + "</td>" + "</tr>");
             tableRow.find('.checkbox-toggle').prop('checked', blockedSite.checkboxVal);
+            tableRow.find('.delete-button').prop('blacklistTable', this);
+            tableRow.find('.checkbox-toggle').prop('blacklistTable', this);
             //add the actual object to the html_element
             tableRow.data('blockedSite', blockedSite);
             return tableRow;

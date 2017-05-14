@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.BlockedSiteList = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -13,14 +12,16 @@ var constants = _interopRequireWildcard(_constants);
 
 var _BlockedSite = require('../classes/BlockedSite');
 
-var BlockedSite = _interopRequireWildcard(_BlockedSite);
+var _BlockedSite2 = _interopRequireDefault(_BlockedSite);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /* --------------- --------------- --------------- --------------- --------------- */
-var BlockedSiteList = exports.BlockedSiteList = function () {
+var BlockedSiteList = function () {
     function BlockedSiteList() {
         _classCallCheck(this, BlockedSiteList);
 
@@ -35,7 +36,7 @@ var BlockedSiteList = exports.BlockedSiteList = function () {
                 return urlFromList !== newBlockedSite.url;
             });
             if (unique) {
-                _list.push(newBlockedSite);
+                this.list.push(newBlockedSite);
                 return true;
             } else {
                 alert(constants.newUrlNotUniqueError + newBlockedSite.domain);
@@ -52,9 +53,9 @@ var BlockedSiteList = exports.BlockedSiteList = function () {
     }, {
         key: 'removeFromList',
         value: function removeFromList(blockedSiteToDelete) {
-            var urlKey = _list.indexOf(blockedSiteToDelete);
+            var urlKey = this.list.indexOf(blockedSiteToDelete);
             if (urlKey > -1) {
-                _list.splice(urlKey, 1);
+                this.list.splice(urlKey, 1);
                 return true;
             } else {
                 return false;
@@ -64,7 +65,7 @@ var BlockedSiteList = exports.BlockedSiteList = function () {
         key: 'filterOnChecked',
         value: function filterOnChecked() {
             if (this.list != []) {
-                return _list.filter(function (a) {
+                return this.list.filter(function (a) {
                     return a.checkboxVal == true;
                 });
             }
@@ -82,7 +83,7 @@ var BlockedSiteList = exports.BlockedSiteList = function () {
         key: 'urls',
         get: function get() {
             if (this.list != []) {
-                return _list.map(function (bs) {
+                return this.list.map(function (bs) {
                     return bs.url;
                 });
             }
@@ -111,14 +112,14 @@ var BlockedSiteList = exports.BlockedSiteList = function () {
             var obj = {
                 list: blockedSiteList.list
             };
-            obj.list = obj.list.map(BlockedSite.serializeBlockedSite);
+            obj.list = obj.list.map(_BlockedSite2.default.serializeBlockedSite);
             return JSON.stringify(obj);
         }
     }, {
         key: 'parseBlockedSiteList',
         value: function parseBlockedSiteList(blockedSiteList) {
             var bl = new BlockedSiteList();
-            bl.setList(blockedSiteList.list);
+            bl.list = blockedSiteList.list;
             return bl;
         }
     }, {
@@ -126,8 +127,8 @@ var BlockedSiteList = exports.BlockedSiteList = function () {
         value: function deserializeBlockedSiteList(serializedBlockedSiteList) {
             if (serializedBlockedSiteList != null) {
                 var parsed = JSON.parse(serializedBlockedSiteList);
-                parsed.list = parsed.list.map(BlockedSite.deserializeBlockedSite);
-                return parseBlockedSiteList(parsed);
+                parsed.list = parsed.list.map(_BlockedSite2.default.deserializeBlockedSite);
+                return this.parseBlockedSiteList(parsed);
             }
             return null;
         }
@@ -135,3 +136,5 @@ var BlockedSiteList = exports.BlockedSiteList = function () {
 
     return BlockedSiteList;
 }();
+
+exports.default = BlockedSiteList;

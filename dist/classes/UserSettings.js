@@ -32,7 +32,7 @@ var UserSettings = function () {
     _createClass(UserSettings, [{
         key: "turnOn",
         value: function turnOn() {
-            if (this.state() === "Off") {
+            if (this.state === "Off") {
                 this.status = { state: true, setAt: new Date(), offTill: new Date() };
             } else {
                 console.log("Already turned on, should not happen!");
@@ -41,8 +41,8 @@ var UserSettings = function () {
     }, {
         key: "turnOff",
         value: function turnOff() {
-            if (this.state() === "On") {
-                this.status = { state: false, setAt: new Date(), offTill: status.offTill };
+            if (this.state === "On") {
+                this.status = { state: false, setAt: new Date(), offTill: this.status.offTill };
                 this.setTimer();
             } else {
                 console.log("Already turned off, should not happen!");
@@ -64,7 +64,7 @@ var UserSettings = function () {
     }, {
         key: "turnOffFromBackground",
         value: function turnOffFromBackground() {
-            if (this.state() === "On") {
+            if (this.state === "On") {
                 var curDate = new Date();
                 var newOffTill = new Date(curDate.setMinutes(this.interceptionInterval + curDate.getMinutes()));
                 this.status = { state: false, setAt: new Date(), offTill: newOffTill };
@@ -88,14 +88,14 @@ var UserSettings = function () {
         key: "copySettings",
         value: function copySettings(settingsObject) {
             this.status = settingsObject.status;
-            this.sesionID = settingsObject.sessionID;
+            this.sessionID = settingsObject.sessionID;
             this.interceptionInterval = settingsObject.interceptionInterval;
             this.mode = settingsObject.mode;
         }
     }, {
         key: "reInitTimer",
         value: function reInitTimer() {
-            if (this.state() === "Off") {
+            if (this.state === "Off") {
                 if (this.offTill < new Date()) {
                     this.turnOn();
                 } else {
@@ -146,7 +146,7 @@ var UserSettings = function () {
     }, {
         key: "state",
         get: function get() {
-            return this._status.state ? "On" : "Off";
+            return this.status.state ? "On" : "Off";
         }
     }, {
         key: "notState",
@@ -175,15 +175,18 @@ var UserSettings = function () {
         key: "parseSettingsObject",
         value: function parseSettingsObject(parsedSettingsObject) {
             var s = new UserSettings();
-            parsedSettingsObject.status.setAt = new Date(newStatus.setAt);
-            parsedSettingsObject.status.offTill = new Date(newStatus.offTill);
-            s.copySettings(parsedSettingsObject);
+            parsedSettingsObject._status.setAt = new Date(parsedSettingsObject._status.setAt);
+            parsedSettingsObject._status.offTill = new Date(parsedSettingsObject._status.offTill);
+            s.status = parsedSettingsObject._status;
+            s.sessionID = parsedSettingsObject._sessionID;
+            s.interceptionInterval = parsedSettingsObject._interceptionInterval;
+            s.mode = parsedSettingsObject._mode;
             return s;
         }
     }, {
         key: "deserializeSettings",
         value: function deserializeSettings(serializedSettingsObject) {
-            if (serializedSettingsObject !== null) {
+            if (serializedSettingsObject != null) {
                 var parsed = JSON.parse(serializedSettingsObject);
                 return this.parseSettingsObject(parsed);
             }

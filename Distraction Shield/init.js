@@ -1,50 +1,51 @@
 import {setLocalSettings, retrieveBlockedSites, replaceListener} from './background';
 import * as storage from './modules/storage';
-import {BlockedSiteList} from './classes/BlockedSiteList';
+import BlockedSiteList from './classes/BlockedSiteList';
+import UserSettings from './classes/UserSettings';
 import Tracker from './modules/statistics/tracker';
 
 /* --------------- ---- Run upon installation ---- ---------------*/
 
-function onInstall() {
+chrome.runtime.onInstalled.addListener(function() {
     storage.getAllUnParsed(function (output) {
         initBlacklist(output.tds_blacklist);
         initInterceptCounter(output.tds_interceptCounter);
         initInterceptDateList(output.tds_interceptDateList);
         initExerciseTime(output.tds_exerciseTime);
         initSettings(output.tds_settings);
-        runIntroTour();
+       // runIntroTour(); //TODO turn back on when not annoying
     });
-}
+});
 
 function initBlacklist(list) {
-    if (list === null) {
-        let blacklistToStore = new BlockedSiteList.BlockedSiteList();
+    if (list == null) {
+        let blacklistToStore = new BlockedSiteList();
         storage.setBlacklist(blacklistToStore);
     }
 }
 
 function initSettings(settings) {
-    if (settings === null) {
-        let settingsToStore = new UserSettings.UserSettings();
+    if (settings == null) {
+        let settingsToStore = new UserSettings();
         storage.setSettingsWithCallback(settingsToStore, initSession);
     }
 }
 
 
 function initInterceptCounter(counter) {
-    if (counter === null) {
+    if (counter == null) {
         storage.setInterceptCounter(0);
     }
 }
 
 function initInterceptDateList(dateList) {
-    if (dateList === null) {
+    if (dateList == null) {
         storage.setInterceptDateList([]);
     }
 }
 
 function initExerciseTime(exerciseTime) {
-    if (exerciseTime === null) {
+    if (exerciseTime == null) {
         storage.setExerciseTimeList({});
     }
 }
@@ -65,17 +66,13 @@ function initSession() {
         setLocalSettings(settings);
         retrieveBlockedSites(replaceListener);
     });
-    let tracker = new Tracker();
-    tracker.init();
-}
-
-if (onInstalledFired) {
-    onInstall();
+    //let tracker = new Tracker();
+    //tracker.init(); //TODO fix this
 }
 
 //fix that checks whether everything that should be is indeed initialized
 storage.getSettingsUnParsed(function (settings) {
-    if (settings !== null) {
+    if (settings != null) {
         initSession();
     }
 });

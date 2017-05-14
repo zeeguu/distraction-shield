@@ -1,4 +1,3 @@
-//TODO write a serializer module
 
 import BlockedSiteList from '../classes/BlockedSiteList'
 import UserSettings    from '../classes/UserSettings'
@@ -43,7 +42,6 @@ export function getStorage(dataKey) {
 /* ---------------- TDS_Storage --------------- */
 export function getAll(callback) {
     getStorage(null).then(function (output) {
-        //TODO this is not recognised? No it is not
         output.tds_settings = UserSettings.deserializeSettings(output.tds_settings);
         output.tds_blacklist = BlockedSiteList.deserializeBlockedSiteList(output.tds_blacklist);
         return callback(output);

@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-//import * as $ from "../../dependencies/jquery/jquery-1.10.2";
-
 
 var _GreenToRedSlider = require('./GreenToRedSlider');
 
@@ -35,12 +33,12 @@ var TurnOffSlider = function () {
         _classCallCheck(this, TurnOffSlider);
 
         this.selectedTime = 10;
-        this.slider = new _GreenToRedSlider2.default.GreenToRedSlider(sliderID, function (value) {
+        this.slider = new _GreenToRedSlider2.default(sliderID, function (value) {
             this.selectedTime = parseInt(value);
         });
         this.offButton = $(this.slider.sliderDiv.find(sliderID + "-offBtn"));
         this.settings_object = settings_object;
-
+        this.offButton[0].turnOffSlider = this;
         this.init();
     }
 
@@ -63,13 +61,7 @@ var TurnOffSlider = function () {
     }, {
         key: 'createHtmlOffMessage',
         value: function createHtmlOffMessage() {
-            return "Turned off until: " + this.formatDate(this.settings_object.offTill);
-        }
-    }, {
-        key: 'formatDate',
-        value: function formatDate(date) {
-            var arr = date.toString().split(" ");
-            return arr.splice(0, 5).join(" ");
+            return "Turned off until: " + TurnOffSlider.formatDate(this.settings_object.status.offTill);
         }
     }, {
         key: 'setSliderHourFunc',
@@ -90,18 +82,20 @@ var TurnOffSlider = function () {
     }, {
         key: 'turnOff',
         value: function turnOff() {
-            if (this.settings_object.getState() === "On") {
-                if (this.selectedTime === constants.MAX_TURN_OFF_TIME) {
-                    this.settings_object.turnOffForDay();
+            var parent = this.turnOffSlider;
+            var settings_object = parent.settings_object;
+            if (settings_object.state === "On") {
+                if (parent.selectedTime === constants.MAX_TURN_OFF_TIME) {
+                    settings_object.turnOffForDay();
                 } else {
-                    this.settings_object.turnOffFor(this.selectedTime);
+                    settings_object.turnOffFor(parent.selectedTime);
                 }
             } else {
-                this.settings_object.turnOn();
+                settings_object.turnOn();
             }
-            this.toggleShowOffMessage();
-            this.offButton.text("Turn " + this.settings_object.notState);
-            synchronizer.syncSettings(this.settings_object);
+            parent.toggleShowOffMessage();
+            $(this).text("Turn " + settings_object.notState);
+            synchronizer.syncSettings(settings_object);
         }
     }, {
         key: 'init',
@@ -114,6 +108,12 @@ var TurnOffSlider = function () {
             this.toggleShowOffMessage();
             this.offButton.text("Turn " + this.settings_object.notState);
             htmlFunctionality.connectButton(this.offButton, this.turnOff);
+        }
+    }], [{
+        key: 'formatDate',
+        value: function formatDate(date) {
+            var arr = date.toString().split(" ");
+            return arr.splice(0, 5).join(" ");
         }
     }]);
 

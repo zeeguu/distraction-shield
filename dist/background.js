@@ -22,6 +22,8 @@ var _blockedSiteBuilder = require('./modules/blockedSiteBuilder');
 
 var _BlockedSiteList = require('./classes/BlockedSiteList');
 
+var _BlockedSiteList2 = _interopRequireDefault(_BlockedSiteList);
+
 var _interception = require('./modules/statistics/interception');
 
 var interception = _interopRequireWildcard(_interception);
@@ -38,21 +40,21 @@ var _constants = require('./constants');
 
 var constants = _interopRequireWildcard(_constants);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 //Set that holds the urls to be intercepted
-var blockedSites = new _BlockedSiteList.BlockedSiteList();
+var blockedSites = new _BlockedSiteList2.default();
 var interceptDateList = [];
 var localSettings = new _UserSettings2.default();
 
 /* --------------- ------ setter for local variables ------ ---------------*/
 
 function setLocalSettings(newSettings) {
-    var oldState = localSettings.getState();
+    var oldState = localSettings.state;
     localSettings.copySettings(newSettings);
-    if (oldState !== localSettings.getState()) {
+    if (oldState !== localSettings.state) {
         replaceListener();
     }
 }
@@ -102,8 +104,8 @@ function addUrlToBlockedSites(unformattedUrl, onSuccess) {
 
 function replaceListener() {
     removeWebRequestListener();
-    var urlList = blockedSites.getActiveUrls();
-    if (localSettings.getState() === "On" && urlList.length > 0) {
+    var urlList = blockedSites.activeUrls;
+    if (localSettings.state === "On" && urlList.length > 0) {
         addWebRequestListener(urlList);
     }
 }
@@ -131,7 +133,7 @@ function intercept(details) {
 }
 
 function handleInterception(details) {
-    if (localSettings.getState() === "On") {
+    if (localSettings.state === "On") {
         if (details.url.indexOf("tds_exComplete=true") > -1) {
             turnOffInterception();
             var url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
@@ -153,7 +155,7 @@ function getConsole() {
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message === "updateListener") {
-        setLocalBlacklist((0, _BlockedSiteList.deserializeBlockedSiteList)(request.siteList));
+        setLocalBlacklist(_BlockedSiteList2.default.deserializeBlockedSiteList(request.siteList));
     } else if (request.message === "updateSettings") {
         setLocalSettings(_UserSettings2.default.deserializeSettings(request.settings));
     } else if (request.message === "newUrl") {

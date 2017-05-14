@@ -1,6 +1,6 @@
 import * as constants from '../constants'
 
-export default class UserSettings{
+export default class UserSettings {
     constructor() {
         this._status = {
             state: true,
@@ -28,13 +28,13 @@ export default class UserSettings{
     get offTill() {return this._status.offTill;}
     set offTill(time) { this._status.offTill = time;}
 
-    get state() {return this._status.state ? "On" : "Off";};
+    get state() {return this.status.state ? "On" : "Off";};
 
     //TODO  remove? - not unused, used in one of the intervalSliders, could do it through getState though
     get notState() {return this._status.state ? "Off" : "On"; };
 
     turnOn() {
-        if (this.state() === "Off") {
+        if (this.state === "Off") {
             this.status = {state: true, setAt: new Date(), offTill: new Date()};
         } else {
             console.log("Already turned on, should not happen!");
@@ -42,8 +42,8 @@ export default class UserSettings{
     };
 
     turnOff() {
-        if (this.state() === "On") {
-            this.status = {state: false, setAt: new Date(), offTill: status.offTill};
+        if (this.state === "On") {
+            this.status = {state: false, setAt: new Date(), offTill: this.status.offTill};
             this.setTimer();
         } else {
             console.log("Already turned off, should not happen!");
@@ -62,7 +62,7 @@ export default class UserSettings{
     };
 
     turnOffFromBackground() {
-        if (this.state() === "On") {
+        if (this.state=== "On") {
             let curDate = new Date();
             let newOffTill = new Date(curDate.setMinutes(this.interceptionInterval + curDate.getMinutes()));
             this.status = {state: false, setAt: new Date(), offTill: newOffTill};
@@ -89,7 +89,7 @@ export default class UserSettings{
     };
 
     reInitTimer() {
-        if (this.state() === "Off") {
+        if (this.state === "Off") {
             if (this.offTill < new Date()) {
                 this.turnOn();
             } else {
@@ -112,14 +112,17 @@ export default class UserSettings{
 
     static parseSettingsObject(parsedSettingsObject) {
             let s = new UserSettings();
-            parsedSettingsObject.status.setAt = new Date(parsedSettingsObject.status.setAt);
-            parsedSettingsObject.status.offTill = new Date(parsedSettingsObject.status.offTill);
-            s.copySettings(parsedSettingsObject);
+            parsedSettingsObject._status.setAt = new Date(parsedSettingsObject._status.setAt);
+            parsedSettingsObject._status.offTill = new Date(parsedSettingsObject._status.offTill);
+            s.status = parsedSettingsObject._status;
+            s.sessionID = parsedSettingsObject._sessionID;
+            s.interceptionInterval = parsedSettingsObject._interceptionInterval;
+            s.mode = parsedSettingsObject._mode;
             return s;
     }
 
     static deserializeSettings (serializedSettingsObject) {
-            if (serializedSettingsObject !== null) {
+            if (serializedSettingsObject != null) {
                 let parsed = JSON.parse(serializedSettingsObject);
                 return this.parseSettingsObject(parsed);
             }

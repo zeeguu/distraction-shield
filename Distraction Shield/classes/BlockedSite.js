@@ -62,13 +62,13 @@ export default class BlockedSite {
 
     static parseBlockedSite(blockedSite) {
         let b = new BlockedSite();
-        b.url = blockedSite.url;
-        b.domain = blockedSite.domain;
-        b.name = blockedSite.name;
-        b.icon = blockedSite.icon;
-        b.checkboxVal = blockedSite.checkboxVal;
-        b.counter = blockedSite.counter;
-        b.timeSpent = blockedSite.timeSpent;
+        b.url = blockedSite._url;
+        b.domain = blockedSite._domain;
+        b.name = blockedSite._name;
+        b.icon = blockedSite._icon;
+        b.checkboxVal = blockedSite._checkboxVal;
+        b.counter = blockedSite._counter;
+        b.timeSpent = blockedSite._timeSpent;
         return b;
     }
 
@@ -76,7 +76,7 @@ export default class BlockedSite {
     static deserializeBlockedSite(serializedBlockedSite) {
         if(serializedBlockedSite != null) {
             let parsed = JSON.parse(serializedBlockedSite);
-            return this.parseBlockedSite(parsed);
+            return BlockedSite.parseBlockedSite(parsed);
         }
         return null;
     }

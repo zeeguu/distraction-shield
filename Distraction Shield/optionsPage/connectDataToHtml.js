@@ -1,5 +1,3 @@
-//import * as $ from "../dependencies/jquery/jquery-1.10.2";
-
 /**
  * This file connects the data we read from storage and saved in local variables
  * to the actual html representations of this data.

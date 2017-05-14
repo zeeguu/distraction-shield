@@ -20,29 +20,30 @@ var GreenToRedSlider = function () {
         _classCallCheck(this, GreenToRedSlider);
 
         this.alert = chrome.extension.getBackgroundPage().alert;
+        var self = this;
         this.saveValue = saveFunction;
         this.sliderDiv = $(sliderID);
         this.sliderRange = $(this.sliderDiv.find(sliderID + "-range"));
         this.sliderValue = $(this.sliderDiv.find(sliderID + "-value"));
 
         this.sliderRange.on('input', function () {
-            var inputValue = this.sliderRange.val();
-            this.sliderValue.html(this.calculateHours(inputValue));
-            this.updateColor(inputValue);
+            var inputValue = self.sliderRange.val();
+            self.sliderValue.html(GreenToRedSlider.calculateHours(inputValue));
+            self.updateColor(inputValue);
         });
 
         this.sliderRange.on('mouseup', function () {
-            var inputValue = this.sliderRange.val();
-            this.saveValue(inputValue);
+            var inputValue = self.sliderRange.val();
+            self.saveValue(inputValue);
         });
 
         this.sliderValue.on('blur', function () {
-            this.checkTimeValidity($(this).html());
+            self.checkTimeValidity($(this).html());
         });
 
         this.sliderValue.keydown(function (event) {
             if (event.keyCode === constants.KEY_ENTER) {
-                this.sliderValue.blur();
+                self.sliderValue.blur();
                 event.preventDefault();
             }
         });
@@ -60,18 +61,8 @@ var GreenToRedSlider = function () {
         key: "setValue",
         value: function setValue(val) {
             this.sliderRange.val(val);
-            this.sliderValue.html(this.calculateHours(val));
+            this.sliderValue.html(GreenToRedSlider.calculateHours(val));
             this.updateColor(val);
-        }
-    }, {
-        key: "calculateHours",
-        value: function calculateHours(val) {
-            var hours = Math.floor(val / 60);
-            var minutes = val % 60;
-            if (minutes < 10 && hours > 0) {
-                minutes = "0" + minutes;
-            }
-            return hours > 0 ? hours + ":" + minutes + " hours" : minutes + " minute(s)";
         }
     }, {
         key: "checkTimeValidity",
@@ -101,6 +92,16 @@ var GreenToRedSlider = function () {
         value: function timeInputError() {
             this.setValue(this.sliderRange.val());
             this.alert("please input a supported time format");
+        }
+    }], [{
+        key: "calculateHours",
+        value: function calculateHours(val) {
+            var hours = Math.floor(val / 60);
+            var minutes = val % 60;
+            if (minutes < 10 && hours > 0) {
+                minutes = "0" + minutes;
+            }
+            return hours > 0 ? hours + ":" + minutes + " hours" : minutes + " minute(s)";
         }
     }]);
 

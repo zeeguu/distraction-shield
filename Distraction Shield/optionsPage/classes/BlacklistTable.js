@@ -1,10 +1,10 @@
 import * as synchronizer from '../../modules/synchronizer'
-//import * as $ from "../../dependencies/jquery/jquery-1.10.2";
 
 export default class BlacklistTable {
-    constructor(html_element, syncFunction) {
+    constructor(html_element, syncFunction, removeFunction) {
         this.table = html_element;
         this._syncBlockedSiteListFunc = syncFunction;
+        this._removeBlockedSiteFunc = removeFunction;
 
         this.setCheckboxFunction();
         this.setDeleteButtonFunction();
@@ -44,7 +44,7 @@ export default class BlacklistTable {
             let selected_blockedSite = selected_row.data('blockedSite');
             selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
             //no need to set localBlacklist cause it holds pointers so they get updated automatically
-            synchronizer.syncBlacklist();
+            this.blacklistTable._syncBlockedSiteListFunc();
         });
     };
 
@@ -52,12 +52,8 @@ export default class BlacklistTable {
     setDeleteButtonFunction() {
         this.table.on('click', '.delete-button', function () {
             let rowToDelete = $(this).closest('tr');
-            removeBlockedSiteFromAll(rowToDelete);
-
-            if (removeFromLocalBlacklist(rowToDelete)) {
-                this.removeFromTable(rowToDelete);
-                synchronizer.syncBlacklist(this.syn);
-            }
+            this.blacklistTable._removeBlockedSiteFunc(rowToDelete);
+            this.blacklistTable.removeFromTable(rowToDelete);
         });
     };
 
@@ -65,12 +61,14 @@ export default class BlacklistTable {
     generateTableRow(blockedSite) {
         let tableRow =
             $("<tr class='table-row' >" +
-                "<td width='50'>" + blockedSite.getIcon() + "</td>" +
-                "<td class='pageTitle'>" + blockedSite.getName() + "</td>" +
+                "<td width='50'>" + blockedSite.icon + "</td>" +
+                "<td class='pageTitle'>" + blockedSite.name + "</td>" +
                 "<td width='25'>" + "<input class='checkbox-toggle' type='checkbox' name='state'>" + "</td>" +
                 "<td width='25'>" + "<img class='delete-button' type='deleteButton' src='../optionsPage/classes/tableRow_delete_button.png' width='16' height='16'>" + "</td>" +
                 "</tr>");
         tableRow.find('.checkbox-toggle').prop('checked', blockedSite.checkboxVal);
+        tableRow.find('.delete-button').prop('blacklistTable', this);
+        tableRow.find('.checkbox-toggle').prop('blacklistTable', this);
         //add the actual object to the html_element
         tableRow.data('blockedSite', blockedSite);
         return tableRow;

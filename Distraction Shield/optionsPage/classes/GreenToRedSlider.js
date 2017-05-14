@@ -7,29 +7,30 @@ export default class GreenToRedSlider {
 
     constructor(sliderID, saveFunction) {
         this.alert = chrome.extension.getBackgroundPage().alert;
+        let self = this;
         this.saveValue = saveFunction;
         this.sliderDiv = $(sliderID);
         this.sliderRange = $(this.sliderDiv.find(sliderID + "-range"));
         this.sliderValue = $(this.sliderDiv.find(sliderID + "-value"));
 
         this.sliderRange.on('input', function () {
-            let inputValue = this.sliderRange.val();
-            this.sliderValue.html(this.calculateHours(inputValue));
-            this.updateColor(inputValue);
+            let inputValue = self.sliderRange.val();
+            self.sliderValue.html(GreenToRedSlider.calculateHours(inputValue));
+            self.updateColor(inputValue);
         });
 
         this.sliderRange.on('mouseup', function () {
-            let inputValue = this.sliderRange.val();
-            this.saveValue(inputValue);
+            let inputValue = self.sliderRange.val();
+            self.saveValue(inputValue);
         });
 
         this.sliderValue.on('blur', function () {
-            this.checkTimeValidity($(this).html());
+            self.checkTimeValidity($(this).html());
         });
 
         this.sliderValue.keydown(function (event) {
             if (event.keyCode === constants.KEY_ENTER) {
-                this.sliderValue.blur();
+                self.sliderValue.blur();
                 event.preventDefault();
             }
         });
@@ -44,11 +45,11 @@ export default class GreenToRedSlider {
 
     setValue(val) {
         this.sliderRange.val(val);
-        this.sliderValue.html(this.calculateHours(val));
+        this.sliderValue.html(GreenToRedSlider.calculateHours(val));
         this.updateColor(val);
     };
 
-    calculateHours(val) {
+    static calculateHours(val) {
         let hours = Math.floor(val / 60);
         let minutes = val % 60;
         if (minutes < 10 && hours > 0) {

@@ -8,6 +8,12 @@ var storage = _interopRequireWildcard(_storage);
 
 var _BlockedSiteList = require('./classes/BlockedSiteList');
 
+var _BlockedSiteList2 = _interopRequireDefault(_BlockedSiteList);
+
+var _UserSettings = require('./classes/UserSettings');
+
+var _UserSettings2 = _interopRequireDefault(_UserSettings);
+
 var _tracker = require('./modules/statistics/tracker');
 
 var _tracker2 = _interopRequireDefault(_tracker);
@@ -18,45 +24,45 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 /* --------------- ---- Run upon installation ---- ---------------*/
 
-function onInstall() {
+chrome.runtime.onInstalled.addListener(function () {
     storage.getAllUnParsed(function (output) {
         initBlacklist(output.tds_blacklist);
         initInterceptCounter(output.tds_interceptCounter);
         initInterceptDateList(output.tds_interceptDateList);
         initExerciseTime(output.tds_exerciseTime);
         initSettings(output.tds_settings);
-        runIntroTour();
+        // runIntroTour(); //TODO turn back on when not annoying
     });
-}
+});
 
 function initBlacklist(list) {
-    if (list === null) {
-        var blacklistToStore = new _BlockedSiteList.BlockedSiteList.BlockedSiteList();
+    if (list == null) {
+        var blacklistToStore = new _BlockedSiteList2.default();
         storage.setBlacklist(blacklistToStore);
     }
 }
 
 function initSettings(settings) {
-    if (settings === null) {
-        var settingsToStore = new UserSettings.UserSettings();
+    if (settings == null) {
+        var settingsToStore = new _UserSettings2.default();
         storage.setSettingsWithCallback(settingsToStore, initSession);
     }
 }
 
 function initInterceptCounter(counter) {
-    if (counter === null) {
+    if (counter == null) {
         storage.setInterceptCounter(0);
     }
 }
 
 function initInterceptDateList(dateList) {
-    if (dateList === null) {
+    if (dateList == null) {
         storage.setInterceptDateList([]);
     }
 }
 
 function initExerciseTime(exerciseTime) {
-    if (exerciseTime === null) {
+    if (exerciseTime == null) {
         storage.setExerciseTimeList({});
     }
 }
@@ -77,17 +83,13 @@ function initSession() {
         (0, _background.setLocalSettings)(settings);
         (0, _background.retrieveBlockedSites)(_background.replaceListener);
     });
-    var tracker = new _tracker2.default();
-    tracker.init();
-}
-
-if (onInstalledFired) {
-    onInstall();
+    //let tracker = new Tracker();
+    //tracker.init(); //TODO fix this
 }
 
 //fix that checks whether everything that should be is indeed initialized
 storage.getSettingsUnParsed(function (settings) {
-    if (settings !== null) {
+    if (settings != null) {
         initSession();
     }
 });

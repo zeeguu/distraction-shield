@@ -1,20 +1,20 @@
 import GreenToRedSlider from './GreenToRedSlider'
 import * as constants from '../../constants'
 import * as synchronizer from '../../modules/synchronizer'
-//import * as $ from "../../dependencies/jquery/jquery-1.10.2";
 import * as htmlFunctionality from '../htmlFunctionality'
 
 export default class TurnOffSlider {
 
     constructor(sliderID, settings_object) {
         this.selectedTime = 10;
-        this.slider = new GreenToRedSlider.GreenToRedSlider(sliderID, function (value) {
+        this.slider = new GreenToRedSlider(sliderID, function (value) {
             this.selectedTime = parseInt(value);
         });
         this.offButton = $(this.slider.sliderDiv.find(sliderID + "-offBtn"));
         this.settings_object = settings_object;
-
+        this.offButton[0].turnOffSlider = this;
         this.init();
+
     }
 
     toggleShowOffMessage() {
@@ -33,10 +33,10 @@ export default class TurnOffSlider {
     };
 
     createHtmlOffMessage() {
-        return "Turned off until: " + this.formatDate(this.settings_object.offTill);
+        return "Turned off until: " + TurnOffSlider.formatDate(this.settings_object.status.offTill);
     };
 
-    formatDate(date) {
+    static formatDate(date) {
         let arr = date.toString().split(" ");
         return arr.splice(0, 5).join(" ");
     };
@@ -57,18 +57,20 @@ export default class TurnOffSlider {
     };
 
     turnOff() {
-        if (this.settings_object.getState() === "On") {
-            if (this.selectedTime === constants.MAX_TURN_OFF_TIME) {
-                this.settings_object.turnOffForDay();
+        let parent = this.turnOffSlider;
+        let settings_object = parent.settings_object;
+        if (settings_object.state === "On") {
+            if (parent.selectedTime === constants.MAX_TURN_OFF_TIME) {
+                settings_object.turnOffForDay();
             } else {
-                this.settings_object.turnOffFor(this.selectedTime);
+                settings_object.turnOffFor(parent.selectedTime);
             }
         } else {
-            this.settings_object.turnOn();
+            settings_object.turnOn();
         }
-        this.toggleShowOffMessage();
-        this.offButton.text("Turn " + this.settings_object.notState);
-        synchronizer.syncSettings(this.settings_object);
+        parent.toggleShowOffMessage();
+        $(this).text("Turn " + settings_object.notState);
+        synchronizer.syncSettings(settings_object);
     };
 
     init() {
