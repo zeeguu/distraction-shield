@@ -103,5 +103,7 @@ tr.onclick = function(){
 
 //Feedback Function
 feedback.onclick = function(){
-    chrome.tabs.create({'url': chrome.runtime.getURL('feedbackPage/feedback.html')});
+    chrome.tabs.create({'url' :feedbackForm});
+    /* The full functionality of the feedback page will be implemented for the next iteration */
+    //chrome.tabs.create({'url': chrome.runtime.getURL('feedbackPage/feedback.html')});
 };
