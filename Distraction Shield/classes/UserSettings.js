@@ -30,15 +30,9 @@ export default class UserSettings {
     get offTill() {return this._status.offTill;}
     set offTill(time) { this._status.offTill = time;}
 
-<<<<<<< HEAD
-    get state() {return this.status.state ? "On" : "Off";}
-
     //TODO  remove? - not unused, used in one of the intervalSliders, could do it through getState though
+    get state() {return this.status.state ? "On" : "Off";}
     get notState() {return this._status.state ? "Off" : "On"; }
-=======
-    get state() {return this.status.state ? "On" : "Off";};
-    get notState() {return this._status.state ? "Off" : "On"; };
->>>>>>> origin/ES6
 
     turnOn() {
         if (this.state == "Off") {
