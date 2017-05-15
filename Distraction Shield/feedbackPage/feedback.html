@@ -9,13 +9,17 @@
     <form name="feedback" id="feedback" action="#">
         <div>
             <h4>Enter your feedback here.</h4>
-            <textarea class="form-control" id="feedbackText" rows="8"></textarea>
+            <input  class="form-control" type="email" name="email" id="emailText" placeholder="Email address...">
+            <br>
+            <br>
+            <textarea placeholder="Your feedback..." class="form-control" id="feedbackText" rows="8"></textarea>
             <br>
             <input type="button" class="btn btn-primary" name="submit" id="submit" value="Submit"/>
         </div>
     </form>
     <div class="submitMessage" id="submitMessage">
-        <h4>Thanks for the feedback!</h4>
+        <div id="loader" class="loader"></div>
+        <h4>Sending feedback...</h4>
     </div>
 
     <script src="feedback.js"></script>
