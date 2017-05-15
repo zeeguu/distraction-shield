@@ -7,7 +7,8 @@ module.exports = {
         init: './dist/init.js',
         options: './dist/optionsPage/options.js',
         tooltip: './dist/tooltipPage/tooltip.js',
-        statistics: './dist/statisticsPage/statistics.js'
+        statistics: './dist/statisticsPage/statistics.js',
+        inject: './dist/contentInjection/inject.js'
     },
 
     output: {

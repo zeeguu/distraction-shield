@@ -15,13 +15,11 @@ import * as blockedSiteBuilder from '../modules/blockedSiteBuilder'
  * to one smoothly running file. Besides the initialization it contains the functions to manipulate the local variables
  * found here
  */
-let html_intCnt = $('#iCounter');
 let modeGroup = "modeOptions";
 
 let blacklistTable;
 let intervalSlider;
 let turnOffSlider;
-let tr = $('#tourRestart');
 
 //Local variables that hold all necessary data.
 let settings_object = new UserSettings();
@@ -57,6 +55,7 @@ function connectHtmlFunctionality () {
 }
 // functionality from connectDataToHtml file
 function connectLocalDataToHtml () {
+    let html_intCnt = $('#iCounter');
     connectDataToHtml.loadHtmlInterceptCounter(interceptionCounter, html_intCnt);
     connectDataToHtml.loadHtmlBlacklist(blacklist, blacklistTable);
     connectDataToHtml.loadHtmlMode(settings_object.mode, modeGroup);
@@ -99,13 +98,9 @@ function saveNewUrl() {
 function syncBlockedSiteList () {
     synchronizer.syncBlacklist(blacklist);
 }
-//Run this when the page is loaded.
 
+//Run this when the page is loaded.
 document.addEventListener("DOMContentLoaded", function() {
     initOptionsPage();
 });
 
-//Tour Restart Function
-tr.onclick = function () {
-    chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
-};

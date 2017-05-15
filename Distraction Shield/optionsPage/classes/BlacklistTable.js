@@ -1,4 +1,3 @@
-import * as synchronizer from '../../modules/synchronizer'
 
 export default class BlacklistTable {
     constructor(html_element, syncFunction, removeFunction) {

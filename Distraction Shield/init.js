@@ -13,7 +13,7 @@ chrome.runtime.onInstalled.addListener(function() {
         initInterceptDateList(output.tds_interceptDateList);
         initExerciseTime(output.tds_exerciseTime);
         initSettings(output.tds_settings);
-       // runIntroTour(); //TODO turn back on when not annoying
+        runIntroTour();
     });
 });
 
