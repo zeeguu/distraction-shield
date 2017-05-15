@@ -1,12 +1,11 @@
 import * as constants from '../constants'
 import * as storage from '../modules/storage'
-//import * as $ from "../dependencies/jquery/jquery-1.10.2";
 
-    mainFlow = function () {
+    function mainFlow() {
         storage.getMode(initBasis);
-    };
+    }
 
-    initBasis = function (mode) {
+    function initBasis(mode) {
         let message = mode.zeeguuText;
 
         $.ajax({
@@ -15,7 +14,7 @@ import * as storage from '../modules/storage'
             timeout: 5000,
             datatype: "html",
             success: function (data) {
-                infoDiv = $.parseHTML(data);
+                let infoDiv = $.parseHTML(data);
                 $("body").after(infoDiv);
                 $("#tds_infoDiv").css('max-width', '800px');
                 $("#tds_generalInfoText").append(constants.zeeguuInfoText);
@@ -23,9 +22,9 @@ import * as storage from '../modules/storage'
                 $("#originalDestination").attr("href", getDest());
             }
         });
-    };
+    }
 
-    getDest = function () {
+    function getDest() {
         let url = window.location.href;
         let regex = new RegExp("[?&]redirect(=([^&#]*)|&|#|$)");
         let results = regex.exec(url);
@@ -39,6 +38,6 @@ import * as storage from '../modules/storage'
             newUrl += "?tds_exComplete=true";
         }
         return newUrl;
-    };
+    }
 
     mainFlow();

@@ -1,4 +1,6 @@
 import * as constants from '../constants'
+import * as storage from '../modules/storage'
+import * as synchronizer from '../modules/synchronizer'
 
 export default class UserSettings {
     constructor() {
@@ -28,13 +30,18 @@ export default class UserSettings {
     get offTill() {return this._status.offTill;}
     set offTill(time) { this._status.offTill = time;}
 
+<<<<<<< HEAD
     get state() {return this.status.state ? "On" : "Off";}
 
     //TODO  remove? - not unused, used in one of the intervalSliders, could do it through getState though
     get notState() {return this._status.state ? "Off" : "On"; }
+=======
+    get state() {return this.status.state ? "On" : "Off";};
+    get notState() {return this._status.state ? "Off" : "On"; };
+>>>>>>> origin/ES6
 
     turnOn() {
-        if (this.state === "Off") {
+        if (this.state == "Off") {
             this.status = {state: true, setAt: new Date(), offTill: new Date()};
         } else {
             console.log("Already turned on, should not happen!");
@@ -42,7 +49,7 @@ export default class UserSettings {
     }
 
     turnOff() {
-        if (this.state === "On") {
+        if (this.state == "On") {
             this.status = {state: false, setAt: new Date(), offTill: this.status.offTill};
             this.setTimer();
         } else {
@@ -52,7 +59,8 @@ export default class UserSettings {
 
     turnOffFor(minutes) {
         let curDate = new Date();
-        this.offTill = new Date(curDate.setMinutes(minutes + curDate.getMinutes()));
+        this.offTill = new Date(curDate.setSeconds(minutes + curDate.getSeconds()));
+        //this.offTill = new Date(curDate.setMinutes(minutes + curDate.getMinutes()));
         this.turnOff();
     }
 
@@ -62,18 +70,18 @@ export default class UserSettings {
     }
 
     turnOffFromBackground() {
-        if (this.state=== "On") {
-            let curDate = new Date();
-            let newOffTill = new Date(curDate.setMinutes(this.interceptionInterval + curDate.getMinutes()));
-            this.status = {state: false, setAt: new Date(), offTill: newOffTill};
-            this.setTimer();
+        if (this.state == "On") {
+            this.turnOffFor(this.interceptionInterval);
         }
     }
 
     turnExtensionBackOn() {
-        if (this.state === "Off") {
-            this.turnOn();
-        }
+        storage.getSettings(function (settings) {
+            if (settings.state == "Off") {
+                settings.turnOn();
+                synchronizer.syncSettings(settings);
+            }
+        });
     }
 
     setTimer() {
@@ -89,7 +97,7 @@ export default class UserSettings {
     }
 
     reInitTimer() {
-        if (this.state === "Off") {
+        if (this.state == "Off") {
             if (this.offTill < new Date()) {
                 this.turnOn();
             } else {
@@ -101,13 +109,7 @@ export default class UserSettings {
     /* --------------- --------------- Serialization --------------- --------------- */
 
     static serializeSettings(settingsObject) {
-            // let obj = {
-            //     status: settingsObject.status,
-            //     sessionID: settingsObject.sessionID,
-            //     mode: settingsObject.mode,
-            //     interceptionInterval: settingsObject.interceptionInterval
-            // };
-            return JSON.stringify(settingsObject); //TODO check if this works
+            return JSON.stringify(settingsObject);
     }
 
     static parseSettingsObject(parsedSettingsObject) {
@@ -130,4 +132,3 @@ export default class UserSettings {
     }
 
 }
-

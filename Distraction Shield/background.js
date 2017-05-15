@@ -16,13 +16,13 @@ let localSettings = new UserSettings();
 export function setLocalSettings(newSettings) {
     let oldState = localSettings.state;
     localSettings.copySettings(newSettings);
-    if (oldState !== localSettings.state) {
+    if (oldState != localSettings.state) {
         replaceListener();
     }
 }
 
 export function setLocalBlacklist(newList) {
-    blockedSites.list = newList.list();
+    blockedSites.list = newList.list;
     replaceListener();
 }
 
@@ -67,7 +67,7 @@ export function addUrlToBlockedSites(unformattedUrl, onSuccess) {
 export function replaceListener() {
     removeWebRequestListener();
     let urlList = blockedSites.activeUrls;
-    if (localSettings.state === "On" && urlList.length > 0) {
+    if (localSettings.state == "On" && urlList.length > 0) {
         addWebRequestListener(urlList);
     }
 }
@@ -99,7 +99,7 @@ export function intercept(details) {
 }
 
 export function handleInterception(details) {
-    if (localSettings.state === "On") {
+    if (localSettings.state == "On") {
         if (details.url.indexOf("tds_exComplete=true") > -1) {
             turnOffInterception();
             let url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
@@ -115,14 +115,13 @@ export function turnOffInterception() {
     storage.setSettings(localSettings);
 }
 
-export function getConsole() {
-    return this.console;
-}
-
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    console.log('got in here');
+    console.log(request.message);
     if (request.message === "updateListener") {
         setLocalBlacklist(BlockedSiteList.deserializeBlockedSiteList(request.siteList));
-    } else if (request.message === "updateSettings") {
+    } else if (request.message == "updateSettings") {
+        console.log('got in here2');
         setLocalSettings(UserSettings.deserializeSettings(request.settings));
     } else if (request.message === "newUrl") {
         addUrlToBlockedSites(request.unformattedUrl, sendResponse);

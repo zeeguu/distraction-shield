@@ -28,14 +28,13 @@
   "content_scripts": [
     {
       "matches" : ["*://www.zeeguu.unibe.ch/practice*"],
-      "js" : ["require.js",
-              "dependencies/jquery/jquery-1.10.2.js",
-              "constants.js",
-              "classes/BlockedSite.js",
-              "classes/BlockedSiteList.js",
-              "classes/UserSettings.js",
-              "modules/storage.js",
-              "contentInjection/inject.js"]
+      "js" : ["dependencies/jquery/jquery-1.10.2.js",
+              //"constants.js",
+              //"classes/BlockedSite.js",
+              //"classes/BlockedSiteList.js",
+              //"classes/UserSettings.js",
+              //"modules/storage.js",
+              "./js-src/inject.bundle.js"]
     }
   ],
 
@@ -49,8 +48,7 @@
   ],
 
   "web_accessible_resources": [
-    "contentInjection/inject.html",
-    "loginPage/login.html"
+    "contentInjection/inject.html"
     ]
 
 }
