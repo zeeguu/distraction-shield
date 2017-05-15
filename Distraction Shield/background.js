@@ -85,7 +85,7 @@ intercept = function(details) {
 };
 
 handleInterception = function(details) {
-    if (localSettings.getState() == "On") {
+    if (localSettings.getState() == "On" && details.url.indexOf("/oauth") < 0) {
         if (details.url.indexOf("tds_exComplete=true") > -1) {
             turnOfInterception();
             var url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
