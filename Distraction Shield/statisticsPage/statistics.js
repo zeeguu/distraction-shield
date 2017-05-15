@@ -21,14 +21,14 @@ function initStatisticsPage () {
             storage.getBlacklist(blacklistTable.setDataAndRender);
             exerciseTimeTable.setDataAndRender(response[1]);
         });
-};
+}
 
 // Connects html items to the tables.
 function connectHtmlFunctionality () {
     interceptionCounterTable = new InterceptionCounterTable();
     blacklistTable = new BlacklistStatsTable($('#interceptTable'));
     exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
-};
+}
 
 //TODO how should this be done now?
 //Run this when the page is loaded.

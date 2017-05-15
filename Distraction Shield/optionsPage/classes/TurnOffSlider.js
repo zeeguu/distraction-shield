@@ -30,16 +30,16 @@ export default class TurnOffSlider {
             sl.sliderValue.parent().css('width', '30%');
             sl.sliderValue.prop('contenteditable', true);
         }
-    };
+    }
 
     createHtmlOffMessage() {
         return "Turned off until: " + TurnOffSlider.formatDate(this.settings_object.status.offTill);
-    };
+    }
 
     static formatDate(date) {
         let arr = date.toString().split(" ");
         return arr.splice(0, 5).join(" ");
-    };
+    }
 
     setSliderHourFunc() {
         this.slider.calculateHours = function (val) {
@@ -54,7 +54,7 @@ export default class TurnOffSlider {
             }
             return returnVal;
         };
-    };
+    }
 
     turnOff() {
         let parent = this.turnOffSlider;
@@ -71,7 +71,7 @@ export default class TurnOffSlider {
         parent.toggleShowOffMessage();
         $(this).text("Turn " + settings_object.notState);
         synchronizer.syncSettings(settings_object);
-    };
+    }
 
     init() {
         let sl = this.slider;
@@ -82,5 +82,5 @@ export default class TurnOffSlider {
         this.toggleShowOffMessage();
         this.offButton.text("Turn " + this.settings_object.notState);
         htmlFunctionality.connectButton(this.offButton, this.turnOff);
-    };
+    }
 }

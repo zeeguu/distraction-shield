@@ -124,4 +124,4 @@ function handleRuntimeError () {
         return false;
     }
     return true;
-};
+}

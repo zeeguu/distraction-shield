@@ -1,3 +1,4 @@
+/* global module __dirname */
 /**
  * Created by pieter on 13-5-17.
  */

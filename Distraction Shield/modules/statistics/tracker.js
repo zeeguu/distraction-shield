@@ -24,7 +24,7 @@ export default class Tracker {
                 }
             });
         });
-    };
+    }
 
     ///TODO remove this.zeeguuRegex = constants.zeeguuExLink + ".*";
 
@@ -58,7 +58,7 @@ export default class Tracker {
             exerciseTime.incrementTodayExerciseTime(this.activeTime);
             this.activeTime = 0;
         }
-    };
+    }
 
     // Check if the user is idle. If the user is not idle, and on the zeeguu website, increment the counter.
     increaseTimeCounter() {
@@ -70,7 +70,7 @@ export default class Tracker {
                 this.activeTime = this.activeTime + 1;
             }
         }
-    };
+    }
 
     //TODO implement tracker for websites
     // // Check if the user is idle. If the user is not idle, increment a counter.
@@ -127,11 +127,11 @@ export default class Tracker {
     // Function attached to the idle-listener. Sets the this.idle variable.
     checkIdle(idleState) {
         this.idle = (idleState !== "active");
-    };
+    }
 
     // Compare regex to url.
     compareUrlToRegex(regex, url) {
         return RegExp(regex).test(url);
-    };
+    }
 
 }

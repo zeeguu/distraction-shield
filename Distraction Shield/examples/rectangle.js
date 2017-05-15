@@ -7,4 +7,4 @@ export default class Rectangle {
   get surface() {
     return this.height * this.width;
   }
-};
+}

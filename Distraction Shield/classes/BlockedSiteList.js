@@ -44,13 +44,13 @@ export default class BlockedSiteList {
             alert( constants.newUrlNotUniqueError + newBlockedSite.domain);
             return false;
         }
-    };
+    }
 
     addAllToList (blockedSiteList) {
         for (let i = 0; i < blockedSiteList.list.length; i++) {
             this.addToList(blockedSiteList.list[i]);
         }
-    };
+    }
 
     removeFromList (blockedSiteToDelete) {
         let urlKey = this.list.indexOf(blockedSiteToDelete);
@@ -60,7 +60,7 @@ export default class BlockedSiteList {
         } else {
             return false;
         }
-    };
+    }
 
     filterOnChecked () {
         if (this.list != []) {
@@ -69,7 +69,7 @@ export default class BlockedSiteList {
             });
         }
         return [];
-    };
+    }
 
     /* --------------- --------------- Serialization --------------- --------------- */
     

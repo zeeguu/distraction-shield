@@ -13,17 +13,17 @@ export default class BlacklistTable {
 
     addToTable(tableRow) {
         tableRow.hide().appendTo(this.table).fadeIn();
-    };
+    }
 
     removeFromTable(html_item) {
         html_item.fadeOut(function () {
             html_item.remove();
         });
-    };
+    }
 
     getSelected() {
         return this.table.find('.highlight');
-    };
+    }
 
     //this function makes the passed table single row selection only
     enableTableSelection() {
@@ -34,7 +34,7 @@ export default class BlacklistTable {
             else
                 row.addClass('highlight').siblings().removeClass('highlight');
         });
-    };
+    }
 
     // set functionality for all checkboxes found within the html_table
     setCheckboxFunction() {
@@ -46,7 +46,7 @@ export default class BlacklistTable {
             //no need to set localBlacklist cause it holds pointers so they get updated automatically
             this.blacklistTable._syncBlockedSiteListFunc();
         });
-    };
+    }
 
     // if a delete button is clicked, the closest tr element is deleted.
     setDeleteButtonFunction() {
@@ -55,7 +55,7 @@ export default class BlacklistTable {
             this.blacklistTable._removeBlockedSiteFunc(rowToDelete);
             this.blacklistTable.removeFromTable(rowToDelete);
         });
-    };
+    }
 
     //Returns an html table row object
     generateTableRow(blockedSite) {
@@ -72,5 +72,5 @@ export default class BlacklistTable {
         //add the actual object to the html_element
         tableRow.data('blockedSite', blockedSite);
         return tableRow;
-    };
+    }
 }

@@ -41,13 +41,13 @@ export default class GreenToRedSlider {
         let redVal = Math.round(inputValue / maxSliderVal * 120);
         let greenVal = 120 - redVal;
         this.sliderRange.css('background', 'rgb(' + redVal + ', ' + greenVal + ',0)');
-    };
+    }
 
     setValue(val) {
         this.sliderRange.val(val);
         this.sliderValue.html(GreenToRedSlider.calculateHours(val));
         this.updateColor(val);
-    };
+    }
 
     static calculateHours(val) {
         let hours = Math.floor(val / 60);
@@ -56,7 +56,7 @@ export default class GreenToRedSlider {
             minutes = "0" + minutes;
         }
         return (hours > 0 ? hours + ":" + minutes + " hours" : minutes + " minute(s)");
-    };
+    }
 
     checkTimeValidity(val) {
         let regex = (/(\d+|\d\:\d{2})(?:\s*)(h(?:our)?s?|m(?:inute|in)?s?|$)/m).exec(val);
@@ -78,7 +78,7 @@ export default class GreenToRedSlider {
         } else {
             this.timeInputError();
         }
-    };
+    }
 
     timeInputError() {
         this.setValue(this.sliderRange.val());

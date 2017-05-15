@@ -16,11 +16,11 @@ export default class BlockedSite {
 
     constructUrl(url) {
         return "*://" + url + "/*";
-    };
+    }
 
     constructIcon(url) {
         return "<img style=\"-webkit-user-select: none\" src=\"" + constants.FAVICONLINK + url + "\">"
-    };
+    }
 
     set url(url) { this._url = url; }
     get url() { return this._url; }

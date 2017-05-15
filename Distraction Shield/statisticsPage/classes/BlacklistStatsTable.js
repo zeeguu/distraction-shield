@@ -16,7 +16,7 @@ export default  class BlacklistStatsTable{
             $.each(siteList, function (k, site) {
                 this._table.append(this.generateTableRow(site));
             });
-        };
+        }
 
         generateTableRow(site) {
             return $("<tr class='table-row' >" +
@@ -25,15 +25,15 @@ export default  class BlacklistStatsTable{
                     "<td>" + site.counter + "</td>" +
                     "<td>"+ dateutil.secondsToHHMMSS(site.timeSpent)+"</td>" +
                     "</tr>");
-        };
+        }
 
         render() {
             this.createBlockedSiteTable(this._blacklist.list);
-        };
+        }
 
         setDataAndRender(data) {
             Promise.resolve(this.setData(data)).then(this.render());
-        };
+        }
     }
 
 

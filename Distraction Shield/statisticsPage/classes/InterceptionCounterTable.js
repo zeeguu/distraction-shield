@@ -12,14 +12,14 @@ export default class InterceptionCounterTable{
 
         setData(data) {
             this.counters = data;
-        };
+        }
 
         render() {
             this._html_countDay.text(this.counters.countDay);
             this._html_countWeek.text(this.counters.countWeek);
             this._html_countMonth.text(this.counters.countMonth);
             this._html_countTotal.text(this.counters.countTotal);
-        };
+        }
 
         setDataAndRender(data) {
             Promise.resolve(this.setData(data)).then(this.render());
