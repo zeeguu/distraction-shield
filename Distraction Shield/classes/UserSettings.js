@@ -52,8 +52,8 @@ export default class UserSettings {
 
     turnOffFor(minutes) {
         let curDate = new Date();
-        this.offTill = new Date(curDate.setSeconds(minutes + curDate.getSeconds()));
-        //this.offTill = new Date(curDate.setMinutes(minutes + curDate.getMinutes()));
+        //this.offTill = new Date(curDate.setSeconds(minutes + curDate.getSeconds()));
+        this.offTill = new Date(curDate.setMinutes(minutes + curDate.getMinutes()));
         this.turnOff();
     };
 
