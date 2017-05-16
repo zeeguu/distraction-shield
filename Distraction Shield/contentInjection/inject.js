@@ -10,11 +10,11 @@ initBasis = function(mode) {
         url: chrome.extension.getURL('contentInjection/inject.html'),
         type: "GET",
         timeout: 5000,
-        datattype: "html",
+        datatype: "html",
         success: function (data) {
             infoDiv = $.parseHTML(data);
-            $("body").prepend(infoDiv);
-            $("#tds").width(window.innerWidth + "px");
+            $("body").after(infoDiv);
+            $("#tds_infoDiv").css('max-width', '800px');
             $("#tds_generalInfoText").append(zeeguuInfoText);
             $("#tds_modeSpecificText").append(message);
             $("#originalDestination").attr("href", getDest());

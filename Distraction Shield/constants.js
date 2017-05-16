@@ -54,3 +54,6 @@ var KEY_ENTER  = 13;
 /* ---------- ----- turnoffSlider ----- ---------- */
 var MAX_TURN_OFF_TIME = 480;
 
+/*-----------------------Feedback form--------------------------*/
+var feedbackForm = "https://goo.gl/forms/e1u8uxBeDDezVfPG2";
+
