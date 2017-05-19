@@ -62,7 +62,7 @@ function initSession() {
     // Settings need to be loaded before the listener is replaced. The replaceListener
     // requires the blocked sites to be loaded, so these weird callbacks are required.
     storage.getSettings(function (settings) {
-        settings.reInitTimer();
+        settings.reInitTimer(replaceListener);
         setLocalSettings(settings);
         retrieveBlockedSites(replaceListener);
     });

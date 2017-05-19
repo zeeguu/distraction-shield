@@ -12,12 +12,12 @@ export function syncBlacklist(blockedSiteList) {
 }
 
 export function syncSettings(settings) {
-    console.log('smts');
     storage.setSettings(settings);
     chrome.runtime.sendMessage({
         message: "updateSettings",
         settings: UserSettings.serializeSettings(settings)
     });
+    console.log('message sent');
 }
 
 export function addSiteAndSync(blockedSiteItem) {

@@ -15,8 +15,9 @@ let localSettings = new UserSettings();
 
 export function setLocalSettings(newSettings) {
     let oldState = localSettings.state;
-    localSettings.copySettings(newSettings);
+    localSettings = newSettings;
     if (oldState != localSettings.state) {
+        localSettings.reInitTimer(replaceListener);
         replaceListener();
     }
 }
@@ -30,13 +31,7 @@ export function setLocalInterceptDateList(dateList) {
     interceptDateList = dateList;
 }
 
-export function getLocalSettings() {
-    return localSettings;
-}
-
 /* --------------- ------ Storage retrieval ------ ---------------*/
-// Methods here are only used upon initialization of the session.
-// Usage found in init.js
 
 export function retrieveSettings(callback, param) {
     storage.getSettings(function (settingsObject) {
@@ -111,22 +106,23 @@ export function handleInterception(details) {
 }
 
 export function turnOffInterception() {
-    localSettings.turnOffFromBackground();
+    localSettings.turnOffFromBackground(replaceListener);
     storage.setSettings(localSettings);
 }
 
+
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    console.log('got in here');
-    console.log(request.message);
     if (request.message === "updateListener") {
         setLocalBlacklist(BlockedSiteList.deserializeBlockedSiteList(request.siteList));
-    } else if (request.message == "updateSettings") {
-        console.log('got in here2');
+    } else if (request.message === "updateSettings") {
         setLocalSettings(UserSettings.deserializeSettings(request.settings));
     } else if (request.message === "newUrl") {
         addUrlToBlockedSites(request.unformattedUrl, sendResponse);
     } else if (request.message === "requestBlockedSites") {
-        sendResponse({blockedSiteList: blockedSites});
+        let siteList = BlockedSiteList.serializeBlockedSiteList(blockedSites);
+        sendResponse({blockedSiteList: siteList});
+    } else if (request.message === "printSettings") {
+        console.log(localSettings);
     }
 });
 

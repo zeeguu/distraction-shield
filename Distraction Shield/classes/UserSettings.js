@@ -1,6 +1,5 @@
 import * as constants from '../constants'
 import * as storage from '../modules/storage'
-import * as synchronizer from '../modules/synchronizer'
 
 export default class UserSettings {
     constructor() {
@@ -42,60 +41,64 @@ export default class UserSettings {
         }
     }
 
-    turnOff() {
+    turnOff(timer, callback) {
         if (this.state == "On") {
             this.status = {state: false, setAt: new Date(), offTill: this.status.offTill};
-            this.setTimer();
+            if (timer) {
+                this.setTimer(callback);
+            }
         } else {
             console.log("Already turned off, should not happen!");
         }
     }
 
-    turnOffFor(minutes) {
+    turnOffFor(minutes, timer, callback) {
         let curDate = new Date();
-        //this.offTill = new Date(curDate.setSeconds(minutes + curDate.getSeconds()));
         this.offTill = new Date(curDate.setMinutes(minutes + curDate.getMinutes()));
-        this.turnOff();
+        this.turnOff(timer, callback);
     }
 
-    turnOffForDay() {
+    turnOffForDay(timer, callback) {
         this.offTill = new Date(new Date().setHours(24, 0, 0, 0));
-        this.turnOff();
+        this.turnOff(timer, callback);
     }
 
-    turnOffFromBackground() {
+    turnOffFromBackground(callback) {
         if (this.state == "On") {
-            this.turnOffFor(this.interceptionInterval);
+            this.turnOffFor(this.interceptionInterval, true, callback);
         }
     }
 
-    turnExtensionBackOn() {
-        storage.getSettings(function (settings) {
+    turnExtensionBackOn(settings, callback) {
+        return function() {
             if (settings.state == "Off") {
                 settings.turnOn();
-                synchronizer.syncSettings(settings);
+                storage.setSettings(settings);
+                callback();
             }
-        });
+        };
     }
 
-    setTimer() {
+    setTimer(callback) {
         let timerInMS = this.status.offTill - new Date();
-        setTimeout(this.turnExtensionBackOn, timerInMS);
+        setTimeout(this.turnExtensionBackOn(this, callback), timerInMS);
     }
 
     copySettings(settingsObject) {
-        this.status = settingsObject.status;
-        this.sessionID = settingsObject.sessionID;
-        this.interceptionInterval = settingsObject.interceptionInterval;
-        this.mode = settingsObject.mode;
+        this._status = settingsObject.status;
+        this._sessionID = settingsObject.sessionID;
+        this._interceptionInterval = settingsObject.interceptionInterval;
+        this._mode = settingsObject.mode;
     }
 
-    reInitTimer() {
+    reInitTimer(callback) {
         if (this.state == "Off") {
             if (this.offTill < new Date()) {
                 this.turnOn();
+                storage.setSettings(this);
+                callback();
             } else {
-                this.setTimer();
+                this.setTimer(callback);
             }
         }
     }

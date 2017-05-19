@@ -44,10 +44,11 @@ export function incrementInterceptionCounter(urlAddress, blockedSites) {
             urlList[i].counter = urlList[i].counter + 1;
             break;
         }
-        if (diffDays <= 31) {
-            countMonth++
-        }
-        countTotal++;
+        //TODO why is this here, do we need this, cause it does not work?
+        // if (diffDays <= 31) {
+        //     countMonth++
+        // }
+        // countTotal++;
     }
 
     storage.setBlacklist(blockedSites);

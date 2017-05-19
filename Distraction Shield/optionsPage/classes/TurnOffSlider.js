@@ -61,9 +61,9 @@ export default class TurnOffSlider {
         let settings_object = parent.settings_object;
         if (settings_object.state === "On") {
             if (parent.selectedTime === constants.MAX_TURN_OFF_TIME) {
-                settings_object.turnOffForDay();
+                settings_object.turnOffForDay(false);
             } else {
-                settings_object.turnOffFor(parent.selectedTime);
+                settings_object.turnOffFor(parent.selectedTime, false);
             }
         } else {
             settings_object.turnOn();

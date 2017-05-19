@@ -1,6 +1,7 @@
-//import * as $ from "../dependencies/jquery/jquery-1.10.2.js";
 import * as synchronizer from "../modules/synchronizer.js";
 import * as blockedSiteBuilder from "../modules/blockedSiteBuilder.js";
+import * as stringutil from "../modules/stringutil.js";
+import BlockedSiteList from '../classes/BlockedSiteList';
 
 let saveButton = $('#saveBtn');
 let optionsButton = $('#optionsBtn');
@@ -29,16 +30,16 @@ function openOptionsPage () {
 function  connectButtons() {
     optionsButton.on('click', openOptionsPage);
     statisticsButton.on('click', redirectToStatistics);
-    saveButton.on('click')
     setSaveButtonFunctionality();
 }
 
 function patternMatchUrl (url, callback) {
     chrome.runtime.sendMessage({message: "requestBlockedSites"}, function (response) {
-        let list = response.blockedSiteList;
+        let siteList = BlockedSiteList.deserializeBlockedSiteList(response.blockedSiteList);
+        let list = siteList.list;
         let item = null;
         list.some(function (bl) {
-            if (stringutil.wildcardStrComp(url, bl.getUrl())) {
+            if (stringutil.wildcardStrComp(url, bl.url)) {
                 item = bl;
                 return true;
             }
@@ -51,21 +52,24 @@ function patternMatchUrl (url, callback) {
 function toggleBlockedSite (url) {
     return function () {
         chrome.runtime.sendMessage({message: "requestBlockedSites"}, function (response) {
-            let list = response.blockedSiteList;
-            let newItem;
-            for (let i = 0; i < list.getList().length; i++) {
-                if (stringutil.wildcardStrComp(url, list.getList()[i].getUrl())) {
-                    newItem = list.getList()[i];
+            let siteList = BlockedSiteList.deserializeBlockedSiteList(response.blockedSiteList);
+            let list = siteList.list;
+            let newItem = null;
+            for (let i = 0; i < list.length; i++) {
+                if (stringutil.wildcardStrComp(url, list[i].url)) {
+                    newItem = list[i];
                     break;
                 }
             }
-            newItem.setCheckboxVal(!newItem.getCheckboxVal());
-            if (newItem.getCheckboxVal()) {
+            newItem.checkboxVal = !newItem.checkboxVal;
+            if (newItem.checkboxVal) {
+                console.log(saveButton);
                 saveButton.text("Unblock");
             } else {
+                console.log(saveButton);
                 saveButton.text("Block");
             }
-            synchronizer.syncBlacklist(list);
+            synchronizer.syncBlacklist(siteList);
         });
     }
 }
@@ -79,10 +83,7 @@ function setSaveButtonToSuccess () {
     }, 3000);
 }
 
-function saveButtonClick () {
-}
-
-function setSaveButtonFunctionality (matchedBlockedSite) {
+function setSaveButtonFunctionality () {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         let activeTab = arrayOfTabs[0];
         let url = activeTab.url;
@@ -91,7 +92,7 @@ function setSaveButtonFunctionality (matchedBlockedSite) {
             if (matchedBlockedSite != null) {
                 saveButton.unbind('click', saveCurrentPageToBlacklist);
                 saveButton.on('click', toggleBlockedSite(url));
-                if (matchedBlockedSite.getCheckboxVal()) {
+                if (matchedBlockedSite.checkboxVal) {
                     saveButton.text("Unblock");
                 } else {
                     saveButton.text("Block");
