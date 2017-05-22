@@ -46,7 +46,7 @@ function initInterceptDateList(dateList) {
 
 function initExerciseTime(exerciseTime) {
     if (exerciseTime == null) {
-        storage.setExerciseTimeList({});
+        storage.setExerciseTimeList([]);
     }
 }
 
@@ -66,8 +66,8 @@ function initSession() {
         setLocalSettings(settings);
         retrieveBlockedSites(replaceListener);
     });
-    //let tracker = new Tracker();
-    //tracker.init(); //TODO fix this
+    let tracker = new Tracker();
+    tracker.init();
 }
 
 //fix that checks whether everything that should be is indeed initialized

@@ -24,11 +24,8 @@ export default class ExerciseTimeTable{
     }
 
     createExerciseTimeTable(list) {
-        console.log(list);
-        let keys = Object.keys(list);
-        for(let i = keys.length-1; i >= 0; i--){
-            this.addToTable(this.generateExerciseTimeHtmlRow(keys[i], list[keys[i]]));
-        }
+        let rows = list.reverse().map((site) => this.generateExerciseTimeHtmlRow(site.date, site.timeSpent));
+        this._table.append(rows);
     }
 
     render(){
