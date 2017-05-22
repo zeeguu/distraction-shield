@@ -60,6 +60,13 @@ export function getBlacklist(callback) {
         return callback(output.tds_blacklist);
     });
 }
+
+export function getBlacklistPromise() {
+    return getStorage("tds_blacklist").then((output) =>
+        BlockedSiteList.deserializeBlockedSiteList(output.tds_blacklist)
+    );
+}
+
 export function setBlacklist(blockedSiteList) {
     let serializedList = BlockedSiteList.serializeBlockedSiteList(blockedSiteList);
     setStorage("tds_blacklist", serializedList);

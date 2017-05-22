@@ -13,9 +13,7 @@ export default  class BlacklistStatsTable{
         }
 
         createBlockedSiteTable(siteList) {
-            $.each(siteList, function (k, site) {
-                this._table.append(this.generateTableRow(site));
-            });
+            this._table.append(siteList.map(this.generateTableRow));
         }
 
         generateTableRow(site) {
