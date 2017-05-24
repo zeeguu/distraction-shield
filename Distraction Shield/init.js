@@ -12,6 +12,8 @@ chrome.runtime.onInstalled.addListener(function() {
         initInterceptCounter(output.tds_interceptCounter);
         initInterceptDateList(output.tds_interceptDateList);
         initExerciseTime(output.tds_exerciseTime);
+        initWastedTime(output.tds_wastedTime);
+
         initSettings(output.tds_settings);
         runIntroTour();
     });
@@ -47,6 +49,12 @@ function initInterceptDateList(dateList) {
 function initExerciseTime(exerciseTime) {
     if (exerciseTime == null) {
         storage.setExerciseTimeList([]);
+    }
+}
+
+function initWastedTime(wastedTime) {
+    if (wastedTime == null) {
+        storage.setTimeWastedList([]);
     }
 }
 

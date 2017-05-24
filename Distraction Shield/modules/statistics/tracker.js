@@ -10,11 +10,11 @@ export default class Tracker {
 
     constructor() {
         this.idle = false;
-        this.tabActive = null;
-        this.activeTime = 0;
+        this.activeTimeEx = 0;
         this.updatedExerciseTime = false;
         this.updatedBlockedSiteTime = false;
         this.blockedsites = new BlockedSiteList();
+        this.timeValues = [];
 
     }
 
@@ -36,20 +36,58 @@ export default class Tracker {
 
         // When the user does not input anything for 15 seconds, set the state to idle.
         chrome.idle.setDetectionInterval(constants.idleTime);
-        chrome.idle.onStateChanged.addListener(this.checkIdle);
+        chrome.idle.onStateChanged.addListener(this.checkIdle.bind(this));
 
-        storage.getBlacklistPromise().then((result) => {
+        this.getBlockedSites().then(this.createTimeWastedList.bind(this));
+        this.updateTimeWasted();
+
+    }
+
+    createTimeWastedList() {
+        this.blockedsites.list.map((item) => this.timeValues.push({'domain': item.domain, 'timeSpent': item.timeSpent}));
+        console.log(this.timeValues);
+    }
+
+    getBlockedSites() {
+        return storage.getBlacklistPromise().then((result) => {
             this.blockedsites.addAllToList(result);
         });
     }
 
+    groupBy(xs, key) {
+        return xs.reduce((rv, x) => {
+            (rv[key] = rv[key] + x[key]);
+            return rv;
+        }, {});
+    }
+
+    updateTimeWasted() {
+        let oldList = [{'domain': 'facebook.com', 'timespent': 5},{'domain': 'reddit.com', 'timespent': 3}, {'domain': 'twitter.com', 'timespent': 6}];
+        let newList = [{'domain': 'facebook.com', 'timespent': 1},{'domain': 'reddit.com', 'timespent': 2}];
+        let comb = oldList.concat(newList);
+        console.log("Ungrouped:");
+        console.table(comb);
+        this.groupBy(comb, 'domain');
+        console.log("Grouped:");
+        console.table(comb);
+
+        // this.getBlockedSites().then();
+        // storage.getTimeWastedList().then((result) => {
+        //
+        // });
+        // let match = this.blockedsites.list.find((site) => this.compareDomain(tabActive, site.domain));
+        // if(typeof match !== 'undefined') resolve(match);
+        // newItem.timeSpent = oldItem.timeSpent;
+    }
+
     fireAlarm() {
         if (this.updatedExerciseTime) {
-            exerciseTime.incrementTodayExerciseTime(this.activeTime);
-            this.activeTime = 0;
+            exerciseTime.incrementTodayExerciseTime(this.activeTimeEx);
+            this.activeTimeEx = 0;
             this.updatedExerciseTime = false;
         }
         if (this.updatedBlockedSiteTime) {
+
             storage.setBlacklist(this.blockedsites);
             this.updatedBlockedSiteTime = false;
         }
@@ -79,7 +117,7 @@ export default class Tracker {
     }
 
     incTimeExercises() {
-        this.activeTime += 1;
+        this.activeTimeEx += 1;
         this.updatedExerciseTime = true;
 
     }
@@ -91,7 +129,7 @@ export default class Tracker {
 
     matchToBlockedSites(tabActive) {
         return new Promise((resolve, reject) => {
-            let match = this.blockedsites.list.find((site) => this.compareDomain(tabActive, site.domain));
+            let match = this.timeValues.find((site) => this.compareDomain(tabActive, site.domain));
             if(typeof match !== 'undefined') resolve(match);
         });
 
