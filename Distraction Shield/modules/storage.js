@@ -123,14 +123,6 @@ export function setExerciseTimeList(statList) {
     return setStorage("tds_exerciseTime", statList);
 }
 
-export function getTimeWastedList() {
-    return getStorage(["tds_wastedTime"]);
-}
-
-export function setTimeWastedList(timeList) {
-    return setStorage("tds_wastedTime", timeList);
-}
-
 /* ---------------- not exported--------------- */
 //Check for a runtime error
 function handleRuntimeError () {

@@ -14,8 +14,6 @@ export default class Tracker {
         this.updatedExerciseTime = false;
         this.updatedBlockedSiteTime = false;
         this.blockedsites = new BlockedSiteList();
-        this.timeValues = [];
-
     }
 
     // Gets the current tab.
@@ -38,46 +36,38 @@ export default class Tracker {
         chrome.idle.setDetectionInterval(constants.idleTime);
         chrome.idle.onStateChanged.addListener(this.checkIdle.bind(this));
 
-        this.getBlockedSites().then(this.createTimeWastedList.bind(this));
-        this.updateTimeWasted();
-
+        this.getBlockedSites();
+        this.addBlockedSitesUpdateListener();
     }
 
-    createTimeWastedList() {
-        this.blockedsites.list.map((item) => this.timeValues.push({'domain': item.domain, 'timeSpent': item.timeSpent}));
-        console.log(this.timeValues);
-    }
-
-    getBlockedSites() {
-        return storage.getBlacklistPromise().then((result) => {
-            this.blockedsites.addAllToList(result);
+    addBlockedSitesUpdateListener(){
+        chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+            if (request.message === "updateListener") {
+                let blockedsites = BlockedSiteList.deserializeBlockedSiteList(request.siteList);
+                let timeValues = this.retrieveTimeSpent(this.blockedsites);
+                this.blockedsites = blockedsites;
+                this.putBackTimeSpent(this.blockedsites, timeValues);
+            }
         });
     }
 
-    groupBy(xs, key) {
-        return xs.reduce((rv, x) => {
-            (rv[key] = rv[key] + x[key]);
-            return rv;
-        }, {});
+    retrieveTimeSpent(blockedsites) {
+        let list = [];
+        blockedsites.list.map((item) => list.push({'domain': item.domain, 'timeSpent': item.timeSpent}));
+        return list;
     }
 
-    updateTimeWasted() {
-        let oldList = [{'domain': 'facebook.com', 'timespent': 5},{'domain': 'reddit.com', 'timespent': 3}, {'domain': 'twitter.com', 'timespent': 6}];
-        let newList = [{'domain': 'facebook.com', 'timespent': 1},{'domain': 'reddit.com', 'timespent': 2}];
-        let comb = oldList.concat(newList);
-        console.log("Ungrouped:");
-        console.table(comb);
-        this.groupBy(comb, 'domain');
-        console.log("Grouped:");
-        console.table(comb);
+    putBackTimeSpent(blockedsites, timeValues) {
+        timeValues.map((timeValue) => {
+            let cr = blockedsites.list.find((blockedSite) => timeValue.domain == blockedSite.domain);
+            if(cr != undefined) cr.timeSpent = timeValue.timeSpent;
+        });
+    }
 
-        // this.getBlockedSites().then();
-        // storage.getTimeWastedList().then((result) => {
-        //
-        // });
-        // let match = this.blockedsites.list.find((site) => this.compareDomain(tabActive, site.domain));
-        // if(typeof match !== 'undefined') resolve(match);
-        // newItem.timeSpent = oldItem.timeSpent;
+    getBlockedSites() {
+        storage.getBlacklistPromise().then((result) => {
+            this.blockedsites.addAllToList(result);
+        });
     }
 
     fireAlarm() {
@@ -87,7 +77,6 @@ export default class Tracker {
             this.updatedExerciseTime = false;
         }
         if (this.updatedBlockedSiteTime) {
-
             storage.setBlacklist(this.blockedsites);
             this.updatedBlockedSiteTime = false;
         }
@@ -119,7 +108,6 @@ export default class Tracker {
     incTimeExercises() {
         this.activeTimeEx += 1;
         this.updatedExerciseTime = true;
-
     }
 
     incTimeBlockedSite(site) {
@@ -129,10 +117,9 @@ export default class Tracker {
 
     matchToBlockedSites(tabActive) {
         return new Promise((resolve, reject) => {
-            let match = this.timeValues.find((site) => this.compareDomain(tabActive, site.domain));
+            let match = this.blockedsites.list.find((site) => this.compareDomain(tabActive, site.domain));
             if(typeof match !== 'undefined') resolve(match);
         });
-
     }
 
     // Creates a regex string which using the domain of an url.
