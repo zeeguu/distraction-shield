@@ -40,6 +40,4 @@ function connectHtmlFunctionality () {
 document.addEventListener("DOMContentLoaded", function() {
     connectHtmlFunctionality();
     initStatisticsPage();
-    console.log("testasdf");
-
 });
