@@ -5,6 +5,7 @@
   "scripts": {
     "start": "broccoli serve",
     "build": "rm -rf dist && broccoli build dist && webpack",
+    "build-windows": "rd /s /q dist && broccoli build dist && webpack",
     "test": "npm run build && mocha \"test/**/*-test.js\" "
   },
   "repository": {
