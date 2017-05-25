@@ -20,13 +20,11 @@ export function syncSettings(settings) {
     console.log('message sent');
 }
 
-export function addSiteAndSync(blockedSiteItem) {
+export function addSiteAndSync(blockedSiteItem, callback) {
     storage.getBlacklist(function (blacklist) {
         if (blacklist.addToList(blockedSiteItem)) {
             syncBlacklist(blacklist);
-            return true;
-        } else {
-            return false;
+            callback();
         }
     });
 
