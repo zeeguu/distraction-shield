@@ -11,8 +11,7 @@ chrome.runtime.onInstalled.addListener(function() {
         initBlacklist(output.tds_blacklist);
         initInterceptCounter(output.tds_interceptCounter);
         initInterceptDateList(output.tds_interceptDateList);
-        initExerciseTime(output.tds_exerciseTime);
-
+        initExerciseTime(output.tds_exerciseTime)
         initSettings(output.tds_settings);
         runIntroTour();
     });
@@ -31,7 +30,6 @@ function initSettings(settings) {
         storage.setSettingsWithCallback(settingsToStore, initSession);
     }
 }
-
 
 function initInterceptCounter(counter) {
     if (counter == null) {

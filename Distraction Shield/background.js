@@ -7,9 +7,7 @@ import * as constants from'./constants';
 
 //Set that holds the urls to be intercepted
 let blockedSites = new BlockedSiteList();
-let interceptDateList = [];
 let localSettings = new UserSettings();
-
 
 /* --------------- ------ setter for local variables ------ ---------------*/
 
@@ -22,23 +20,12 @@ export function setLocalSettings(newSettings) {
     }
 }
 
-export function setLocalBlacklist(newList) {
+function setLocalBlacklist(newList) {
     blockedSites.list = newList.list;
     replaceListener();
 }
 
-export function setLocalInterceptDateList(dateList) {
-    interceptDateList = dateList;
-}
-
 /* --------------- ------ Storage retrieval ------ ---------------*/
-
-export function retrieveSettings(callback, param) {
-    storage.getSettings(function (settingsObject) {
-        localSettings = settingsObject;
-        return callback(param);
-    });
-}
 
 export function retrieveBlockedSites(callback) {
     storage.getBlacklist(function (blacklist) {
@@ -48,7 +35,7 @@ export function retrieveBlockedSites(callback) {
 }
 /* --------------- ------ Updating of variables ------ ---------------*/
 
-export function addUrlToBlockedSites(unformattedUrl, onSuccess) {
+function addUrlToBlockedSites(unformattedUrl, onSuccess) {
     createNewBlockedSite(unformattedUrl, function (newBS) {
         if (blockedSites.addToList(newBS)) {
             replaceListener();
@@ -57,6 +44,7 @@ export function addUrlToBlockedSites(unformattedUrl, onSuccess) {
         }
     });
 }
+
 /* --------------- ------ webRequest functions ------ ---------------*/
 
 export function replaceListener() {
@@ -67,7 +55,7 @@ export function replaceListener() {
     }
 }
 
-export function addWebRequestListener(urlList) {
+function addWebRequestListener(urlList) {
     chrome.webRequest.onBeforeRequest.addListener(
         handleInterception
         , {
@@ -78,11 +66,11 @@ export function addWebRequestListener(urlList) {
     );
 }
 
-export function removeWebRequestListener() {
+function removeWebRequestListener() {
     chrome.webRequest.onBeforeRequest.removeListener(handleInterception);
 }
 
-export function intercept(details) {
+function intercept(details) {
     interception.incrementInterceptionCounter(details.url);
     interception.addToInterceptDateList();
     let redirectLink;
@@ -93,7 +81,7 @@ export function intercept(details) {
     return {redirectUrl: redirectLink + params};
 }
 
-export function handleInterception(details) {
+function handleInterception(details) {
     if (localSettings.state == "On") {
         if (details.url.indexOf("tds_exComplete=true") > -1) {
             turnOffInterception();
@@ -105,11 +93,12 @@ export function handleInterception(details) {
     }
 }
 
-export function turnOffInterception() {
+function turnOffInterception() {
     localSettings.turnOffFromBackground(replaceListener);
     storage.setSettings(localSettings);
 }
 
+/* --------------- ------ Message Listener ------ ---------------*/
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message === "updateListener") {
@@ -125,4 +114,3 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         console.log(localSettings);
     }
 });
-

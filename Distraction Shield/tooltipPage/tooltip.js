@@ -7,15 +7,6 @@ let saveButton = $('#saveBtn');
 let optionsButton = $('#optionsBtn');
 let statisticsButton = $('#statisticsBtn');
 
-function saveCurrentPageToBlacklist () {
-    chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
-        let activeTab = arrayOfTabs[0];
-        blockedSiteBuilder.createNewBlockedSite(activeTab.url, function (blockedSite) {
-            synchronizer.addSiteAndSync(blockedSite, setSaveButtonToSuccess());
-        });
-    });
-}
-
 function redirectToStatistics () {
     chrome.tabs.create({'url': chrome.runtime.getURL('statisticsPage/statistics.html')});
 }
@@ -71,7 +62,6 @@ function toggleBlockedSite (url) {
 }
 
 function setSaveButtonToSuccess () {
-    console.log("called the colour changing button func");
     let saveButton = $('#saveBtn');
     saveButton.attr('class', 'btn btn-success');
     saveButton.text('Added!');
@@ -79,6 +69,15 @@ function setSaveButtonToSuccess () {
         saveButton.attr('class', 'btn btn-info');
         setSaveButtonFunctionality();
     }, 3000);
+}
+
+function saveCurrentPageToBlacklist () {
+    chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
+        let activeTab = arrayOfTabs[0];
+        blockedSiteBuilder.createNewBlockedSite(activeTab.url, function (blockedSite) {
+            synchronizer.addSiteAndSync(blockedSite, setSaveButtonToSuccess());
+        });
+    });
 }
 
 function setSaveButtonFunctionality () {

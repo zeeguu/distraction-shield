@@ -23,7 +23,7 @@ export default class BlockedSiteList {
     get activeUrls () {
         if (this.list != []) {
             let urlList = this.filterOnChecked();
-            if (urlList !== []) {
+            if (urlList != []) {
                 return urlList.map(function (bs) {
                     return bs.url;
                 });
@@ -35,7 +35,7 @@ export default class BlockedSiteList {
     addToList (newBlockedSite) {
         let currentUrls = this.urls;
         let unique = currentUrls.every(function (urlFromList) {
-            return urlFromList !== newBlockedSite.url;
+            return urlFromList != newBlockedSite.url;
         });
         if (unique) {
             this.list.push(newBlockedSite);

@@ -47,16 +47,7 @@ export default class BlockedSite {
     /* --------------- --------------- Serialization --------------- --------------- */
 
     static serializeBlockedSite(blockedSite) {
-        // let obj = {
-        //     url: blockedSite.url,
-        //     domain: blockedSite.domain,
-        //     name: blockedSite.name,
-        //     icon: blockedSite.icon,
-        //     checkboxVal: blockedSite.checkboxVal,
-        //     counter: blockedSite.counter,
-        //     timeSpent: blockedSite.timeSpent
-        // };
-        return JSON.stringify(blockedSite); //TODO check if this works
+        return JSON.stringify(blockedSite);
     }
 
 
