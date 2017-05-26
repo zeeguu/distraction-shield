@@ -71,6 +71,8 @@ function toggleBlockedSite (url) {
 }
 
 function setSaveButtonToSuccess () {
+    console.log("called the colour changing button func");
+    let saveButton = $('#saveBtn');
     saveButton.attr('class', 'btn btn-success');
     saveButton.text('Added!');
     setTimeout(function () {

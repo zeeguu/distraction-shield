@@ -64,7 +64,7 @@ export default class BlacklistTable {
                 "<td class='pageTitle'>" + blockedSite.name + "</td>" +
                 "<td width='25'>" + "<input class='checkbox-toggle' type='checkbox' name='state'>" + "</td>" +
                 "<td width='25'>" + "<img class='delete-button' type='deleteButton' src='../optionsPage/classes/tableRow_delete_button.png' width='16' height='16'>" + "</td>" +
-                "</tr>");
+             "</tr>");
         tableRow.find('.checkbox-toggle').prop('checked', blockedSite.checkboxVal);
         tableRow.find('.delete-button').prop('blacklistTable', this);
         tableRow.find('.checkbox-toggle').prop('blacklistTable', this);

@@ -1,9 +1,6 @@
-//import * as $ from "../../dependencies/jquery/jquery-1.10.2";
 import * as constants from "../../constants"
 
-
 export default class GreenToRedSlider {
-
 
     constructor(sliderID, saveFunction) {
         this.alert = chrome.extension.getBackgroundPage().alert;
@@ -12,24 +9,28 @@ export default class GreenToRedSlider {
         this.sliderRange = $(this.sliderDiv.find(sliderID + "-range"));
         this.sliderValue = $(this.sliderDiv.find(sliderID + "-value"));
 
-        this.sliderRange.on('input', () => {
-            let inputValue = this.sliderRange.val();
-            this.sliderValue.html(GreenToRedSlider.calculateHours(inputValue));
-            this.updateColor(inputValue);
+        this.setOnEventFunc(this);
+    }
+    
+    setOnEventFunc(GToRSlider) {
+        this.sliderRange.on('input', function () {
+            let inputValue = GToRSlider.sliderRange.val();
+            GToRSlider.sliderValue.html(GreenToRedSlider.calculateHours(inputValue));
+            GToRSlider.updateColor(inputValue);
         });
 
-        this.sliderRange.on('mouseup', () => {
-            let inputValue = this.sliderRange.val();
-            this.saveValue(inputValue);
+        this.sliderRange.on('mouseup', function () {
+            let inputValue = GToRSlider.sliderRange.val();
+            GToRSlider.saveValue(inputValue);
         });
 
-        this.sliderValue.on('blur', () => {
-            this.checkTimeValidity(this.sliderValue.html());
+        this.sliderValue.on('blur', function () {
+            GToRSlider.checkTimeValidity($(this).html());
         });
 
         this.sliderValue.keydown( event => {
             if (event.keyCode === constants.KEY_ENTER) {
-                this.sliderValue.blur();
+                GToRSlider.sliderValue.blur();
                 event.preventDefault();
             }
         });

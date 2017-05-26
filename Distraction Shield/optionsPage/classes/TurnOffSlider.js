@@ -14,8 +14,21 @@ export default class TurnOffSlider extends GreenToRedSlider {
         this.offButton = $(this.sliderDiv.find(sliderID + "-offBtn"));
         this.settings_object = settings_object;
         this.offButton[0].turnOffSlider = this;
-        this.init();
+        this.sliderRange[0].max = constants.MAX_TURN_OFF_TIME;
+        this.sliderValue.html(TurnOffSlider.calculateHours(this.sliderRange.val()));
+        this.setValue(this.sliderRange.val());
+        this.setSliderRangeFunc(this);
+        this.toggleShowOffMessage();
+        this.offButton.text("Turn " + this.settings_object.notState);
+        htmlFunctionality.connectButton(this.offButton, this.turnOff);
+    }
 
+    setSliderRangeFunc(offSlider) {
+        this.sliderRange.on('input', function () {
+            let inputValue = this.value;
+            offSlider.sliderValue.html(TurnOffSlider.calculateHours(inputValue));
+            offSlider.updateColor(inputValue);
+        });
     }
 
     toggleShowOffMessage() {
@@ -25,7 +38,7 @@ export default class TurnOffSlider extends GreenToRedSlider {
             this.sliderValue.parent().css('width', '50%');
             this.sliderValue.prop('contenteditable', false);
         } else {
-            this.sliderValue.html(this.calculateHours(this.selectedTime));
+            this.sliderValue.html(TurnOffSlider.calculateHours(this.selectedTime));
             this.sliderRange.css('visibility', 'visible').parent().css('display', 'initial');
             this.sliderValue.parent().css('width', '30%');
             this.sliderValue.prop('contenteditable', true);
@@ -41,20 +54,18 @@ export default class TurnOffSlider extends GreenToRedSlider {
         return arr.splice(0, 5).join(" ");
     }
 
-    setSliderHourFunc() {
-        this.calculateHours = function (val) {
-            let hours = Math.floor(val / 60);
-            let minutes = val % 60;
-            if (minutes < 10 && hours > 0) {
-                minutes = "0" + minutes;
-            }
-            let returnVal = "for " + (hours > 0 ? hours + ":" + minutes + " hours." : minutes + " minute(s).");
-            if (val === constants.MAX_TURN_OFF_TIME) {
-                returnVal = "for the rest of the day";
-            }
-            return returnVal;
-        };
-    }
+    static calculateHours(val) {
+        let hours = Math.floor(val / 60);
+        let minutes = val % 60;
+        if (minutes < 10 && hours > 0) {
+            minutes = "0" + minutes;
+        }
+        let returnVal = "for " + (hours > 0 ? hours + ":" + minutes + " hours." : minutes + " minute(s).");
+        if (val == constants.MAX_TURN_OFF_TIME) {
+            returnVal = "for the rest of the day";
+        }
+        return returnVal;
+    };
 
     turnOff() {
         let parent = this.turnOffSlider;
@@ -71,15 +82,5 @@ export default class TurnOffSlider extends GreenToRedSlider {
         parent.toggleShowOffMessage();
         $(this).text("Turn " + settings_object.notState);
         synchronizer.syncSettings(settings_object);
-    }
-
-    init() {
-        this.sliderRange[0].max = constants.MAX_TURN_OFF_TIME;
-        this.setSliderHourFunc();
-        this.sliderValue.html(this.calculateHours(this.sliderRange.val()));
-        this.setValue(this.sliderRange.val());
-        this.toggleShowOffMessage();
-        this.offButton.text("Turn " + this.settings_object.notState);
-        htmlFunctionality.connectButton(this.offButton, this.turnOff);
     }
 }
