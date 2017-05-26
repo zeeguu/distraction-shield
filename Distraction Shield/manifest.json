@@ -27,7 +27,7 @@
 
   "content_scripts": [
     {
-      "matches" : ["*://www.zeeguu.unibe.ch/practice/get-ex/*"],
+      "matches" : ["*://www.zeeguu.unibe.ch/practice/get-ex*"],
       "js" : ["dependencies/jquery/jquery-1.10.2.js",
               //"constants.js",
               //"classes/BlockedSite.js",
