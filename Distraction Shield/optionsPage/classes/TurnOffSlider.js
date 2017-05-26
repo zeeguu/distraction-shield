@@ -3,14 +3,15 @@ import * as constants from '../../constants'
 import * as synchronizer from '../../modules/synchronizer'
 import * as htmlFunctionality from '../htmlFunctionality'
 
-export default class TurnOffSlider {
+export default class TurnOffSlider extends GreenToRedSlider {
 
     constructor(sliderID, settings_object) {
-        this.selectedTime = 10;
-        this.slider = new GreenToRedSlider(sliderID, function (value) {
+
+        super(sliderID, (value) => {
             this.selectedTime = parseInt(value);
         });
-        this.offButton = $(this.slider.sliderDiv.find(sliderID + "-offBtn"));
+        this.selectedTime = 10;
+        this.offButton = $(this.sliderDiv.find(sliderID + "-offBtn"));
         this.settings_object = settings_object;
         this.offButton[0].turnOffSlider = this;
         this.init();
@@ -18,17 +19,16 @@ export default class TurnOffSlider {
     }
 
     toggleShowOffMessage() {
-        let sl = this.slider;
         if (this.settings_object.state === "Off") {
-            sl.sliderValue.html(this.createHtmlOffMessage());
-            sl.sliderRange.css('visibility', 'hidden').parent().css('display', 'none');
-            sl.sliderValue.parent().css('width', '50%');
-            sl.sliderValue.prop('contenteditable', false);
+            this.sliderValue.html(this.createHtmlOffMessage());
+            this.sliderRange.css('visibility', 'hidden').parent().css('display', 'none');
+            this.sliderValue.parent().css('width', '50%');
+            this.sliderValue.prop('contenteditable', false);
         } else {
-            sl.sliderValue.html(sl.calculateHours(this.selectedTime));
-            sl.sliderRange.css('visibility', 'visible').parent().css('display', 'initial');
-            sl.sliderValue.parent().css('width', '30%');
-            sl.sliderValue.prop('contenteditable', true);
+            this.sliderValue.html(this.calculateHours(this.selectedTime));
+            this.sliderRange.css('visibility', 'visible').parent().css('display', 'initial');
+            this.sliderValue.parent().css('width', '30%');
+            this.sliderValue.prop('contenteditable', true);
         }
     }
 
@@ -42,7 +42,7 @@ export default class TurnOffSlider {
     }
 
     setSliderHourFunc() {
-        this.slider.calculateHours = function (val) {
+        this.calculateHours = function (val) {
             let hours = Math.floor(val / 60);
             let minutes = val % 60;
             if (minutes < 10 && hours > 0) {
@@ -74,11 +74,10 @@ export default class TurnOffSlider {
     }
 
     init() {
-        let sl = this.slider;
-        sl.sliderRange[0].max = constants.MAX_TURN_OFF_TIME;
+        this.sliderRange[0].max = constants.MAX_TURN_OFF_TIME;
         this.setSliderHourFunc();
-        sl.sliderValue.html(sl.calculateHours(sl.sliderRange.val()));
-        sl.setValue(sl.sliderRange.val());
+        this.sliderValue.html(this.calculateHours(this.sliderRange.val()));
+        this.setValue(this.sliderRange.val());
         this.toggleShowOffMessage();
         this.offButton.text("Turn " + this.settings_object.notState);
         htmlFunctionality.connectButton(this.offButton, this.turnOff);

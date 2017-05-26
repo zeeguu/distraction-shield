@@ -7,30 +7,29 @@ export default class GreenToRedSlider {
 
     constructor(sliderID, saveFunction) {
         this.alert = chrome.extension.getBackgroundPage().alert;
-        let self = this;
         this.saveValue = saveFunction;
         this.sliderDiv = $(sliderID);
         this.sliderRange = $(this.sliderDiv.find(sliderID + "-range"));
         this.sliderValue = $(this.sliderDiv.find(sliderID + "-value"));
 
-        this.sliderRange.on('input', function () {
-            let inputValue = self.sliderRange.val();
-            self.sliderValue.html(GreenToRedSlider.calculateHours(inputValue));
-            self.updateColor(inputValue);
+        this.sliderRange.on('input', () => {
+            let inputValue = this.sliderRange.val();
+            this.sliderValue.html(GreenToRedSlider.calculateHours(inputValue));
+            this.updateColor(inputValue);
         });
 
-        this.sliderRange.on('mouseup', function () {
-            let inputValue = self.sliderRange.val();
-            self.saveValue(inputValue);
+        this.sliderRange.on('mouseup', () => {
+            let inputValue = this.sliderRange.val();
+            this.saveValue(inputValue);
         });
 
-        this.sliderValue.on('blur', function () {
-            self.checkTimeValidity($(this).html());
+        this.sliderValue.on('blur', () => {
+            this.checkTimeValidity(this.sliderValue.html());
         });
 
-        this.sliderValue.keydown(function (event) {
+        this.sliderValue.keydown( event => {
             if (event.keyCode === constants.KEY_ENTER) {
-                self.sliderValue.blur();
+                this.sliderValue.blur();
                 event.preventDefault();
             }
         });

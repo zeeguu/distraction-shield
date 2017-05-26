@@ -11,9 +11,7 @@ function saveCurrentPageToBlacklist () {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         let activeTab = arrayOfTabs[0];
         blockedSiteBuilder.createNewBlockedSite(activeTab.url, function (blockedSite) {
-            if (synchronizer.addSiteAndSync(blockedSite)) {
-                setSaveButtonToSuccess();
-            }
+            synchronizer.addSiteAndSync(blockedSite, setSaveButtonToSuccess());
         });
     });
 }
@@ -63,10 +61,8 @@ function toggleBlockedSite (url) {
             }
             newItem.checkboxVal = !newItem.checkboxVal;
             if (newItem.checkboxVal) {
-                console.log(saveButton);
                 saveButton.text("Unblock");
             } else {
-                console.log(saveButton);
                 saveButton.text("Block");
             }
             synchronizer.syncBlacklist(siteList);
@@ -76,7 +72,7 @@ function toggleBlockedSite (url) {
 
 function setSaveButtonToSuccess () {
     saveButton.attr('class', 'btn btn-success');
-    saveButton.html('Added!');
+    saveButton.text('Added!');
     setTimeout(function () {
         saveButton.attr('class', 'btn btn-info');
         setSaveButtonFunctionality();
