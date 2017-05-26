@@ -1,4 +1,3 @@
-//import * as $ from "../../dependencies/jquery/jquery-1.10.2";
 import * as dateutil from "../../modules/dateutil"
 
 export default  class BlacklistStatsTable{
@@ -13,9 +12,7 @@ export default  class BlacklistStatsTable{
         }
 
         createBlockedSiteTable(siteList) {
-            $.each(siteList, function (k, site) {
-                this._table.append(this.generateTableRow(site));
-            });
+            this._table.append(siteList.map(this.generateTableRow));
         }
 
         generateTableRow(site) {

@@ -1,5 +1,3 @@
-//import * as $ from "../../dependencies/jquery/jquery-1.10.2";
-
 export default class InterceptionCounterTable{
         constructor(){
             this._counters = null;
@@ -11,14 +9,14 @@ export default class InterceptionCounterTable{
         }
 
         setData(data) {
-            this.counters = data;
+            this._counters = data;
         }
 
         render() {
-            this._html_countDay.text(this.counters.countDay);
-            this._html_countWeek.text(this.counters.countWeek);
-            this._html_countMonth.text(this.counters.countMonth);
-            this._html_countTotal.text(this.counters.countTotal);
+            this._html_countDay.text(this._counters.countDay);
+            this._html_countWeek.text(this._counters.countWeek);
+            this._html_countMonth.text(this._counters.countMonth);
+            this._html_countTotal.text(this._counters.countTotal);
         }
 
         setDataAndRender(data) {

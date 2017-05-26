@@ -83,7 +83,7 @@ export function removeWebRequestListener() {
 }
 
 export function intercept(details) {
-    interception.incrementInterceptionCounter(details.url, blockedSites);
+    interception.incrementInterceptionCounter(details.url);
     interception.addToInterceptDateList();
     let redirectLink;
     let params;

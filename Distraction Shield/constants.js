@@ -1,5 +1,6 @@
 /* ---------- ----- background ----- ---------- */
 export const zeeguuExLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
+export const zeeguuExTracker = "www.zeeguu.unibe.ch/practice/get-ex";
 
 /* ---------- ----- BlockedSite ----- ---------- */
 export const FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
