@@ -43,12 +43,22 @@ export default class Tracker {
     addBlockedSitesUpdateListener(){
         chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             if (request.message === "updateListener") {
-                let blockedsites = BlockedSiteList.deserializeBlockedSiteList(request.siteList);
-                let timeValues = this.retrieveTimeSpent(this.blockedsites);
-                this.blockedsites = blockedsites;
-                this.putBackTimeSpent(timeValues);
-                storage.setBlacklist(this.blockedsites);
+                this.updateStorageBlockedSites();
             }
+        });
+    }
+
+    updateStorageBlockedSites(){
+        // Retrieve the blocked sites from the storage
+        storage.getBlacklistPromise().then((blockedsites) => {
+            // Extract the time-spent values from the this.blockedsites.
+            let timeValues = this.retrieveTimeSpent(this.blockedsites);
+            // Replace this.blockedsites with the data from the storage
+            this.blockedsites = blockedsites;
+            // Put the extracted time-spent values back into this.blockedsites
+            this.putBackTimeSpent(timeValues);
+            // Update the storage with these new values.
+            storage.setBlacklist(this.blockedsites);
         });
     }
 
@@ -78,7 +88,8 @@ export default class Tracker {
             this.updatedExerciseTime = false;
         }
         if (this.updatedBlockedSiteTime) {
-            storage.setBlacklist(this.blockedsites);
+            this.updateStorageBlockedSites();
+            //storage.setBlacklist(this.blockedsites);
             this.updatedBlockedSiteTime = false;
         }
     }
