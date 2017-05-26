@@ -44,13 +44,13 @@ function setLocalVariables (storage_output) {
 }
 // functionality from htmlFunctionality, blacklist_table and slider files
 function connectHtmlFunctionality () {
+    let html_saveButton = $('#saveBtn');
+    let html_txtFld = $('#textFld');
     htmlFunctionality.initModeSelection(modeGroup, settings_object);
     intervalSlider = htmlFunctionality.initIntervalSlider(settings_object);
     blacklistTable = new BlacklistTable($('#blacklistTable'), syncBlockedSiteList, removeBlockedSiteFromAll);
-    let html_saveButton = $('#saveBtn');
     htmlFunctionality.connectButton(html_saveButton, saveNewUrl);
     turnOffSlider = new TurnOffSlider('#turnOff-slider', settings_object);
-    let html_txtFld = $('#textFld');
     htmlFunctionality.setKeyPressFunctions(html_txtFld, blacklistTable, saveNewUrl, removeBlockedSiteFromAll);
 }
 // functionality from connectDataToHtml file
