@@ -29,7 +29,6 @@ export default class UserSettings {
     get offTill() {return this._status.offTill;}
     set offTill(time) { this._status.offTill = time;}
 
-    //TODO  remove? - not unused, used in one of the intervalSliders, could do it through getState though
     get state() {return this.status.state ? "On" : "Off";}
     get notState() {return this._status.state ? "Off" : "On"; }
 
@@ -69,19 +68,19 @@ export default class UserSettings {
         }
     }
 
-    turnExtensionBackOn(settings, callback) {
+    turnExtensionBackOn(callback) {
         return function() {
-            if (settings.state == "Off") {
-                settings.turnOn();
-                storage.setSettings(settings);
+            if (this.state == "Off") {
+                this.turnOn();
+                storage.setSettings(this);
                 callback();
             }
-        };
+        }.bind(this);
     }
 
     setTimer(callback) {
         let timerInMS = this.status.offTill - new Date();
-        setTimeout(this.turnExtensionBackOn(this, callback), timerInMS);
+        setTimeout(this.turnExtensionBackOn(callback), timerInMS);
     }
 
     copySettings(settingsObject) {
