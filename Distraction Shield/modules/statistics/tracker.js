@@ -70,8 +70,8 @@ export default class Tracker {
 
     putBackTimeSpent(timeValues) {
         this.blockedsites.list.map((blockedSite) => {
-            let cr = timeValues.find((timeValue) => timeValue.domain == blockedSite.domain);
-            if(cr != undefined) blockedSite.timeSpent = cr.timeSpent;
+            let bSite = timeValues.find((timeValue) => timeValue.domain == blockedSite.domain);
+            if(bSite != undefined) blockedSite.timeSpent = bSite.timeSpent;
         });
     }
 
@@ -89,7 +89,6 @@ export default class Tracker {
         }
         if (this.updatedBlockedSiteTime) {
             this.updateStorageBlockedSites();
-            //storage.setBlacklist(this.blockedsites);
             this.updatedBlockedSiteTime = false;
         }
     }
