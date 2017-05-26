@@ -13,13 +13,16 @@ let exerciseTimeTable = null;
 
 //Initialize HTML elements and set the data in the tables.
 function initStatisticsPage () {
-    Promise.all([storage.getInterceptDateList(), storage.getExerciseTimeList()])
+    Promise.all([storage.getInterceptDateList(), storage.getExerciseTimeList(), storage.getBlacklistPromise()])
         .then(function (response) {
-            let counters = interception.calcInterceptData(response[0].tds_interceptDateList);
-            //TODO : are the setDataAndRender calls right?
+            let interceptDateList = response[0].tds_interceptDateList;
+            let blacklist = response[2];
+            let exerciseTime = response[1];
+
+            let counters = interception.calcInterceptData(interceptDateList);
             interceptionCounterTable.setDataAndRender(counters);
-            storage.getBlacklist(blacklistTable.setDataAndRender);
-            exerciseTimeTable.setDataAndRender(response[1]);
+            blacklistTable.setDataAndRender(blacklist);
+            exerciseTimeTable.setDataAndRender(exerciseTime);
         });
 }
 
@@ -29,12 +32,6 @@ function connectHtmlFunctionality () {
     blacklistTable = new BlacklistStatsTable($('#interceptTable'));
     exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
 }
-
-//TODO how should this be done now?
-//Run this when the page is loaded.
-// domReady(function () {
-//
-// });
 
 document.addEventListener("DOMContentLoaded", function() {
     connectHtmlFunctionality();

@@ -64,27 +64,40 @@ function connectLocalDataToHtml () {
 /* -------------------- Manipulate local variables ------------------- */
 
 function removeFromLocalBlacklist (html_item) {
-    let blockedSiteToDelete = html_item.data('blockedSite');
-    return blacklist.removeFromList(blockedSiteToDelete);
+    return storage.getBlacklistPromise().then((result) => {
+        blacklist = result;
+        let blockedSiteToDelete = html_item.data('blockedSite');
+
+        // Remove the blockedSite from the blacklist. There is also a method in BlockedSiteList which does this, but it
+        // does not work somehow. Checking whether the domains are equal does seem to work though.
+        blacklist.list = blacklist.list.filter(item => item.domain != blockedSiteToDelete.domain);
+        return true;
+    });
 }
 
 function addToLocalBlacklist (blockedSite_item) {
-    return blacklist.addToList(blockedSite_item);
+    return storage.getBlacklistPromise().then((result) => {
+        blacklist = result;
+        return blacklist.addToList(blockedSite_item);
+    });
 }
 
 function removeBlockedSiteFromAll (html_item) {
-    console.log(html_item);
-    if (removeFromLocalBlacklist(html_item)) {
-        blacklistTable.removeFromTable(html_item);
-        syncBlockedSiteList();
-    }
+    removeFromLocalBlacklist(html_item).then((result) => {
+        if(result) {
+            blacklistTable.removeFromTable(html_item);
+            syncBlockedSiteList();
+        }
+    });
 }
 
 function addBlockedSiteToAll (newItem) {
-    if (addToLocalBlacklist(newItem)) {
-        blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
-        syncBlockedSiteList();
-    }
+    addToLocalBlacklist(newItem).then((result) => {
+        if(result) {
+            blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
+            syncBlockedSiteList();
+        }
+    });
 }
 
 function saveNewUrl() {
