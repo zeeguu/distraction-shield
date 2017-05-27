@@ -6,14 +6,15 @@ import Tracker from './modules/statistics/tracker';
 
 /* --------------- ---- Run upon installation ---- ---------------*/
 
-chrome.runtime.onInstalled.addListener(function() {
-    storage.getAllUnParsed(function (output) {
+chrome.runtime.onInstalled.addListener((details) => {
+    storage.getAllUnParsed((output) => {
         initBlacklist(output.tds_blacklist);
         initInterceptCounter(output.tds_interceptCounter);
         initInterceptDateList(output.tds_interceptDateList);
         initExerciseTime(output.tds_exerciseTime)
         initSettings(output.tds_settings);
-        runIntroTour();
+        if (details.reason == 'install')
+            runIntroTour();
     });
 });
 
