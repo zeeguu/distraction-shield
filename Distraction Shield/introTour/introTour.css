@@ -8,3 +8,7 @@ h1 {
     height: 1px;
 
 }
+
+.popover.bottom>.arrow {
+    margin-left: 20px; !important;
+}
