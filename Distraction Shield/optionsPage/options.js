@@ -52,7 +52,9 @@ function connectHtmlFunctionality() {
     htmlFunctionality.connectButton($('#saveBtn'), saveNewUrl);
     turnOffSlider = new TurnOffSlider('#turnOff-slider', settings_object);
     htmlFunctionality.setKeyPressFunctions($('#textFld'), blacklistTable, saveNewUrl, removeBlockedSiteFromAll);
-    // htmlFunctionality.connectButton($('#feedbackLink'), openFeedbackForm());
+    htmlFunctionality.connectButton($('#statisticsLink'), openStatisticsPage);
+    htmlFunctionality.connectButton($('#feedbackLink'), openFeedbackForm);
+    htmlFunctionality.connectButton($('#tourRestartLink'), restartTour);
 }
 // functionality from connectDataToHtml file
 function connectLocalDataToHtml() {
@@ -109,8 +111,16 @@ function saveNewUrl() {
 /* -------------------- -------------------------- -------------------- */
 
 function openFeedbackForm() {
-    console.log("openfeedbackform called");//todo remove
     openTabSingleton(feedbackLink);
+}
+
+function restartTour() {
+    openTabSingleton(chrome.runtime.getURL('introTour/introTour.html'));
+}
+
+function openStatisticsPage() {
+    openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'));
+
 }
 
 function syncBlockedSiteList() {

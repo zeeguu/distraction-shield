@@ -1,6 +1,3 @@
-
-
-let console = chrome.extension.getBackgroundPage().console;
 /**
  * This function uses the chrome tabs api to see if a tab is open with a certain url.
  * Calls the callback with: the id of the tab if a tab is open with the given url, false otherwise
