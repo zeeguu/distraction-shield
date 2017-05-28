@@ -1,38 +1,39 @@
 {
   "manifest_version": 2,
-
   "name": "The Distraction Shield",
   "description": "Divert attention from social media websites towards learning a new language",
   "version": "1.3.1",
-  "icons": {"128": "aikido.png"},
+  "icons": {
+    "128": "aikido.png"
+  },
   "offline_enabled": false,
-
   "options_page": "optionsPage/options.html",
   "options_ui": {
     "page": "optionsPage/options.html"
   },
-
   "browser_action": {
     "default_icon": "aikido.png",
     "default_title": "Distraction Shield Settings",
     "default_popup": "tooltipPage/tooltip.html"
   },
-
   "background": {
     "scripts": [
       "./dependencies/jquery/jquery-1.10.2.js",
       "./js-src/init.bundle.js"
     ]
   },
-
   "content_scripts": [
     {
-      "matches" : ["*://www.zeeguu.unibe.ch/practice/get-ex*"],
-      "js" : ["dependencies/jquery/jquery-1.10.2.js",
-              "./js-src/inject.bundle.js"]
+      "matches": [
+        "*://www.zeeguu.unibe.ch/practice/get-ex*",
+        "*://www.zeeguu.unibe.ch/login"
+      ],
+      "js": [
+        "dependencies/jquery/jquery-1.10.2.js",
+        "./js-src/inject.bundle.js"
+      ]
     }
   ],
-
   "permissions": [
     "tabs",
     "storage",
@@ -41,9 +42,7 @@
     "idle",
     "<all_urls>"
   ],
-
   "web_accessible_resources": [
     "contentInjection/inject.html"
-    ]
-
+  ]
 }

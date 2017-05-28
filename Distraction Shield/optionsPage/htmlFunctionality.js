@@ -27,6 +27,7 @@ export function setKeyPressFunctions(html_txtFld, blacklistTable, submitFunc, de
     submitOnKeyPress(html_txtFld, submitFunc);
     deleteOnKeyPress(blacklistTable, deleteFunc);
 }
+
 export function submitOnKeyPress(html_elem, submitFunc) {
     html_elem.keyup(function (event) {
         if (event.keyCode === constants.KEY_ENTER) {
@@ -34,6 +35,7 @@ export function submitOnKeyPress(html_elem, submitFunc) {
         }
     });
 }
+
 export function deleteOnKeyPress(blacklistTable, deleteFunc) {
     $('html').keyup(function (e) {
         if (e.keyCode === constants.KEY_DELETE) {

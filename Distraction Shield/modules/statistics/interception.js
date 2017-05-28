@@ -64,7 +64,6 @@ export function incrementInterceptionCounter(urlAddress) {
 }
 
 
-
 // This function adds the current time+date to the saved time+date list
 export function addToInterceptDateList() {
     let interceptDateList;

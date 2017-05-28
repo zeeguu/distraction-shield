@@ -6,7 +6,7 @@ let tour = new Tour({
         path: "/introTour/introTour.html",
         title: "Welcome to The Distaction Shield",
         content: "Wanna know how Distraction Shield protects you ? " +
-        " Click <b> ‘Next’ </b> "+
+        " Click <b> ‘Next’ </b> " +
         "If you want to use it right away, click <b>‘End tour’</b>"
     }, {
         path: "/introTour/introTour.html",
@@ -93,8 +93,8 @@ tour.init();
 tour.start();
 
 //Restart tour link
-if(tour.ended()) {
-    chrome.tabs.getSelected(null, function(tab) {
+if (tour.ended()) {
+    chrome.tabs.getSelected(null, function (tab) {
         if (tab.url.indexOf('/introTour/introTour.html') !== -1) {
             tour.restart();
         }
@@ -102,13 +102,13 @@ if(tour.ended()) {
 }
 
 //get current tab
-chrome.tabs.getSelected(null, function(tab) {
+chrome.tabs.getSelected(null, function (tab) {
     id = tab.id;
 });
 
 //end tour if tab closed
-chrome.tabs.onRemoved.addListener(function(tabId) {
-    if(tabId === id) {
+chrome.tabs.onRemoved.addListener(function (tabId) {
+    if (tabId === id) {
         tour.end();
     }
 });

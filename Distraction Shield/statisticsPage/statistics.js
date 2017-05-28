@@ -12,7 +12,7 @@ let blacklistTable = null;
 let exerciseTimeTable = null;
 
 //Initialize HTML elements and set the data in the tables.
-function initStatisticsPage () {
+function initStatisticsPage() {
     Promise.all([storage.getInterceptDateList(), storage.getExerciseTimeList(), storage.getBlacklistPromise()])
         .then(function (response) {
             let interceptDateList = response[0].tds_interceptDateList;
@@ -27,13 +27,13 @@ function initStatisticsPage () {
 }
 
 // Connects html items to the tables.
-function connectHtmlFunctionality () {
+function connectHtmlFunctionality() {
     interceptionCounterTable = new InterceptionCounterTable();
     blacklistTable = new BlacklistStatsTable($('#interceptTable'));
     exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     connectHtmlFunctionality();
     initStatisticsPage();
 });

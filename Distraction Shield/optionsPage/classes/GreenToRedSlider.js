@@ -11,7 +11,7 @@ export default class GreenToRedSlider {
 
         this.setOnEventFunc(this);
     }
-    
+
     setOnEventFunc(GToRSlider) {
         this.sliderRange.on('input', function () {
             let inputValue = GToRSlider.sliderRange.val();
@@ -28,7 +28,7 @@ export default class GreenToRedSlider {
             GToRSlider.checkTimeValidity($(this).html());
         });
 
-        this.sliderValue.keydown( event => {
+        this.sliderValue.keydown(event => {
             if (event.keyCode === constants.KEY_ENTER) {
                 GToRSlider.sliderValue.blur();
                 event.preventDefault();

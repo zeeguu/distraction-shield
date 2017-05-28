@@ -2,6 +2,9 @@
 export const zeeguuExLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
 export const zeeguuExTracker = "www.zeeguu.unibe.ch/practice/get-ex";
 
+/* ---------- ----- optionspage----- ---------- */
+export const feedbackLink = "https://docs.google.com/forms/d/e/1FAIpQLScHTpTaGD19HJd4d7k98FV_20-NwRV0dp9xNMWza7_1KsiGag/viewform";
+
 /* ---------- ----- BlockedSite ----- ---------- */
 export const FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
 /* ---------- ----- export const ants for statistics ----- ---------- */
@@ -27,6 +30,8 @@ export const modes = {
         zeeguuText: "You are in pro mode. Complete the exercise and click the 'Take me away!' button when you are done to continue browsing."
     }
 };
+
+export const zeeguLoginLink = "https://www.zeeguu.unibe.ch/login";
 
 /* ---------- ----- BlockedSiteList ----- ---------- */
 export const newUrlNotUniqueError = "New blocked site item to be added was found to resolve to an already blacklisted website, " +

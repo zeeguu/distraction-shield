@@ -5,7 +5,7 @@ alert = chrome.extension.getBackgroundPage().alert;
 
 // Fire a request for the actual url from server. Then go on to fire the passed callback with
 // the newly found url
-export function stripOfFinalSlash (url) {
+export function stripOfFinalSlash(url) {
     if (url[url.length - 1] == '/') {
         let ans = url.split("");
         ans.pop();
@@ -14,7 +14,7 @@ export function stripOfFinalSlash (url) {
     return url;
 }
 
-export function stripOfScheme (url) {
+export function stripOfScheme(url) {
     let schemeless = url;
     if (url.indexOf("://") > -1) {
         schemeless = url.split('://')[1];
@@ -23,7 +23,7 @@ export function stripOfScheme (url) {
     return schemeless;
 }
 
-export function stripOfPort (url) {
+export function stripOfPort(url) {
     let portless = [];
     if (url.indexOf(":") > -1) {
         let splittedUrl = url.split(':');
@@ -39,7 +39,7 @@ export function stripOfPort (url) {
     return url;
 }
 
-export function stripOfFileName (url) {
+export function stripOfFileName(url) {
     if (url.indexOf("/") > -1) {
         let nameless = url.split("").reverse().join("");
         nameless = nameless.split(['/']);
@@ -57,7 +57,7 @@ export function stripOfFileName (url) {
     }
 }
 
-export function getDomainOnly (url) {
+export function getDomainOnly(url) {
     if (url.indexOf("/") > -1) {
         return url.split("/")[0];
     } else {
@@ -65,7 +65,7 @@ export function getDomainOnly (url) {
     }
 }
 
-export function stripOfAll (url) {
+export function stripOfAll(url) {
     url = stripOfScheme(url);
     url = stripOfFinalSlash(url);
     url = stripOfPort(url);
@@ -75,12 +75,12 @@ export function stripOfAll (url) {
     return [url, getDomainOnly(url)];
 }
 
-export function formatForGetRequest (url) {
+export function formatForGetRequest(url) {
     let strippedUrl = stripOfAll(url);
     return "http://" + strippedUrl[0];
 }
 
-export function getUrlFromServer (url, callback) {
+export function getUrlFromServer(url, callback) {
     let urlToGet = formatForGetRequest(url);
     httpGetAsync(urlToGet, function (url, title) {
         url = stripOfScheme(url);
@@ -89,7 +89,7 @@ export function getUrlFromServer (url, callback) {
     });
 }
 
-export function httpGetAsync (theUrlToGet, callback) {
+export function httpGetAsync(theUrlToGet, callback) {
     let xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", theUrlToGet, true); // true for asynchronous
     xmlHttp.onreadystatechange = function () {
@@ -98,7 +98,7 @@ export function httpGetAsync (theUrlToGet, callback) {
     xmlHttp.send(null);
 }
 
-export function readyStateChange (xmlHttp, callback) {
+export function readyStateChange(xmlHttp, callback) {
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         // simple regex to extract data from title tags, ignoring newlines, tabs and returns
         let titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
@@ -113,7 +113,7 @@ export function readyStateChange (xmlHttp, callback) {
     }
 }
 
-export function errorHandler (status) {
+export function errorHandler(status) {
     switch (status) {
         case 404:
             alert(constants.INVALID_URL_MESSAGE + 'File not found');

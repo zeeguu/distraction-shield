@@ -1,4 +1,3 @@
-
 import BlockedSiteList from '../classes/BlockedSiteList'
 import UserSettings    from '../classes/UserSettings'
 
@@ -125,7 +124,7 @@ export function setExerciseTimeList(statList) {
 
 /* ---------------- not exported--------------- */
 //Check for a runtime error
-function handleRuntimeError () {
+function handleRuntimeError() {
     if (chrome.runtime.error) {
         console.log("Runtime error.\n" + chrome.runtime.error);
         return false;

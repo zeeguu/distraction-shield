@@ -14,23 +14,53 @@ export default class UserSettings {
         this._interceptionInterval = 1;
     }
 
-    set sessionID(newID) { this._sesionID = newID;}
-    get sessionID() { return this._sesionID; }
+    set sessionID(newID) {
+        this._sesionID = newID;
+    }
 
-    set interceptionInterval(val) {this._interceptionInterval = val;}
-    get interceptionInterval() {return this._interceptionInterval; }
+    get sessionID() {
+        return this._sesionID;
+    }
 
-    set mode(newMode) { this._mode = newMode; }
-    get mode() { return this._mode;}
+    set interceptionInterval(val) {
+        this._interceptionInterval = val;
+    }
 
-    set status(newStatus) {this._status = newStatus;}
-    get status() { return this._status;}
+    get interceptionInterval() {
+        return this._interceptionInterval;
+    }
 
-    get offTill() {return this._status.offTill;}
-    set offTill(time) { this._status.offTill = time;}
+    set mode(newMode) {
+        this._mode = newMode;
+    }
 
-    get state() {return this.status.state ? "On" : "Off";}
-    get notState() {return this._status.state ? "Off" : "On"; }
+    get mode() {
+        return this._mode;
+    }
+
+    set status(newStatus) {
+        this._status = newStatus;
+    }
+
+    get status() {
+        return this._status;
+    }
+
+    get offTill() {
+        return this._status.offTill;
+    }
+
+    set offTill(time) {
+        this._status.offTill = time;
+    }
+
+    get state() {
+        return this.status.state ? "On" : "Off";
+    }
+
+    get notState() {
+        return this._status.state ? "Off" : "On";
+    }
 
     turnOn() {
         if (this.state == "Off") {
@@ -69,7 +99,7 @@ export default class UserSettings {
     }
 
     turnExtensionBackOn(callback) {
-        return function() {
+        return function () {
             if (this.state == "Off") {
                 this.turnOn();
                 storage.setSettings(this);
@@ -105,26 +135,26 @@ export default class UserSettings {
     /* --------------- --------------- Serialization --------------- --------------- */
 
     static serializeSettings(settingsObject) {
-            return JSON.stringify(settingsObject);
+        return JSON.stringify(settingsObject);
     }
 
     static parseSettingsObject(parsedSettingsObject) {
-            let s = new UserSettings();
-            parsedSettingsObject._status.setAt = new Date(parsedSettingsObject._status.setAt);
-            parsedSettingsObject._status.offTill = new Date(parsedSettingsObject._status.offTill);
-            s.status = parsedSettingsObject._status;
-            s.sessionID = parsedSettingsObject._sessionID;
-            s.interceptionInterval = parsedSettingsObject._interceptionInterval;
-            s.mode = parsedSettingsObject._mode;
-            return s;
+        let s = new UserSettings();
+        parsedSettingsObject._status.setAt = new Date(parsedSettingsObject._status.setAt);
+        parsedSettingsObject._status.offTill = new Date(parsedSettingsObject._status.offTill);
+        s.status = parsedSettingsObject._status;
+        s.sessionID = parsedSettingsObject._sessionID;
+        s.interceptionInterval = parsedSettingsObject._interceptionInterval;
+        s.mode = parsedSettingsObject._mode;
+        return s;
     }
 
-    static deserializeSettings (serializedSettingsObject) {
-            if (serializedSettingsObject != null) {
-                let parsed = JSON.parse(serializedSettingsObject);
-                return this.parseSettingsObject(parsed);
-            }
-            return null;
+    static deserializeSettings(serializedSettingsObject) {
+        if (serializedSettingsObject != null) {
+            let parsed = JSON.parse(serializedSettingsObject);
+            return this.parseSettingsObject(parsed);
+        }
+        return null;
     }
 
 }

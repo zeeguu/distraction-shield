@@ -7,6 +7,8 @@ import TurnOffSlider from './classes/TurnOffSlider'
 import * as connectDataToHtml from './connectDataToHtml'
 import * as htmlFunctionality from './htmlFunctionality'
 import * as blockedSiteBuilder from '../modules/blockedSiteBuilder'
+import {feedbackLink} from '../constants'
+import {openTabSingleton} from '../modules/tabutil'
 
 /**
  * This file contains the core functions of the options page. this has all the local variables,
@@ -29,7 +31,7 @@ let interceptionCounter = 0;
 /* -------------------- Initialization of options --------------------- */
 
 //Initialize HTML elements and set the local variables
-function initOptionsPage () {
+function initOptionsPage() {
     storage.getAll(function (output) {
         setLocalVariables(output);
         connectHtmlFunctionality();
@@ -37,22 +39,23 @@ function initOptionsPage () {
     });
 }
 //Retrieve data from storage and store in local variables
-function setLocalVariables (storage_output) {
+function setLocalVariables(storage_output) {
     blacklist.addAllToList(storage_output.tds_blacklist);
     settings_object.copySettings(storage_output.tds_settings);
     interceptionCounter = storage_output.tds_interceptCounter;
 }
 // functionality from htmlFunctionality, blacklist_table and slider files
-function connectHtmlFunctionality () {
+function connectHtmlFunctionality() {
     htmlFunctionality.initModeSelection(modeGroup, settings_object);
     intervalSlider = htmlFunctionality.initIntervalSlider(settings_object);
     blacklistTable = new BlacklistTable($('#blacklistTable'), syncBlockedSiteList, removeBlockedSiteFromAll);
     htmlFunctionality.connectButton($('#saveBtn'), saveNewUrl);
     turnOffSlider = new TurnOffSlider('#turnOff-slider', settings_object);
     htmlFunctionality.setKeyPressFunctions($('#textFld'), blacklistTable, saveNewUrl, removeBlockedSiteFromAll);
+    // htmlFunctionality.connectButton($('#feedbackLink'), openFeedbackForm());
 }
 // functionality from connectDataToHtml file
-function connectLocalDataToHtml () {
+function connectLocalDataToHtml() {
     connectDataToHtml.loadHtmlInterceptCounter(interceptionCounter, $('#iCounter'));
     connectDataToHtml.loadHtmlBlacklist(blacklist, blacklistTable);
     connectDataToHtml.loadHtmlMode(settings_object.mode, modeGroup);
@@ -60,7 +63,7 @@ function connectLocalDataToHtml () {
 }
 /* -------------------- Manipulate local variables ------------------- */
 
-function removeFromLocalBlacklist (html_item) {
+function removeFromLocalBlacklist(html_item) {
     return storage.getBlacklistPromise().then((result) => {
         blacklist = result;
         let blockedSiteToDelete = html_item.data('blockedSite');
@@ -72,25 +75,25 @@ function removeFromLocalBlacklist (html_item) {
     });
 }
 
-function addToLocalBlacklist (blockedSite_item) {
+function addToLocalBlacklist(blockedSite_item) {
     return storage.getBlacklistPromise().then((result) => {
         blacklist = result;
         return blacklist.addToList(blockedSite_item);
     });
 }
 
-function removeBlockedSiteFromAll (html_item) {
+function removeBlockedSiteFromAll(html_item) {
     removeFromLocalBlacklist(html_item).then((result) => {
-        if(result) {
+        if (result) {
             blacklistTable.removeFromTable(html_item);
             syncBlockedSiteList();
         }
     });
 }
 
-function addBlockedSiteToAll (newItem) {
+function addBlockedSiteToAll(newItem) {
     addToLocalBlacklist(newItem).then((result) => {
-        if(result) {
+        if (result) {
             blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
             syncBlockedSiteList();
         }
@@ -105,12 +108,17 @@ function saveNewUrl() {
 }
 /* -------------------- -------------------------- -------------------- */
 
-function syncBlockedSiteList () {
+function openFeedbackForm() {
+    console.log("openfeedbackform called");//todo remove
+    openTabSingleton(feedbackLink);
+}
+
+function syncBlockedSiteList() {
     synchronizer.syncBlacklist(blacklist);
 }
 
 //Run this when the page is loaded.
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     initOptionsPage();
 });
 

@@ -1,6 +1,6 @@
 body {
     margin: 0 auto;
-    min-width:1000px;
+    min-width: 1000px;
 }
 
 #addUrlDiv {
@@ -10,38 +10,38 @@ body {
 /* ---------- ---------- options alignment ---------- ---------- */
 
 #modeRadioDiv {
-    float:left;
-    width:30%;
+    float: left;
+    width: 30%;
 }
 
 #interval-slider-div {
-    width:70%;
-    overflow:hidden;
+    width: 70%;
+    overflow: hidden;
 }
 
 /* ---------- ---------- TurnOff Slider ---------- ---------- */
 
-#offBtnDiv{
-    margin-top:4px;
-    margin-bottom:4px;
-    width:20%;
+#offBtnDiv {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    width: 20%;
 }
 
-#offRanDiv{
-    margin-top:3px;
-    margin-bottom:3px;
-    width:50%;
+#offRanDiv {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    width: 50%;
 }
 
-#offValDiv{
-    margin-top:11px;
-    width:30%;
-    overflow:visible;
+#offValDiv {
+    margin-top: 11px;
+    width: 30%;
+    overflow: visible;
 }
 
 .editable-span {
-    display:block;
-    max-width:200px;
+    display: block;
+    max-width: 200px;
     white-space: nowrap;
 }
 
@@ -55,17 +55,16 @@ body {
     background-color: lightskyblue;
 }
 
-.table-striped>tbody>tr:nth-of-type(odd).highlight {
+.table-striped > tbody > tr:nth-of-type(odd).highlight {
     background-color: lightskyblue;
 }
 
 .pageTitle {
-    max-width:500px;
+    max-width: 500px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 
 .link {
     text-align: center;
@@ -73,32 +72,32 @@ body {
 }
 
 .panel {
-    padding-top:5px;
-    padding-bottom:5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .panel-primary {
-    padding-top:0px;
-    padding-bottom:0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 
 .page-header {
     margin: 0 auto 0 auto;
-    text-align:center;
+    text-align: center;
     border-bottom: 2px solid;
 }
 
 /* ---------- ---------- Slider ---------- ---------- */
 
 .amountColumn {
-    overflow:hidden;
+    overflow: hidden;
 }
 
 input[type=range] {
     -webkit-appearance: none;
     margin: 10px 0;
     width: 99%;
-    height:16px;
+    height: 16px;
     border: 1px solid #000;
     border-radius: 6px;
     /*background: rgb(0,220,0);*/

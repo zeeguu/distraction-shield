@@ -2,27 +2,30 @@ import * as synchronizer from "../modules/synchronizer.js";
 import * as blockedSiteBuilder from "../modules/blockedSiteBuilder.js";
 import * as stringutil from "../modules/stringutil.js";
 import BlockedSiteList from '../classes/BlockedSiteList';
+import {openTabSingleton} from "../modules/tabutil";
 
 let saveButton = $('#saveBtn');
 let optionsButton = $('#optionsBtn');
 let statisticsButton = $('#statisticsBtn');
 
-function redirectToStatistics () {
-    chrome.tabs.create({'url': chrome.runtime.getURL('statisticsPage/statistics.html')});
+function redirectToStatistics() {
+    // chrome.tabs.create({'url': chrome.runtime.getURL('statisticsPage/statistics.html')});
+    openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'));
 }
 
-function openOptionsPage () {
-    chrome.tabs.create({'url': chrome.runtime.getURL('optionsPage/options.html')});
+function openOptionsPage() {
+    // chrome.tabs.create({'url': chrome.runtime.getURL('optionsPage/options.html')});
+    openTabSingleton(chrome.runtime.getURL('optionsPage/options.html'));
 }
 
 //Connect functions to HTML elements
-function  connectButtons() {
+function connectButtons() {
     optionsButton.on('click', openOptionsPage);
     statisticsButton.on('click', redirectToStatistics);
     setSaveButtonFunctionality();
 }
 
-function patternMatchUrl (url, callback) {
+function patternMatchUrl(url, callback) {
     chrome.runtime.sendMessage({message: "requestBlockedSites"}, function (response) {
         let siteList = BlockedSiteList.deserializeBlockedSiteList(response.blockedSiteList);
         let list = siteList.list;
@@ -38,7 +41,7 @@ function patternMatchUrl (url, callback) {
     });
 }
 
-function toggleBlockedSite (url) {
+function toggleBlockedSite(url) {
     return function () {
         chrome.runtime.sendMessage({message: "requestBlockedSites"}, function (response) {
             let siteList = BlockedSiteList.deserializeBlockedSiteList(response.blockedSiteList);
@@ -61,7 +64,7 @@ function toggleBlockedSite (url) {
     }
 }
 
-function setSaveButtonToSuccess () {
+function setSaveButtonToSuccess() {
     let saveButton = $('#saveBtn');
     saveButton.attr('class', 'btn btn-success');
     saveButton.text('Added!');
@@ -71,7 +74,7 @@ function setSaveButtonToSuccess () {
     }, 3000);
 }
 
-function saveCurrentPageToBlacklist () {
+function saveCurrentPageToBlacklist() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         let activeTab = arrayOfTabs[0];
         blockedSiteBuilder.createNewBlockedSite(activeTab.url, function (blockedSite) {
@@ -80,7 +83,7 @@ function saveCurrentPageToBlacklist () {
     });
 }
 
-function setSaveButtonFunctionality () {
+function setSaveButtonFunctionality() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         let activeTab = arrayOfTabs[0];
         let url = activeTab.url;

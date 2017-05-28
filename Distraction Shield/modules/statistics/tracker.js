@@ -40,7 +40,7 @@ export default class Tracker {
         this.addBlockedSitesUpdateListener();
     }
 
-    addBlockedSitesUpdateListener(){
+    addBlockedSitesUpdateListener() {
         chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             if (request.message === "updateListener") {
                 this.updateStorageBlockedSites();
@@ -48,7 +48,7 @@ export default class Tracker {
         });
     }
 
-    updateStorageBlockedSites(){
+    updateStorageBlockedSites() {
         // Retrieve the blocked sites from the storage
         storage.getBlacklistPromise().then((blockedsites) => {
             // Extract the time-spent values from the this.blockedsites.
@@ -71,7 +71,7 @@ export default class Tracker {
     putBackTimeSpent(timeValues) {
         this.blockedsites.list.map((blockedSite) => {
             let bSite = timeValues.find((timeValue) => timeValue.domain == blockedSite.domain);
-            if(bSite != undefined) blockedSite.timeSpent = bSite.timeSpent;
+            if (bSite != undefined) blockedSite.timeSpent = bSite.timeSpent;
         });
     }
 
@@ -103,12 +103,12 @@ export default class Tracker {
     }
 
     matchUrls(tabActive) {
-        if(this.matchToZeeguu(tabActive)) {
+        if (this.matchToZeeguu(tabActive)) {
             this.incTimeExercises();
         } else {
             this.matchToBlockedSites(tabActive).then((site) => {
                 this.incTimeBlockedSite(site);
-           });
+            });
         }
     }
 
@@ -129,13 +129,13 @@ export default class Tracker {
     matchToBlockedSites(tabActive) {
         return new Promise((resolve, reject) => {
             let match = this.blockedsites.list.find((site) => this.compareDomain(tabActive, site.domain));
-            if(typeof match !== 'undefined') resolve(match);
+            if (typeof match !== 'undefined') resolve(match);
         });
     }
 
     // Creates a regex string which using the domain of an url.
     createRegexFromDomain(domain) {
-        return "^(http[s]?:\\/\\/)?(.*)"+domain+".*$";
+        return "^(http[s]?:\\/\\/)?(.*)" + domain + ".*$";
     };
 
     // Compares the domain of an url to another domain using a regex.

@@ -4,14 +4,19 @@ import BlockedSite from '../classes/BlockedSite'
 /* --------------- --------------- --------------- --------------- --------------- */
 export default class BlockedSiteList {
 
-    constructor () {
+    constructor() {
         this._list = [];
     }
 
-    set list (blockedSiteArr)   { this._list = blockedSiteArr }
-    get list ()                 { return this._list }
+    set list(blockedSiteArr) {
+        this._list = blockedSiteArr
+    }
 
-    get urls () {
+    get list() {
+        return this._list
+    }
+
+    get urls() {
         if (this.list != []) {
             return this.list.map(function (bs) {
                 return bs.url;
@@ -20,7 +25,7 @@ export default class BlockedSiteList {
         return [];
     }
 
-    get activeUrls () {
+    get activeUrls() {
         if (this.list != []) {
             let urlList = this.filterOnChecked();
             if (urlList != []) {
@@ -32,7 +37,7 @@ export default class BlockedSiteList {
         return [];
     }
 
-    addToList (newBlockedSite) {
+    addToList(newBlockedSite) {
         let currentUrls = this.urls;
         let unique = currentUrls.every(function (urlFromList) {
             return urlFromList != newBlockedSite.url;
@@ -41,18 +46,18 @@ export default class BlockedSiteList {
             this.list.push(newBlockedSite);
             return true;
         } else {
-            alert( constants.newUrlNotUniqueError + newBlockedSite.domain);
+            alert(constants.newUrlNotUniqueError + newBlockedSite.domain);
             return false;
         }
     }
 
-    addAllToList (blockedSiteList) {
+    addAllToList(blockedSiteList) {
         for (let i = 0; i < blockedSiteList.list.length; i++) {
             this.addToList(blockedSiteList.list[i]);
         }
     }
 
-    removeFromList (blockedSiteToDelete) {
+    removeFromList(blockedSiteToDelete) {
         let urlKey = this.list.indexOf(blockedSiteToDelete);
         if (urlKey > -1) {
             this.list.splice(urlKey, 1);
@@ -62,7 +67,7 @@ export default class BlockedSiteList {
         }
     }
 
-    filterOnChecked () {
+    filterOnChecked() {
         if (this.list != []) {
             return this.list.filter(function (a) {
                 return a.checkboxVal == true;
@@ -72,8 +77,8 @@ export default class BlockedSiteList {
     }
 
     /* --------------- --------------- Serialization --------------- --------------- */
-    
-    static serializeBlockedSiteList (blockedSiteList) {
+
+    static serializeBlockedSiteList(blockedSiteList) {
         let obj = {
             list: blockedSiteList.list
         };
@@ -81,7 +86,7 @@ export default class BlockedSiteList {
         return JSON.stringify(obj);
     }
 
-    static parseBlockedSiteList (blockedSiteList) {
+    static parseBlockedSiteList(blockedSiteList) {
         let bl = new BlockedSiteList();
         bl.list = blockedSiteList.list;
         return bl;
@@ -95,6 +100,6 @@ export default class BlockedSiteList {
         }
         return null;
     }
-    
+
 }
 

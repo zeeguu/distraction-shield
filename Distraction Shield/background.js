@@ -73,10 +73,8 @@ function removeWebRequestListener() {
 function intercept(details) {
     interception.incrementInterceptionCounter(details.url);
     interception.addToInterceptDateList();
-    let redirectLink;
-    let params;
-    redirectLink = constants.zeeguuExLink;
-    params = "?redirect=" + details.url;
+    let redirectLink = constants.zeeguuExLink;
+    let params = "?redirect=" + details.url + "from_tds=true";
 
     return {redirectUrl: redirectLink + params};
 }
