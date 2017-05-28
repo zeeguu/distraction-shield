@@ -8,20 +8,20 @@ let saveButton = $('#saveBtn');
 let optionsButton = $('#optionsBtn');
 let statisticsButton = $('#statisticsBtn');
 
-function redirectToStatistics() {
-    // chrome.tabs.create({'url': chrome.runtime.getURL('statisticsPage/statistics.html')});
+function openStatisticsPage() {
     openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'));
+    setTimeout(() => window.close(), 250);
 }
 
 function openOptionsPage() {
-    // chrome.tabs.create({'url': chrome.runtime.getURL('optionsPage/options.html')});
     openTabSingleton(chrome.runtime.getURL('optionsPage/options.html'));
+    setTimeout(() => window.close(), 250);
 }
 
 //Connect functions to HTML elements
 function connectButtons() {
     optionsButton.on('click', openOptionsPage);
-    statisticsButton.on('click', redirectToStatistics);
+    statisticsButton.on('click', openStatisticsPage);
     setSaveButtonFunctionality();
 }
 
