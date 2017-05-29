@@ -1,25 +1,8 @@
-<<<<<<< HEAD
 import {setLocalSettings, retrieveBlockedSites, replaceListener} from './background';
 import * as storage from './modules/storage';
 import BlockedSiteList from './classes/BlockedSiteList';
 import UserSettings from './classes/UserSettings';
 import Tracker from './modules/statistics/tracker';
-=======
-
-/* --------------- ---- Session initializer ---- ---------------*/
-
-//First receive the blacklist and settings from the sync storage,
-//then create a onBeforeRequest listener using this list and the settings.
-initSession = function () {
-    // Settings need to be loaded before the listener is replaced. The replaceListener
-    // requires the blocked sites to be loaded, so these weird callbacks are required.
-    storage.getSettings(function(settings) {
-        settings.reInitTimer();
-        setLocalSettings(settings);
-        retrieveBlockedSites(replaceListener);
-    });
-};
->>>>>>> development
 
 /* --------------- ---- Run upon installation ---- ---------------*/
 

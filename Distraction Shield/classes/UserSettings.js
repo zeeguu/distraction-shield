@@ -26,7 +26,6 @@ export default class UserSettings {
         this._interceptionInterval = val;
     }
 
-<<<<<<< HEAD
     get interceptionInterval() {
         return this._interceptionInterval;
     }
@@ -66,31 +65,6 @@ export default class UserSettings {
     turnOn() {
         if (this.state == "Off") {
             this.status = {state: true, setAt: new Date(), offTill: new Date()};
-=======
-function UserSettings () {
-    var self = this;
-
-    this.status = { state: true,
-                    setAt: new Date(),
-                    offTill: new Date()
-                  };
-    this.mode = modes.lazy;
-    this.interceptionInterval = 1;
-
-    this.setInterceptionInterval = function(val) {this.interceptionInterval = val;};
-    this.getInterceptionInterval = function() {return this.interceptionInterval;};
-    this.setMode = function(newMode) {this.mode = newMode;};
-    this.getMode = function() {return this.mode;};
-    this.getOffTill = function() {return this.status.offTill;};
-
-    this.getState = function() {return this.status.state ? "On" : "Off";};
-    this.getNotState = function() {return this.status.state ? "Off" : "On";};
-
-    this.turnOn = function()  {
-        if (this.getState() == "Off") {
-            this.status = { state: true, setAt: new Date(), offTill: new Date()};
-            this.forwardToBackground();
->>>>>>> development
         } else {
             console.log("Already turned on, should not happen!");
         }
@@ -122,7 +96,6 @@ function UserSettings () {
         if (this.state == "On") {
             this.turnOffFor(this.interceptionInterval, true, callback);
         }
-<<<<<<< HEAD
     }
 
     turnExtensionBackOn(callback) {
@@ -153,26 +126,6 @@ function UserSettings () {
                 this.turnOn();
                 storage.setSettings(this);
                 callback();
-=======
-    };
-
-    this.setTimer = function() {
-        var timerInMS = self.status.offTill - new Date();
-        var MSint = timerInMS.toFixed();
-        setTimeout(self.turnExtensionBackOn, MSint);
-    };
-
-    this.copySettings = function(settingsObject) {
-        this.status = settingsObject.status;
-        this.interceptionInterval = settingsObject.interceptionInterval;
-        this.mode = settingsObject.mode;
-    };
-
-    this.reInitTimer = function() {
-        if (this.getState() == "Off") {
-            if (this.getOffTill() < new Date()) {
-                self.turnOn();
->>>>>>> development
             } else {
                 this.setTimer(callback);
             }
@@ -185,7 +138,6 @@ function UserSettings () {
         return JSON.stringify(settingsObject);
     }
 
-<<<<<<< HEAD
     static parseSettingsObject(parsedSettingsObject) {
         let s = new UserSettings();
         parsedSettingsObject._status.setAt = new Date(parsedSettingsObject._status.setAt);
@@ -206,33 +158,3 @@ function UserSettings () {
     }
 
 }
-=======
-/* --------------- --------------- Serialization --------------- --------------- */
-
-//Private to this and storage.js
-serializeSettings = function(settingsObject) {
-    return JSON.stringify(settingsObject);
-};
-
-//Private method
-parseSettingsObject = function(parsedSettingsObject) {
-    var s = new UserSettings();
-    s.status.state = parsedSettingsObject.status.state;
-    s.status.setAt = new Date(parsedSettingsObject.status.setAt);
-    s.status.offTill = new Date(parsedSettingsObject.status.offTill);
-    s.mode = parsedSettingsObject.mode;
-    s.interceptionInterval = parsedSettingsObject.interceptionInterval;
-    return s;
-};
-
-//Private to this and storage.js
-deserializeSettings = function(serializedSettingsObject) {
-    if (serializedSettingsObject != null) {
-        var parsed = JSON.parse(serializedSettingsObject);
-        return parseSettingsObject(parsed);
-    }
-    return null;
-};
-
-/* --------------- --------------- --------------- --------------- --------------- */
->>>>>>> development
