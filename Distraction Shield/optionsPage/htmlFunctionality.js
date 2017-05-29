@@ -64,4 +64,8 @@ export function initIntervalSlider(settings_object) {
         settings_object.interceptionInterval = parseInt(value);
         synchronizer.syncSettings(settings_object);
     });
+<<<<<<< HEAD
 }
+=======
+};
+>>>>>>> development

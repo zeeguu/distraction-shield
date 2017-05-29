@@ -19,6 +19,7 @@ function initBasis(mode) {
         timeout: 5000,
         datatype: "html",
         success: function (data) {
+<<<<<<< HEAD
             let infoDiv = $.parseHTML(data);
             $("body").after(infoDiv);
             $("#tds_infoDiv").css('max-width', '800px');
@@ -30,6 +31,13 @@ function initBasis(mode) {
             }
             if (putModeText) $("#tds_modeSpecificText").append(message);
 
+=======
+            infoDiv = $.parseHTML(data);
+            $("body").after(infoDiv);
+            $("#tds_infoDiv").css('max-width', '800px');
+            $("#tds_generalInfoText").append(zeeguuInfoText);
+            $("#tds_modeSpecificText").append(message);
+>>>>>>> development
             $("#originalDestination").attr("href", getDest());
         }
     });
