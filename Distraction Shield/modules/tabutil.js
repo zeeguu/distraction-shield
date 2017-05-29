@@ -28,6 +28,7 @@ export function openTabSingleton(url, callback = () => {}) {
         } else {
             chrome.tabs.update(result, {active: true});
         }
+        callback();
     });
-    callback();
+
 }
