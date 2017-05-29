@@ -3,6 +3,11 @@ import * as constants from '../../constants'
 import * as synchronizer from '../../modules/synchronizer'
 import * as htmlFunctionality from '../htmlFunctionality'
 
+/**
+ * subclass of the GreenToRedSlider, this also connects a button to the set of html_elements.
+ * Furthermore it connects a userSettings item and fires functions according to the values of the
+ * html_elements in order to manipulate the settings and let the user specify what he/she wants from the extension
+ */
 export default class TurnOffSlider extends GreenToRedSlider {
 
     constructor(sliderID, settings_object) {

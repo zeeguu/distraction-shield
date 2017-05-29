@@ -3,9 +3,12 @@ import * as exerciseTime from './exerciseTime';
 import * as storage from '../storage'
 import BlockedSiteList from '../../classes/BlockedSiteList'
 
-// The tracker tracks whether you are currently working on exercises.
-// Every second, the "alarm" is fired, and the url of the current tab is examined.
-// If this url corresponds with the zeeguu url, the time spent on exercises counter is incremented.
+
+/**
+ * The tracker tracks whether you are currently working on exercises.
+ * Every second, the "alarm" is fired, and the url of the current tab is examined.
+ * If this url corresponds with the zeeguu url, the time spent on exercises counter is incremented.
+ */
 export default class Tracker {
 
     constructor() {
@@ -16,7 +19,10 @@ export default class Tracker {
         this.blockedsites = new BlockedSiteList();
     }
 
-    // Gets the current tab.
+    /**
+     * gets the current tab
+     * @returns {Promise}
+     */
     getCurrentTab() {
         return new Promise(function (resolve, reject) {
             chrome.tabs.query({active: true, lastFocusedWindow: true}, function (tabs) {
@@ -27,7 +33,9 @@ export default class Tracker {
         });
     }
 
-    // Initialize the alarm, and initialize the idle-checker.
+    /**
+     * Initialize the alarm, and initialize the idle-checker.
+     */
     init() {
         setInterval(this.fireAlarm.bind(this), constants.savingFrequency);
         setInterval(this.increaseTimeCounter.bind(this), constants.measureFrequency);
@@ -40,6 +48,9 @@ export default class Tracker {
         this.addBlockedSitesUpdateListener();
     }
 
+    /**
+     * intiates listener to find updates to the list of blocked sites.
+     */
     addBlockedSitesUpdateListener() {
         chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             if (request.message === "updateListener") {
@@ -48,6 +59,9 @@ export default class Tracker {
         });
     }
 
+    /**
+     * updates the values in the storage to hold the right statistics
+     */
     updateStorageBlockedSites() {
         // Retrieve the blocked sites from the storage
         storage.getBlacklistPromise().then((blockedsites) => {
@@ -62,6 +76,11 @@ export default class Tracker {
         });
     }
 
+    /**
+     * Get a list of the time wasted on all BlockedSites from the BlockedSiteList
+     * @param {BlockedSiteList} blockedsites
+     * @returns {Array}
+     */
     retrieveTimeSpent(blockedsites) {
         let list = [];
         blockedsites.list.map((item) => list.push({'domain': item.domain, 'timeSpent': item.timeSpent}));
@@ -75,12 +94,18 @@ export default class Tracker {
         });
     }
 
+    /**
+     * retrieve the BlockedSiteList from the storage.
+     */
     getBlockedSites() {
         storage.getBlacklistPromise().then((result) => {
             this.blockedsites.addAllToList(result);
         });
     }
 
+    /**
+     * function that increments the time spent on different websites
+     */
     fireAlarm() {
         if (this.updatedExerciseTime) {
             exerciseTime.incrementTodayExerciseTime(this.activeTimeEx);
@@ -93,7 +118,9 @@ export default class Tracker {
         }
     }
 
-    // Check if the user is idle. If the user is not idle, and on the zeeguu website, increment the counter.
+    /**
+     * Check if the user is idle. If the user is not idle, and on the zeeguu website, increment the counter.
+     */
     increaseTimeCounter() {
         if (!this.idle) {
             this.getCurrentTab().then((tabActive) => {
@@ -102,6 +129,10 @@ export default class Tracker {
         }
     }
 
+    /**
+     * Check whether the passed url is in the BlockedSiteList
+     * @param {string} tabActive url of the active tab
+     */
     matchUrls(tabActive) {
         if (this.matchToZeeguu(tabActive)) {
             this.incTimeExercises();

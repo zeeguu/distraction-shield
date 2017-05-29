@@ -10,7 +10,9 @@ import * as synchronizer from '../modules/synchronizer'
 
 /* -------------------- Button Click functions ----------------------- */
 
-//Connect functions to HTML elements
+/**
+ * connect function to onclick property of html_item
+ */
 export function connectButton(html_button, method) {
     html_button.on('click', method);
 }
@@ -21,7 +23,7 @@ export function setKeyPressFunctions(html_txtFld, blacklistTable, submitFunc, de
     deleteOnKeyPress(blacklistTable, deleteFunc);
 }
 
-export function submitOnKeyPress(html_elem, submitFunc) {
+function submitOnKeyPress(html_elem, submitFunc) {
     html_elem.keyup((event) => {
         if (event.keyCode === constants.KEY_ENTER) {
             submitFunc();
@@ -29,7 +31,7 @@ export function submitOnKeyPress(html_elem, submitFunc) {
     });
 }
 
-export function deleteOnKeyPress(blacklistTable, deleteFunc) {
+function deleteOnKeyPress(blacklistTable, deleteFunc) {
     $('html').keyup((e) => {
         if (e.keyCode === constants.KEY_DELETE) {
             let html = blacklistTable.getSelected();

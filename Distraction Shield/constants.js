@@ -48,7 +48,7 @@ export const dataCollectionMsg = 'Please be aware that anonymous data are collec
 /* -------------------- Text Messages ----------------------- */
 export const zeeguuInfoText = "Hey, you tried to enter one of the sites you wanted to be protected from!";
 
-/* -------------------- Keypress export const ants ----------------------- */
+/* -------------------- Keypress export constants ----------------------- */
 /* ---------- ----- optionsPage/htmlFunctionality ----- ---------- */
 export const KEY_DELETE = 46;
 export const KEY_ENTER = 13;

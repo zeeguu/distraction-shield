@@ -1,3 +1,7 @@
+/**
+ * The table holding the blockedSites and all of its functionality.
+ * Every row has the corresponding BlockedSite Object attached to it in order to have easy acces and manipulation.
+ */
 export default class BlacklistTable {
     constructor(html_element, syncFunction, removeFunction) {
         this.table = html_element;
@@ -23,7 +27,9 @@ export default class BlacklistTable {
         return this.table.find('.highlight');
     }
 
-    //this function makes the passed table single row selection only
+    /**
+     * this function makes the table single row selection only
+     */
     enableTableSelection() {
         this.table.on('click', '.table-row', function () {
             let row = $(this);
@@ -34,7 +40,9 @@ export default class BlacklistTable {
         });
     }
 
-    // set functionality for all checkboxes found within the html_table
+    /**
+     * set functionality for all checkboxes found within the html_table
+     */
     setCheckboxFunction() {
         this.table.on('change', 'input[type="checkbox"]', function (data) {
             //Clicking the checkbox automatically selects the row, so we use this to our advantage
@@ -47,7 +55,9 @@ export default class BlacklistTable {
         }.bind(this));
     }
 
-    // if a delete button is clicked, the closest tr element is deleted.
+    /**
+     *  if a delete button is clicked, the closest tr element is deleted.
+     */
     setDeleteButtonFunction() {
         this.table.on('click', '.delete-button', function (data) {
             let clicked_button = data.target;
@@ -57,7 +67,11 @@ export default class BlacklistTable {
         }.bind(this));
     }
 
-    //Returns an html table row object
+    /**
+     * Takes a BlockedSiteObject and constructs a table row from it, together with attaching this item to the row.
+     * @param {BlockedSite} blockedSite the item for which we want to construct a TableRow
+     * @returns Table row to be inserted into the table.
+     */
     generateTableRow(blockedSite) {
         let tableRow =
             $("<tr class='table-row' >" +
