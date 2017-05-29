@@ -41,6 +41,10 @@ export const newUrlNotUniqueError = "New blocked site item to be added was found
 export const INVALID_URL_MESSAGE = "We unfortunately could not reach the site you are trying to block.\n" +
     "Are you sure the url is correct? \n \n";
 
+/**/
+export const dataCollectionMsg = 'Please be aware that anonymous data are collected for purposes of improving the extension. '+
+    'The data cannot be traced back to you as a person.\n\nWe respect your privacy.';
+
 /* -------------------- Text Messages ----------------------- */
 export const zeeguuInfoText = "Hey, you tried to enter one of the sites you wanted to be protected from!";
 
