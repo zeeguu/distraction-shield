@@ -67,6 +67,7 @@ function toggleBlockedSite(url) {
 }
 
 function setSaveButtonToSuccess() {
+    saveButton.unbind('click', saveCurrentPageToBlacklist);
     saveButton.attr('class', 'btn btn-success');
     saveButton.text('Added!');
     setTimeout(function () {
