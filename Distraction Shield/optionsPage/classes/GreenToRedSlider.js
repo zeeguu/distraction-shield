@@ -1,41 +1,48 @@
 import * as constants from "../../constants"
 
+/**
+ * class that connects a <div> with a span and slider together with all the funcitonality.
+ * I.E. changing colour, updating eachother's values and functionality to be added to the html_elements
+ */
 export default class GreenToRedSlider {
 
     constructor(sliderID, saveFunction) {
-        this.alert = chrome.extension.getBackgroundPage().alert;
         this.saveValue = saveFunction;
         this.sliderDiv = $(sliderID);
         this.sliderRange = $(this.sliderDiv.find(sliderID + "-range"));
         this.sliderValue = $(this.sliderDiv.find(sliderID + "-value"));
 
-        this.setOnEventFunc(this);
+        this.setOnEventFunc();
     }
 
-    setOnEventFunc(GToRSlider) {
-        this.sliderRange.on('input', function () {
-            let inputValue = GToRSlider.sliderRange.val();
-            GToRSlider.sliderValue.html(GreenToRedSlider.calculateHours(inputValue));
-            GToRSlider.updateColor(inputValue);
+    setOnEventFunc() {
+        this.sliderRange.on('input', () => {
+            let inputValue = this.sliderRange.val();
+            this.sliderValue.html(GreenToRedSlider.calculateHours(inputValue));
+            this.updateColor(inputValue);
         });
 
-        this.sliderRange.on('mouseup', function () {
-            let inputValue = GToRSlider.sliderRange.val();
-            GToRSlider.saveValue(inputValue);
+        this.sliderRange.on('mouseup',  () => {
+            let inputValue = this.sliderRange.val();
+            this.saveValue(inputValue);
         });
 
-        this.sliderValue.on('blur', function () {
-            GToRSlider.checkTimeValidity($(this).html());
+        this.sliderValue.on('blur', () => {
+            this.checkTimeValidity($(this.sliderValue).html());
         });
 
         this.sliderValue.keydown(event => {
             if (event.keyCode === constants.KEY_ENTER) {
-                GToRSlider.sliderValue.blur();
+                this.sliderValue.blur();
                 event.preventDefault();
             }
         });
     }
 
+    /**
+     * update the colour of the slider according to the inputValue
+     * @param {int} inputValue
+     */
     updateColor(inputValue) {
         let maxSliderVal = (this.sliderRange[0]).max;
         let redVal = Math.round(inputValue / maxSliderVal * 120);
@@ -49,6 +56,9 @@ export default class GreenToRedSlider {
         this.updateColor(val);
     }
 
+    /**
+     * format a value in minutes to Hours and minutes.
+     */
     static calculateHours(val) {
         let hours = Math.floor(val / 60);
         let minutes = val % 60;
@@ -58,6 +68,10 @@ export default class GreenToRedSlider {
         return (hours > 0 ? hours + ":" + minutes + " hours" : minutes + " minute(s)");
     }
 
+    /**
+     * function that checks the validity of the value inputted in the editable span
+     * @param val
+     */
     checkTimeValidity(val) {
         let regex = (/(\d+|\d\:\d{2})(?:\s*)(h(?:our)?s?|m(?:inute|in)?s?|$)/m).exec(val);
         if (regex !== null) {
@@ -82,6 +96,6 @@ export default class GreenToRedSlider {
 
     timeInputError() {
         this.setValue(this.sliderRange.val());
-        this.alert("please input a supported time format");
+        chrome.extension.getBackgroundPage().alert("please input a supported time format");
     }
 }

@@ -9,22 +9,29 @@ let optionsButton = $('#optionsBtn');
 let statisticsButton = $('#statisticsBtn');
 
 function openStatisticsPage() {
-    openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'));
-    setTimeout(() => window.close(), 250);
+    openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'), () => {
+        window.close();
+    });
 }
 
 function openOptionsPage() {
-    openTabSingleton(chrome.runtime.getURL('optionsPage/options.html'));
-    setTimeout(() => window.close(), 250);
+    openTabSingleton(chrome.runtime.getURL('optionsPage/options.html'), () => {
+        window.close();
+    });
 }
 
-//Connect functions to HTML elements
+
 function connectButtons() {
     optionsButton.on('click', openOptionsPage);
     statisticsButton.on('click', openStatisticsPage);
     setSaveButtonFunctionality();
 }
 
+/**
+ * match the current url to the current list of blockedSiteItems
+ * @param {string} url to be compared
+ * @param {function} callback function that takes the blockedSite to which the url was found to be equal to
+ */
 function patternMatchUrl(url, callback) {
     chrome.runtime.sendMessage({message: "requestBlockedSites"}, function (response) {
         let siteList = BlockedSiteList.deserializeBlockedSiteList(response.blockedSiteList);
@@ -41,6 +48,10 @@ function patternMatchUrl(url, callback) {
     });
 }
 
+/**
+ * returns a function that gets the corresponding BlockedSite from the background and updates its checkboxVal to the new value.
+ * @param url of the current page
+ */
 function toggleBlockedSite(url) {
     return function () {
         chrome.runtime.sendMessage({message: "requestBlockedSites"}, function (response) {
@@ -60,12 +71,16 @@ function toggleBlockedSite(url) {
                 saveButton.text("Block");
             }
             synchronizer.syncBlacklist(siteList);
+
         });
     }
 }
 
+/**
+ * Change colour and update functionality of the button when we add a new website to the blacklist
+ */
 function setSaveButtonToSuccess() {
-    let saveButton = $('#saveBtn');
+    saveButton.unbind('click', saveCurrentPageToBlacklist);
     saveButton.attr('class', 'btn btn-success');
     saveButton.text('Added!');
     setTimeout(function () {
@@ -83,12 +98,17 @@ function saveCurrentPageToBlacklist() {
     });
 }
 
+/**
+ * Update the functionality of the button to one of 3 states:
+ * 1. Add a non-blacklisted website to the blacklist
+ * 2. Disable the blocking of this blacklisted website
+ * 3. Enable the blocking of this blacklisted website
+ */
 function setSaveButtonFunctionality() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         let activeTab = arrayOfTabs[0];
         let url = activeTab.url;
         patternMatchUrl(url, function (matchedBlockedSite) {
-
             if (matchedBlockedSite != null) {
                 saveButton.unbind('click', saveCurrentPageToBlacklist);
                 saveButton.on('click', toggleBlockedSite(url));
@@ -104,8 +124,10 @@ function setSaveButtonFunctionality() {
             }
         });
     });
-
 }
 
+/**
+ * function that initiates the functionality of the tooltip
+ */
 connectButtons();
 

@@ -30,7 +30,9 @@ let interceptionCounter = 0;
 
 /* -------------------- Initialization of options --------------------- */
 
-//Initialize HTML elements and set the local variables
+/**
+ * Initialize HTML elements and set the local variables
+ */
 function initOptionsPage() {
     storage.getAll(function (output) {
         setLocalVariables(output);
@@ -38,13 +40,19 @@ function initOptionsPage() {
         connectLocalDataToHtml();
     });
 }
-//Retrieve data from storage and store in local variables
+/**
+ * Retrieve data from storage and store in local variables
+ * @param storage_output the results found by getting everything from the storage
+ */
 function setLocalVariables(storage_output) {
     blacklist.addAllToList(storage_output.tds_blacklist);
     settings_object.copySettings(storage_output.tds_settings);
     interceptionCounter = storage_output.tds_interceptCounter;
 }
-// functionality from htmlFunctionality, blacklist_table and slider files
+
+/**
+ * connect the funcitonality to the different htl_elements on the optionspage.
+ */
 function connectHtmlFunctionality() {
     htmlFunctionality.initModeSelection(modeGroup, settings_object);
     intervalSlider = htmlFunctionality.initIntervalSlider(settings_object);
@@ -56,20 +64,23 @@ function connectHtmlFunctionality() {
     htmlFunctionality.connectButton($('#feedbackLink'), openFeedbackForm);
     htmlFunctionality.connectButton($('#tourRestartLink'), restartTour);
 }
-// functionality from connectDataToHtml file
+
+/**
+ * connect the data found in the storage to the html_elements on the page
+ */
 function connectLocalDataToHtml() {
     connectDataToHtml.loadHtmlInterceptCounter(interceptionCounter, $('#iCounter'));
     connectDataToHtml.loadHtmlBlacklist(blacklist, blacklistTable);
     connectDataToHtml.loadHtmlMode(settings_object.mode, modeGroup);
     connectDataToHtml.loadHtmlInterval(settings_object.interceptionInterval, intervalSlider);
 }
+
 /* -------------------- Manipulate local variables ------------------- */
 
 function removeFromLocalBlacklist(html_item) {
     return storage.getBlacklistPromise().then((result) => {
         blacklist = result;
         let blockedSiteToDelete = html_item.data('blockedSite');
-
         // Remove the blockedSite from the blacklist. There is also a method in BlockedSiteList which does this, but it
         // does not work somehow. Checking whether the domains are equal does seem to work though.
         blacklist.list = blacklist.list.filter(item => item.domain != blockedSiteToDelete.domain);
@@ -83,6 +94,8 @@ function addToLocalBlacklist(blockedSite_item) {
         return blacklist.addToList(blockedSite_item);
     });
 }
+
+/* -------------------- Sync manipulation with other pages and places ------------------- */
 
 function removeBlockedSiteFromAll(html_item) {
     removeFromLocalBlacklist(html_item).then((result) => {
@@ -100,6 +113,10 @@ function addBlockedSiteToAll(newItem) {
             syncBlockedSiteList();
         }
     });
+}
+
+function syncBlockedSiteList() {
+    synchronizer.syncBlacklist(blacklist);
 }
 
 function saveNewUrl() {
@@ -123,11 +140,9 @@ function openStatisticsPage() {
 
 }
 
-function syncBlockedSiteList() {
-    synchronizer.syncBlacklist(blacklist);
-}
-
-//Run this when the page is loaded.
+/**
+ * initial function that is fired when the page is loaded.
+ */
 document.addEventListener("DOMContentLoaded", function () {
     initOptionsPage();
 });
