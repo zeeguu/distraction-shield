@@ -2,16 +2,10 @@
   "manifest_version": 2,
   "name": "The Distraction Shield",
   "description": "Divert attention from social media websites towards learning a new language",
-<<<<<<< HEAD
   "version": "1.3.1",
   "icons": {
     "128": "aikido.png"
   },
-=======
-  "version": "1.1.0",
-  //Icon's shown in chrome://extensions
-  "icons": {"128": "aikido.png"},
->>>>>>> development
   "offline_enabled": false,
   "options_page": "optionsPage/options.html",
   "options_ui": {
@@ -24,28 +18,8 @@
   },
   "background": {
     "scripts": [
-<<<<<<< HEAD
       "./dependencies/jquery/jquery-1.10.2.js",
       "./js-src/init.bundle.js"
-=======
-      "dependencies/jquery/jquery-1.10.2.js",
-      "dependencies/bootstrapTour/bootstrap-tour-standalone.min.js",
-      "constants.js",
-      "modules/stringutil.js",
-      "modules/dateutil.js",
-      "modules/urlFormatter.js",
-      "modules/storage.js",
-      "modules/synchronizer.js",
-      "modules/blockedSiteBuilder.js",
-      "classes/BlockedSite.js",
-      "classes/BlockedSiteList.js",
-      "classes/UserSettings.js",
-      "modules/statistics/tracker.js",
-      "modules/statistics/interception.js",
-      "modules/statistics/exerciseTime.js",
-      "background.js",
-      "init.js"
->>>>>>> development
     ]
   },
   "content_scripts": [

@@ -19,28 +19,9 @@ import {openTabSingleton} from '../modules/tabutil'
  */
 let modeGroup = "modeOptions";
 
-<<<<<<< HEAD
 let blacklistTable;
 let intervalSlider;
 let turnOffSlider;
-=======
-// Log console messages to the background page console instead of the content page.
-var console = chrome.extension.getBackgroundPage().console;
-var localSettings = chrome.extension.getBackgroundPage().localSettings;
-
-//Local variables that hold the html elements
-var html_txtFld = $('#textFld');
-var html_intCnt = $('#iCounter');
-var html_saveButton = $('#saveBtn');
-var modeGroup = "modeOptions";
-
-
-var blacklistTable;
-var intervalSlider;
-var turnOffSlider;
-var tr = document.getElementById("tourRestart");
-var feedback = document.getElementById("feedback");
->>>>>>> development
 
 //Local variables that hold all necessary data.
 let settings_object = new UserSettings();
@@ -84,7 +65,6 @@ function connectLocalDataToHtml() {
 }
 /* -------------------- Manipulate local variables ------------------- */
 
-<<<<<<< HEAD
 function removeFromLocalBlacklist(html_item) {
     return storage.getBlacklistPromise().then((result) => {
         blacklist = result;
@@ -128,31 +108,6 @@ function saveNewUrl() {
     blockedSiteBuilder.createNewBlockedSite(newUrl, addBlockedSiteToAll);
     html_txtFld.val('');
 }
-=======
-removeFromLocalBlacklist = function(html_item) {
-    var blockedSiteToDelete = html_item.data('blockedSite');
-    return blacklist.removeFromList(blockedSiteToDelete);
-};
-
-addToLocalBlacklist = function(blockedSite_item) {
-    return blacklist.addToList(blockedSite_item);
-};
-
-removeBlockedSiteFromAll = function (html_item) {
-    if (removeFromLocalBlacklist(html_item)) {
-        blacklistTable.removeFromTable(html_item);
-        synchronizer.syncBlacklist(blacklist);
-    }
-};
-
-addBlockedSiteToAll = function (newItem) {
-    if (addToLocalBlacklist(newItem)) {
-        blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
-        synchronizer.syncBlacklist(blacklist);
-    }
-};
-
->>>>>>> development
 /* -------------------- -------------------------- -------------------- */
 
 function openFeedbackForm() {
@@ -177,15 +132,3 @@ document.addEventListener("DOMContentLoaded", function () {
     initOptionsPage();
 });
 
-<<<<<<< HEAD
-=======
-//Tour Restart Function
-tr.onclick = function(){
-    chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
-};
-
-//Feedback Function
-feedback.onclick = function(){
-    chrome.tabs.create({'url': chrome.runtime.getURL('feedbackPage/feedback.html')});
-};
->>>>>>> development
