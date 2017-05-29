@@ -1,95 +1,111 @@
+import * as synchronizer from "../modules/synchronizer.js";
+import * as blockedSiteBuilder from "../modules/blockedSiteBuilder.js";
+import * as stringutil from "../modules/stringutil.js";
+import BlockedSiteList from '../classes/BlockedSiteList';
+import {openTabSingleton} from "../modules/tabutil";
 
-var bg = chrome.extension.getBackgroundPage();
+let saveButton = $('#saveBtn');
+let optionsButton = $('#optionsBtn');
+let statisticsButton = $('#statisticsBtn');
 
-var saveButton = $('#saveBtn');
-var optionsButton = $('#optionsBtn');
-var statisticsButton = $('#statisticsBtn');
+function openStatisticsPage() {
+    openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'));
+    setTimeout(() => window.close(), 250);
+}
 
-redirectToStatistics = function() {
-    chrome.tabs.create({'url': chrome.runtime.getURL('statisticsPage/statistics.html')});
-};
-
-openOptionsPage = function() {
-    chrome.tabs.create({'url': chrome.runtime.getURL('optionsPage/options.html')});
-};
+function openOptionsPage() {
+    openTabSingleton(chrome.runtime.getURL('optionsPage/options.html'));
+    setTimeout(() => window.close(), 250);
+}
 
 //Connect functions to HTML elements
-connectButtons = function() {
+function connectButtons() {
     optionsButton.on('click', openOptionsPage);
-    statisticsButton.on('click', redirectToStatistics);
+    statisticsButton.on('click', openStatisticsPage);
     setSaveButtonFunctionality();
-};
+}
 
-patternMatchUrl = function(url) {
-    var list = bg.blockedSites.getList();
-    var item;
-    list.some(function(bl) {
-        if(stringutil.wildcardStrComp(url, bl.getUrl())) {
-            item = bl;
-            return true;
-        }
-        return false;
-    });
-    return item;
-};
-
-toggleBlockedSite = function(url) {
-    return function() {
-        var list = bg.blockedSites;
-        var newItem;
-        for (var i = 0; i < list.getList().length; i++) {
-            if (stringutil.wildcardStrComp(url, list.getList()[i].getUrl())) {
-                newItem = list.getList()[i];
-                break;
+function patternMatchUrl(url, callback) {
+    chrome.runtime.sendMessage({message: "requestBlockedSites"}, function (response) {
+        let siteList = BlockedSiteList.deserializeBlockedSiteList(response.blockedSiteList);
+        let list = siteList.list;
+        let item = null;
+        list.some(function (bl) {
+            if (stringutil.wildcardStrComp(url, bl.url)) {
+                item = bl;
+                return true;
             }
-        }
-        newItem.setCheckboxVal(!newItem.getCheckboxVal());
-        if (newItem.getCheckboxVal()) {
-            saveButton.text("Unblock");
-        } else {
-            saveButton.text("Block");
-        }
-        synchronizer.syncBlacklist(list);
-    }
-};
-
-saveCurrentPageToBlacklist = function() {
-    chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
-        var activeTab = arrayOfTabs[0];
-        bg.addUrlToBlockedSites(activeTab.url, setSaveButtonToSuccess);
+            return false;
+        });
+        callback(item);
     });
-};
+}
 
-setSaveButtonToSuccess = function () {
-    saveButton.attr('class', 'btn btn-success');
-    saveButton.html('Added!');
-    setTimeout(function () {
-        saveButton.attr('class', 'btn btn-info');
-        setSaveButtonFunctionality();
-    }, 3000);
-};
-
-
-
-setSaveButtonFunctionality = function() {
-    chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
-        var activeTab = arrayOfTabs[0];
-        var url = activeTab.url;
-        var matchedBlockedSite = patternMatchUrl(url);
-        if (matchedBlockedSite != null) {
-            saveButton.unbind('click', saveCurrentPageToBlacklist);
-            saveButton.on('click', toggleBlockedSite(url));
-            if(matchedBlockedSite.getCheckboxVal()) {
+function toggleBlockedSite(url) {
+    return function () {
+        chrome.runtime.sendMessage({message: "requestBlockedSites"}, function (response) {
+            let siteList = BlockedSiteList.deserializeBlockedSiteList(response.blockedSiteList);
+            let list = siteList.list;
+            let newItem = null;
+            for (let i = 0; i < list.length; i++) {
+                if (stringutil.wildcardStrComp(url, list[i].url)) {
+                    newItem = list[i];
+                    break;
+                }
+            }
+            newItem.checkboxVal = !newItem.checkboxVal;
+            if (newItem.checkboxVal) {
                 saveButton.text("Unblock");
             } else {
                 saveButton.text("Block");
             }
-        } else {
-            saveButton.unbind('click', toggleBlockedSite(url));
-            saveButton.on('click', saveCurrentPageToBlacklist);
-            saveButton.text("Block");
-        }
+            synchronizer.syncBlacklist(siteList);
+        });
+    }
+}
+
+function setSaveButtonToSuccess() {
+    let saveButton = $('#saveBtn');
+    saveButton.attr('class', 'btn btn-success');
+    saveButton.text('Added!');
+    setTimeout(function () {
+        saveButton.attr('class', 'btn btn-info');
+        setSaveButtonFunctionality();
+    }, 3000);
+}
+
+function saveCurrentPageToBlacklist() {
+    chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
+        let activeTab = arrayOfTabs[0];
+        blockedSiteBuilder.createNewBlockedSite(activeTab.url, function (blockedSite) {
+            synchronizer.addSiteAndSync(blockedSite, setSaveButtonToSuccess());
+        });
     });
-};
+}
+
+function setSaveButtonFunctionality() {
+    chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
+        let activeTab = arrayOfTabs[0];
+        let url = activeTab.url;
+        patternMatchUrl(url, function (matchedBlockedSite) {
+
+            if (matchedBlockedSite != null) {
+                saveButton.unbind('click', saveCurrentPageToBlacklist);
+                saveButton.on('click', toggleBlockedSite(url));
+                if (matchedBlockedSite.checkboxVal) {
+                    saveButton.text("Unblock");
+                } else {
+                    saveButton.text("Block");
+                }
+            } else {
+                saveButton.unbind('click', toggleBlockedSite(url));
+                saveButton.on('click', saveCurrentPageToBlacklist);
+                saveButton.text("Block");
+            }
+        });
+    });
+
+}
 
 connectButtons();
+

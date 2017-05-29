@@ -3,32 +3,33 @@
  * to the actual html representations of this data.
  */
 
-sortListOnCheckboxVal = function(bsA, bsB) {
-    var valueOfA = bsA.getCheckboxVal();
-    var valueOfB = bsB.getCheckboxVal();
+export function sortListOnCheckboxVal(bsA, bsB) {
+    let valueOfA = bsA.checkboxVal;
+    let valueOfB = bsB.checkboxVal;
     if (valueOfA && !valueOfB)
         return -1;
     if (!valueOfA && valueOfB)
         return 1;
     return 0;
-};
+}
 
-loadHtmlBlacklist = function(blockedSiteList, table) {
-    var list = blockedSiteList.getList();
+export function loadHtmlBlacklist(blockedSiteList, table) {
+    let list = blockedSiteList.list;
     list.sort(sortListOnCheckboxVal);
-    $.each(list, function(key, value) {
+    $.each(list, function (key, value) {
         table.addToTable(table.generateTableRow(value));
     });
-};
+}
 
-loadHtmlMode = function(extensionMode, radioGroup) {
+export function loadHtmlMode(extensionMode, radioGroup) {
     $("input[name=" + radioGroup + "][value=" + extensionMode.label + "]").prop('checked', true);
-};
+}
 
-loadHtmlInterval = function(interceptInterval, html_slider) {
+export function loadHtmlInterval(interceptInterval, html_slider) {
     html_slider.setValue(interceptInterval);
-};
+}
 
-loadHtmlInterceptCounter = function(count, html_counter) {
+export function loadHtmlInterceptCounter(count, html_counter) {
     html_counter.text(count);
-};
+}
+

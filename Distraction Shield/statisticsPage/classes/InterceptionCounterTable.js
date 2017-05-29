@@ -1,28 +1,30 @@
+export default class InterceptionCounterTable {
+    constructor() {
+        this._counters = null;
 
-function InterceptionCounterTable() {
-    var self = this;
-    this.counters = null;
+        this._html_countDay = $('#countDay');
+        this._html_countWeek = $('#countWeek');
+        this._html_countMonth = $('#countMonth');
+        this._html_countTotal = $('#countTotal');
+    }
 
-    this.html_countDay = $('#countDay');
-    this.html_countWeek = $('#countWeek');
-    this.html_countMonth = $('#countMonth');
-    this.html_countTotal = $('#countTotal');
+    setData(data) {
+        this._counters = data;
+    }
 
-    this.setData = function(data){
-        self.counters = data;
-    };
+    render() {
+        this._html_countDay.text(this._counters.countDay);
+        this._html_countWeek.text(this._counters.countWeek);
+        this._html_countMonth.text(this._counters.countMonth);
+        this._html_countTotal.text(this._counters.countTotal);
+    }
 
-    this.render = function(){
-        self.html_countDay.text(self.counters.countDay);
-        self.html_countWeek.text(self.counters.countWeek);
-        self.html_countMonth.text(self.counters.countMonth);
-        self.html_countTotal.text(self.counters.countTotal);
-    };
-
-    this.setDataAndRender = function(data){
-        Promise.resolve(this.setData(data)).then(self.render());
+    setDataAndRender(data) {
+        Promise.resolve(this.setData(data)).then(this.render());
     }
 }
+
+
 
 
 

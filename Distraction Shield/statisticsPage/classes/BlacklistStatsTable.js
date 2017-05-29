@@ -1,38 +1,36 @@
+import * as dateutil from "../../modules/dateutil"
 
-function BlacklistStatsTable(html_element) {
-    var self = this;
-    this.table = html_element;
-    this.blacklist = null;
+export default  class BlacklistStatsTable {
+    constructor(html_element) {
+        this._table = html_element;
+        this._blacklist = null;
+    }
 
-    this.setData = function(data){
-        self.blacklist = data;
-    };
+    // This has to be a function because it is called in a Promise
+    setData(data) {
+        this._blacklist = data;
+    }
 
-    this.createBlockedSiteTable = function(siteList){
-        $.each(siteList, function(k, site) {
-            self.table.append(self.generateTableRow(site));
-        });
-    };
+    createBlockedSiteTable(siteList) {
+        this._table.append(siteList.map(this.generateTableRow));
+    }
 
-    this.generateTableRow = function(site) {
-        var row =
-            $("<tr class='table-row' >" +
-                "<td>"+site.getIcon()+"</td>" +
-                "<td>"+site.getName()+"</td>" +
-                "<td>"+site.getCounter()+"</td>" +
-                "<td>"+bg.dateUtil.secondsToHHMMSS(site.getTimeSpent())+"</td>" +
-                "</tr>");
-        return row;
-    };
+    generateTableRow(site) {
+        return $("<tr class='table-row' >" +
+            "<td>" + site.icon + "</td>" +
+            "<td>" + site.name + "</td>" +
+            "<td>" + site.counter + "</td>" +
+            "<td>" + dateutil.secondsToHHMMSS(site.timeSpent) + "</td>" +
+            "</tr>");
+    }
 
-    this.render = function(){
-        self.createBlockedSiteTable(self.blacklist);
-    };
+    render() {
+        this.createBlockedSiteTable(this._blacklist.list);
+    }
 
-    this.setDataAndRender = function(data){
-        Promise.resolve(this.setData(data)).then(self.render());
-    };
+    setDataAndRender(data) {
+        Promise.resolve(this.setData(data)).then(this.render());
+    }
 }
-
 
 

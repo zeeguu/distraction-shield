@@ -8,10 +8,10 @@ body {
 }
 
 .btn-group-vertical > button {
-    margin-bottom:10px;
+    margin-bottom: 10px;
     border-radius: 7px !important;
 }
 
 .btn {
-    min-width:100px;
+    min-width: 100px;
 }

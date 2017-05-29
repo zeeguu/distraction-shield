@@ -1,42 +1,37 @@
+import * as dateutil from "../../modules/dateutil"
 
-function ExerciseTimeTable(html_element) {
-    var self = this;
-    this.table = html_element;
-    this.timeSpentData = null;
+export default class ExerciseTimeTable {
+    constructor(html_element) {
+        this._table = html_element;
+        this._timeSpentData = null;
+    }
 
-    this.setData = function(data){
-        self.timeSpentData = data;
-    };
+    // This has to be a function because it is called in a Promise
+    setData(data) {
+        this._timeSpentData = data;
+    }
 
-    this.addToTable = function(tableRow) {
-        html_element.append(tableRow);
+    addToTable(tableRow) {
+        this._table.append(tableRow);
+    }
 
-    };
+    generateExerciseTimeHtmlRow(date, exerciseTime) {
+        return $("<tr>" +
+            "<td>" + date + "</td>" +
+            "<td>" + dateutil.secondsToHHMMSS(exerciseTime) + "</td>" +
+            "</tr>");
+    }
 
-    this.generateExerciseTimeHtmlRow = function(date, exerciseTime) {
-        var tableRow =
-            $("<tr>" +
-                "<td>"+date+"</td>" +
-                "<td>"+bg.dateUtil.secondsToHHMMSS(exerciseTime)+"</td>" +
-                "</tr>");
-        return tableRow;
-    };
+    createExerciseTimeTable(list) {
+        let rows = list.reverse().map((site) => this.generateExerciseTimeHtmlRow(site.date, site.timeSpent));
+        this._table.append(rows);
+    }
 
-    this.createExerciseTimeTable = function(list) {
-        let keys = Object.keys(list);
-        for(var i = keys.length-1; i >= 0; i--){
-            self.addToTable(self.generateExerciseTimeHtmlRow(keys[i], list[keys[i]]));
-        }
-    };
+    render() {
+        this.createExerciseTimeTable(this._timeSpentData);
+    }
 
-    this.render = function(){
-        self.createExerciseTimeTable(self.timeSpentData);
-    };
-
-    this.setDataAndRender = function(data){
-        Promise.resolve(this.setData(data)).then(self.render());
-    };
+    setDataAndRender(data) {
+        Promise.resolve(this.setData(data)).then(this.render());
+    }
 }
-
-
-

@@ -1,36 +1,31 @@
+import * as storage from '../modules/storage';
+import BlockedSiteList from '../classes/BlockedSiteList';
+import UserSettings from '../classes/UserSettings';
 
-function Synchronizer() {
-    var self = this;
-    this.bg = chrome.extension.getBackgroundPage();
 
-    this.syncBlacklist = function(blockedSiteList) {
-        storage.setBlacklist(blockedSiteList);
-        self.bg.setLocalBlacklist(blockedSiteList);
-    };
-
-    this.syncSettings = function(settings) {
-        storage.setSettings(settings);
-        self.bg.setLocalSettings(settings);
-    };
-
-    this.syncDateList = function(dateList) {
-        storage.setInterceptDateList(dateList);
-        self.bg.setLocalInterceptDateList(dateList);
-    };
-
-    this.syncStatistics = function(statistics) {
-        storage.setStatistics(statistics);
-        self.bg.setLocalStatistics(statistics);
-    };
-
-    this.addBlockedSiteAndSync = function(blockedSite) {
-        storage.getBlacklist(function(blacklist) {
-            if (blacklist.addToList(blockedSite)) {
-                self.syncBlacklist(blacklist);
-            }
-        })
-    }
-
+export function syncBlacklist(blockedSiteList) {
+    storage.setBlacklist(blockedSiteList);
+    chrome.runtime.sendMessage({
+        message: "updateListener",
+        siteList: BlockedSiteList.serializeBlockedSiteList(blockedSiteList)
+    });
 }
 
-var synchronizer = new Synchronizer();
+export function syncSettings(settings) {
+    storage.setSettings(settings);
+    chrome.runtime.sendMessage({
+        message: "updateSettings",
+        settings: UserSettings.serializeSettings(settings)
+    });
+    console.log('message sent');
+}
+
+export function addSiteAndSync(blockedSiteItem, callback) {
+    storage.getBlacklist(function (blacklist) {
+        if (blacklist.addToList(blockedSiteItem)) {
+            syncBlacklist(blacklist);
+            callback();
+        }
+    });
+
+}

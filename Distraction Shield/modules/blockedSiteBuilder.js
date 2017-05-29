@@ -1,13 +1,10 @@
-function BlockedSiteBuilder() {
-    var self = this;
+import {getUrlFromServer} from "./urlFormatter";
+import BlockedSite from "../classes/BlockedSite";
 
-    // this requires a callback since the getUrlFromServer is asynchronous
-    this.createNewBlockedSite = function(newUrl, callback) {
-        urlFormatter.getUrlFromServer(newUrl, function(url, title) {
-            var bs = new BlockedSite(url, title);
-            callback(bs);
-        });
-    };
+// this requires a callback since the getUrlFromServer is asynchronous
+export function createNewBlockedSite(newUrl, callback) {
+    getUrlFromServer(newUrl, function (url, title) {
+        let bs = new BlockedSite(url, title);
+        callback(bs);
+    });
 }
-
-var blockedSiteBuilder = new BlockedSiteBuilder();

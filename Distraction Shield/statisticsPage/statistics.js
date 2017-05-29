@@ -1,38 +1,39 @@
+import BlacklistStatsTable from './classes/BlacklistStatsTable'
+import ExerciseTimeTable from './classes/ExerciseTimeTable'
+import InterceptionCounterTable from './classes/InterceptionCounterTable'
+import * as storage from '../modules/storage'
+import * as interception from '../modules/statistics/interception'
+//import * as $ from "../dependencies/jquery/jquery-1.10.2";
+// import * as domReady from '../domReady'
 
-// Log console messages to the background page console instead of the content page.
-var bg = chrome.extension.getBackgroundPage();
-var console = bg.console;
 
-var interceptionCounterTable = null;
-var blacklistTable = null;
-var exerciseTimeTable = null;
-
-saveCurrentPageToBlacklist = function() {
-    bg.tracker.getCurrentTab().then(bg.addToBlockedSites(result));
-};
+let interceptionCounterTable = null;
+let blacklistTable = null;
+let exerciseTimeTable = null;
 
 //Initialize HTML elements and set the data in the tables.
-initStatisticsPage = function() {
-    Promise.all([bg.storage.getInterceptDateList(), bg.storage.getExerciseTimeList()])
-        .then(function(response){
-            let counters = bg.interception.calcInterceptData(response[0].tds_interceptDateList);
+function initStatisticsPage() {
+    Promise.all([storage.getInterceptDateList(), storage.getExerciseTimeList(), storage.getBlacklistPromise()])
+        .then(function (response) {
+            let interceptDateList = response[0].tds_interceptDateList;
+            let blacklist = response[2];
+            let exerciseTime = response[1];
+
+            let counters = interception.calcInterceptData(interceptDateList);
             interceptionCounterTable.setDataAndRender(counters);
-            blacklistTable.setDataAndRender(bg.blockedSites.getList());
-            exerciseTimeTable.setDataAndRender(response[1]);
+            blacklistTable.setDataAndRender(blacklist);
+            exerciseTimeTable.setDataAndRender(exerciseTime);
         });
-};
+}
 
 // Connects html items to the tables.
-connectHtmlFunctionality = function() {
+function connectHtmlFunctionality() {
     interceptionCounterTable = new InterceptionCounterTable();
     blacklistTable = new BlacklistStatsTable($('#interceptTable'));
     exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
-};
+}
 
-
-//Run this when the page is loaded.
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", function () {
     connectHtmlFunctionality();
     initStatisticsPage();
 });
-

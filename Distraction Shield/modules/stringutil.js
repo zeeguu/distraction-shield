@@ -1,9 +1,4 @@
-
-function StringUtil() {
-    //Fancy string comparison with wildcards
-    this.wildcardStrComp = function (str, rule) {
-        return new RegExp("^" + rule.split("*").join(".*") + "$").test(str);
-    };
+//Fancy string comparison with wildcards
+export function wildcardStrComp(str, rule) {
+    return new RegExp("^" + rule.split("*").join(".*") + "$").test(str);
 }
-
-var stringutil = new StringUtil();

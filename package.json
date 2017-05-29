@@ -1,0 +1,26 @@
+{
+  "name": "distraction-shield",
+  "version": "1.0.0",
+  "description": "Distraction Shield!",
+  "scripts": {
+    "start": "broccoli serve",
+    "build": "rimraf dist && broccoli build dist && webpack",
+    "test": "npm run build && mocha \"test/**/*-test.js\" "
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RUGSoftEng/2017-The-Distraction-Shield.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-preset-env": "^1.4.0",
+    "broccoli": "^1.1.2",
+    "broccoli-babel-transpiler": "^6.0.0",
+    "broccoli-cli": "^1.0.0",
+    "broccoli-funnel": "^1.2.0",
+    "broccoli-merge-trees": "^2.0.0",
+    "mocha": "^3.3.0",
+    "rimraf": "^2.6.1",
+    "webpack": "^2.5.1"
+  }
+}

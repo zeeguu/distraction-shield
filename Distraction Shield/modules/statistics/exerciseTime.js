@@ -1,26 +1,22 @@
+import * as storage from '../storage'
+import * as dateutil from '../dateutil'
 
-function ExerciseTime() {
-    var self = this;
+// Increments the counter for time spent on exercises today with 'amount'.
+// When there the current day does not exist in the storage yet, initialize the counter for this day at 0.
+export function incrementTodayExerciseTime(amount) {
+    storage.getExerciseTimeList().then(function (list) {
+        let todayDate = dateutil.getToday();
 
-    // Increments the counter for time spent on exercises today with 'amount'.
-    // When there the current day does not exist in the storage yet, initialize the counter for this day at 0.
-    this.incrementTodayExerciseTime = function(amount){
-        let exerciseTimeList;
-        storage.getExerciseTimeList().then(function(response){
-            exerciseTimeList = response;
-            let today = dateUtil.getToday();
-            if(exerciseTimeList == null){
-                exerciseTimeList = {};
-            }
-            if(exerciseTimeList[today] == null){
-                exerciseTimeList[today] = 0;
-            }
-            exerciseTimeList[today] += amount;
-        }).then(function(){
-            storage.setExerciseTimeList(exerciseTimeList);
-        });
-    };
+        let today = list.find((record) => record.date == todayDate);
+        if (typeof today === 'undefined') {
+            list.push({date: todayDate, timeSpent: amount});
+        } else {
+            today.timeSpent += amount;
+        }
+        return list;
+    }).then(function (list) {
+        storage.setExerciseTimeList(list);
+    });
 }
 
 
-var exerciseTime = new ExerciseTime();
