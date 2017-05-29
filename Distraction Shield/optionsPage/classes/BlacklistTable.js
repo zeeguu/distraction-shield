@@ -38,7 +38,6 @@ export default class BlacklistTable {
     setCheckboxFunction() {
         this.table.on('change', 'input[type="checkbox"]', function (data) {
             //Clicking the checkbox automatically selects the row, so we use this to our advantage
-            console.log(data.target);
             let clicked_checkbox = data.target;
             let selected_row = $(clicked_checkbox).parent().parent();
             let selected_blockedSite = selected_row.data('blockedSite');

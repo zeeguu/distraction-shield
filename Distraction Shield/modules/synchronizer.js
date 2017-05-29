@@ -17,7 +17,6 @@ export function syncSettings(settings) {
         message: "updateSettings",
         settings: UserSettings.serializeSettings(settings)
     });
-    console.log('message sent');
 }
 
 export function addSiteAndSync(blockedSiteItem, callback) {

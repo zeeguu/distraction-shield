@@ -9,13 +9,15 @@ let optionsButton = $('#optionsBtn');
 let statisticsButton = $('#statisticsBtn');
 
 function openStatisticsPage() {
-    openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'));
-    setTimeout(() => window.close(), 250);
+    openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'), () => {
+        window.close();
+    });
 }
 
 function openOptionsPage() {
-    openTabSingleton(chrome.runtime.getURL('optionsPage/options.html'));
-    setTimeout(() => window.close(), 250);
+    openTabSingleton(chrome.runtime.getURL('optionsPage/options.html'), () => {
+        window.close();
+    });
 }
 
 //Connect functions to HTML elements
@@ -65,7 +67,6 @@ function toggleBlockedSite(url) {
 }
 
 function setSaveButtonToSuccess() {
-    let saveButton = $('#saveBtn');
     saveButton.attr('class', 'btn btn-success');
     saveButton.text('Added!');
     setTimeout(function () {
@@ -88,7 +89,6 @@ function setSaveButtonFunctionality() {
         let activeTab = arrayOfTabs[0];
         let url = activeTab.url;
         patternMatchUrl(url, function (matchedBlockedSite) {
-
             if (matchedBlockedSite != null) {
                 saveButton.unbind('click', saveCurrentPageToBlacklist);
                 saveButton.on('click', toggleBlockedSite(url));
@@ -104,7 +104,6 @@ function setSaveButtonFunctionality() {
             }
         });
     });
-
 }
 
 connectButtons();

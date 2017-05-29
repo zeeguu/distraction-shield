@@ -3,34 +3,33 @@ import * as constants from "../../constants"
 export default class GreenToRedSlider {
 
     constructor(sliderID, saveFunction) {
-        this.alert = chrome.extension.getBackgroundPage().alert;
         this.saveValue = saveFunction;
         this.sliderDiv = $(sliderID);
         this.sliderRange = $(this.sliderDiv.find(sliderID + "-range"));
         this.sliderValue = $(this.sliderDiv.find(sliderID + "-value"));
 
-        this.setOnEventFunc(this);
+        this.setOnEventFunc();
     }
 
-    setOnEventFunc(GToRSlider) {
-        this.sliderRange.on('input', function () {
-            let inputValue = GToRSlider.sliderRange.val();
-            GToRSlider.sliderValue.html(GreenToRedSlider.calculateHours(inputValue));
-            GToRSlider.updateColor(inputValue);
+    setOnEventFunc() {
+        this.sliderRange.on('input', () =>{
+            let inputValue = this.sliderRange.val();
+            this.sliderValue.html(GreenToRedSlider.calculateHours(inputValue));
+            this.updateColor(inputValue);
         });
 
-        this.sliderRange.on('mouseup', function () {
-            let inputValue = GToRSlider.sliderRange.val();
-            GToRSlider.saveValue(inputValue);
+        this.sliderRange.on('mouseup',  () => {
+            let inputValue = this.sliderRange.val();
+            this.saveValue(inputValue);
         });
 
-        this.sliderValue.on('blur', function () {
-            GToRSlider.checkTimeValidity($(this).html());
+        this.sliderValue.on('blur', () => {
+            this.checkTimeValidity($(this.sliderValue).html());
         });
 
         this.sliderValue.keydown(event => {
             if (event.keyCode === constants.KEY_ENTER) {
-                GToRSlider.sliderValue.blur();
+                this.sliderValue.blur();
                 event.preventDefault();
             }
         });
@@ -82,6 +81,6 @@ export default class GreenToRedSlider {
 
     timeInputError() {
         this.setValue(this.sliderRange.val());
-        this.alert("please input a supported time format");
+        chrome.extension.getBackgroundPage().alert("please input a supported time format");
     }
 }

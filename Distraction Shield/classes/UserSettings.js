@@ -9,17 +9,8 @@ export default class UserSettings {
             offTill: new Date()
         };
 
-        this._sesionID = undefined;
         this._mode = constants.modes.lazy;
         this._interceptionInterval = 1;
-    }
-
-    set sessionID(newID) {
-        this._sesionID = newID;
-    }
-
-    get sessionID() {
-        return this._sesionID;
     }
 
     set interceptionInterval(val) {
@@ -99,13 +90,13 @@ export default class UserSettings {
     }
 
     turnExtensionBackOn(callback) {
-        return function () {
+        return () => {
             if (this.state == "Off") {
                 this.turnOn();
                 storage.setSettings(this);
                 callback();
             }
-        }.bind(this);
+        };
     }
 
     setTimer(callback) {
@@ -115,7 +106,6 @@ export default class UserSettings {
 
     copySettings(settingsObject) {
         this._status = settingsObject.status;
-        this._sessionID = settingsObject.sessionID;
         this._interceptionInterval = settingsObject.interceptionInterval;
         this._mode = settingsObject.mode;
     }
@@ -143,7 +133,6 @@ export default class UserSettings {
         parsedSettingsObject._status.setAt = new Date(parsedSettingsObject._status.setAt);
         parsedSettingsObject._status.offTill = new Date(parsedSettingsObject._status.offTill);
         s.status = parsedSettingsObject._status;
-        s.sessionID = parsedSettingsObject._sessionID;
         s.interceptionInterval = parsedSettingsObject._interceptionInterval;
         s.mode = parsedSettingsObject._mode;
         return s;

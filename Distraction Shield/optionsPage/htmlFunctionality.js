@@ -8,13 +8,6 @@ import * as synchronizer from '../modules/synchronizer'
  * Here things like, onClicked or onChanged events are monitored
  */
 
-export function appendHtmlItemTo(html_child, html_parent) {
-    html_parent.append(html_child);
-}
-
-export function prependHtmlItemTo(html_child, html_parent) {
-    html_parent.prepend(html_child);
-}
 /* -------------------- Button Click functions ----------------------- */
 
 //Connect functions to HTML elements
@@ -29,7 +22,7 @@ export function setKeyPressFunctions(html_txtFld, blacklistTable, submitFunc, de
 }
 
 export function submitOnKeyPress(html_elem, submitFunc) {
-    html_elem.keyup(function (event) {
+    html_elem.keyup((event) => {
         if (event.keyCode === constants.KEY_ENTER) {
             submitFunc();
         }
@@ -37,7 +30,7 @@ export function submitOnKeyPress(html_elem, submitFunc) {
 }
 
 export function deleteOnKeyPress(blacklistTable, deleteFunc) {
-    $('html').keyup(function (e) {
+    $('html').keyup((e) => {
         if (e.keyCode === constants.KEY_DELETE) {
             let html = blacklistTable.getSelected();
             deleteFunc(html);
