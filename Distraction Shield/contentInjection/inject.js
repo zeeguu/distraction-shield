@@ -2,7 +2,9 @@ import * as constants from '../constants'
 import * as storage from '../modules/storage'
 
 function mainFlow() {
-    if (window.url.indexOf("fromTds=true") == -1) return;
+    console.log("@:" + window.location.href);//todo remove
+
+    if (window.location.href.indexOf("from_tds=true") == -1) return;
 
     storage.getMode(initBasis);
 }
@@ -23,7 +25,7 @@ function initBasis(mode) {
             $("#tds_generalInfoText").append(constants.zeeguuInfoText);
 
             let putModeText = true;
-            if ((window.url == constants.zeeguLoginLink) && (mode.label != constants.modes.lazy.label)) {
+            if ((window.location.href == constants.zeeguLoginLink) && (mode.label != constants.modes.lazy.label)) {
                 putModeText = false;
             }
             if (putModeText) $("#tds_modeSpecificText").append(message);

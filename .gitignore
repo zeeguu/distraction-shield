@@ -11,3 +11,6 @@ sampleExtension/.idea
 # dependencies
 /node_modules
 /bower_components
+
+#documentation
+/out
