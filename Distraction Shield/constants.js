@@ -34,8 +34,7 @@ export const modes = {
 export const zeeguLoginLink = "https://www.zeeguu.unibe.ch/login";
 
 /* ---------- ----- BlockedSiteList ----- ---------- */
-export const newUrlNotUniqueError = "New blocked site item to be added was found to resolve to an already blacklisted website, " +
-    "please try a different url.\nDuplicate url: ";
+export const newUrlNotUniqueError = "Oops! You already blocked this website: ";
 export const newUrlSuccess = "Successfully blocked ";
 
 /* ---------- ----- urlFormatter ----- ---------- */
