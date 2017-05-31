@@ -36,6 +36,7 @@ export const zeeguLoginLink = "https://www.zeeguu.unibe.ch/login";
 /* ---------- ----- BlockedSiteList ----- ---------- */
 export const newUrlNotUniqueError = "New blocked site item to be added was found to resolve to an already blacklisted website, " +
     "please try a different url.\nDuplicate url: ";
+export const newUrlSuccess = "Successfully blocked ";
 
 /* ---------- ----- urlFormatter ----- ---------- */
 export const INVALID_URL_MESSAGE = "We unfortunately could not reach the site you are trying to block.\n" +
@@ -56,4 +57,3 @@ export const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 
 /* ---------- ----- turnoffSlider ----- ---------- */
 export const MAX_TURN_OFF_TIME = 480;
-
