@@ -1,6 +1,9 @@
 import * as constants from '../constants'
 import * as storage from '../modules/storage'
 
+/**
+ * Class that hols all the information about the user settings
+ */
 export default class UserSettings {
     constructor() {
         this._status = {
@@ -62,6 +65,9 @@ export default class UserSettings {
         return this._status.state ? "Off" : "On";
     }
 
+    /**
+     * Turns on the extension
+     */
     turnOn() {
         if (this.state == "Off") {
             this.status = {state: true, setAt: new Date(), offTill: new Date()};
@@ -70,6 +76,14 @@ export default class UserSettings {
         }
     }
 
+    /**
+     * Turns off the extension for a certain time. Used in
+     * After that time, the callback function is called.
+     * This function is used also in:
+     * @see turnOffFor
+     * @param {boolean} timer If the time expired
+     * @param callback The function to be called after that time
+     */
     turnOff(timer, callback) {
         if (this.state == "On") {
             this.status = {state: false, setAt: new Date(), offTill: this.status.offTill};
@@ -81,23 +95,43 @@ export default class UserSettings {
         }
     }
 
+    /**
+     * Turn off the extension for a certain amount of time.
+     * @param minutes The time period
+     * @param {boolean} timer If the time expired
+     * @param callback The function to be called after that time
+     */
     turnOffFor(minutes, timer, callback) {
         let curDate = new Date();
         this.offTill = new Date(curDate.setMinutes(minutes + curDate.getMinutes()));
         this.turnOff(timer, callback);
     }
 
+    /**
+     * Turns off the extension for 1 day
+     * @param {boolean} timer If the time expired
+     * @param callback The function to be called after that
+     */
     turnOffForDay(timer, callback) {
         this.offTill = new Date(new Date().setHours(24, 0, 0, 0));
         this.turnOff(timer, callback);
     }
 
+    /**
+     * Turn off the extension for the interception interval.
+     * @param callback The function to be called after that
+     */
     turnOffFromBackground(callback) {
         if (this.state == "On") {
             this.turnOffFor(this.interceptionInterval, true, callback);
         }
     }
 
+    /**
+     * Turns the extension back on. And calls the function passed when turned off.
+     * @param callback The function that is called
+     * @returns {function(this:UserSettings)}
+     */
     turnExtensionBackOn(callback) {
         return function () {
             if (this.state == "Off") {
@@ -108,11 +142,19 @@ export default class UserSettings {
         }.bind(this);
     }
 
+    /**
+     * Set timer for the interception intervals
+     * @param callback
+     */
     setTimer(callback) {
         let timerInMS = this.status.offTill - new Date();
         setTimeout(this.turnExtensionBackOn(callback), timerInMS);
     }
 
+    /**
+     * Copy the settings
+     * @param settingsObject the settings object to be copied into this object
+     */
     copySettings(settingsObject) {
         this._status = settingsObject.status;
         this._sessionID = settingsObject.sessionID;
@@ -120,6 +162,10 @@ export default class UserSettings {
         this._mode = settingsObject.mode;
     }
 
+    /**
+     * Reinitialize the timer and call the function.
+     * @param callback The function to be called.
+     */
     reInitTimer(callback) {
         if (this.state == "Off") {
             if (this.offTill < new Date()) {
@@ -134,10 +180,19 @@ export default class UserSettings {
 
     /* --------------- --------------- Serialization --------------- --------------- */
 
+    /**
+     * Serialize this object
+     * @param settingsObject
+     */
     static serializeSettings(settingsObject) {
         return JSON.stringify(settingsObject);
     }
 
+    /**
+     * parese the settings Object
+     * @param parsedSettingsObject The settings object that is not parsed
+     * @returns {UserSettings} The parsed settings object
+     */
     static parseSettingsObject(parsedSettingsObject) {
         let s = new UserSettings();
         parsedSettingsObject._status.setAt = new Date(parsedSettingsObject._status.setAt);
@@ -149,6 +204,11 @@ export default class UserSettings {
         return s;
     }
 
+    /**
+     * Deserialize the settings object
+     * @param serializedSettingsObject The object to be deserialized
+     * @returns {*}
+     */
     static deserializeSettings(serializedSettingsObject) {
         if (serializedSettingsObject != null) {
             let parsed = JSON.parse(serializedSettingsObject);
@@ -156,5 +216,4 @@ export default class UserSettings {
         }
         return null;
     }
-
 }
