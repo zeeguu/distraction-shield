@@ -2,6 +2,7 @@ import * as constants from '../../constants';
 import * as exerciseTime from './exerciseTime';
 import * as storage from '../storage'
 import BlockedSiteList from '../../classes/BlockedSiteList'
+import * as api from '../api'
 
 
 /**
@@ -27,7 +28,7 @@ export default class Tracker {
         return new Promise(function (resolve, reject) {
             chrome.tabs.query({active: true, lastFocusedWindow: true}, function (tabs) {
                 if (tabs.length == 1) {
-                    resolve(tabs[0].url);
+                    resolve(tabs[0]);
                 }
             });
         });
@@ -37,16 +38,72 @@ export default class Tracker {
      * Initialize the alarm, and initialize the idle-checker.
      */
     init() {
-        setInterval(this.fireAlarm.bind(this), constants.savingFrequency);
-        setInterval(this.increaseTimeCounter.bind(this), constants.measureFrequency);
-
-        // When the user does not input anything for 15 seconds, set the state to idle.
-        chrome.idle.setDetectionInterval(constants.idleTime);
-        chrome.idle.onStateChanged.addListener(this.checkIdle.bind(this));
+        //setInterval(this.fireAlarm.bind(this), constants.savingFrequency);
+        //setInterval(this.increaseTimeCounter.bind(this), constants.measureFrequency);
 
         this.getBlockedSites();
         this.addBlockedSitesUpdateListener();
+
+        // When the user does not input anything for 15 seconds, set the state to idle.
+        //chrome.idle.setDetectionInterval(constants.idleTime);
+        chrome.idle.setDetectionInterval(15);
+        chrome.idle.onStateChanged.addListener(this.updateIdleState.bind(this));
+
+        this.addAlarmListener();
+        this.addOnActiveTabChangeListener();
+        this.addOnTabUpdateListener();
+
+        this.createTrackerAlarm();
+
+        api.postRequest('http://httpbin.org/post', null).then((res) => console.log(res));
     }
+
+    createTrackerAlarm(){
+        chrome.alarms.create('trackerAlarm', {periodInMinutes: 0.1});
+    }
+
+    // Function attached to the idle-listener. Sets the this.idle variable.
+    updateIdleState(idleState) {
+        this.getCurrentTab().then(this.updateTime);
+        console.log("Idle state changed to "+idleState);
+        if(idleState == "idle") {
+            chrome.alarms.clear("trackerAlarm");
+        } else if (idleState == "active") {
+            this.createTrackerAlarm();
+        }
+        //this.idle = (idleState != "active");
+    }
+
+    updateTime(tab) {
+        console.log('update time! '+tab.url);
+    }
+
+    addAlarmListener() {
+        chrome.alarms.onAlarm.addListener((alarm) => {
+            if(alarm && alarm.name == 'trackerAlarm') {
+                this.getCurrentTab().then(this.updateTime);
+            }
+        });
+    }
+    addOnActiveTabChangeListener() {
+        chrome.tabs.onActivated.addListener((activeInfo) => {
+            chrome.tabs.get(activeInfo.tabId, (tab) => {
+                this.updateTime(tab);
+            })
+        });
+    }
+    addOnTabUpdateListener() {
+        chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+            if(changeInfo.status === 'complete') {
+                chrome.tabs.query({active: true}, (tabs) => {
+                    if(tabId == tabs[0].id) {
+                        this.updateTime(tab);
+                    }
+                });
+            }
+        });
+    }
+
 
     /**
      * intiates listener to find updates to the list of blocked sites.
@@ -124,7 +181,7 @@ export default class Tracker {
     increaseTimeCounter() {
         if (!this.idle) {
             this.getCurrentTab().then((tabActive) => {
-                this.matchUrls(tabActive);
+                this.matchUrls(tabActive.url);
             });
         }
     }
@@ -173,11 +230,6 @@ export default class Tracker {
     compareDomain(url, domain) {
         return Tracker.compareUrlToRegex(this.createRegexFromDomain(domain), url);
     };
-
-    // Function attached to the idle-listener. Sets the this.idle variable.
-    checkIdle(idleState) {
-        this.idle = (idleState != "active");
-    }
 
     // Compare regex to url.
     static compareUrlToRegex(regex, url) {

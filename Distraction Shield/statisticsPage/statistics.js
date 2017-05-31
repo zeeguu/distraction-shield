@@ -36,7 +36,7 @@ function initStatisticsPage() {
  * Connects HTML functionality to javascript classes
  */
 function connectHtmlFunctionality() {
-    interceptionCounterTable = new InterceptionCounterTable($('#interceptionCounterTable'));
+    interceptionCounterTable = new InterceptionCounterTable();
     blacklistTable = new BlacklistStatsTable($('#interceptTable'));
     exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
 }
