@@ -2,10 +2,7 @@ import * as constants from '../constants'
 import * as storage from '../modules/storage'
 
 function mainFlow() {
-    console.log("@:" + window.location.href);//todo remove
-
     if (window.location.href.indexOf("from_tds=true") == -1) return;
-
     storage.getMode(initBasis);
 }
 

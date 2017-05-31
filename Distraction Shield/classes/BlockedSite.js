@@ -2,6 +2,9 @@ import * as constants from '../constants';
 
 /* --------------- --------------- --------------- --------------- --------------- */
 
+/**
+ * Class of the basic Object of one website that should be blocked.
+ */
 export default class BlockedSite {
 
     constructor(urlBase, title) {
