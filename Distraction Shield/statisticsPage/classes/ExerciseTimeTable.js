@@ -1,22 +1,11 @@
 import * as dateutil from "../../modules/dateutil"
+import BasicTable from "./BasicTable"
 
 /**
  * Table which is used to display the amount of time the user
  * has spent on exercises on the Zeeguu page.
  */
-export default class ExerciseTimeTable {
-    constructor(html_element) {
-        this._table = html_element;
-        this._timeSpentData = null;
-    }
-
-    /**
-     * Sets the data which is presented to the user.
-     * @param data the data received from the statistics.js code.
-     */
-    setData(data) {
-        this._timeSpentData = data;
-    }
+export default class ExerciseTimeTable extends BasicTable {
 
     /**
      * This functions generates HTML rows containing data of one BlockedSite
@@ -24,34 +13,10 @@ export default class ExerciseTimeTable {
      * @param exerciseTime how much time the user has spent on exercises
      * @return string containing a HTML row
      */
-    generateExerciseTimeHtmlRow(date, exerciseTime) {
+    generateTableRow(item) {
         return $("<tr>" +
-            "<td>" + date + "</td>" +
-            "<td>" + dateutil.secondsToHHMMSS(exerciseTime) + "</td>" +
+            "<td>" + item.date + "</td>" +
+            "<td>" + dateutil.secondsToHHMMSS(item.timeSpent) + "</td>" +
             "</tr>");
-    }
-
-    /**
-     * This functions appends HTML rows to the html element of the table.
-     * @param list list containing dates and the amount of time spent on exercises.
-     */
-    createExerciseTimeTable(list) {
-        let rows = list.reverse().map((site) => this.generateExerciseTimeHtmlRow(site.date, site.timeSpent));
-        this._table.append(rows);
-    }
-
-    /**
-     * This function renders the data to the screen in the correct format.
-     */
-    render() {
-        this.createExerciseTimeTable(this._timeSpentData);
-    }
-
-    /**
-     * This functions wraps the functions setData and render in one function.
-     * @param data the data received from the statistics.js page.
-     */
-    setDataAndRender(data) {
-        Promise.resolve(this.setData(data)).then(this.render());
     }
 }

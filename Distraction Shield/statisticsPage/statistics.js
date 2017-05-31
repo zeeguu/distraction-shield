@@ -27,8 +27,8 @@ function initStatisticsPage() {
             let counters = interception.calcInterceptData(interceptDateList);
 
             interceptionCounterTable.setDataAndRender(counters);
-            blacklistTable.setDataAndRender(blacklist);
-            exerciseTimeTable.setDataAndRender(exerciseTime);
+            blacklistTable.setDataAndRender(blacklist.list);
+            exerciseTimeTable.setDataAndRender(exerciseTime.reverse());
         });
 }
 
@@ -36,7 +36,7 @@ function initStatisticsPage() {
  * Connects HTML functionality to javascript classes
  */
 function connectHtmlFunctionality() {
-    interceptionCounterTable = new InterceptionCounterTable();
+    interceptionCounterTable = new InterceptionCounterTable($('#interceptionCounterTable'));
     blacklistTable = new BlacklistStatsTable($('#interceptTable'));
     exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
 }
