@@ -21,6 +21,14 @@ export function loadHtmlBlacklist(blockedSiteList, table) {
     });
 }
 
+export function reloadHtmlBlacklist(blockedSiteList, table){
+    table.removeAllFromTable();
+    let list = blockedSiteList.list;
+    $.each(list, function (key, value) {
+        table.addToTable(table.generateTableRow(value));
+    });
+}
+
 export function loadHtmlMode(extensionMode, radioGroup) {
     $("input[name=" + radioGroup + "][value=" + extensionMode.label + "]").prop('checked', true);
 }

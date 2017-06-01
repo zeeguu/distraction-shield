@@ -88,8 +88,15 @@ function connectLocalDataToHtml() {
  */
 
 function handleStorageChange(changes){
-    if (tds_blacklist in changes)
-        chrome.extension.getBackgroundPage().console.log(changes[tds_blacklist]);
+    if (tds_blacklist in changes) {
+        let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
+        chrome.extension.getBackgroundPage().console.log(newBlockedSiteList);
+        repaint(newBlockedSiteList);
+    }
+}
+
+function repaint(blockedSiteList){
+    connectDataToHtml.reloadHtmlBlacklist(blockedSiteList, blacklistTable);
 }
 
 /* -------------------- Manipulate local variables ------------------- */

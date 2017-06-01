@@ -1,4 +1,3 @@
-import * as synchronizer from "../modules/synchronizer.js";
 import * as blockedSiteBuilder from "../modules/blockedSiteBuilder.js";
 import * as stringutil from "../modules/stringutil.js";
 import BlockedSiteList from '../classes/BlockedSiteList';
@@ -34,9 +33,8 @@ function connectButtons() {
  * @param {function} callback function that takes the blockedSite to which the url was found to be equal to
  */
 function patternMatchUrl(url, callback) {
-    chrome.runtime.sendMessage({message: "requestBlockedSites"}, function (response) {
-        let siteList = BlockedSiteList.deserializeBlockedSiteList(response.blockedSiteList);
-        let list = siteList.list;
+    storage.getBlacklistPromise().then(blockedSiteList => {
+        let list = blockedSiteList.list;
         let item = null;
         list.some(function (bl) {
             if (stringutil.wildcardStrComp(url, bl.url)) {
@@ -47,6 +45,7 @@ function patternMatchUrl(url, callback) {
         });
         callback(item);
     });
+
 }
 
 /**
@@ -55,24 +54,23 @@ function patternMatchUrl(url, callback) {
  */
 function toggleBlockedSite(url) {
     return function () {
-        chrome.runtime.sendMessage({message: "requestBlockedSites"}, function (response) {
-            let siteList = BlockedSiteList.deserializeBlockedSiteList(response.blockedSiteList);
-            let list = siteList.list;
+        storage.getBlacklistPromise().then(blockedSiteList => {
+            let list = blockedSiteList.list;
             let newItem = null;
             for (let i = 0; i < list.length; i++) {
                 if (stringutil.wildcardStrComp(url, list[i].url)) {
                     newItem = list[i];
+                    newItem.checkboxVal = !newItem.checkboxVal;
+                    storage.updateBlockedSiteInStorage(newItem);
                     break;
                 }
             }
-            newItem.checkboxVal = !newItem.checkboxVal;
+
             if (newItem.checkboxVal) {
                 saveButton.text("Unblock");
             } else {
                 saveButton.text("Block");
             }
-            synchronizer.syncBlacklist(siteList);
-
         });
     }
 }

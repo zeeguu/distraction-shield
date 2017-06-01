@@ -1,4 +1,4 @@
-import {addBlockedSiteToStorage, removeBlockedSiteFromStorage, updateBlockedSiteInStorage, getBlacklistPromise} from '../../modules/storage'
+import {removeBlockedSiteFromStorage, updateBlockedSiteInStorage, getBlacklistPromise} from '../../modules/storage'
 
 /**
  * The table holding the blockedSites and all of its functionality.
@@ -16,14 +16,22 @@ export default class BlacklistTable {
         this.enableTableSelection();
     }
 
-    addToTable(tableRow) {
+    addToTableWithFadeIn(tableRow) {
         tableRow.hide().appendTo(this.table).fadeIn();
+    }
+
+    addToTable(tableRow) {
+        tableRow.appendTo(this.table);
     }
 
     removeFromTable(html_item) {
         html_item.fadeOut(function () {
             html_item.remove();
         });
+    }
+
+    removeAllFromTable(){
+       this.table.find('tr').remove();
     }
 
     getSelected() {
@@ -69,8 +77,8 @@ export default class BlacklistTable {
             removeBlockedSiteFromStorage(blockedSiteToDelete);
             //TODO remove these 2
 
-            this.removeBlockedSiteFunc(rowToDelete);
-            this.removeFromTable(rowToDelete);
+            //this.removeBlockedSiteFunc(rowToDelete);
+            //this.removeFromTable(rowToDelete);
         });
     }
 
