@@ -1,8 +1,11 @@
+import {addBlockedSiteToStorage, removeBlockedSiteFromStorage, updateBlockedSiteInStorage, getBlacklistPromise} from '../../modules/storage'
+
 /**
  * The table holding the blockedSites and all of its functionality.
  * Every row has the corresponding BlockedSite Object attached to it in order to have easy acces and manipulation.
  */
 export default class BlacklistTable {
+    //TODO remove sync & remove function
     constructor(html_element, syncFunction, removeFunction) {
         this.table = html_element;
         this.syncBlockedSiteListFunc = syncFunction;
@@ -44,27 +47,38 @@ export default class BlacklistTable {
      * set functionality for all checkboxes found within the html_table
      */
     setCheckboxFunction() {
-        this.table.on('change', 'input[type="checkbox"]', function (data) {
+        this.table.on('change', 'input[type="checkbox"]', data => {
             //Clicking the checkbox automatically selects the row, so we use this to our advantage
             let clicked_checkbox = data.target;
             let selected_row = $(clicked_checkbox).parent().parent();
             let selected_blockedSite = selected_row.data('blockedSite');
             selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
-            //no need to set localBlacklist cause it holds pointers so they get updated automatically
-            this.syncBlockedSiteListFunc();
-        }.bind(this));
+            //TODO
+            chrome.extension.getBackgroundPage().console.log(selected_blockedSite);
+            updateBlockedSiteInStorage(selected_blockedSite).then( () => {
+                getBlacklistPromise().then(blacklist => {
+                    chrome.extension.getBackgroundPage().console.log(blacklist);
+                });
+            });
+        });
     }
 
     /**
      *  if a delete button is clicked, the closest tr element is deleted.
      */
     setDeleteButtonFunction() {
-        this.table.on('click', '.delete-button', function (data) {
+        this.table.on('click', '.delete-button', data => {
             let clicked_button = data.target;
             let rowToDelete = $(clicked_button).closest('tr');
+            let blockedSiteToDelete = rowToDelete.data('blockedSite');
+            removeBlockedSiteFromStorage(blockedSiteToDelete);
+            chrome.extension.getBackgroundPage().console.log(blockedSiteToDelete);
+            //TODO remove these 2
+
+
             this.removeBlockedSiteFunc(rowToDelete);
             this.removeFromTable(rowToDelete);
-        }.bind(this));
+        });
     }
 
     /**

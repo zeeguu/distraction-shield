@@ -17,6 +17,9 @@ import {openTabSingleton} from '../modules/tabutil'
  * to one smoothly running file. Besides the initialization it contains the functions to manipulate the local variables
  * found here
  */
+
+//TODO: create onChanged function
+
 let modeGroup = "modeOptions";
 
 let blacklistTable;
@@ -59,6 +62,7 @@ function connectHtmlFunctionality() {
     blacklistTable = new BlacklistTable($('#blacklistTable'), syncBlockedSiteList, removeBlockedSiteFromAll);
     htmlFunctionality.connectButton($('#saveBtn'), saveNewUrl);
     turnOffSlider = new TurnOffSlider('#turnOff-slider', settings_object);
+    //TODO change removeBlockedSiteFromAll
     htmlFunctionality.setKeyPressFunctions($('#textFld'), blacklistTable, saveNewUrl, removeBlockedSiteFromAll);
     htmlFunctionality.connectButton($('#statisticsLink'), openStatisticsPage);
     htmlFunctionality.connectButton($('#feedbackLink'), openFeedbackForm);
@@ -76,6 +80,38 @@ function connectLocalDataToHtml() {
 }
 
 /* -------------------- Manipulate local variables ------------------- */
+
+function saveNewUrl() {
+    let html_txtFld = $('#textFld');
+    let newUrl = html_txtFld.val();
+    blockedSiteBuilder.createNewBlockedSite(newUrl, addBlockedSiteToAll);
+    html_txtFld.val('');
+}
+/* -------------------- -------------------------- -------------------- */
+
+function openFeedbackForm() {
+    openTabSingleton(feedbackLink);
+}
+
+function restartTour() {
+    openTabSingleton(chrome.runtime.getURL('introTour/introTour.html'));
+}
+
+function openStatisticsPage() {
+    openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'));
+
+}
+
+/**
+ * initial function that is fired when the page is loaded.
+ */
+document.addEventListener("DOMContentLoaded", function () {
+    initOptionsPage();
+});
+
+/*
+DEORECATED
+ */
 
 function removeFromLocalBlacklist(html_item) {
     return storage.getBlacklistPromise().then((result) => {
@@ -118,32 +154,3 @@ function addBlockedSiteToAll(newItem) {
 function syncBlockedSiteList() {
     synchronizer.syncBlacklist(blacklist);
 }
-
-function saveNewUrl() {
-    let html_txtFld = $('#textFld');
-    let newUrl = html_txtFld.val();
-    blockedSiteBuilder.createNewBlockedSite(newUrl, addBlockedSiteToAll);
-    html_txtFld.val('');
-}
-/* -------------------- -------------------------- -------------------- */
-
-function openFeedbackForm() {
-    openTabSingleton(feedbackLink);
-}
-
-function restartTour() {
-    openTabSingleton(chrome.runtime.getURL('introTour/introTour.html'));
-}
-
-function openStatisticsPage() {
-    openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'));
-
-}
-
-/**
- * initial function that is fired when the page is loaded.
- */
-document.addEventListener("DOMContentLoaded", function () {
-    initOptionsPage();
-});
-

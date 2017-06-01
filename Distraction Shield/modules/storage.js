@@ -130,6 +130,36 @@ export function setExerciseTimeList(statList) {
     return setStorage(constants.tds_exerciseTime, statList);
 }
 
+
+/* ----------------  Storage Modifications --------------- */
+//TODO edit placeholders
+export function addBlockedSiteToStorage(blocked_site){
+    return getBlacklistPromise().then(blacklist => {
+        if (blacklist.addToList(blocked_site)){
+            return setBlacklist(blacklist);
+        }
+    });
+}
+
+export function removeBlockedSiteFromStorage(blocked_site){
+    return getBlacklistPromise().then(blacklist => {
+        blacklist.removeFromList(blocked_site);
+        setBlacklist(blacklist);
+    });
+}
+
+export function updateBlockedSiteInStorage(blocked_site){
+    chrome.extension.getBackgroundPage().console.log(blocked_site);
+
+    return getBlacklistPromise().then(blacklist => {
+        chrome.extension.getBackgroundPage().console.log(blacklist);
+        blacklist.updateInList(blocked_site);
+        chrome.extension.getBackgroundPage().console.log(blacklist);
+        return setBlacklist(blacklist);
+    });
+}
+
+
 /* ---------------- not exported--------------- */
 /**
  * Check for a runtime error.
