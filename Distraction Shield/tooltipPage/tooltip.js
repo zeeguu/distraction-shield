@@ -3,6 +3,7 @@ import * as stringutil from "../modules/stringutil.js";
 import BlockedSiteList from '../classes/BlockedSiteList';
 import {openTabSingleton} from "../modules/tabutil";
 import * as storage from '../modules/storage'
+import {tds_blacklist} from '../constants'
 
 let saveButton = $('#saveBtn');
 let optionsButton = $('#optionsBtn');
@@ -121,6 +122,17 @@ function setSaveButtonFunctionality() {
             }
         });
     });
+}
+
+chrome.storage.onChanged.addListener(changes => {
+    chrome.extension.getBackgroundPage().console.log("changed!");
+    handleStorageChange(changes)
+});
+
+function handleStorageChange(changes){
+    if (tds_blacklist in changes) {
+        setSaveButtonFunctionality();
+    }
 }
 
 /**
