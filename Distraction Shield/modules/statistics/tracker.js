@@ -46,7 +46,7 @@ export default class Tracker {
 
         // When the user does not input anything for 15 seconds, set the state to idle.
         //chrome.idle.setDetectionInterval(constants.idleTime);
-        chrome.idle.setDetectionInterval(15);
+        chrome.idle.setDetectionInterval(constants.idleTime);
         chrome.idle.onStateChanged.addListener(this.updateIdleState.bind(this));
 
         this.addAlarmListener();
@@ -54,8 +54,6 @@ export default class Tracker {
         this.addOnTabUpdateListener();
 
         this.createTrackerAlarm();
-
-        api.postRequest('http://httpbin.org/post', null).then((res) => console.log(res));
     }
 
     createTrackerAlarm(){
@@ -85,6 +83,7 @@ export default class Tracker {
             }
         });
     }
+
     addOnActiveTabChangeListener() {
         chrome.tabs.onActivated.addListener((activeInfo) => {
             chrome.tabs.get(activeInfo.tabId, (tab) => {
@@ -92,6 +91,7 @@ export default class Tracker {
             })
         });
     }
+
     addOnTabUpdateListener() {
         chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             if(changeInfo.status === 'complete') {
