@@ -43,7 +43,8 @@ function initOptionsPage() {
         connectLocalDataToHtml();
         chrome.storage.onChanged.addListener(changes => {
             chrome.extension.getBackgroundPage().console.log("changed!");
-            handleStorageChange(changes)});
+            handleStorageChange(changes)
+        });
     });
 }
 /**

@@ -66,7 +66,7 @@ function toggleBlockedSite(url) {
                 }
             }
 
-            if (newItem.checkboxVal) {
+            if (newItem != null && newItem.checkboxVal) {
                 saveButton.text("Unblock");
             } else {
                 saveButton.text("Block");

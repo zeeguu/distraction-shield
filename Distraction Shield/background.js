@@ -33,26 +33,6 @@ function setLocalBlacklist(newList) {
     replaceListener();
 }
 
-/* --------------- ------ Storage retrieval ------ ---------------*/
-
-export function retrieveBlockedSites(callback) {
-    storage.getBlacklist(function (blacklist) {
-        blockedSites.list = blacklist.list;
-        return callback();
-    });
-}
-/* --------------- ------ Updating of variables ------ ---------------*/
-
-function addUrlToBlockedSites(unformattedUrl, onSuccess) {
-    createNewBlockedSite(unformattedUrl, function (newBS) {
-        if (blockedSites.addToList(newBS)) {
-            replaceListener();
-            storage.setBlacklist(blockedSites);
-            onSuccess();
-        }
-    });
-}
-
 /* --------------- ------ webRequest functions ------ ---------------*/
 
 export function replaceListener() {
@@ -116,6 +96,31 @@ function turnOffInterception() {
     storage.setSettings(localSettings);
 }
 
+chrome.storage.onChanged.addListener(changes => {
+    chrome.extension.getBackgroundPage().console.log("changed!");
+    handleStorageChange(changes)
+});
+
+function handleStorageChange(changes){
+    if (constants.tds_blacklist in changes) {
+        let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[constants.tds_blacklist].newValue);
+        setLocalBlacklist(newBlockedSiteList);
+    }
+}
+
+/*
+DEPRECATED
+ */
+
+/* --------------- ------ Storage retrieval ------ ---------------*/
+
+export function retrieveBlockedSites(callback) {
+    storage.getBlacklist(function (blacklist) {
+        blockedSites.list = blacklist.list;
+        return callback();
+    });
+}
+
 /* --------------- ------ Message Listener ------ ---------------*/
 /**
  * Message listener. This listens to message from third party papers, enabling communication between the background scripts
@@ -126,8 +131,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         setLocalBlacklist(BlockedSiteList.deserializeBlockedSiteList(request.siteList));
     } else if (request.message === "updateSettings") {
         setLocalSettings(UserSettings.deserializeSettings(request.settings));
-    } else if (request.message === "newUrl") {
-        addUrlToBlockedSites(request.unformattedUrl, sendResponse);
     } else if (request.message === "requestBlockedSites") {
         let siteList = BlockedSiteList.serializeBlockedSiteList(blockedSites);
         sendResponse({blockedSiteList: siteList});

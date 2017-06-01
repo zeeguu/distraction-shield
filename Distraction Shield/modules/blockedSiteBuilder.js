@@ -10,8 +10,12 @@ import {addBlockedSiteToStorage} from '../modules/storage'
  * @param {function} callback function that takes one argument: the new BlockedSite
  */
 export function createNewBlockedSite(newUrl) {
-    return getUrlFromServer(newUrl, (url, title) => {
-        let blockedSite = new BlockedSite(url, title);
-        return addBlockedSiteToStorage(blockedSite);
+    return new Promise((resolve, reject) => {
+        getUrlFromServer(newUrl, (url, title) => {
+            let blockedSite = new BlockedSite(url, title);
+            return addBlockedSiteToStorage(blockedSite)
+                .then(resolve)
+                .catch(reject(reason));
+        });
     });
 }
