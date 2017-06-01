@@ -6,11 +6,8 @@ import {removeBlockedSiteFromStorage, updateBlockedSiteInStorage, getBlacklistPr
  */
 export default class BlacklistTable {
     //TODO remove sync & remove function
-    constructor(html_element, syncFunction, removeFunction) {
+    constructor(html_element) {
         this.table = html_element;
-        this.syncBlockedSiteListFunc = syncFunction;
-        this.removeBlockedSiteFunc = removeFunction;
-
         this.setCheckboxFunction();
         this.setDeleteButtonFunction();
         this.enableTableSelection();
@@ -61,7 +58,6 @@ export default class BlacklistTable {
             let selected_row = $(clicked_checkbox).parent().parent();
             let selected_blockedSite = selected_row.data('blockedSite');
             selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
-            //TODO
             updateBlockedSiteInStorage(selected_blockedSite);
         });
     }
@@ -75,10 +71,6 @@ export default class BlacklistTable {
             let rowToDelete = $(clicked_button).closest('tr');
             let blockedSiteToDelete = rowToDelete.data('blockedSite');
             removeBlockedSiteFromStorage(blockedSiteToDelete);
-            //TODO remove these 2
-
-            //this.removeBlockedSiteFunc(rowToDelete);
-            //this.removeFromTable(rowToDelete);
         });
     }
 

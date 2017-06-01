@@ -63,7 +63,7 @@ function setLocalVariables(storage_output) {
 function connectHtmlFunctionality() {
     htmlFunctionality.initModeSelection(modeGroup, settings_object);
     intervalSlider = htmlFunctionality.initIntervalSlider(settings_object);
-    blacklistTable = new BlacklistTable($('#blacklistTable'), syncBlockedSiteList, removeBlockedSiteFromAll);
+    blacklistTable = new BlacklistTable($('#blacklistTable'));
     htmlFunctionality.connectButton($('#saveBtn'), saveNewUrl);
     turnOffSlider = new TurnOffSlider('#turnOff-slider', settings_object);
     //TODO change removeBlockedSiteFromAll
@@ -91,13 +91,13 @@ function connectLocalDataToHtml() {
 function handleStorageChange(changes){
     if (tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
-        chrome.extension.getBackgroundPage().console.log(newBlockedSiteList);
-        repaint(newBlockedSiteList);
+        let oldBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].oldValue);
+        repaint(newBlockedSiteList,oldBlockedSiteList);
     }
 }
 
-function repaint(blockedSiteList){
-    connectDataToHtml.reloadHtmlBlacklist(blockedSiteList, blacklistTable);
+function repaint(blockedSiteList, oldBlockedSiteList){
+    connectDataToHtml.reloadHtmlBlacklist(blockedSiteList, oldBlockedSiteList, blacklistTable);
 }
 
 /* -------------------- Manipulate local variables ------------------- */

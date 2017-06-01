@@ -1,4 +1,3 @@
-import {createNewBlockedSite} from './modules/blockedSiteBuilder';
 import BlockedSiteList from './classes/BlockedSiteList';
 import * as interception from './modules/statistics/interception';
 import * as storage from './modules/storage';
