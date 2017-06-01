@@ -1,5 +1,6 @@
 import {getUrlFromServer} from "./urlFormatter";
 import BlockedSite from "../classes/BlockedSite";
+import {addBlockedSiteToStorage} from '../modules/storage'
 
 // this requires a callback since the getUrlFromServer is asynchronous
 /**
@@ -8,9 +9,9 @@ import BlockedSite from "../classes/BlockedSite";
  * @param {string} newUrl the unformatted url of which to construct a BlockedSite
  * @param {function} callback function that takes one argument: the new BlockedSite
  */
-export function createNewBlockedSite(newUrl, callback) {
-    getUrlFromServer(newUrl, function (url, title) {
-        let bs = new BlockedSite(url, title);
-        callback(bs);
+export function createNewBlockedSite(newUrl) {
+    return getUrlFromServer(newUrl, (url, title) => {
+        let blockedSite = new BlockedSite(url, title);
+        return addBlockedSiteToStorage(blockedSite);
     });
 }

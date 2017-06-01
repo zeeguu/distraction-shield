@@ -7,7 +7,7 @@ import TurnOffSlider from './classes/TurnOffSlider'
 import * as connectDataToHtml from './connectDataToHtml'
 import * as htmlFunctionality from './htmlFunctionality'
 import * as blockedSiteBuilder from '../modules/blockedSiteBuilder'
-import {feedbackLink} from '../constants'
+import {feedbackLink, tds_blacklist} from '../constants'
 import {openTabSingleton} from '../modules/tabutil'
 
 /**
@@ -17,8 +17,6 @@ import {openTabSingleton} from '../modules/tabutil'
  * to one smoothly running file. Besides the initialization it contains the functions to manipulate the local variables
  * found here
  */
-
-//TODO: create onChanged function
 
 let modeGroup = "modeOptions";
 
@@ -36,11 +34,16 @@ let interceptionCounter = 0;
 /**
  * Initialize HTML elements and set the local variables
  */
+
+//TODO use promise
 function initOptionsPage() {
     storage.getAll(function (output) {
         setLocalVariables(output);
         connectHtmlFunctionality();
         connectLocalDataToHtml();
+        chrome.storage.onChanged.addListener(changes => {
+            chrome.extension.getBackgroundPage().console.log("changed!");
+            handleStorageChange(changes)});
     });
 }
 /**
@@ -79,12 +82,22 @@ function connectLocalDataToHtml() {
     connectDataToHtml.loadHtmlInterval(settings_object.interceptionInterval, intervalSlider);
 }
 
+/**
+ * This function should be called onChange, this checks if it needs to act on the storage change.
+ * @param changes {Array} array of objects in storage that have been changed. Contains new & old value
+ */
+
+function handleStorageChange(changes){
+    if (tds_blacklist in changes)
+        chrome.extension.getBackgroundPage().console.log(changes[tds_blacklist]);
+}
+
 /* -------------------- Manipulate local variables ------------------- */
 
 function saveNewUrl() {
     let html_txtFld = $('#textFld');
     let newUrl = html_txtFld.val();
-    blockedSiteBuilder.createNewBlockedSite(newUrl, addBlockedSiteToAll);
+    blockedSiteBuilder.createNewBlockedSite(newUrl);
     html_txtFld.val('');
 }
 /* -------------------- -------------------------- -------------------- */
@@ -110,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 /*
-DEORECATED
+DEPRECATED
  */
 
 function removeFromLocalBlacklist(html_item) {

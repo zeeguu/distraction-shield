@@ -54,12 +54,7 @@ export default class BlacklistTable {
             let selected_blockedSite = selected_row.data('blockedSite');
             selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
             //TODO
-            chrome.extension.getBackgroundPage().console.log(selected_blockedSite);
-            updateBlockedSiteInStorage(selected_blockedSite).then( () => {
-                getBlacklistPromise().then(blacklist => {
-                    chrome.extension.getBackgroundPage().console.log(blacklist);
-                });
-            });
+            updateBlockedSiteInStorage(selected_blockedSite);
         });
     }
 
@@ -72,9 +67,7 @@ export default class BlacklistTable {
             let rowToDelete = $(clicked_button).closest('tr');
             let blockedSiteToDelete = rowToDelete.data('blockedSite');
             removeBlockedSiteFromStorage(blockedSiteToDelete);
-            chrome.extension.getBackgroundPage().console.log(blockedSiteToDelete);
             //TODO remove these 2
-
 
             this.removeBlockedSiteFunc(rowToDelete);
             this.removeFromTable(rowToDelete);

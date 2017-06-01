@@ -3,6 +3,7 @@ import * as blockedSiteBuilder from "../modules/blockedSiteBuilder.js";
 import * as stringutil from "../modules/stringutil.js";
 import BlockedSiteList from '../classes/BlockedSiteList';
 import {openTabSingleton} from "../modules/tabutil";
+import * as storage from '../modules/storage'
 
 let saveButton = $('#saveBtn');
 let optionsButton = $('#optionsBtn');
@@ -92,9 +93,7 @@ function setSaveButtonToSuccess() {
 function saveCurrentPageToBlacklist() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         let activeTab = arrayOfTabs[0];
-        blockedSiteBuilder.createNewBlockedSite(activeTab.url, function (blockedSite) {
-            synchronizer.addSiteAndSync(blockedSite, setSaveButtonToSuccess());
-        });
+        blockedSiteBuilder.createNewBlockedSite(activeTab.url).then(setSaveButtonToSuccess());
     });
 }
 

@@ -123,7 +123,7 @@ export function setInterceptDateList(dateList) {
 }
 
 export function getExerciseTimeList() {
-    return getStorage([constants.tds_exerciseTime]);
+    return getStorage(constants.tds_exerciseTime);
 }
 
 export function setExerciseTimeList(statList) {
@@ -136,25 +136,25 @@ export function setExerciseTimeList(statList) {
 export function addBlockedSiteToStorage(blocked_site){
     return getBlacklistPromise().then(blacklist => {
         if (blacklist.addToList(blocked_site)){
+            chrome.extension.getBackgroundPage().console.log(`added ${blocked_site.name}`);
             return setBlacklist(blacklist);
-        }
+        } else
+            return Promise.reject('not unique');
     });
 }
 
 export function removeBlockedSiteFromStorage(blocked_site){
     return getBlacklistPromise().then(blacklist => {
         blacklist.removeFromList(blocked_site);
-        setBlacklist(blacklist);
+        chrome.extension.getBackgroundPage().console.log(`removed ${blocked_site.name}`);
+        return setBlacklist(blacklist);
     });
 }
 
 export function updateBlockedSiteInStorage(blocked_site){
-    chrome.extension.getBackgroundPage().console.log(blocked_site);
-
     return getBlacklistPromise().then(blacklist => {
-        chrome.extension.getBackgroundPage().console.log(blacklist);
         blacklist.updateInList(blocked_site);
-        chrome.extension.getBackgroundPage().console.log(blacklist);
+        chrome.extension.getBackgroundPage().console.log(`changed ${blocked_site.name}`);
         return setBlacklist(blacklist);
     });
 }

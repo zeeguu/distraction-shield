@@ -60,33 +60,14 @@ export default class BlockedSiteList {
     }
 
     removeFromList(blockedSiteToDelete) {
-        let currentUrls = this.urls;
-        this.list = this.list.filter(item => item.url != blockedSiteToDelete.url);
-
-        // let urlKey = this.list.indexOf(blockedSiteToDelete);
-        // if (urlKey > -1) {
-        //     this.list.splice(urlKey, 1);
-        //     return true;
-        // } else {
-        //     return false;
-        // }
+        this.list = this.list.filter(item => item.url !== blockedSiteToDelete.url);
     }
 
     updateInList(blockedSite){
-        //TODO FIXIE, can't find element in array
-        let urlKey = this.list.indexOf(blockedSite);
-        chrome.extension.getBackgroundPage().console.log(blockedSite);
-        let unique = this.list.every(function (urlFromList) {
-            return urlFromList != blockedSite;
+        this.list.forEach((item, id) => {
+            if (item.url === blockedSite.url)
+                this.list[id] = blockedSite;
         });
-        chrome.extension.getBackgroundPage().console.log(unique);
-
-        if (urlKey > -1) {
-            this.list[urlKey] = blockedSite;
-            return true;
-        } else {
-            return false;
-        }
     }
 
     filterOnChecked() {
