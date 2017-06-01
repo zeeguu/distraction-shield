@@ -1,5 +1,7 @@
 import BlockedSiteList from '../classes/BlockedSiteList'
 import UserSettings    from '../classes/UserSettings'
+import * as constants  from '../constants'
+
 
 /* ---------------- General methods --------------- */
 
@@ -45,7 +47,7 @@ function getStorage(dataKey) {
 /* ---------------- TDS_Storage --------------- */
 
 export function getAll(callback) {
-    getStorage(null).then(function (output) {
+    getStorage(constants.tds_all).then(function (output) {
         output.tds_settings = UserSettings.deserializeSettings(output.tds_settings);
         output.tds_blacklist = BlockedSiteList.deserializeBlockedSiteList(output.tds_blacklist);
         return callback(output);
@@ -53,50 +55,50 @@ export function getAll(callback) {
 }
 
 export function getAllUnParsed(callback) {
-    getStorage(null).then(function (output) {
+    getStorage(constants.tds_all).then(function (output) {
         return callback(output);
     });
 }
 /* ---------------- Blacklist --------------- */
 
 export function getBlacklist(callback) {
-    getStorage("tds_blacklist").then(function (output) {
+    getStorage(constants.tds_blacklist).then(function (output) {
         output.tds_blacklist = BlockedSiteList.deserializeBlockedSiteList(output.tds_blacklist);
         return callback(output.tds_blacklist);
     });
 }
 
 export function getBlacklistPromise() {
-    return getStorage("tds_blacklist").then((output) =>
+    return getStorage(constants.tds_blacklist).then((output) =>
         BlockedSiteList.deserializeBlockedSiteList(output.tds_blacklist)
     );
 }
 
 export function setBlacklist(blockedSiteList) {
     let serializedList = BlockedSiteList.serializeBlockedSiteList(blockedSiteList);
-    setStorage("tds_blacklist", serializedList);
+    setStorage(constants.tds_blacklist, serializedList);
 }
 
 /* ---------------- Settings Object --------------- */
 
 export function getSettings(callback) {
-    getStorage("tds_settings").then(function (output) {
+    getStorage(constants.tds_settings).then(function (output) {
         let deserializedSettings = UserSettings.deserializeSettings(output.tds_settings);
         return callback(deserializedSettings);
     });
 }
 
 export function getSettingsUnParsed(callback) {
-    getStorage("tds_settings").then(function (output) {
+    getStorage(constants.tds_settings).then(function (output) {
         return callback(output.tds_settings);
     });
 }
 export function setSettings(settingsObject) {
-    setStorage("tds_settings", UserSettings.serializeSettings(settingsObject));
+    setStorage(constants.tds_settings, UserSettings.serializeSettings(settingsObject));
 }
 export function setSettingsWithCallback(settingsObject, callback) {
     let serializedSettings = UserSettings.serializeSettings(settingsObject);
-    setStorage("tds_settings", serializedSettings).then(function () {
+    setStorage(constants.tds_settings, serializedSettings).then(function () {
         return callback()
     });
 }
@@ -108,24 +110,24 @@ export function getMode(callback) {
 /* ---------------- Statistics --------------- */
 
 export function getInterceptCounter() {
-    return getStorage("tds_interceptCounter");
+    return getStorage(constants.tds_interceptCounter);
 }
 export function setInterceptCounter(number) {
-    return setStorage("tds_interceptCounter", number);
+    return setStorage(constants.tds_interceptCounter, number);
 }
 export function getInterceptDateList() {
-    return getStorage("tds_interceptDateList");
+    return getStorage(constants.tds_interceptDateList);
 }
 export function setInterceptDateList(dateList) {
-    return setStorage("tds_interceptDateList", dateList);
+    return setStorage(constants.tds_interceptDateList, dateList);
 }
 
 export function getExerciseTimeList() {
-    return getStorage(["tds_exerciseTime"]);
+    return getStorage([constants.tds_exerciseTime]);
 }
 
 export function setExerciseTimeList(statList) {
-    return setStorage("tds_exerciseTime", statList);
+    return setStorage(constants.tds_exerciseTime, statList);
 }
 
 /* ---------------- not exported--------------- */

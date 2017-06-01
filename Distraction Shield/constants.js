@@ -61,3 +61,12 @@ export const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 /* ---------- ----- turnoffSlider ----- ---------- */
 export const MAX_TURN_OFF_TIME = 480;
 
+
+/* ---------- ----- Storage constants ----- ---------- */
+
+export const tds_all = null;
+export const tds_blacklist = "tds_blacklist";
+export const tds_settings = "tds_settings";
+export const tds_interceptCounter = "tds_interceptCounter";
+export const tds_interceptDateList = "tds_interceptDateList";
+export const tds_exerciseTime = "tds_exerciseTime";
