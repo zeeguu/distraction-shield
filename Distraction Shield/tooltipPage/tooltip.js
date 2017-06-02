@@ -1,6 +1,5 @@
 import * as blockedSiteBuilder from "../modules/blockedSiteBuilder.js";
 import * as stringutil from "../modules/stringutil.js";
-import BlockedSiteList from '../classes/BlockedSiteList';
 import {openTabSingleton} from "../modules/tabutil";
 import * as storage from '../modules/storage'
 import {tds_blacklist} from '../constants'
@@ -82,10 +81,8 @@ function toggleBlockedSite(url) {
 function setSaveButtonToSuccess() {
     saveButton.unbind('click', saveCurrentPageToBlacklist);
     saveButton.attr('class', 'btn btn-success');
-    saveButton.text('Added!');
     setTimeout(function () {
         saveButton.attr('class', 'btn btn-info');
-        setSaveButtonFunctionality();
     }, 3000);
 }
 

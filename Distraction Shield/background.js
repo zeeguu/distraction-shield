@@ -103,6 +103,12 @@ function handleStorageChange(changes){
     }
 }
 
+export function initBackground(){
+    storage.getAll(function (output) {
+        replaceListenerNEW(output.tds_blacklist);
+    });
+}
+
 /*
 DEPRECATED
  */
@@ -118,11 +124,6 @@ export function setLocalSettings(newSettings) {
     }
 }
 
-function setLocalBlacklist(newList) {
-    blockedSites.list = newList.list;
-    replaceListener();
-}
-
 /* --------------- ------ webRequest functions ------ ---------------*/
 
 export function replaceListener() {
@@ -131,16 +132,6 @@ export function replaceListener() {
     if (localSettings.state == "On" && urlList.length > 0) {
         addWebRequestListener(urlList);
     }
-}
-
-
-/* --------------- ------ Storage retrieval ------ ---------------*/
-
-export function retrieveBlockedSites(callback) {
-    storage.getBlacklist(function (blacklist) {
-        blockedSites.list = blacklist.list;
-        return callback();
-    });
 }
 
 /* --------------- ------ Message Listener ------ ---------------*/

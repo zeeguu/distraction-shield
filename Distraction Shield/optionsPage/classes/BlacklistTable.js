@@ -12,20 +12,14 @@ export default class BlacklistTable {
         this.enableTableSelection();
     }
 
-    addToTableWithFadeIn(tableRow) {
-        tableRow.hide().appendTo(this.table).fadeIn();
-    }
-
     addToTable(tableRow) {
         tableRow.appendTo(this.table);
     }
 
-    removeFromTable(html_item) {
-        html_item.fadeOut(function () {
-            html_item.remove();
-        });
+    addToTableWithFadeIn(tableRow) {
+        tableRow.hide().appendTo(this.table).fadeIn();
     }
-
+    
     removeAllFromTable(){
        this.table.find('tr').remove();
     }
@@ -75,7 +69,7 @@ export default class BlacklistTable {
             let clicked_button = data.target;
             let rowToDelete = $(clicked_button).closest('tr');
             let blockedSiteToDelete = rowToDelete.data('blockedSite');
-            removeBlockedSiteFromStorage(blockedSiteToDelete);
+            rowToDelete.fadeOut(() => removeBlockedSiteFromStorage(blockedSiteToDelete));
         });
     }
 
