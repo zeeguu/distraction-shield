@@ -3,7 +3,7 @@
  * to the actual html representations of this data.
  */
 
-export function sortListOnCheckboxVal(bsA, bsB) {
+export function checkBoxComparator(bsA, bsB) {
     let valueOfA = bsA.checkboxVal;
     let valueOfB = bsB.checkboxVal;
     if (valueOfA && !valueOfB)
@@ -15,17 +15,17 @@ export function sortListOnCheckboxVal(bsA, bsB) {
 
 export function loadHtmlBlacklist(blockedSiteList, table) {
     let list = blockedSiteList.list;
-    list.sort(sortListOnCheckboxVal);
-    $.each(list, function (key, value) {
+    list.sort(checkBoxComparator);
+    list.forEach(value => {
         table.addToTable(table.generateTableRow(value));
     });
 }
 
 export function reloadHtmlBlacklist(blockedSiteList, oldBlockedSiteList, table) {
-    table.removeAllFromTable();
     let oldList = oldBlockedSiteList.list;
     let list = blockedSiteList.list;
-    $.each(list, function (key, value) {
+    table.removeAllFromTable();
+    list.forEach((value, key) => {
         if (key in oldList)
             table.addToTable(table.generateTableRow(value));
         else

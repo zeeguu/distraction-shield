@@ -1,4 +1,4 @@
-import {setLocalSettings, retrieveBlockedSites, replaceListener} from './background';
+import {setLocalSettings, initBackground} from './background';
 import * as storage from './modules/storage';
 import BlockedSiteList from './classes/BlockedSiteList';
 import UserSettings from './classes/UserSettings';
@@ -65,23 +65,6 @@ function runIntroTour() {
     chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
 }
 
-/* --------------- ---- Run upon Start of session ---- ---------------*/
-
-/**
- * function which fires upon starting the browser. Initiates the session, like listener and list of blocked sites.
- */
-function initSession() {
-    // Settings need to be loaded before the listener is replaced. The replaceListener
-    // requires the blocked sites to be loaded, so these callbacks are required.
-    storage.getSettings(function (settings) {
-        settings.reInitTimer(replaceListener);
-        setLocalSettings(settings);
-        retrieveBlockedSites(replaceListener);
-    });
-    let tracker = new Tracker();
-    tracker.init();
-}
-
 /**
  * function which checks whether we run a normal session or the special case where the onInstalled function is called.
  */
@@ -91,3 +74,16 @@ storage.getSettingsUnParsed(function (settings) {
     }
 });
 
+/* --------------- ---- Run upon Start of session ---- ---------------*/
+
+/**
+ * function which fires upon starting the browser. Initiates the session, like listener and list of blocked sites.
+ */
+function initSession() {
+    storage.getSettings(function (settings) {
+        settings.reInitTimer(setLocalSettings(settings));
+    });
+    let tracker = new Tracker();
+    tracker.init();
+    initBackground();
+}
