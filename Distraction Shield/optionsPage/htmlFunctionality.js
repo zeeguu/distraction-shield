@@ -18,9 +18,9 @@ export function connectButton(html_button, method) {
 }
 /* -------------------- Keypress events ----------------------- */
 
-export function setKeyPressFunctions(html_txtFld, blacklistTable, submitFunc, deleteFunc) {
+export function setKeyPressFunctions(html_txtFld, blacklistTable, submitFunc) {
     submitOnKeyPress(html_txtFld, submitFunc);
-    deleteOnKeyPress(blacklistTable, deleteFunc);
+    deleteOnKeyPress(blacklistTable);
 }
 
 function submitOnKeyPress(html_elem, submitFunc) {
@@ -31,11 +31,10 @@ function submitOnKeyPress(html_elem, submitFunc) {
     });
 }
 
-function deleteOnKeyPress(blacklistTable, deleteFunc) {
+function deleteOnKeyPress(blacklistTable) {
     $('html').keyup((e) => {
         if (e.keyCode === constants.KEY_DELETE) {
-            let html = blacklistTable.getSelected();
-            deleteFunc(html);
+            blacklistTable.deleteSelected();
         }
     });
 }

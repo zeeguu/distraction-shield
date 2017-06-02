@@ -16,27 +16,10 @@ let blockedSites = new BlockedSiteList();
 let localSettings = new UserSettings();
 
 
-/* --------------- ------ setter for local variables ------ ---------------*/
-
-export function setLocalSettings(newSettings) {
-    let oldState = localSettings.state;
-    localSettings = newSettings;
-    if (oldState != localSettings.state) {
-        localSettings.reInitTimer(replaceListener);
-        replaceListener();
-    }
-}
-
-function setLocalBlacklist(newList) {
-    blockedSites.list = newList.list;
-    replaceListener();
-}
-
-/* --------------- ------ webRequest functions ------ ---------------*/
-
-export function replaceListener() {
+//TODO remove old function
+function replaceListenerNEW(blockedSiteList) {
     removeWebRequestListener();
-    let urlList = blockedSites.activeUrls;
+    let urlList = blockedSiteList.activeUrls;
     if (localSettings.state == "On" && urlList.length > 0) {
         addWebRequestListener(urlList);
     }
@@ -96,20 +79,47 @@ function turnOffInterception() {
 }
 
 chrome.storage.onChanged.addListener(changes => {
-    chrome.extension.getBackgroundPage().console.log("changed!");
+    chrome.extension.getBackgroundPage().console.log("changed! updated listener");
     handleStorageChange(changes)
 });
 
 function handleStorageChange(changes){
     if (constants.tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[constants.tds_blacklist].newValue);
-        setLocalBlacklist(newBlockedSiteList);
+        replaceListenerNEW(newBlockedSiteList);
     }
 }
 
 /*
 DEPRECATED
  */
+
+/* --------------- ------ setter for local variables ------ ---------------*/
+
+export function setLocalSettings(newSettings) {
+    let oldState = localSettings.state;
+    localSettings = newSettings;
+    if (oldState != localSettings.state) {
+        localSettings.reInitTimer(replaceListener);
+        replaceListener();
+    }
+}
+
+function setLocalBlacklist(newList) {
+    blockedSites.list = newList.list;
+    replaceListener();
+}
+
+/* --------------- ------ webRequest functions ------ ---------------*/
+
+export function replaceListener() {
+    removeWebRequestListener();
+    let urlList = blockedSites.activeUrls;
+    if (localSettings.state == "On" && urlList.length > 0) {
+        addWebRequestListener(urlList);
+    }
+}
+
 
 /* --------------- ------ Storage retrieval ------ ---------------*/
 
@@ -126,13 +136,8 @@ export function retrieveBlockedSites(callback) {
  * and other scripts.
  */
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.message === "updateListener") {
-        setLocalBlacklist(BlockedSiteList.deserializeBlockedSiteList(request.siteList));
-    } else if (request.message === "updateSettings") {
+    if (request.message === "updateSettings") {
         setLocalSettings(UserSettings.deserializeSettings(request.settings));
-    } else if (request.message === "requestBlockedSites") {
-        let siteList = BlockedSiteList.serializeBlockedSiteList(blockedSites);
-        sendResponse({blockedSiteList: siteList});
     } else if (request.message === "printSettings") {
         console.log(localSettings);
     }

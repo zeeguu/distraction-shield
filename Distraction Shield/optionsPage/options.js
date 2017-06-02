@@ -1,7 +1,6 @@
 import * as storage from '../modules/storage'
 import UserSettings from '../classes/UserSettings'
 import BlockedSiteList from '../classes/BlockedSiteList'
-import * as synchronizer from '../modules/synchronizer'
 import BlacklistTable from './classes/BlacklistTable'
 import TurnOffSlider from './classes/TurnOffSlider'
 import * as connectDataToHtml from './connectDataToHtml'
@@ -26,7 +25,6 @@ let turnOffSlider;
 
 //Local variables that hold all necessary data.
 let settings_object = new UserSettings();
-let blacklist = new BlockedSiteList();
 let interceptionCounter = 0;
 
 /* -------------------- Initialization of options --------------------- */
@@ -38,13 +36,10 @@ let interceptionCounter = 0;
 //TODO use promise
 function initOptionsPage() {
     storage.getAll(function (output) {
+        //TODO local => storageData
         setLocalVariables(output);
         connectHtmlFunctionality();
-        connectLocalDataToHtml();
-        chrome.storage.onChanged.addListener(changes => {
-            chrome.extension.getBackgroundPage().console.log("changed!");
-            handleStorageChange(changes)
-        });
+        connectLocalDataToHtml(output);
     });
 }
 /**
@@ -52,7 +47,6 @@ function initOptionsPage() {
  * @param storage_output the results found by getting everything from the storage
  */
 function setLocalVariables(storage_output) {
-    blacklist.addAllToList(storage_output.tds_blacklist);
     settings_object.copySettings(storage_output.tds_settings);
     interceptionCounter = storage_output.tds_interceptCounter;
 }
@@ -66,8 +60,7 @@ function connectHtmlFunctionality() {
     blacklistTable = new BlacklistTable($('#blacklistTable'));
     htmlFunctionality.connectButton($('#saveBtn'), saveNewUrl);
     turnOffSlider = new TurnOffSlider('#turnOff-slider', settings_object);
-    //TODO change removeBlockedSiteFromAll
-    htmlFunctionality.setKeyPressFunctions($('#textFld'), blacklistTable, saveNewUrl, removeBlockedSiteFromAll);
+    htmlFunctionality.setKeyPressFunctions($('#textFld'), blacklistTable, saveNewUrl);
     htmlFunctionality.connectButton($('#statisticsLink'), openStatisticsPage);
     htmlFunctionality.connectButton($('#feedbackLink'), openFeedbackForm);
     htmlFunctionality.connectButton($('#tourRestartLink'), restartTour);
@@ -76,9 +69,9 @@ function connectHtmlFunctionality() {
 /**
  * connect the data found in the storage to the html_elements on the page
  */
-function connectLocalDataToHtml() {
+function connectLocalDataToHtml(storage_output) {
     connectDataToHtml.loadHtmlInterceptCounter(interceptionCounter, $('#iCounter'));
-    connectDataToHtml.loadHtmlBlacklist(blacklist, blacklistTable);
+    connectDataToHtml.loadHtmlBlacklist(storage_output.tds_blacklist, blacklistTable);
     connectDataToHtml.loadHtmlMode(settings_object.mode, modeGroup);
     connectDataToHtml.loadHtmlInterval(settings_object.interceptionInterval, intervalSlider);
 }
@@ -99,6 +92,11 @@ function handleStorageChange(changes){
 function repaint(blockedSiteList, oldBlockedSiteList){
     connectDataToHtml.reloadHtmlBlacklist(blockedSiteList, oldBlockedSiteList, blacklistTable);
 }
+
+chrome.storage.onChanged.addListener(changes => {
+    chrome.extension.getBackgroundPage().console.log("changed! repainted optionspage");
+    handleStorageChange(changes)
+});
 
 /* -------------------- Manipulate local variables ------------------- */
 
@@ -129,49 +127,3 @@ function openStatisticsPage() {
 document.addEventListener("DOMContentLoaded", function () {
     initOptionsPage();
 });
-
-/*
-DEPRECATED
- */
-
-function removeFromLocalBlacklist(html_item) {
-    return storage.getBlacklistPromise().then((result) => {
-        blacklist = result;
-        let blockedSiteToDelete = html_item.data('blockedSite');
-        // Remove the blockedSite from the blacklist. There is also a method in BlockedSiteList which does this, but it
-        // does not work somehow. Checking whether the domains are equal does seem to work though.
-        blacklist.list = blacklist.list.filter(item => item.domain != blockedSiteToDelete.domain);
-        return true;
-    });
-}
-
-function addToLocalBlacklist(blockedSite_item) {
-    return storage.getBlacklistPromise().then((result) => {
-        blacklist = result;
-        return blacklist.addToList(blockedSite_item);
-    });
-}
-
-/* -------------------- Sync manipulation with other pages and places ------------------- */
-
-function removeBlockedSiteFromAll(html_item) {
-    removeFromLocalBlacklist(html_item).then((result) => {
-        if (result) {
-            blacklistTable.removeFromTable(html_item);
-            syncBlockedSiteList();
-        }
-    });
-}
-
-function addBlockedSiteToAll(newItem) {
-    addToLocalBlacklist(newItem).then((result) => {
-        if (result) {
-            blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
-            syncBlockedSiteList();
-        }
-    });
-}
-
-function syncBlockedSiteList() {
-    synchronizer.syncBlacklist(blacklist);
-}
