@@ -87,6 +87,19 @@ function handleStorageChange(changes){
     if (constants.tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[constants.tds_blacklist].newValue);
         replaceListenerNEW(newBlockedSiteList);
+    } else if (constants.tds_settings in changes) {
+        let newSettings = UserSettings.deserializeSettings(changes[constants.tds_settings].newValue);
+        if (localSettings.state != newSettings.state) {
+            if (newSettings.state == "On") {
+                storage.getBlacklist(blacklist => {
+                    replaceListenerNEW(blacklist);
+                })
+            } else {
+                newSettings.reInitTimer();
+            }
+        }
+        localSettings = newSettings;
+        console.log(newSettings);
     }
 }
 

@@ -6,7 +6,7 @@ import TurnOffSlider from './classes/TurnOffSlider'
 import * as connectDataToHtml from './connectDataToHtml'
 import * as htmlFunctionality from './htmlFunctionality'
 import * as blockedSiteBuilder from '../modules/blockedSiteBuilder'
-import {feedbackLink, tds_blacklist} from '../constants'
+import {feedbackLink, tds_blacklist, tds_settings, tds_interceptCounter} from '../constants'
 import {openTabSingleton} from '../modules/tabutil'
 
 /**
@@ -24,6 +24,7 @@ let intervalSlider;
 let turnOffSlider;
 
 //Local variables that hold all necessary data.
+//TODO deprecate
 let settings_object = new UserSettings();
 let interceptionCounter = 0;
 
@@ -37,8 +38,7 @@ let interceptionCounter = 0;
 function initOptionsPage() {
     storage.getAll(function (output) {
         //TODO local => storageData
-        setLocalVariables(output);
-        connectHtmlFunctionality();
+        connectHtmlFunctionality(output.tds_settings);
         connectLocalDataToHtml(output);
     });
 }
@@ -46,6 +46,7 @@ function initOptionsPage() {
  * Retrieve data from storage and store in local variables
  * @param storage_output the results found by getting everything from the storage
  */
+//TODO Deprecate
 function setLocalVariables(storage_output) {
     settings_object.copySettings(storage_output.tds_settings);
     interceptionCounter = storage_output.tds_interceptCounter;
@@ -54,12 +55,12 @@ function setLocalVariables(storage_output) {
 /**
  * connect the funcitonality to the different htl_elements on the optionspage.
  */
-function connectHtmlFunctionality() {
-    htmlFunctionality.initModeSelection(modeGroup, settings_object);
-    intervalSlider = htmlFunctionality.initIntervalSlider(settings_object);
+function connectHtmlFunctionality(userSettings) {
+    htmlFunctionality.initModeSelection(modeGroup, userSettings);
+    intervalSlider = htmlFunctionality.initIntervalSlider(userSettings);
     blacklistTable = new BlacklistTable($('#blacklistTable'));
     htmlFunctionality.connectButton($('#saveBtn'), saveNewUrl);
-    turnOffSlider = new TurnOffSlider('#turnOff-slider', settings_object);
+    turnOffSlider = new TurnOffSlider('#turnOff-slider', userSettings);
     htmlFunctionality.setKeyPressFunctions($('#textFld'), blacklistTable, saveNewUrl);
     htmlFunctionality.connectButton($('#statisticsLink'), openStatisticsPage);
     htmlFunctionality.connectButton($('#feedbackLink'), openFeedbackForm);
@@ -85,11 +86,22 @@ function handleStorageChange(changes){
     if (tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
         let oldBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].oldValue);
-        repaint(newBlockedSiteList,oldBlockedSiteList);
+        repaintTable(newBlockedSiteList,oldBlockedSiteList);
+    } if (tds_settings in changes) {
+        let newSettings = UserSettings.deserializeSettings(changes[tds_settings].newValue);
+        repaintSettings(newSettings);
+    } if (tds_interceptCounter) {
+        connectDataToHtml.loadHtmlInterceptCounter(changes[tds_interceptCounter].newValue, $('#iCounter'));
     }
 }
 
-function repaint(blockedSiteList, oldBlockedSiteList){
+function repaintSettings(userSettings) {
+    connectDataToHtml.loadHtmlMode(userSettings.mode, modeGroup);
+    connectDataToHtml.loadHtmlInterval(userSettings.interceptionInterval, intervalSlider);
+    turnOffSlider.updateSettings(userSettings);
+}
+
+function repaintTable(blockedSiteList, oldBlockedSiteList){
     connectDataToHtml.reloadHtmlBlacklist(blockedSiteList, oldBlockedSiteList, blacklistTable);
 }
 

@@ -78,7 +78,7 @@ export default class UserSettings {
         if (this.state == "On") {
             this.status = {state: false, setAt: new Date(), offTill: this.status.offTill};
             if (timer) {
-                this.setTimer(callback);
+                this.setTimer(/*callback*/);
             }
         } else {
             console.log("Already turned off, should not happen!");
@@ -106,19 +106,19 @@ export default class UserSettings {
         }
     }
 
-    turnExtensionBackOn(callback) {
+    turnExtensionBackOn(/*callback*/) {
         return () => {
             if (this.state == "Off") {
                 this.turnOn();
                 storage.setSettings(this);
-                callback();
+                //callback();
             }
         };
     }
 
-    setTimer(callback) {
+    setTimer(/*callback*/) {
         let timerInMS = this.status.offTill - new Date();
-        setTimeout(this.turnExtensionBackOn(callback), timerInMS);
+        setTimeout(this.turnExtensionBackOn(/*callback*/), timerInMS);
     }
 
     copySettings(settingsObject) {
@@ -132,9 +132,9 @@ export default class UserSettings {
             if (this.offTill < new Date()) {
                 this.turnOn();
                 storage.setSettings(this);
-                callback();
+                //callback();
             } else {
-                this.setTimer(callback);
+                this.setTimer(/*callback*/);
             }
         }
     }

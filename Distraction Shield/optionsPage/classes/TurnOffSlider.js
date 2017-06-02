@@ -1,6 +1,7 @@
 import GreenToRedSlider from './GreenToRedSlider'
 import * as constants from '../../constants'
 import * as synchronizer from '../../modules/synchronizer'
+import * as storage from '../../modules/storage'
 import * as htmlFunctionality from '../htmlFunctionality'
 
 /**
@@ -72,6 +73,12 @@ export default class TurnOffSlider extends GreenToRedSlider {
         return returnVal;
     };
 
+    updateSettings(userSettings) {
+        this.settings_object = userSettings;
+        this.toggleShowOffMessage();
+        this.offButton.text("Turn " + this.settings_object.notState);
+    }
+
     turnOff() {
         let parent = this.turnOffSlider;
         let settings_object = parent.settings_object;
@@ -86,6 +93,8 @@ export default class TurnOffSlider extends GreenToRedSlider {
         }
         parent.toggleShowOffMessage();
         $(this).text("Turn " + settings_object.notState);
-        synchronizer.syncSettings(settings_object);
+        storage.setSettings(settings_object);
+        //TODO remove this
+        //synchronizer.syncSettings(settings_object);
     }
 }

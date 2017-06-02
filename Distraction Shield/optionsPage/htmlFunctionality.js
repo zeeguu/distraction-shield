@@ -1,6 +1,7 @@
 import GreenToRedSlider from './classes/GreenToRedSlider'
 import * as constants from '../constants'
 import * as synchronizer from '../modules/synchronizer'
+import * as storage from '../modules/storage'
 
 /**
  * This file contains the specific functionality for the options and some of its elements
@@ -48,7 +49,9 @@ export function initModeSelection(buttonGroup, settings_object) {
         } else {
             settings_object.mode = constants.modes.lazy;
         }
-        synchronizer.syncSettings(settings_object);
+        storage.setSettings(settings_object);
+        //TODO remove this
+        //synchronizer.syncSettings(settings_object);
     });
 }
 /* -------------------- Interval slider -------------------- */
@@ -56,6 +59,8 @@ export function initModeSelection(buttonGroup, settings_object) {
 export function initIntervalSlider(settings_object) {
     return new GreenToRedSlider('#interval-slider', function (value) {
         settings_object.interceptionInterval = parseInt(value);
-        synchronizer.syncSettings(settings_object);
+        storage.setSettings(settings_object);
+        //TODO remove this
+        // synchronizer.syncSettings(settings_object);
     });
 }
