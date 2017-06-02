@@ -6,6 +6,7 @@ import * as constants from "../../constants"
  */
 export default class GreenToRedSlider {
 
+    //TODO replace saveFunction with storage interaction.
     constructor(sliderID, saveFunction) {
         this.saveValue = saveFunction;
         this.sliderDiv = $(sliderID);
@@ -18,7 +19,7 @@ export default class GreenToRedSlider {
     setOnEventFunc() {
         this.sliderRange.on('input', () => {
             let inputValue = this.sliderRange.val();
-            this.sliderValue.html(GreenToRedSlider.calculateHours(inputValue));
+            this.sliderValue.html(this.calculateHours(inputValue));
             this.updateColor(inputValue);
         });
 
@@ -52,21 +53,25 @@ export default class GreenToRedSlider {
 
     setValue(val) {
         this.sliderRange.val(val);
-        this.sliderValue.html(GreenToRedSlider.calculateHours(val));
+        this.sliderValue.html(this.calculateHours(val));
         this.updateColor(val);
     }
 
     /**
      * format a value in minutes to Hours and minutes.
      */
-    static calculateHours(val) {
+    calculateHours(val) {
         let hours = Math.floor(val / 60);
         let minutes = val % 60;
-        if (minutes < 10 && hours > 0) {
+        if (minutes < 10 && hours > 0)
             minutes = "0" + minutes;
-        }
+        return this.createMessage(hours, minutes, val);
+    }
+
+    createMessage(hours, minutes){
         return (hours > 0 ? hours + ":" + minutes + " hours" : minutes + " minute(s)");
     }
+
 
     /**
      * function that checks the validity of the value inputted in the editable span

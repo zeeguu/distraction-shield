@@ -54,8 +54,8 @@ export default class UserSettings {
         return this.status.state ? "On" : "Off";
     }
 
-    get notState() {
-        return this._status.state ? "Off" : "On";
+    isOn(){
+        return this.status.state;
     }
 
     /**
@@ -75,7 +75,7 @@ export default class UserSettings {
      * @param {function} callback function to be called once the timer has finished (null when timer == false)
      */
     turnOff(timer, callback) {
-        if (this.state == "On") {
+        if (this.isOn()) {
             this.status = {state: false, setAt: new Date(), offTill: this.status.offTill};
             if (timer) {
                 this.setTimer(/*callback*/);
@@ -119,12 +119,6 @@ export default class UserSettings {
     setTimer(/*callback*/) {
         let timerInMS = this.status.offTill - new Date();
         setTimeout(this.turnExtensionBackOn(/*callback*/), timerInMS);
-    }
-
-    copySettings(settingsObject) {
-        this._status = settingsObject.status;
-        this._interceptionInterval = settingsObject.interceptionInterval;
-        this._mode = settingsObject.mode;
     }
 
     reInitTimer(callback) {

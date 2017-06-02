@@ -99,7 +99,6 @@ function handleStorageChange(changes){
             }
         }
         localSettings = newSettings;
-        console.log(newSettings);
     }
 }
 

@@ -34,22 +34,11 @@ let interceptionCounter = 0;
  * Initialize HTML elements and set the local variables
  */
 
-//TODO use promise
 function initOptionsPage() {
     storage.getAll(function (output) {
-        //TODO local => storageData
         connectHtmlFunctionality(output.tds_settings);
-        connectLocalDataToHtml(output);
+        connectStorageDataToHtml(output);
     });
-}
-/**
- * Retrieve data from storage and store in local variables
- * @param storage_output the results found by getting everything from the storage
- */
-//TODO Deprecate
-function setLocalVariables(storage_output) {
-    settings_object.copySettings(storage_output.tds_settings);
-    interceptionCounter = storage_output.tds_interceptCounter;
 }
 
 /**
@@ -59,20 +48,24 @@ function connectHtmlFunctionality(userSettings) {
     htmlFunctionality.initModeSelection(modeGroup, userSettings);
     intervalSlider = htmlFunctionality.initIntervalSlider(userSettings);
     blacklistTable = new BlacklistTable($('#blacklistTable'));
+    turnOffSlider = new TurnOffSlider('#turnOff-slider');
+    htmlFunctionality.connectButton($('#turnOff-slider-offBtn'), turnOffSlider.offButtonFunc);
     htmlFunctionality.connectButton($('#saveBtn'), saveNewUrl);
-    turnOffSlider = new TurnOffSlider('#turnOff-slider', userSettings);
-    htmlFunctionality.setKeyPressFunctions($('#textFld'), blacklistTable, saveNewUrl);
     htmlFunctionality.connectButton($('#statisticsLink'), openStatisticsPage);
     htmlFunctionality.connectButton($('#feedbackLink'), openFeedbackForm);
     htmlFunctionality.connectButton($('#tourRestartLink'), restartTour);
+    htmlFunctionality.setKeyPressFunctions($('#textFld'), blacklistTable, saveNewUrl);
 }
 
 /**
  * connect the data found in the storage to the html_elements on the page
  */
-function connectLocalDataToHtml(storage_output) {
+function connectStorageDataToHtml(storage_output) {
+    let blockedSiteList = storage_output.tds_blacklist;
+    let settings_object = storage_output.tds_settings;
+    let interceptionCounter = storage_output.tds_interceptCounter;
     connectDataToHtml.loadHtmlInterceptCounter(interceptionCounter, $('#iCounter'));
-    connectDataToHtml.loadHtmlBlacklist(storage_output.tds_blacklist, blacklistTable);
+    connectDataToHtml.loadHtmlBlacklist(blockedSiteList, blacklistTable);
     connectDataToHtml.loadHtmlMode(settings_object.mode, modeGroup);
     connectDataToHtml.loadHtmlInterval(settings_object.interceptionInterval, intervalSlider);
 }
@@ -90,7 +83,7 @@ function handleStorageChange(changes){
     } if (tds_settings in changes) {
         let newSettings = UserSettings.deserializeSettings(changes[tds_settings].newValue);
         repaintSettings(newSettings);
-    } if (tds_interceptCounter) {
+    } if (tds_interceptCounter in changes) {
         connectDataToHtml.loadHtmlInterceptCounter(changes[tds_interceptCounter].newValue, $('#iCounter'));
     }
 }
@@ -98,7 +91,6 @@ function handleStorageChange(changes){
 function repaintSettings(userSettings) {
     connectDataToHtml.loadHtmlMode(userSettings.mode, modeGroup);
     connectDataToHtml.loadHtmlInterval(userSettings.interceptionInterval, intervalSlider);
-    turnOffSlider.updateSettings(userSettings);
 }
 
 function repaintTable(blockedSiteList, oldBlockedSiteList){
