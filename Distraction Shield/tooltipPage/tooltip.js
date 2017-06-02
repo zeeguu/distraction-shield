@@ -125,7 +125,7 @@ function setSaveButtonFunctionality() {
 }
 
 chrome.storage.onChanged.addListener(changes => {
-    chrome.extension.getBackgroundPage().console.log("changed!");
+    chrome.extension.getBackgroundPage().console.log("changed! updated saveButton");
     handleStorageChange(changes)
 });
 

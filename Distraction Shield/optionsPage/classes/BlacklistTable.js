@@ -5,7 +5,6 @@ import {removeBlockedSiteFromStorage, updateBlockedSiteInStorage, getBlacklistPr
  * Every row has the corresponding BlockedSite Object attached to it in order to have easy acces and manipulation.
  */
 export default class BlacklistTable {
-    //TODO remove sync & remove function
     constructor(html_element) {
         this.table = html_element;
         this.setCheckboxFunction();
@@ -33,6 +32,12 @@ export default class BlacklistTable {
 
     getSelected() {
         return this.table.find('.highlight');
+    }
+
+    deleteSelected(){
+        let selected_row = this.getSelected();
+        let selected_blockedSite = selected_row.data('blockedSite');
+        removeBlockedSiteFromStorage(selected_blockedSite);
     }
 
     /**
