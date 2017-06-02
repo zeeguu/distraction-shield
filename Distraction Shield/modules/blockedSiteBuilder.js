@@ -13,9 +13,7 @@ export function createNewBlockedSite(newUrl) {
     return new Promise((resolve, reject) => {
         getUrlFromServer(newUrl, (url, title) => {
             let blockedSite = new BlockedSite(url, title);
-            return addBlockedSiteToStorage(blockedSite)
-                .then(resolve)
-                .catch(reject(reason));
+            return addBlockedSiteToStorage(blockedSite);
         });
     });
 }

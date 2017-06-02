@@ -123,7 +123,7 @@ export function setInterceptDateList(dateList) {
 }
 
 export function getExerciseTimeList() {
-    return getStorage(constants.tds_exerciseTime);
+    return getStorage([constants.tds_exerciseTime]);
 }
 
 export function setExerciseTimeList(statList) {
