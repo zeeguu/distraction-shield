@@ -1,12 +1,16 @@
 /* ---------- ----- background ----- ---------- */
+
+/* ---------- ----- background ----- ---------- */
 export const zeeguuExLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
 export const zeeguuExTracker = "www.zeeguu.unibe.ch/practice/get-ex";
+export const exerciseCompleteRegex = /(\?|&)tds_exComplete=true/;
 
 /* ---------- ----- optionspage----- ---------- */
 export const feedbackLink = "https://docs.google.com/forms/d/e/1FAIpQLScHTpTaGD19HJd4d7k98FV_20-NwRV0dp9xNMWza7_1KsiGag/viewform";
 
 /* ---------- ----- BlockedSite ----- ---------- */
 export const FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
+
 /* ---------- ----- export const ants for statistics ----- ---------- */
 
 // The time in seconds after which a user is considered to be idle. Important for tracking the amount of time spent on a url.
@@ -61,9 +65,7 @@ export const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 /* ---------- ----- turnoffSlider ----- ---------- */
 export const MAX_TURN_OFF_TIME = 480;
 
-
 /* ---------- ----- Storage constants ----- ---------- */
-
 export const tds_all = null;
 export const tds_blacklist = "tds_blacklist";
 export const tds_settings = "tds_settings";

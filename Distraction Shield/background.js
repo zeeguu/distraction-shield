@@ -14,7 +14,6 @@ function replaceListener(blockedSiteList) {
     })
 }
 
-
 function addWebRequestListener(urlList) {
     chrome.webRequest.onBeforeRequest.addListener(
         handleInterception
@@ -45,14 +44,14 @@ function intercept(details) {
 
 /**
  * Function which fires when we enter a website on the blockedsite list.
- * If we coe from zeeguu and have completed an exercise than we may continue, else we redirect.
+ * If we come from zeeguu and have completed an exercise than we may continue, else we redirect.
  * @param details the details found by the onWebRequestListener about the current webRequest
  */
 function handleInterception(details) {
     //TODO magic string!
-    if (details.url.indexOf("tds_exComplete=true") > -1) {
+    if (constants.exerciseCompleteRegex.match(details.url)) {
         turnOffInterception(() => {
-            let url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
+            let url = details.url.replace(constants.exerciseCompleteRegex, "");
             chrome.extension.getBackgroundPage().console.log('turned off!', url);
             return {redirectUrl: url};
         });
