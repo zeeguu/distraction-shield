@@ -16,6 +16,8 @@ export default class UserSettings {
 
         this._mode = constants.modes.lazy;
         this._interceptionInterval = 1;
+
+        this._collectData = true;
     }
 
     set interceptionInterval(val) {
@@ -42,6 +44,14 @@ export default class UserSettings {
         return this._status;
     }
 
+    set collectData (collectData) {
+        this._collectData = collectData;
+    }
+
+    get collectData () {
+        return this._collectData;
+    }
+
     get offTill() {
         return this._status.offTill;
     }
@@ -57,6 +67,8 @@ export default class UserSettings {
     get notState() {
         return this._status.state ? "Off" : "On";
     }
+
+
 
     /**
      * Turn the interception back on
@@ -125,6 +137,7 @@ export default class UserSettings {
         this._status = settingsObject.status;
         this._interceptionInterval = settingsObject.interceptionInterval;
         this._mode = settingsObject.mode;
+        this._collectData = settingsObject.collectData;
     }
 
     reInitTimer(callback) {
@@ -152,6 +165,7 @@ export default class UserSettings {
         s.status = parsedSettingsObject._status;
         s.interceptionInterval = parsedSettingsObject._interceptionInterval;
         s.mode = parsedSettingsObject._mode;
+        s.collectData = parsedSettingsObject._collectData;
         return s;
     }
 

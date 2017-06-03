@@ -18,6 +18,7 @@ import {openTabSingleton} from '../modules/tabutil'
  * found here
  */
 let modeGroup = "modeOptions";
+let collectData = "collectData";
 
 let blacklistTable;
 let intervalSlider;
@@ -55,6 +56,7 @@ function setLocalVariables(storage_output) {
  */
 function connectHtmlFunctionality() {
     htmlFunctionality.initModeSelection(modeGroup, settings_object);
+    htmlFunctionality.initCollectData(collectData, settings_object);
     intervalSlider = htmlFunctionality.initIntervalSlider(settings_object);
     blacklistTable = new BlacklistTable($('#blacklistTable'), syncBlockedSiteList, removeBlockedSiteFromAll);
     htmlFunctionality.connectButton($('#saveBtn'), saveNewUrl);
@@ -73,6 +75,7 @@ function connectLocalDataToHtml() {
     connectDataToHtml.loadHtmlBlacklist(blacklist, blacklistTable);
     connectDataToHtml.loadHtmlMode(settings_object.mode, modeGroup);
     connectDataToHtml.loadHtmlInterval(settings_object.interceptionInterval, intervalSlider);
+    connectDataToHtml.loadHtmlCollectData(collectData, settings_object.collectData);
 }
 
 /* -------------------- Manipulate local variables ------------------- */
