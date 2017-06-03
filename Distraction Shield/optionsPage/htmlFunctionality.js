@@ -1,6 +1,5 @@
 import GreenToRedSlider from './classes/GreenToRedSlider'
 import * as constants from '../constants'
-import * as synchronizer from '../modules/synchronizer'
 import * as storage from '../modules/storage'
 
 /**

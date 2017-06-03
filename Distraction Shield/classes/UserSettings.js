@@ -69,66 +69,66 @@ export default class UserSettings {
         }
     }
 
+
+    //TODO rename vague 'timer' boolean
     /**
      * Turn interception off
      * @param {boolean} timer should we set a timer, for when to turn on? (true for background, false for third party page)
      * @param {function} callback function to be called once the timer has finished (null when timer == false)
      */
-    turnOff(timer, callback) {
+    turnOff(timer) {
         if (this.isOn()) {
             this.status = {state: false, setAt: new Date(), offTill: this.status.offTill};
             if (timer) {
-                this.setTimer(/*callback*/);
+                this.setTimer();
             }
         } else {
             console.log("Already turned off, should not happen!");
         }
     }
 
-    turnOffFor(minutes, timer, callback) {
+    turnOffFor(minutes, timer) {
         let curDate = new Date();
         this.offTill = new Date(curDate.setMinutes(minutes + curDate.getMinutes()));
-        this.turnOff(timer, callback);
+        this.turnOff(timer);
     }
 
-    turnOffForDay(timer, callback) {
+    turnOffForDay(timer) {
         this.offTill = new Date(new Date().setHours(24, 0, 0, 0));
-        this.turnOff(timer, callback);
+        this.turnOff(timer);
     }
 
     /**
      * Special case needed for turning the extension off from the background
-     * @param {function} callback callbac function to be called once the timer turns interception back on
      */
     turnOffFromBackground(callback) {
-        if (this.state == "On") {
-            this.turnOffFor(this.interceptionInterval, true, callback);
+        if (this.isOn()) {
+            this.turnOffFor(this.interceptionInterval, true);
+            storage.setSettings(this).then(callback);
         }
     }
 
-    turnExtensionBackOn(/*callback*/) {
+    turnExtensionBackOn() {
         return () => {
-            if (this.state == "Off") {
+            if (!this.isOn()) {
                 this.turnOn();
                 storage.setSettings(this);
-                //callback();
             }
         };
     }
 
-    setTimer(/*callback*/) {
+    setTimer() {
         let timerInMS = this.status.offTill - new Date();
-        setTimeout(this.turnExtensionBackOn(/*callback*/), timerInMS);
+        setTimeout(this.turnExtensionBackOn(), timerInMS);
     }
 
-    reInitTimer(callback) {
-        if (this.state == "Off") {
+    reInitTimer() {
+        if (!this.isOn()) {
             if (this.offTill < new Date()) {
                 this.turnOn();
                 storage.setSettings(this);
-                //callback();
             } else {
-                this.setTimer(/*callback*/);
+                this.setTimer();
             }
         }
     }

@@ -23,11 +23,6 @@ let blacklistTable;
 let intervalSlider;
 let turnOffSlider;
 
-//Local variables that hold all necessary data.
-//TODO deprecate
-let settings_object = new UserSettings();
-let interceptionCounter = 0;
-
 /* -------------------- Initialization of options --------------------- */
 
 /**
@@ -98,7 +93,6 @@ function repaintTable(blockedSiteList, oldBlockedSiteList){
 }
 
 chrome.storage.onChanged.addListener(changes => {
-    chrome.extension.getBackgroundPage().console.log("changed! repainted optionspage");
     handleStorageChange(changes)
 });
 

@@ -94,7 +94,7 @@ export function getSettingsUnParsed(callback) {
     });
 }
 export function setSettings(settingsObject) {
-    setStorage(constants.tds_settings, UserSettings.serializeSettings(settingsObject));
+    return setStorage(constants.tds_settings, UserSettings.serializeSettings(settingsObject));
 }
 export function setSettingsWithCallback(settingsObject, callback) {
     let serializedSettings = UserSettings.serializeSettings(settingsObject);

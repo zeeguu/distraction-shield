@@ -4,26 +4,16 @@ import * as storage from './modules/storage';
 import UserSettings from  './classes/UserSettings'
 import * as constants from'./constants';
 
-/**
- * The BlockedSiteList used by the background
- * @type {BlockedSiteList}
- */
-let blockedSites = new BlockedSiteList();
-/**
- * The UserSettings used by the background scrript.
- * @type {UserSettings}
- */
-let localSettings = new UserSettings();
-
-
-//TODO remove old function
-function replaceListenerNEW(blockedSiteList) {
+function replaceListener(blockedSiteList) {
     removeWebRequestListener();
-    let urlList = blockedSiteList.activeUrls;
-    if (localSettings.state == "On" && urlList.length > 0) {
-        addWebRequestListener(urlList);
-    }
+    storage.getSettings(settings_object => {
+        let urlList = blockedSiteList.activeUrls;
+        if (settings_object.isOn() && urlList.length > 0) {
+            addWebRequestListener(urlList);
+        }
+    })
 }
+
 
 function addWebRequestListener(urlList) {
     chrome.webRequest.onBeforeRequest.addListener(
@@ -59,89 +49,50 @@ function intercept(details) {
  * @param details the details found by the onWebRequestListener about the current webRequest
  */
 function handleInterception(details) {
-    if (localSettings.state == "On") {
-        if (details.url.indexOf("tds_exComplete=true") > -1) {
-            turnOffInterception();
+    //TODO magic string!
+    if (details.url.indexOf("tds_exComplete=true") > -1) {
+        turnOffInterception(() => {
             let url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
+            chrome.extension.getBackgroundPage().console.log('turned off!', url);
             return {redirectUrl: url};
-        } else {
-            return intercept(details);
-        }
+        });
+
+    } else {
+        return intercept(details);
     }
 }
 
 /**
  * turns off interception from the background
  */
-function turnOffInterception() {
-    localSettings.turnOffFromBackground(replaceListener);
-    storage.setSettings(localSettings);
+function turnOffInterception(callback) {
+    storage.getSettings(settings_object => {
+        settings_object.turnOffFromBackground(callback);
+    })
 }
 
 chrome.storage.onChanged.addListener(changes => {
-    chrome.extension.getBackgroundPage().console.log("changed! updated listener");
     handleStorageChange(changes)
 });
 
 function handleStorageChange(changes){
     if (constants.tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[constants.tds_blacklist].newValue);
-        replaceListenerNEW(newBlockedSiteList);
-    } else if (constants.tds_settings in changes) {
+        let oldBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[constants.tds_blacklist].oldValue);
+        if (newBlockedSiteList.length !== oldBlockedSiteList.length)
+            replaceListener(newBlockedSiteList);
+    }
+    if (constants.tds_settings in changes) {
         let newSettings = UserSettings.deserializeSettings(changes[constants.tds_settings].newValue);
-        if (localSettings.state != newSettings.state) {
-            if (newSettings.state == "On") {
-                storage.getBlacklist(blacklist => {
-                    replaceListenerNEW(blacklist);
-                })
-            } else {
-                newSettings.reInitTimer();
-            }
+        if (!newSettings.isOn()) {
+            removeWebRequestListener();
+            newSettings.reInitTimer();
         }
-        localSettings = newSettings;
     }
 }
 
 export function initBackground(){
     storage.getAll(function (output) {
-        replaceListenerNEW(output.tds_blacklist);
+        replaceListener(output.tds_blacklist);
     });
 }
-
-/*
-DEPRECATED
- */
-
-/* --------------- ------ setter for local variables ------ ---------------*/
-
-export function setLocalSettings(newSettings) {
-    let oldState = localSettings.state;
-    localSettings = newSettings;
-    if (oldState != localSettings.state) {
-        localSettings.reInitTimer(replaceListener);
-        replaceListener();
-    }
-}
-
-/* --------------- ------ webRequest functions ------ ---------------*/
-
-export function replaceListener() {
-    removeWebRequestListener();
-    let urlList = blockedSites.activeUrls;
-    if (localSettings.state == "On" && urlList.length > 0) {
-        addWebRequestListener(urlList);
-    }
-}
-
-/* --------------- ------ Message Listener ------ ---------------*/
-/**
- * Message listener. This listens to message from third party papers, enabling communication between the background scripts
- * and other scripts.
- */
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.message === "updateSettings") {
-        setLocalSettings(UserSettings.deserializeSettings(request.settings));
-    } else if (request.message === "printSettings") {
-        console.log(localSettings);
-    }
-});

@@ -1,4 +1,4 @@
-import {setLocalSettings, initBackground} from './background';
+import {initBackground} from './background';
 import * as storage from './modules/storage';
 import BlockedSiteList from './classes/BlockedSiteList';
 import UserSettings from './classes/UserSettings';
@@ -81,7 +81,7 @@ storage.getSettingsUnParsed(function (settings) {
  */
 function initSession() {
     storage.getSettings(function (settings) {
-        settings.reInitTimer(setLocalSettings(settings));
+        settings.reInitTimer();
     });
     let tracker = new Tracker();
     tracker.init();

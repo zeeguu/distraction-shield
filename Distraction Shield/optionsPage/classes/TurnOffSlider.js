@@ -22,7 +22,6 @@ export default class TurnOffSlider extends GreenToRedSlider {
         this.setValue(this.sliderRange.val());
         this.init();
         chrome.storage.onChanged.addListener(changes => {
-            chrome.extension.getBackgroundPage().console.log("changed! updated slider");
             this.handleStorageChange(changes)
         });
     }
@@ -67,7 +66,7 @@ export default class TurnOffSlider extends GreenToRedSlider {
 
     updateSettings(userSettings) {
         this.toggleShowOffMessage(userSettings);
-        this.offButton.text("Turn " + (userSettings.isOn() ? "On" : "Off"));
+        this.offButton.text("Turn " + (userSettings.isOn() ? "Off" : "On"));
     }
 
     offButtonFunc() {
@@ -76,9 +75,9 @@ export default class TurnOffSlider extends GreenToRedSlider {
             let slider = this.slider;
             if (settings_object.isOn()) {
                 if (slider.selectedTime === constants.MAX_TURN_OFF_TIME) {
-                    settings_object.turnOffForDay(false);
+                    settings_object.turnOffForDay();
                 } else {
-                    settings_object.turnOffFor(slider.selectedTime, false);
+                    settings_object.turnOffFor(slider.selectedTime);
                 }
             } else {
                 settings_object.turnOn();
