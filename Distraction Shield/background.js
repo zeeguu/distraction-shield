@@ -4,6 +4,13 @@ import * as storage from "./modules/storage";
 import UserSettings from "./classes/UserSettings";
 import * as constants from "./constants";
 
+/**
+ * Unfortunately are webrequestlisteners not able to process asynchronous functions.
+ * Therefore we need a global variable to keep track of the state of the extension.
+ * @type {boolean}
+ */
+let isOn = true;
+
 function replaceListener(blockedSiteList) {
     removeWebRequestListener();
     storage.getSettings(settings_object => {
@@ -49,21 +56,20 @@ function intercept(details) {
  * @param details the details found by the onWebRequestListener about the current webRequest
  */
 function handleInterception(details) {
-    //TODO magic string!
-    if (details.url.indexOf("tds_exComplete=true") > -1) {
-        turnOffInterception();
-        removeWebRequestListener();
-        let url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
-        return {redirectUrl: url};
-    } else {
-        return intercept(details);
-    }
+    if (isOn)
+        if (details.url.indexOf("tds_exComplete=true") > -1) {  //TODO magic string!
+            let url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
+            turnOffInterception();
+            return {redirectUrl: url};
+        } else
+            return intercept(details);
 }
 
 /**
  * turns off interception from the background
  */
 function turnOffInterception() {
+    isOn = false;
     storage.getSettings(settings_object => {
         settings_object.turnOffFromBackground();
     })
@@ -83,6 +89,7 @@ function handleStorageChange(changes){
     if (constants.tds_settings in changes) {
         let newSettings = UserSettings.deserializeSettings(changes[constants.tds_settings].newValue);
         let oldSettings = UserSettings.deserializeSettings(changes[constants.tds_settings].oldValue);
+        isOn = newSettings.isOn();
         if (!newSettings.isOn()) {
             removeWebRequestListener();
             newSettings.reInitTimer();

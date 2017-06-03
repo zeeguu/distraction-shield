@@ -136,7 +136,6 @@ export function setExerciseTimeList(statList) {
 export function addBlockedSiteToStorage(blocked_site){
     return getBlacklistPromise().then(blacklist => {
         if (blacklist.addToList(blocked_site)){
-            chrome.extension.getBackgroundPage().console.log(`added ${blocked_site.name}`);
             return setBlacklist(blacklist);
         } else
             return Promise.reject('not unique');
@@ -146,7 +145,6 @@ export function addBlockedSiteToStorage(blocked_site){
 export function removeBlockedSiteFromStorage(blocked_site){
     return getBlacklistPromise().then(blacklist => {
         blacklist.removeFromList(blocked_site);
-        chrome.extension.getBackgroundPage().console.log(`removed ${blocked_site.name}`);
         return setBlacklist(blacklist);
     });
 }
@@ -154,7 +152,6 @@ export function removeBlockedSiteFromStorage(blocked_site){
 export function updateBlockedSiteInStorage(blocked_site){
     return getBlacklistPromise().then(blacklist => {
         blacklist.updateInList(blocked_site);
-        chrome.extension.getBackgroundPage().console.log(`changed ${blocked_site.name}`);
         return setBlacklist(blacklist);
     });
 }

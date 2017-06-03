@@ -1,8 +1,10 @@
 import BlacklistStatsTable from './classes/BlacklistStatsTable'
 import ExerciseTimeTable from './classes/ExerciseTimeTable'
 import InterceptionCounterTable from './classes/InterceptionCounterTable'
+import BlockedSiteList from '../classes/BlockedSiteList.js'
 import * as storage from '../modules/storage'
 import * as interception from '../modules/statistics/interception'
+import {tds_blacklist, tds_interceptDateList, tds_exerciseTime} from '../constants'
 
 let interceptionCounterTable = null;
 let blacklistTable = null;
@@ -24,12 +26,17 @@ function initStatisticsPage() {
             let interceptDateList = response[0].tds_interceptDateList;
             let blacklist = response[2];
             let exerciseTime = response[1];
-            let counters = interception.calcInterceptData(interceptDateList);
 
-            interceptionCounterTable.setDataAndRender(counters);
+
+            setInterceptionCounterTable(interceptDateList);
             blacklistTable.setDataAndRender(blacklist);
             exerciseTimeTable.setDataAndRender(exerciseTime);
         });
+}
+
+function setInterceptionCounterTable(interceptDateList){
+    let counters = interception.calcInterceptData(interceptDateList);
+    interceptionCounterTable.setDataAndRender(counters);
 }
 
 /**
@@ -41,7 +48,19 @@ function connectHtmlFunctionality() {
     exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
 }
 
+
+//TODO extend repainting.
 function handleStorageChange(changes){
+    if (tds_blacklist in changes) {
+        let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
+        blacklistTable.repaint(newBlockedSiteList);
+    }
+    // if (tds_exerciseTime in changes)
+    //     chrome.extension.getBackgroundPage().console.log(changes[tds_exerciseTime].newValue);
+    // if (tds_interceptDateList in changes)
+    //     chrome.extension.getBackgroundPage().console.log(changes[tds_interceptDateList].newValue);
+
+
 }
 
 chrome.storage.onChanged.addListener(changes => {

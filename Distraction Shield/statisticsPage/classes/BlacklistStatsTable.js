@@ -10,6 +10,10 @@ export default  class BlacklistStatsTable {
         this._blacklist = null;
     }
 
+    get table() {
+        return this._table;
+    }
+
     /**
      * Sets the data which is presented to the user.
      * @param data the data received from the statistics.js code.
@@ -52,6 +56,13 @@ export default  class BlacklistStatsTable {
      */
     setDataAndRender(data) {
         Promise.resolve(this.setData(data)).then(this.render());
+    }
+
+    repaint(data) {
+        Promise.resolve(this.setData(data)).then(() => {
+            this.table.find('tr:not(:has(th))').remove();
+            this.render();
+        });
     }
 }
 
