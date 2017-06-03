@@ -137,7 +137,6 @@ function restartTour() {
 
 function openStatisticsPage() {
     openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'));
-
 }
 
 /**

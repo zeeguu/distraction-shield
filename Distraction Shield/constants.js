@@ -1,3 +1,8 @@
+/**
+ * All the constants used throughout the extension
+ * @module constants
+ */
+
 /* ---------- ----- background ----- ---------- */
 export const zeeguuExLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
 export const zeeguuExTracker = "www.zeeguu.unibe.ch/practice/get-ex";
@@ -36,6 +41,18 @@ export const zeeguLoginLink = "https://www.zeeguu.unibe.ch/login";
 /* ---------- ----- BlockedSiteList ----- ---------- */
 export const newUrlNotUniqueError = "New blocked site item to be added was found to resolve to an already blacklisted website, " +
     "please try a different url.\nDuplicate url: ";
+
+/* ---------- ----- Whitelist ----- ----- ---------- */
+
+/**
+ * A list of regexp's. If a url matches one of these it is not supposed to beblocked
+ * @type {RegExp[]}
+ */
+export const whitelist = [
+    /_\/chrome\/newtab/,
+    /(oauth).*\?.*(client_id)/,
+    /zeeguu.unibe.ch/
+];
 
 /* ---------- ----- urlFormatter ----- ---------- */
 export const INVALID_URL_MESSAGE = "We unfortunately could not reach the site you are trying to block.\n" +

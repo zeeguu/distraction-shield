@@ -1,3 +1,8 @@
+/**
+ * The functions that form the functionality of the extension that takes place in the background.
+ * @module background
+ */
+
 import {createNewBlockedSite} from './modules/blockedSiteBuilder';
 import BlockedSiteList from './classes/BlockedSiteList';
 import * as interception from './modules/statistics/interception';
@@ -10,12 +15,12 @@ import * as constants from'./constants';
  * @type {BlockedSiteList}
  */
 let blockedSites = new BlockedSiteList();
+
 /**
  * The UserSettings used by the background scrript.
  * @type {UserSettings}
  */
 let localSettings = new UserSettings();
-
 
 /* --------------- ------ setter for local variables ------ ---------------*/
 
@@ -92,12 +97,23 @@ function intercept(details) {
 }
 
 /**
+ * This function checks if a string url is whitelisted.
+ * @see {module:constants.whitelist}
+ * @param {String} url The string to check against the regexp's in whitelist
+ * @returns {Boolean} True if url matches one of the regexp's in whitelist, false otherwise
+ */
+function isWhiteListed(url) {
+    let matches = constants.whitelist.map((x) => { return x.test(url) });
+    return matches.reduce((x, y) => { return x || y });
+}
+
+/**
  * Function which fires when we enter a website on the blockedsite list.
  * If we coe from zeeguu and have completed an exercise than we may continue, else we redirect.
  * @param details the details found by the onWebRequestListener about the current webRequest
  */
 function handleInterception(details) {
-    if (localSettings.state == "On") {
+    if (localSettings.state == "On" && !isWhiteListed(details.url)) {
         if (details.url.indexOf("tds_exComplete=true") > -1) {
             turnOffInterception();
             let url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
