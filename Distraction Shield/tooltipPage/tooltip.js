@@ -104,8 +104,8 @@ function setSaveButtonFunctionality() {
         let activeTab = arrayOfTabs[0];
         let url = activeTab.url;
         patternMatchUrl(url, function (matchedBlockedSite) {
+            saveButton.unbind();
             if (matchedBlockedSite != null) {
-                saveButton.unbind('click', saveCurrentPageToBlacklist);
                 saveButton.on('click', toggleBlockedSite(url));
                 if (matchedBlockedSite.checkboxVal) {
                     saveButton.text("Unblock");
@@ -113,7 +113,6 @@ function setSaveButtonFunctionality() {
                     saveButton.text("Block");
                 }
             } else {
-                saveButton.unbind('click', toggleBlockedSite(url));
                 saveButton.on('click', saveCurrentPageToBlacklist);
                 saveButton.text("Block");
             }
