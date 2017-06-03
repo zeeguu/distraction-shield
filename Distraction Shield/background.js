@@ -51,10 +51,10 @@ function intercept(details) {
 function handleInterception(details) {
     //TODO magic string!
     if (details.url.indexOf("tds_exComplete=true") > -1) {
-        turnOffInterception(() => {
-            let url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
-            return {redirectUrl: url};
-        });
+        turnOffInterception();
+        removeWebRequestListener();
+        let url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
+        return {redirectUrl: url};
     } else {
         return intercept(details);
     }
@@ -63,9 +63,9 @@ function handleInterception(details) {
 /**
  * turns off interception from the background
  */
-function turnOffInterception(callback) {
+function turnOffInterception() {
     storage.getSettings(settings_object => {
-        settings_object.turnOffFromBackground(callback);
+        settings_object.turnOffFromBackground();
     })
 }
 
@@ -86,10 +86,8 @@ function handleStorageChange(changes){
         if (!newSettings.isOn()) {
             removeWebRequestListener();
             newSettings.reInitTimer();
-        } else if (!oldSettings.isOn()){
-            chrome.extension.getBackgroundPage().console.log('extension turned on');
+        } else if (!oldSettings || !oldSettings.isOn())
             storage.getBlacklist(blockedSiteList => replaceListener(blockedSiteList));
-        }
     }
 }
 

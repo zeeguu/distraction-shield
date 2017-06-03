@@ -101,10 +101,10 @@ export default class UserSettings {
     /**
      * Special case needed for turning the extension off from the background
      */
-    turnOffFromBackground(callback) {
+    turnOffFromBackground() {
         if (this.isOn()) {
             this.turnOffFor(this.interceptionInterval, true);
-            storage.setSettings(this).then(callback);
+            storage.setSettings(this);
         }
     }
 
