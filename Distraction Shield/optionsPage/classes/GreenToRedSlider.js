@@ -6,7 +6,7 @@ import * as constants from "../../constants"
  */
 export default class GreenToRedSlider {
 
-    //TODO replace saveFunction with storage interaction.
+    //TODO replace saveFunction with storage interaction?
     constructor(sliderID, saveFunction) {
         this.saveValue = saveFunction;
         this.sliderDiv = $(sliderID);

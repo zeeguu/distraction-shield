@@ -132,7 +132,7 @@ export function setExerciseTimeList(statList) {
 
 
 /* ----------------  Storage Modifications --------------- */
-//TODO edit placeholders
+
 export function addBlockedSiteToStorage(blocked_site){
     return getBlacklistPromise().then(blacklist => {
         if (blacklist.addToList(blocked_site)){

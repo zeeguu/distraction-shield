@@ -18,6 +18,10 @@ export default class BlockedSiteList {
         return this._list
     }
 
+    get length() {
+        return this.list.length;
+    }
+
     get urls() {
         if (this.list != []) {
             return this.list.map(function (bs) {

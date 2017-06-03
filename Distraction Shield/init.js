@@ -9,7 +9,7 @@ import * as constants from'./constants';
 
 /**
  * function to be fired only when the extension is installed or updated. It initiates all the data and the storage.
- * Furthermore it shows the intro tour and initializes the extension upon completeion.
+ * Furthermore it shows the intro tour and initializes the extension upon completion.
  */
 chrome.runtime.onInstalled.addListener((details) => {
     storage.getAllUnParsed((output) => {

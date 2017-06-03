@@ -1,8 +1,8 @@
-import BlockedSiteList from './classes/BlockedSiteList';
-import * as interception from './modules/statistics/interception';
-import * as storage from './modules/storage';
-import UserSettings from  './classes/UserSettings'
-import * as constants from'./constants';
+import BlockedSiteList from "./classes/BlockedSiteList";
+import * as interception from "./modules/statistics/interception";
+import * as storage from "./modules/storage";
+import UserSettings from "./classes/UserSettings";
+import * as constants from "./constants";
 
 function replaceListener(blockedSiteList) {
     removeWebRequestListener();
@@ -53,10 +53,8 @@ function handleInterception(details) {
     if (details.url.indexOf("tds_exComplete=true") > -1) {
         turnOffInterception(() => {
             let url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
-            chrome.extension.getBackgroundPage().console.log('turned off!', url);
             return {redirectUrl: url};
         });
-
     } else {
         return intercept(details);
     }
@@ -79,14 +77,18 @@ function handleStorageChange(changes){
     if (constants.tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[constants.tds_blacklist].newValue);
         let oldBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[constants.tds_blacklist].oldValue);
-        if (newBlockedSiteList.length !== oldBlockedSiteList.length)
+        if (!oldBlockedSiteList || newBlockedSiteList.length !== oldBlockedSiteList.length)
             replaceListener(newBlockedSiteList);
     }
     if (constants.tds_settings in changes) {
         let newSettings = UserSettings.deserializeSettings(changes[constants.tds_settings].newValue);
+        let oldSettings = UserSettings.deserializeSettings(changes[constants.tds_settings].oldValue);
         if (!newSettings.isOn()) {
             removeWebRequestListener();
             newSettings.reInitTimer();
+        } else if (!oldSettings.isOn()){
+            chrome.extension.getBackgroundPage().console.log('extension turned on');
+            storage.getBlacklist(blockedSiteList => replaceListener(blockedSiteList));
         }
     }
 }

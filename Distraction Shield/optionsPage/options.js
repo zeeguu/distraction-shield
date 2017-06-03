@@ -19,7 +19,7 @@ import {openTabSingleton} from '../modules/tabutil'
 
 let modeGroup = "modeOptions";
 
-let blacklistTable;
+let blockedSiteListTable;
 let intervalSlider;
 let turnOffSlider;
 
@@ -42,29 +42,41 @@ function initOptionsPage() {
 function connectHtmlFunctionality(userSettings) {
     htmlFunctionality.initModeSelection(modeGroup, userSettings);
     intervalSlider = htmlFunctionality.initIntervalSlider(userSettings);
-    blacklistTable = new BlacklistTable($('#blacklistTable'));
+    blockedSiteListTable = new BlacklistTable($('#blacklistTable'));
     turnOffSlider = new TurnOffSlider('#turnOff-slider');
     htmlFunctionality.connectButton($('#turnOff-slider-offBtn'), turnOffSlider.offButtonFunc);
     htmlFunctionality.connectButton($('#saveBtn'), saveNewUrl);
     htmlFunctionality.connectButton($('#statisticsLink'), openStatisticsPage);
     htmlFunctionality.connectButton($('#feedbackLink'), openFeedbackForm);
     htmlFunctionality.connectButton($('#tourRestartLink'), restartTour);
-    htmlFunctionality.setKeyPressFunctions($('#textFld'), blacklistTable, saveNewUrl);
+    htmlFunctionality.setKeyPressFunctions($('#textFld'), blockedSiteListTable, saveNewUrl);
 }
 
 /**
  * connect the data found in the storage to the html_elements on the page
  */
 function connectStorageDataToHtml(storage_output) {
-    let blockedSiteList = storage_output.tds_blacklist;
-    let settings_object = storage_output.tds_settings;
-    let interceptionCounter = storage_output.tds_interceptCounter;
-    connectDataToHtml.loadHtmlInterceptCounter(interceptionCounter, $('#iCounter'));
-    connectDataToHtml.loadHtmlBlacklist(blockedSiteList, blacklistTable);
+    loadInterceptionCounter(storage_output.tds_interceptCounter);
+    loadBlockedSiteList(storage_output.tds_blacklist);
+    loadSettings(storage_output.tds_settings);
+}
+
+function loadBlockedSiteList(blockedSiteList){
+    connectDataToHtml.loadHtmlBlacklist(blockedSiteList, blockedSiteListTable);
+}
+
+function loadSettings(settings_object){
     connectDataToHtml.loadHtmlMode(settings_object.mode, modeGroup);
     connectDataToHtml.loadHtmlInterval(settings_object.interceptionInterval, intervalSlider);
 }
 
+function loadInterceptionCounter(val){
+    connectDataToHtml.loadHtmlInterceptCounter(val, $('#iCounter'));
+}
+
+function reloadTable(blockedSiteList, oldBlockedSiteList){
+    connectDataToHtml.reloadHtmlBlacklist(blockedSiteList, oldBlockedSiteList, blockedSiteListTable);
+}
 /**
  * This function should be called onChange, this checks if it needs to act on the storage change.
  * @param changes {Array} array of objects in storage that have been changed. Contains new & old value
@@ -74,22 +86,13 @@ function handleStorageChange(changes){
     if (tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
         let oldBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].oldValue);
-        repaintTable(newBlockedSiteList,oldBlockedSiteList);
+        reloadTable(newBlockedSiteList,oldBlockedSiteList);
     } if (tds_settings in changes) {
         let newSettings = UserSettings.deserializeSettings(changes[tds_settings].newValue);
-        repaintSettings(newSettings);
+        loadSettings(newSettings);
     } if (tds_interceptCounter in changes) {
-        connectDataToHtml.loadHtmlInterceptCounter(changes[tds_interceptCounter].newValue, $('#iCounter'));
+        loadInterceptionCounter(changes[tds_interceptCounter].newValue);
     }
-}
-
-function repaintSettings(userSettings) {
-    connectDataToHtml.loadHtmlMode(userSettings.mode, modeGroup);
-    connectDataToHtml.loadHtmlInterval(userSettings.interceptionInterval, intervalSlider);
-}
-
-function repaintTable(blockedSiteList, oldBlockedSiteList){
-    connectDataToHtml.reloadHtmlBlacklist(blockedSiteList, oldBlockedSiteList, blacklistTable);
 }
 
 chrome.storage.onChanged.addListener(changes => {

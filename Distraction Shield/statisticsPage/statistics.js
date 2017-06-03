@@ -41,6 +41,13 @@ function connectHtmlFunctionality() {
     exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
 }
 
+function handleStorageChange(changes){
+}
+
+chrome.storage.onChanged.addListener(changes => {
+    handleStorageChange(changes)
+});
+
 /**
  * initial function that is fired when the page is loaded.
  */
