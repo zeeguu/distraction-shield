@@ -67,19 +67,25 @@ function toggleBlockedSite(url) {
             }
 
             if (newItem != null && newItem.checkboxVal) {
-                saveButton.text("Unblock");
+                setSaveButton(false);
             } else {
-                saveButton.text("Block");
+                setSaveButton(true);
             }
         });
     }
+}
+
+function setSaveButton(blocked){
+    if (blocked)
+        saveButton.text("Block");
+    else
+        saveButton.text("Unblock");
 }
 
 /**
  * Change colour and update functionality of the button when we add a new website to the blacklist
  */
 function setSaveButtonToSuccess() {
-    saveButton.unbind('click', saveCurrentPageToBlacklist);
     saveButton.attr('class', 'btn btn-success');
     setTimeout(function () {
         saveButton.attr('class', 'btn btn-info');
@@ -108,13 +114,13 @@ function setSaveButtonFunctionality() {
             if (matchedBlockedSite != null) {
                 saveButton.on('click', toggleBlockedSite(url));
                 if (matchedBlockedSite.checkboxVal) {
-                    saveButton.text("Unblock");
+                    setSaveButton(false);
                 } else {
-                    saveButton.text("Block");
+                    setSaveButton(true);
                 }
             } else {
                 saveButton.on('click', saveCurrentPageToBlacklist);
-                saveButton.text("Block");
+                setSaveButton(true);
             }
         });
     });

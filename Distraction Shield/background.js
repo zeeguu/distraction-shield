@@ -15,9 +15,8 @@ function replaceListener(blockedSiteList) {
     removeWebRequestListener();
     storage.getSettings(settings_object => {
         let urlList = blockedSiteList.activeUrls;
-        if (settings_object.isOn() && urlList.length > 0) {
+        if (settings_object.isOn() && urlList.length > 0)
             addWebRequestListener(urlList);
-        }
     })
 }
 
@@ -82,18 +81,15 @@ chrome.storage.onChanged.addListener(changes => {
 function handleStorageChange(changes){
     if (constants.tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[constants.tds_blacklist].newValue);
-        let oldBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[constants.tds_blacklist].oldValue);
-        if (!oldBlockedSiteList || newBlockedSiteList.length !== oldBlockedSiteList.length)
-            replaceListener(newBlockedSiteList);
+        replaceListener(newBlockedSiteList);
     }
     if (constants.tds_settings in changes) {
         let newSettings = UserSettings.deserializeSettings(changes[constants.tds_settings].newValue);
         let oldSettings = UserSettings.deserializeSettings(changes[constants.tds_settings].oldValue);
         isOn = newSettings.isOn();
-        if (!newSettings.isOn()) {
-            removeWebRequestListener();
+        if (!newSettings.isOn())
             newSettings.reInitTimer();
-        } else if (!oldSettings || !oldSettings.isOn())
+        else if (!oldSettings || !oldSettings.isOn())
             storage.getBlacklist(blockedSiteList => replaceListener(blockedSiteList));
     }
 }

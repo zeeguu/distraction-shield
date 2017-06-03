@@ -3,19 +3,8 @@
  * to the actual html representations of this data.
  */
 
-export function checkBoxComparator(bsA, bsB) {
-    let valueOfA = bsA.checkboxVal;
-    let valueOfB = bsB.checkboxVal;
-    if (valueOfA && !valueOfB)
-        return -1;
-    if (!valueOfA && valueOfB)
-        return 1;
-    return 0;
-}
-
 export function loadHtmlBlacklist(blockedSiteList, table) {
     let list = blockedSiteList.list;
-    list.sort(checkBoxComparator);
     list.forEach(value => {
         table.addToTable(table.generateTableRow(value));
     });
