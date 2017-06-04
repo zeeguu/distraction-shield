@@ -1,11 +1,11 @@
 // This module is an utility to help get the correct format for dates which are used in the codebase.
 
 /**
- * Converts seconds to HH:MM:SS format
+ * Converts milliseconds to HH:MM:SS format
  * @param {int} seconds amount of seconds
  */
-export function secondsToHHMMSS(seconds) {
-    return new Date(seconds * 1000).toISOString().substr(11, 8);
+export function msToHHMMSS(ms) {
+    return new Date(ms).toISOString().substr(11, 8);
 }
 
 /**

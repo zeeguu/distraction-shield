@@ -16,7 +16,7 @@ export default class ExerciseTimeTable extends BasicTable {
     generateTableRow(item) {
         return $("<tr>" +
             "<td>" + item.date + "</td>" +
-            "<td>" + dateutil.secondsToHHMMSS(item.timeSpent) + "</td>" +
+            "<td>" + dateutil.msToHHMMSS(item.timeSpent) + "</td>" +
             "</tr>");
     }
 }

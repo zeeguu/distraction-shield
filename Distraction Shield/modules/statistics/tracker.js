@@ -11,11 +11,10 @@ import BlockedSiteList from '../../classes/BlockedSiteList'
 export default class Tracker {
 
     constructor() {
-        this.idle = false;
-        this.activeTimeEx = 0;
-        this.updatedExerciseTime = false;
-        this.updatedBlockedSiteTime = false;
+        this.wasIdle = false;
         this.blockedsites = new BlockedSiteList();
+        this.previousTime = new Date();
+        this.currentTab = null;
     }
 
     /**
@@ -36,48 +35,66 @@ export default class Tracker {
      * Initialize the alarm, and initialize the idle-checker.
      */
     init() {
-        //setInterval(this.fireAlarm.bind(this), constants.savingFrequency);
-        //setInterval(this.increaseTimeCounter.bind(this), constants.measureFrequency);
-
         this.getBlockedSites();
-        this.addBlockedSitesUpdateListener();
+        this.addStorageOnChangedListener();
 
-        // When the user does not input anything for 15 seconds, set the state to idle.
-        //chrome.idle.setDetectionInterval(constants.idleTime);
-        chrome.idle.setDetectionInterval(constants.idleTime);
-        chrome.idle.onStateChanged.addListener(this.updateIdleState.bind(this));
-
+        this.addIdleListener();
         this.addAlarmListener();
         this.addOnActiveTabChangeListener();
         this.addOnTabUpdateListener();
 
         this.createTrackerAlarm();
+
+        this.getCurrentTab().then((tab) => this.currentTab = tab);
+    }
+
+    triggerUpdateTime() {
+        let tab = this.currentTab;
+        let timeSpent = new Date() - this.previousTime;
+        this.previousTime = new Date();
+        if(!this.wasIdle) {
+            if (this.matchToZeeguu(tab.url)) {
+                this.incTimeExercises(timeSpent);
+            } else {
+                this.matchToBlockedSites(tab.url).then((site) => {
+                    this.incTimeBlockedSite(site, timeSpent);
+                });
+            }
+        } else {
+            this.wasIdle = false;
+        }
     }
 
     createTrackerAlarm(){
-        chrome.alarms.create('trackerAlarm', {periodInMinutes: 0.1});
+        chrome.alarms.create('trackerAlarm', {periodInMinutes: constants.trackerAlarmFrequency});
     }
 
-    // Function attached to the idle-listener. Sets the this.idle variable.
     updateIdleState(idleState) {
-        this.getCurrentTab().then(this.updateTime);
-        console.log("Idle state changed to "+idleState);
         if(idleState == "idle") {
             chrome.alarms.clear("trackerAlarm");
         } else if (idleState == "active") {
+            this.wasIdle = true;
             this.createTrackerAlarm();
         }
-        //this.idle = (idleState != "active");
+        this.triggerUpdateTime();
     }
 
-    updateTime(tab) {
-        console.log('update time! '+tab.url);
+    addIdleListener() {
+        // When the user does not input anything for 15 seconds, set the state to idle.
+        chrome.idle.setDetectionInterval(constants.idleTime);
+        chrome.idle.onStateChanged.addListener(this.updateIdleState.bind(this));
     }
 
     addAlarmListener() {
         chrome.alarms.onAlarm.addListener((alarm) => {
             if(alarm && alarm.name == 'trackerAlarm') {
-                this.getCurrentTab().then(this.updateTime);
+                this.getCurrentTab().then((tab) => {
+                   if(tab.url === this.currentTab.url) {
+                       this.triggerUpdateTime();
+                   } else {
+                       this.currentTab = tab;
+                   }
+                })
             }
         });
     }
@@ -85,50 +102,42 @@ export default class Tracker {
     addOnActiveTabChangeListener() {
         chrome.tabs.onActivated.addListener((activeInfo) => {
             chrome.tabs.get(activeInfo.tabId, (tab) => {
-                this.updateTime(tab);
+                this.triggerUpdateTime();
+                this.currentTab = tab;
             })
         });
     }
 
     addOnTabUpdateListener() {
         chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-            if(changeInfo.status === 'complete') {
+            if(changeInfo.status === 'loading') {
                 chrome.tabs.query({active: true}, (tabs) => {
                     if(tabId == tabs[0].id) {
-                        this.updateTime(tab);
+                        this.triggerUpdateTime();
+                        this.currentTab = tab;
                     }
                 });
             }
         });
     }
 
-
     /**
      * intiates listener to find updates to the list of blocked sites.
      */
-    addBlockedSitesUpdateListener() {
-        chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-            if (request.message === "updateListener") {
-                this.updateStorageBlockedSites();
-            }
-        });
+    addStorageOnChangedListener() {
+        chrome.storage.onChanged.addListener(this.handleStorageChange.bind(this));
     }
 
-    /**
-     * updates the values in the storage to hold the right statistics
-     */
-    updateStorageBlockedSites() {
-        // Retrieve the blocked sites from the storage
-        storage.getBlacklistPromise().then((blockedsites) => {
+    handleStorageChange(changes) {
+        if (constants.tds_blacklist in changes) {
+            let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[constants.tds_blacklist].newValue);
             // Extract the time-spent values from the this.blockedsites.
             let timeValues = this.retrieveTimeSpent(this.blockedsites);
             // Replace this.blockedsites with the data from the storage
-            this.blockedsites = blockedsites;
+            this.blockedsites = newBlockedSiteList;
             // Put the extracted time-spent values back into this.blockedsites
             this.putBackTimeSpent(timeValues);
-            // Update the storage with these new values.
-            storage.setBlacklist(this.blockedsites);
-        });
+        }
     }
 
     /**
@@ -159,57 +168,24 @@ export default class Tracker {
     }
 
     /**
-     * function that increments the time spent on different websites
-     */
-    fireAlarm() {
-        if (this.updatedExerciseTime) {
-            exerciseTime.incrementTodayExerciseTime(this.activeTimeEx);
-            this.activeTimeEx = 0;
-            this.updatedExerciseTime = false;
-        }
-        if (this.updatedBlockedSiteTime) {
-            this.updateStorageBlockedSites();
-            this.updatedBlockedSiteTime = false;
-        }
-    }
-
-    /**
-     * Check if the user is idle. If the user is not idle, and on the zeeguu website, increment the counter.
-     */
-    increaseTimeCounter() {
-        if (!this.idle) {
-            this.getCurrentTab().then((tabActive) => {
-                this.matchUrls(tabActive.url);
-            });
-        }
-    }
-
-    /**
      * Check whether the passed url is in the BlockedSiteList
      * @param {string} tabActive url of the active tab
      */
     matchUrls(tabActive) {
-        if (this.matchToZeeguu(tabActive)) {
-            this.incTimeExercises();
-        } else {
-            this.matchToBlockedSites(tabActive).then((site) => {
-                this.incTimeBlockedSite(site);
-            });
-        }
+
     }
 
     matchToZeeguu(tabActive) {
         return this.compareDomain(tabActive, constants.zeeguuExTracker);
     }
 
-    incTimeExercises() {
-        this.activeTimeEx += 1;
-        this.updatedExerciseTime = true;
+    incTimeExercises(timeSpent) {
+        exerciseTime.incrementTodayExerciseTime(timeSpent);
     }
 
-    incTimeBlockedSite(site) {
-        site.timeSpent += 1;
-        this.updatedBlockedSiteTime = true;
+    incTimeBlockedSite(site, timeSpent) {
+        site.timeSpent += timeSpent;
+        storage.setBlacklist(this.blockedsites);
     }
 
     matchToBlockedSites(tabActive) {
@@ -219,14 +195,14 @@ export default class Tracker {
         });
     }
 
-    // Creates a regex string which using the domain of an url.
-    createRegexFromDomain(domain) {
-        return "^(http[s]?:\\/\\/)?(.*)" + domain + ".*$";
-    };
-
     // Compares the domain of an url to another domain using a regex.
     compareDomain(url, domain) {
         return Tracker.compareUrlToRegex(this.createRegexFromDomain(domain), url);
+    };
+
+    // Creates a regex string which using the domain of an url.
+    createRegexFromDomain(domain) {
+        return "^(http[s]?:\\/\\/)?(.*)" + domain + ".*$";
     };
 
     // Compare regex to url.

@@ -16,7 +16,7 @@ export default class BlacklistStatsTable extends BasicTable {
             "<td>" + site.icon + "</td>" +
             "<td>" + site.name + "</td>" +
             "<td>" + site.counter + "</td>" +
-            "<td>" + dateutil.secondsToHHMMSS(site.timeSpent) + "</td>" +
+            "<td>" + dateutil.msToHHMMSS(site.timeSpent) + "</td>" +
             "</tr>");
     }
 }
