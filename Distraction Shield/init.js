@@ -27,8 +27,8 @@ chrome.runtime.onInstalled.addListener((details) => {
 
 function initBlacklist(list) {
     if (list == null) {
-        let blacklistToStore = new BlockedSiteList();
-        storage.setBlacklist(blacklistToStore);
+        let blockedSiteListToStore = new BlockedSiteList();
+        storage.setBlacklist(blockedSiteListToStore);
     }
 }
 
@@ -65,6 +65,8 @@ function runIntroTour() {
     chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
 }
 
+/* --------------- ---- Run upon Start of session ---- ---------------*/
+
 /**
  * function which checks whether we run a normal session or the special case where the onInstalled function is called.
  */
@@ -73,8 +75,6 @@ storage.getSettingsUnParsed(function (settings) {
         initSession();
     }
 });
-
-/* --------------- ---- Run upon Start of session ---- ---------------*/
 
 /**
  * function which fires upon starting the browser. Initiates the session, like listener and list of blocked sites.
@@ -87,3 +87,4 @@ function initSession() {
     tracker.init();
     initBackground();
 }
+

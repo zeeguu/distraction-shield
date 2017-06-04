@@ -10,17 +10,10 @@ export default class BlockedSiteList {
         this._list = [];
     }
 
-    set list(blockedSiteArr) {
-        this._list = blockedSiteArr
-    }
+    set list(blockedSiteArr) { this._list = blockedSiteArr }
+    get list() { return this._list }
 
-    get list() {
-        return this._list
-    }
-
-    get length() {
-        return this.list.length;
-    }
+    get length() { return this.list.length; }
 
     get urls() {
         if (this.list != []) {

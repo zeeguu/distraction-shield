@@ -24,12 +24,12 @@ function initStatisticsPage() {
     Promise.all([storage.getInterceptDateList(), storage.getExerciseTimeList(), storage.getBlacklistPromise()])
         .then(function (response) {
             let interceptDateList = response[0].tds_interceptDateList;
-            let blacklist = response[2];
+            let blockedSiteList = response[2];
             let exerciseTime = response[1];
 
 
             setInterceptionCounterTable(interceptDateList);
-            blacklistTable.setDataAndRender(blacklist);
+            blacklistTable.setDataAndRender(blockedSiteList);
             exerciseTimeTable.setDataAndRender(exerciseTime);
         });
 }
@@ -50,15 +50,19 @@ function connectHtmlFunctionality() {
 
 
 //TODO extend repainting.
-function handleStorageChange(changes){
+function handleStorageChange(changes) {
     if (tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
         blacklistTable.repaint(newBlockedSiteList);
     }
-    // if (tds_exerciseTime in changes)
-    //     chrome.extension.getBackgroundPage().console.log(changes[tds_exerciseTime].newValue);
-    // if (tds_interceptDateList in changes)
-    //     chrome.extension.getBackgroundPage().console.log(changes[tds_interceptDateList].newValue);
+    if (tds_exerciseTime in changes) {
+        let newExerciseTime = changes[tds_exerciseTime].newValue;
+        exerciseTimeTable.repaint(newExerciseTime);
+    }
+    if (tds_interceptDateList in changes) {
+        let newInterceptDateList = changes[tds_interceptDateList].newValue;
+        setInterceptionCounterTable(newInterceptDateList);
+    }
 
 
 }

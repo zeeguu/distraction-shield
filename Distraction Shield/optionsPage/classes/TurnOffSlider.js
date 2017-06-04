@@ -33,7 +33,7 @@ export default class TurnOffSlider extends GreenToRedSlider {
     }
 
     toggleShowOffMessage(settings_object) {
-        if (!settings_object.isOn()) {
+        if (!settings_object.isInterceptionOn()) {
             this.sliderValue.html(this.createOffMessage(settings_object));
             this.sliderRange.css('visibility', 'hidden').parent().css('display', 'none');
             this.sliderValue.parent().css('width', '50%');
@@ -66,14 +66,14 @@ export default class TurnOffSlider extends GreenToRedSlider {
 
     updateSettings(userSettings) {
         this.toggleShowOffMessage(userSettings);
-        this.offButton.text("Turn " + (userSettings.isOn() ? "Off" : "On"));
+        this.offButton.text("Turn " + (userSettings.isInterceptionOn() ? "Off" : "On"));
     }
 
     offButtonFunc() {
         storage.getSettings(settings_object => {
-            // this is really annoying, (this refers to the offbutton..)
+            // 'this' is really annoying, (this refers to the offbutton..)
             let slider = this.slider;
-            if (settings_object.isOn()) {
+            if (settings_object.isInterceptionOn()) {
                 if (slider.selectedTime === constants.MAX_TURN_OFF_TIME) {
                     settings_object.turnOffForDay();
                 } else {

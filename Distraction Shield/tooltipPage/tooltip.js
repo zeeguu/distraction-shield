@@ -83,7 +83,7 @@ function setSaveButton(blocked){
 }
 
 /**
- * Change colour and update functionality of the button when we add a new website to the blacklist
+ * Change colour and update functionality of the button when we add a new website to the blacklist/blockedSiteList
  */
 function setSaveButtonToSuccess() {
     saveButton.attr('class', 'btn btn-success');
@@ -101,7 +101,7 @@ function saveCurrentPageToBlacklist() {
 
 /**
  * Update the functionality of the button to one of 3 states:
- * 1. Add a non-blacklisted website to the blacklist
+ * 1. Add a non-blacklisted website to the blacklist/blockedSiteList
  * 2. Disable the blocking of this blacklisted website
  * 3. Enable the blocking of this blacklisted website
  */
