@@ -67,19 +67,25 @@ function toggleBlockedSite(url) {
             }
 
             if (newItem != null && newItem.checkboxVal) {
-                saveButton.text("Unblock");
+                setSaveButton(false);
             } else {
-                saveButton.text("Block");
+                setSaveButton(true);
             }
         });
     }
 }
 
+function setSaveButton(blocked){
+    if (blocked)
+        saveButton.text("Block");
+    else
+        saveButton.text("Unblock");
+}
+
 /**
- * Change colour and update functionality of the button when we add a new website to the blacklist
+ * Change colour and update functionality of the button when we add a new website to the blacklist/blockedSiteList
  */
 function setSaveButtonToSuccess() {
-    saveButton.unbind('click', saveCurrentPageToBlacklist);
     saveButton.attr('class', 'btn btn-success');
     setTimeout(function () {
         saveButton.attr('class', 'btn btn-info');
@@ -95,7 +101,7 @@ function saveCurrentPageToBlacklist() {
 
 /**
  * Update the functionality of the button to one of 3 states:
- * 1. Add a non-blacklisted website to the blacklist
+ * 1. Add a non-blacklisted website to the blacklist/blockedSiteList
  * 2. Disable the blocking of this blacklisted website
  * 3. Enable the blocking of this blacklisted website
  */
@@ -104,18 +110,17 @@ function setSaveButtonFunctionality() {
         let activeTab = arrayOfTabs[0];
         let url = activeTab.url;
         patternMatchUrl(url, function (matchedBlockedSite) {
+            saveButton.unbind();
             if (matchedBlockedSite != null) {
-                saveButton.unbind('click', saveCurrentPageToBlacklist);
                 saveButton.on('click', toggleBlockedSite(url));
                 if (matchedBlockedSite.checkboxVal) {
-                    saveButton.text("Unblock");
+                    setSaveButton(false);
                 } else {
-                    saveButton.text("Block");
+                    setSaveButton(true);
                 }
             } else {
-                saveButton.unbind('click', toggleBlockedSite(url));
                 saveButton.on('click', saveCurrentPageToBlacklist);
-                saveButton.text("Block");
+                setSaveButton(true);
             }
         });
     });

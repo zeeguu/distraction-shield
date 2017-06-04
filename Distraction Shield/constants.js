@@ -17,10 +17,10 @@ export const FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
 // Minimum value is 15 seconds.
 export const idleTime = 15;
 
-// The time in milliseconds of how many times the url of the website is compared to the blacklist or the exercise page.
+// The time in milliseconds of how many times the url of the website is compared to the blockedSiteList or the exercise page.
 export const measureFrequency = 1000;
 
-// The time in milliseconds after which the time tracking export const iables are saved to the local or sync storage.
+// The time in milliseconds after which the time tracking export variables are saved to the local or sync storage.
 export const savingFrequency = 5000;
 
 /* ---------- ----- UserSettings, inject ----- ---------- */
@@ -58,7 +58,6 @@ export const KEY_DELETE = 46;
 export const KEY_ENTER = 13;
 
 /* -------------------- Number export const ants ----------------------- */
-
 // The amount of milliseconds in one day
 export const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 

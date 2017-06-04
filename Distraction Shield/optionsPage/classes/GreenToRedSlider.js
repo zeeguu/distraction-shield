@@ -1,12 +1,13 @@
 import * as constants from "../../constants"
 
 /**
- * class that connects a <div> with a span and slider together with all the funcitonality.
+ * class that connects a <div> with a span and slider together with all the functionality.
  * I.E. changing colour, updating eachother's values and functionality to be added to the html_elements
  */
 export default class GreenToRedSlider {
 
-    //TODO replace saveFunction with storage interaction.
+    //TODO replace saveFunction with storage interaction?
+    //We could, but keeping it as save function gives more freedom on how to use it if you want to re-use it
     constructor(sliderID, saveFunction) {
         this.saveValue = saveFunction;
         this.sliderDiv = $(sliderID);
@@ -23,7 +24,7 @@ export default class GreenToRedSlider {
             this.updateColor(inputValue);
         });
 
-        this.sliderRange.on('mouseup',  () => {
+        this.sliderRange.on('mouseup', () => {
             let inputValue = this.sliderRange.val();
             this.saveValue(inputValue);
         });

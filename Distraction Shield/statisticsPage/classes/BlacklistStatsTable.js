@@ -7,7 +7,11 @@ import * as dateutil from "../../modules/dateutil"
 export default  class BlacklistStatsTable {
     constructor(html_element) {
         this._table = html_element;
-        this._blacklist = null;
+        this._blockedSiteList = null;
+    }
+
+    get table() {
+        return this._table;
     }
 
     /**
@@ -15,7 +19,7 @@ export default  class BlacklistStatsTable {
      * @param data the data received from the statistics.js code.
      */
     setData(data) {
-        this._blacklist = data;
+        this._blockedSiteList = data;
     }
 
     /**
@@ -43,7 +47,7 @@ export default  class BlacklistStatsTable {
      * This function renders the data to the screen in the correct format.
      */
     render() {
-        this.createBlockedSiteTable(this._blacklist.list);
+        this.createBlockedSiteTable(this._blockedSiteList.list);
     }
 
     /**
@@ -52,6 +56,13 @@ export default  class BlacklistStatsTable {
      */
     setDataAndRender(data) {
         Promise.resolve(this.setData(data)).then(this.render());
+    }
+
+    repaint(data) {
+        Promise.resolve(this.setData(data)).then(() => {
+            this.table.find('tr:not(:has(th))').remove();
+            this.render();
+        });
     }
 }
 

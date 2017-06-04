@@ -54,4 +54,9 @@ export default class ExerciseTimeTable {
     setDataAndRender(data) {
         Promise.resolve(this.setData(data)).then(this.render());
     }
+
+    repaint(data) {
+        this._table.find("tr:gt(1)").remove();
+        this.setDataAndRender(data);
+    }
 }

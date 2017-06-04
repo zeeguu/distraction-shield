@@ -49,8 +49,6 @@ export function initModeSelection(buttonGroup, settings_object) {
             settings_object.mode = constants.modes.lazy;
         }
         storage.setSettings(settings_object);
-        //TODO remove this
-        //synchronizer.syncSettings(settings_object);
     });
 }
 /* -------------------- Interval slider -------------------- */
@@ -59,7 +57,5 @@ export function initIntervalSlider(settings_object) {
     return new GreenToRedSlider('#interval-slider', function (value) {
         settings_object.interceptionInterval = parseInt(value);
         storage.setSettings(settings_object);
-        //TODO remove this
-        // synchronizer.syncSettings(settings_object);
     });
 }

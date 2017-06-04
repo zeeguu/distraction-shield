@@ -59,7 +59,7 @@ export function getAllUnParsed(callback) {
         return callback(output);
     });
 }
-/* ---------------- Blacklist --------------- */
+/* ---------------- BlockedSiteList / Blacklist --------------- */
 
 export function getBlacklist(callback) {
     getStorage(constants.tds_blacklist).then(function (output) {
@@ -132,30 +132,27 @@ export function setExerciseTimeList(statList) {
 
 
 /* ----------------  Storage Modifications --------------- */
-//TODO edit placeholders
+
 export function addBlockedSiteToStorage(blocked_site){
-    return getBlacklistPromise().then(blacklist => {
-        if (blacklist.addToList(blocked_site)){
-            chrome.extension.getBackgroundPage().console.log(`added ${blocked_site.name}`);
-            return setBlacklist(blacklist);
+    return getBlacklistPromise().then(blockedSiteList => {
+        if (blockedSiteList.addToList(blocked_site)){
+            return setBlacklist(blockedSiteList);
         } else
             return Promise.reject('not unique');
     });
 }
 
 export function removeBlockedSiteFromStorage(blocked_site){
-    return getBlacklistPromise().then(blacklist => {
-        blacklist.removeFromList(blocked_site);
-        chrome.extension.getBackgroundPage().console.log(`removed ${blocked_site.name}`);
-        return setBlacklist(blacklist);
+    return getBlacklistPromise().then(blockedSiteList => {
+        blockedSiteList.removeFromList(blocked_site);
+        return setBlacklist(blockedSiteList);
     });
 }
 
 export function updateBlockedSiteInStorage(blocked_site){
-    return getBlacklistPromise().then(blacklist => {
-        blacklist.updateInList(blocked_site);
-        chrome.extension.getBackgroundPage().console.log(`changed ${blocked_site.name}`);
-        return setBlacklist(blacklist);
+    return getBlacklistPromise().then(blockedSiteList => {
+        blockedSiteList.updateInList(blocked_site);
+        return setBlacklist(blockedSiteList);
     });
 }
 

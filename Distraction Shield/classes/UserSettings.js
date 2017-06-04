@@ -3,7 +3,7 @@ import * as storage from '../modules/storage'
 
 /**
  * Object holding all the data that is connected to the user's preferences.
- * Furthermore has the funcionality to turn the interception part of the of extension on or off.
+ * Furthermore has the functionality to turn the interception part of the of extension on or off.
  * Since the current state is saved here too.
  */
 export default class UserSettings {
@@ -18,45 +18,21 @@ export default class UserSettings {
         this._interceptionInterval = 1;
     }
 
-    set interceptionInterval(val) {
-        this._interceptionInterval = val;
-    }
+    set interceptionInterval(val) { this._interceptionInterval = val; }
+    get interceptionInterval() { return this._interceptionInterval; }
 
-    get interceptionInterval() {
-        return this._interceptionInterval;
-    }
+    set mode(newMode) { this._mode = newMode; }
+    get mode() { return this._mode; }
 
-    set mode(newMode) {
-        this._mode = newMode;
-    }
+    set status(newStatus) { this._status = newStatus; }
+    get status() { return this._status; }
 
-    get mode() {
-        return this._mode;
-    }
+    set offTill(time) { this._status.offTill = time; }
+    get offTill() { return this._status.offTill; }
 
-    set status(newStatus) {
-        this._status = newStatus;
-    }
+    get state() { return this.status.state ? "On" : "Off"; }
 
-    get status() {
-        return this._status;
-    }
-
-    get offTill() {
-        return this._status.offTill;
-    }
-
-    set offTill(time) {
-        this._status.offTill = time;
-    }
-
-    get state() {
-        return this.status.state ? "On" : "Off";
-    }
-
-    isOn(){
-        return this.status.state;
-    }
+    isInterceptionOn() { return this.status.state; }
 
     /**
      * Turn the interception back on
@@ -69,15 +45,14 @@ export default class UserSettings {
         }
     }
 
-
-    //TODO rename vague 'timer' boolean
     /**
-     * Turn interception off
-     * @param {boolean} timer should we set a timer, for when to turn on? (true for background, false for third party page)
-     * @param {function} callback function to be called once the timer has finished (null when timer == false)
+     * Turn interception off. The timer variable is for deciding whether we want to initiate a javascript timeout.
+     * Which will automatically turn the interception back on after it stops. This nonly happens in the background, because
+     * third party pages might close while the timer runs. Which makes the turning off and on of the interception go wrong.
+     * @param {boolean} timer should we set a timer, for when to turn on? (true for background, false for other (third party) page)
      */
     turnOff(timer) {
-        if (this.isOn()) {
+        if (this.isInterceptionOn()) {
             this.status = {state: false, setAt: new Date(), offTill: this.status.offTill};
             if (timer) {
                 this.setTimer();
@@ -98,19 +73,9 @@ export default class UserSettings {
         this.turnOff(timer);
     }
 
-    /**
-     * Special case needed for turning the extension off from the background
-     */
-    turnOffFromBackground(callback) {
-        if (this.isOn()) {
-            this.turnOffFor(this.interceptionInterval, true);
-            storage.setSettings(this).then(callback);
-        }
-    }
-
     turnExtensionBackOn() {
         return () => {
-            if (!this.isOn()) {
+            if (!this.isInterceptionOn()) {
                 this.turnOn();
                 storage.setSettings(this);
             }
@@ -123,7 +88,7 @@ export default class UserSettings {
     }
 
     reInitTimer() {
-        if (!this.isOn()) {
+        if (!this.isInterceptionOn()) {
             if (this.offTill < new Date()) {
                 this.turnOn();
                 storage.setSettings(this);
