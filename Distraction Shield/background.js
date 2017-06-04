@@ -49,6 +49,8 @@ function addUrlToBlockedSites(unformattedUrl, onSuccess) {
             replaceListener();
             storage.setBlacklist(blockedSites);
             onSuccess();
+        } else {
+          alert('This site was already on the list! (' + newBS + ')');
         }
     });
 }

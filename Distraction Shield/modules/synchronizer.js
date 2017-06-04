@@ -36,6 +36,8 @@ export function addSiteAndSync(blockedSiteItem, callback) {
         if (blacklist.addToList(blockedSiteItem)) {
             syncBlacklist(blacklist);
             callback();
+        } else {
+          alert('This site was already on the list! (' + blockedSiteItem + ')');
         }
     });
 
