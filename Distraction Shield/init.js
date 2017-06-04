@@ -3,18 +3,25 @@ import * as storage from './modules/storage';
 import BlockedSiteList from './classes/BlockedSiteList';
 import UserSettings from './classes/UserSettings';
 import Tracker from './modules/statistics/tracker';
+import * as constants from'./constants';
 
 /* --------------- ---- Run upon installation ---- ---------------*/
 
+/**
+ * function to be fired only when the extension is installed or updated. It initiates all the data and the storage.
+ * Furthermore it shows the intro tour and initializes the extension upon completeion.
+ */
 chrome.runtime.onInstalled.addListener((details) => {
     storage.getAllUnParsed((output) => {
         initBlacklist(output.tds_blacklist);
         initInterceptCounter(output.tds_interceptCounter);
         initInterceptDateList(output.tds_interceptDateList);
-        initExerciseTime(output.tds_exerciseTime)
+        initExerciseTime(output.tds_exerciseTime);
         initSettings(output.tds_settings);
-        if (details.reason == 'install')
+        if (details.reason == 'install') {
+            dataCollectionMsg ();
             runIntroTour();
+        }
     });
 });
 
@@ -50,17 +57,22 @@ function initExerciseTime(exerciseTime) {
     }
 }
 
+function dataCollectionMsg () {
+    alert (constants.dataCollectionMsg);
+}
+
 function runIntroTour() {
     chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
 }
 
 /* --------------- ---- Run upon Start of session ---- ---------------*/
 
-//First receive the blacklist and settings from the sync storage,
-//then create a onBeforeRequest listener using this list and the settings.
+/**
+ * function which fires upon starting the browser. Initiates the session, like listener and list of blocked sites.
+ */
 function initSession() {
     // Settings need to be loaded before the listener is replaced. The replaceListener
-    // requires the blocked sites to be loaded, so these weird callbacks are required.
+    // requires the blocked sites to be loaded, so these callbacks are required.
     storage.getSettings(function (settings) {
         settings.reInitTimer(replaceListener);
         setLocalSettings(settings);
@@ -70,7 +82,9 @@ function initSession() {
     tracker.init();
 }
 
-//fix that checks whether everything that should be is indeed initialized
+/**
+ * function which checks whether we run a normal session or the special case where the onInstalled function is called.
+ */
 storage.getSettingsUnParsed(function (settings) {
     if (settings != null) {
         initSession();

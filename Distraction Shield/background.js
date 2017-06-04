@@ -5,9 +5,17 @@ import * as storage from './modules/storage';
 import UserSettings from  './classes/UserSettings'
 import * as constants from'./constants';
 
-//Set that holds the urls to be intercepted
+/**
+ * The BlockedSiteList used by the background
+ * @type {BlockedSiteList}
+ */
 let blockedSites = new BlockedSiteList();
+/**
+ * The UserSettings used by the background scrript.
+ * @type {UserSettings}
+ */
 let localSettings = new UserSettings();
+
 
 /* --------------- ------ setter for local variables ------ ---------------*/
 
@@ -72,15 +80,24 @@ function removeWebRequestListener() {
     chrome.webRequest.onBeforeRequest.removeListener(handleInterception);
 }
 
+/**
+ * function that does everything that should happen when we decide to intercept the current request.
+ * Incrementing counters and modifying url's
+ * @param details details about the current webrequest
+ */
 function intercept(details) {
     interception.incrementInterceptionCounter(details.url);
     interception.addToInterceptDateList();
     let redirectLink = constants.zeeguuExLink;
     let params = "?redirect=" + details.url + "&from_tds=true";
-
     return {redirectUrl: redirectLink + params};
 }
 
+/**
+ * Function which fires when we enter a website on the blockedsite list.
+ * If we coe from zeeguu and have completed an exercise than we may continue, else we redirect.
+ * @param details the details found by the onWebRequestListener about the current webRequest
+ */
 function handleInterception(details) {
     if (localSettings.state == "On") {
         if (details.url.indexOf("tds_exComplete=true") > -1) {
@@ -93,13 +110,19 @@ function handleInterception(details) {
     }
 }
 
+/**
+ * turns off interception from the background
+ */
 function turnOffInterception() {
     localSettings.turnOffFromBackground(replaceListener);
     storage.setSettings(localSettings);
 }
 
 /* --------------- ------ Message Listener ------ ---------------*/
-
+/**
+ * Message listener. This listens to message from third party papers, enabling communication between the background scripts
+ * and other scripts.
+ */
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request.message === "updateListener") {
         setLocalBlacklist(BlockedSiteList.deserializeBlockedSiteList(request.siteList));

@@ -1,7 +1,9 @@
 import * as constants from '../constants';
 import BlockedSite from '../classes/BlockedSite'
 
-/* --------------- --------------- --------------- --------------- --------------- */
+/**
+ * List that holds BlockedSite Objects and has functionality which is regularly needed on this array
+ */
 export default class BlockedSiteList {
 
     constructor() {

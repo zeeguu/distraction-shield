@@ -2,16 +2,12 @@ import * as constants from '../constants'
 import * as storage from '../modules/storage'
 
 function mainFlow() {
-    console.log("@:" + window.location.href);//todo remove
-
     if (window.location.href.indexOf("from_tds=true") == -1) return;
-
     storage.getMode(initBasis);
 }
 
 function initBasis(mode) {
     let message = mode.zeeguuText;
-
 
     $.ajax({
         url: chrome.extension.getURL('contentInjection/inject.html'),
@@ -24,11 +20,14 @@ function initBasis(mode) {
             $("#tds_infoDiv").css('max-width', '800px');
             $("#tds_generalInfoText").append(constants.zeeguuInfoText);
 
-            let putModeText = true;
-            if ((window.location.href == constants.zeeguLoginLink) && (mode.label != constants.modes.lazy.label)) {
-                putModeText = false;
+            if (window.location.href.indexOf(constants.zeeguLoginLink) != -1) {
+                if (mode.label == constants.modes.pro.label) {
+                    message = constants.loginMessage;
+                } else {
+                    message = message +"\n" + constants.loginMessage;
+                }
             }
-            if (putModeText) $("#tds_modeSpecificText").append(message);
+            $("#tds_modeSpecificText").append(message);
 
             $("#originalDestination").attr("href", getDest());
         }

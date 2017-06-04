@@ -33,6 +33,8 @@ export const modes = {
 
 export const zeeguLoginLink = "https://www.zeeguu.unibe.ch/login";
 
+export const loginMessage = "Please log in to get productive!";
+
 /* ---------- ----- BlockedSiteList ----- ---------- */
 export const newUrlNotUniqueError = "Oops! You already blocked this website: ";
 export const newUrlSuccess = "Successfully blocked ";
@@ -41,10 +43,14 @@ export const newUrlSuccess = "Successfully blocked ";
 export const INVALID_URL_MESSAGE = "We unfortunately could not reach the site you are trying to block.\n" +
     "Are you sure the url is correct? \n \n";
 
+/**/
+export const dataCollectionMsg = 'Please be aware that anonymous data are collected for purposes of improving the extension. '+
+    'The data cannot be traced back to you as a person.\n\nWe respect your privacy.';
+
 /* -------------------- Text Messages ----------------------- */
 export const zeeguuInfoText = "Hey, you tried to enter one of the sites you wanted to be protected from!";
 
-/* -------------------- Keypress export const ants ----------------------- */
+/* -------------------- Keypress export constants ----------------------- */
 /* ---------- ----- optionsPage/htmlFunctionality ----- ---------- */
 export const KEY_DELETE = 46;
 export const KEY_ENTER = 13;

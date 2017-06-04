@@ -3,8 +3,11 @@ import * as constants from '../../constants'
 import * as stringutil from '../stringutil'
 import BlockedSiteList from '../../classes/BlockedSiteList'
 
-// This method goes through the interceptDateList and count how many times the user was intercepted last day,
-// last week, last month and the total amount of interceptions.
+/**
+ * This method goes through the interceptDateList and count how many times the user was intercepted last day,
+ * last week, last month and the total amount of interceptions.
+ * @param {List} dateList the total list with all interceptions on the different days
+ */
 export function calcInterceptData(dateList) {
     let tmp = dateList;
     let countDay = 0, countWeek = 0, countMonth = 0, countTotal = 0;
@@ -35,9 +38,12 @@ export function calcInterceptData(dateList) {
     }
 }
 
-// Receives the url from the parameter, and searches the correct blockedSite item from the blockedsite list.
-// Then the interceptioncounter for this item is incremented by 1.
-// Also the global interceptioncounter is incremented by one.
+/**
+ * Receives the url from the parameter, and searches the correct blockedSite item from the blockedsite list.
+ * Then the interceptioncounter for this item is incremented by 1.
+ * Also the global interceptioncounter is incremented by one.
+ * @param {string} urlAddress the url to be compared with the blockedsite list to find the correct item to be incremented
+ */
 export function incrementInterceptionCounter(urlAddress) {
     let blockedSites = new BlockedSiteList();
     storage.getBlacklistPromise().then((result) => {
@@ -63,8 +69,9 @@ export function incrementInterceptionCounter(urlAddress) {
 
 }
 
-
-// This function adds the current time+date to the saved time+date list
+/**
+ * Adds the current time+date to the saved time+date list
+ */
 export function addToInterceptDateList() {
     let interceptDateList;
     storage.getInterceptDateList()

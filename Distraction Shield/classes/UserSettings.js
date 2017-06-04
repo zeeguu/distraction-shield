@@ -1,6 +1,11 @@
 import * as constants from '../constants'
 import * as storage from '../modules/storage'
 
+/**
+ * Object holding all the data that is connected to the user's preferences.
+ * Furthermore has the funcionality to turn the interception part of the of extension on or off.
+ * Since the current state is saved here too.
+ */
 export default class UserSettings {
     constructor() {
         this._status = {
@@ -9,17 +14,8 @@ export default class UserSettings {
             offTill: new Date()
         };
 
-        this._sesionID = undefined;
         this._mode = constants.modes.lazy;
         this._interceptionInterval = 1;
-    }
-
-    set sessionID(newID) {
-        this._sesionID = newID;
-    }
-
-    get sessionID() {
-        return this._sesionID;
     }
 
     set interceptionInterval(val) {
@@ -62,6 +58,9 @@ export default class UserSettings {
         return this._status.state ? "Off" : "On";
     }
 
+    /**
+     * Turn the interception back on
+     */
     turnOn() {
         if (this.state == "Off") {
             this.status = {state: true, setAt: new Date(), offTill: new Date()};
@@ -70,6 +69,11 @@ export default class UserSettings {
         }
     }
 
+    /**
+     * Turn interception off
+     * @param {boolean} timer should we set a timer, for when to turn on? (true for background, false for third party page)
+     * @param {function} callback function to be called once the timer has finished (null when timer == false)
+     */
     turnOff(timer, callback) {
         if (this.state == "On") {
             this.status = {state: false, setAt: new Date(), offTill: this.status.offTill};
@@ -92,6 +96,10 @@ export default class UserSettings {
         this.turnOff(timer, callback);
     }
 
+    /**
+     * Special case needed for turning the extension off from the background
+     * @param {function} callback callbac function to be called once the timer turns interception back on
+     */
     turnOffFromBackground(callback) {
         if (this.state == "On") {
             this.turnOffFor(this.interceptionInterval, true, callback);
@@ -99,13 +107,13 @@ export default class UserSettings {
     }
 
     turnExtensionBackOn(callback) {
-        return function () {
+        return () => {
             if (this.state == "Off") {
                 this.turnOn();
                 storage.setSettings(this);
                 callback();
             }
-        }.bind(this);
+        };
     }
 
     setTimer(callback) {
@@ -115,7 +123,6 @@ export default class UserSettings {
 
     copySettings(settingsObject) {
         this._status = settingsObject.status;
-        this._sessionID = settingsObject.sessionID;
         this._interceptionInterval = settingsObject.interceptionInterval;
         this._mode = settingsObject.mode;
     }
@@ -143,7 +150,6 @@ export default class UserSettings {
         parsedSettingsObject._status.setAt = new Date(parsedSettingsObject._status.setAt);
         parsedSettingsObject._status.offTill = new Date(parsedSettingsObject._status.offTill);
         s.status = parsedSettingsObject._status;
-        s.sessionID = parsedSettingsObject._sessionID;
         s.interceptionInterval = parsedSettingsObject._interceptionInterval;
         s.mode = parsedSettingsObject._mode;
         return s;

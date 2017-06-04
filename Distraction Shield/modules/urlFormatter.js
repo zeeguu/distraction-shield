@@ -3,8 +3,9 @@ import * as constants from '../constants';
 // use alert for warning popups
 alert = chrome.extension.getBackgroundPage().alert;
 
-// Fire a request for the actual url from server. Then go on to fire the passed callback with
-// the newly found url
+/**
+ * removes trailing space from url, if nothing is there returns url
+ */
 export function stripOfFinalSlash(url) {
     if (url[url.length - 1] == '/') {
         let ans = url.split("");
@@ -14,6 +15,9 @@ export function stripOfFinalSlash(url) {
     return url;
 }
 
+/**
+ * removes scheme from url, if nothing is there returns url
+ */
 export function stripOfScheme(url) {
     let schemeless = url;
     if (url.indexOf("://") > -1) {
@@ -23,6 +27,9 @@ export function stripOfScheme(url) {
     return schemeless;
 }
 
+/**
+ * removes port from url, if nothing is there returns url
+ */
 export function stripOfPort(url) {
     let portless = [];
     if (url.indexOf(":") > -1) {
@@ -39,6 +46,9 @@ export function stripOfPort(url) {
     return url;
 }
 
+/**
+ * removes filename from url, if nothing is there returns url
+ */
 export function stripOfFileName(url) {
     if (url.indexOf("/") > -1) {
         let nameless = url.split("").reverse().join("");
@@ -57,7 +67,8 @@ export function stripOfFileName(url) {
     }
 }
 
-export function getDomainOnly(url) {
+
+function getDomainOnly(url) {
     if (url.indexOf("/") > -1) {
         return url.split("/")[0];
     } else {
@@ -65,6 +76,9 @@ export function getDomainOnly(url) {
     }
 }
 
+/**
+ * removes scheme, final slash, port and filename from url, returns tuple of new url and the domain of the url
+ */
 export function stripOfAll(url) {
     url = stripOfScheme(url);
     url = stripOfFinalSlash(url);
@@ -75,11 +89,17 @@ export function stripOfAll(url) {
     return [url, getDomainOnly(url)];
 }
 
-export function formatForGetRequest(url) {
+function formatForGetRequest(url) {
     let strippedUrl = stripOfAll(url);
     return "http://" + strippedUrl[0];
 }
 
+/**
+ * fires any valid url and gets the end destination's url and page title. These are passed as arguments in the callback
+ * @param {string} url the url to check
+ * @param {function} callback the callback function that takes the newly formatted end-url together with it's page title as argument.
+ * Used in the BlockedSiteBuilder
+ */
 export function getUrlFromServer(url, callback) {
     let urlToGet = formatForGetRequest(url);
     httpGetAsync(urlToGet, function (url, title) {
@@ -89,7 +109,10 @@ export function getUrlFromServer(url, callback) {
     });
 }
 
-export function httpGetAsync(theUrlToGet, callback) {
+/**
+ * fire asynchronous get request to find the end port of the passed url
+ */
+function httpGetAsync(theUrlToGet, callback) {
     let xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", theUrlToGet, true); // true for asynchronous
     xmlHttp.onreadystatechange = function () {
@@ -98,7 +121,10 @@ export function httpGetAsync(theUrlToGet, callback) {
     xmlHttp.send(null);
 }
 
-export function readyStateChange(xmlHttp, callback) {
+/**
+ * function to be passed to the get-request
+ */
+function readyStateChange(xmlHttp, callback) {
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         // simple regex to extract data from title tags, ignoring newlines, tabs and returns
         let titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
@@ -113,7 +139,10 @@ export function readyStateChange(xmlHttp, callback) {
     }
 }
 
-export function errorHandler(status) {
+/**
+ * internal error handler
+ */
+function errorHandler(status) {
     switch (status) {
         case 404:
             alert(constants.INVALID_URL_MESSAGE + 'File not found');

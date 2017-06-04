@@ -3,9 +3,12 @@ import UserSettings    from '../classes/UserSettings'
 
 /* ---------------- General methods --------------- */
 
-// General function which is used to set items stored in the storage of the chrome api.
-// Returns a promise.
-export function setStorage(dataKey, dataValue) {
+/**
+ * used to set items stored in the storage of the chrome api. Returns a promise
+ * @param {string} dataKey key of the data to store
+ * @param {string} dataValue value of data to store
+ */
+function setStorage(dataKey, dataValue) {
     return new Promise(function (resolve, reject) {
         let newObject = {};
         newObject[dataKey] = dataValue;
@@ -19,10 +22,11 @@ export function setStorage(dataKey, dataValue) {
     });
 }
 
-// General function which is used to retrieve items stored in the storage of the chrome api.
-// This function returns a Promise, to account for possible delays which might exist between the requesting of
-// the things in the storage and the actual retrieving of it.
-export function getStorage(dataKey) {
+/**
+ * used to retrieve items stored from the storage of the chrome api. Returns a promise due to asynchronousness
+ * @param {string} dataKey key of the data to store
+ */
+function getStorage(dataKey) {
     return new Promise(function (resolve, reject) {
         chrome.storage.sync.get(dataKey, function (output) {
             if (handleRuntimeError()) {
@@ -39,6 +43,7 @@ export function getStorage(dataKey) {
 }
 
 /* ---------------- TDS_Storage --------------- */
+
 export function getAll(callback) {
     getStorage(null).then(function (output) {
         output.tds_settings = UserSettings.deserializeSettings(output.tds_settings);
@@ -46,6 +51,7 @@ export function getAll(callback) {
         return callback(output);
     });
 }
+
 export function getAllUnParsed(callback) {
     getStorage(null).then(function (output) {
         return callback(output);
@@ -123,7 +129,9 @@ export function setExerciseTimeList(statList) {
 }
 
 /* ---------------- not exported--------------- */
-//Check for a runtime error
+/**
+ * Check for a runtime error.
+ */
 function handleRuntimeError() {
     if (chrome.runtime.error) {
         console.log("Runtime error.\n" + chrome.runtime.error);

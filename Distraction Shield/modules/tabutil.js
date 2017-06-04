@@ -21,12 +21,14 @@ export function isOpenTab (url, callback) {
  * switches to the already open tab otherwise
  * @param {string} url Url to check for
  */
-export function openTabSingleton(url) {
+export function openTabSingleton(url, callback = () => {}) {
     isOpenTab(url, (result) => {
         if (result === false) {//meaning: tab not yet open
             chrome.tabs.create({url : url});
         } else {
             chrome.tabs.update(result, {active: true});
         }
+        callback();
     });
+
 }
