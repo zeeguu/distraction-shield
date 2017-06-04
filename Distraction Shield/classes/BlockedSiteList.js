@@ -10,13 +10,10 @@ export default class BlockedSiteList {
         this._list = [];
     }
 
-    set list(blockedSiteArr) {
-        this._list = blockedSiteArr
-    }
+    set list(blockedSiteArr) { this._list = blockedSiteArr }
+    get list() { return this._list }
 
-    get list() {
-        return this._list
-    }
+    get length() { return this.list.length; }
 
     get urls() {
         if (this.list != []) {
@@ -60,13 +57,14 @@ export default class BlockedSiteList {
     }
 
     removeFromList(blockedSiteToDelete) {
-        let urlKey = this.list.indexOf(blockedSiteToDelete);
-        if (urlKey > -1) {
-            this.list.splice(urlKey, 1);
-            return true;
-        } else {
-            return false;
-        }
+        this.list = this.list.filter(item => item.url !== blockedSiteToDelete.url);
+    }
+
+    updateInList(blockedSite){
+        this.list.forEach((item, id) => {
+            if (item.url === blockedSite.url)
+                this.list[id] = blockedSite;
+        });
     }
 
     filterOnChecked() {

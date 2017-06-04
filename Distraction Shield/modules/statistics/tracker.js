@@ -2,8 +2,6 @@ import * as constants from '../../constants';
 import * as exerciseTime from './exerciseTime';
 import * as storage from '../storage'
 import BlockedSiteList from '../../classes/BlockedSiteList'
-import * as api from '../api'
-
 
 /**
  * The tracker tracks whether you are currently working on exercises.

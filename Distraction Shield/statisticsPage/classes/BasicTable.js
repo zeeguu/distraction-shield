@@ -9,6 +9,7 @@ export default class BasicTable {
     }
 
     createTable(data) {
+        this._html_element.find('tr:not(:has(th))').remove();
         this._html_element.append(data.map(this.generateTableRow));
     }
 

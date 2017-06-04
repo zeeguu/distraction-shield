@@ -1,8 +1,8 @@
-import * as synchronizer from "../modules/synchronizer.js";
 import * as blockedSiteBuilder from "../modules/blockedSiteBuilder.js";
 import * as stringutil from "../modules/stringutil.js";
-import BlockedSiteList from '../classes/BlockedSiteList';
 import {openTabSingleton} from "../modules/tabutil";
+import * as storage from '../modules/storage'
+import {tds_blacklist} from '../constants'
 
 let saveButton = $('#saveBtn');
 let optionsButton = $('#optionsBtn');
@@ -33,9 +33,8 @@ function connectButtons() {
  * @param {function} callback function that takes the blockedSite to which the url was found to be equal to
  */
 function patternMatchUrl(url, callback) {
-    chrome.runtime.sendMessage({message: "requestBlockedSites"}, function (response) {
-        let siteList = BlockedSiteList.deserializeBlockedSiteList(response.blockedSiteList);
-        let list = siteList.list;
+    storage.getBlacklistPromise().then(blockedSiteList => {
+        let list = blockedSiteList.list;
         let item = null;
         list.some(function (bl) {
             if (stringutil.wildcardStrComp(url, bl.url)) {
@@ -46,6 +45,7 @@ function patternMatchUrl(url, callback) {
         });
         callback(item);
     });
+
 }
 
 /**
@@ -54,53 +54,54 @@ function patternMatchUrl(url, callback) {
  */
 function toggleBlockedSite(url) {
     return function () {
-        chrome.runtime.sendMessage({message: "requestBlockedSites"}, function (response) {
-            let siteList = BlockedSiteList.deserializeBlockedSiteList(response.blockedSiteList);
-            let list = siteList.list;
+        storage.getBlacklistPromise().then(blockedSiteList => {
+            let list = blockedSiteList.list;
             let newItem = null;
             for (let i = 0; i < list.length; i++) {
                 if (stringutil.wildcardStrComp(url, list[i].url)) {
                     newItem = list[i];
+                    newItem.checkboxVal = !newItem.checkboxVal;
+                    storage.updateBlockedSiteInStorage(newItem);
                     break;
                 }
             }
-            newItem.checkboxVal = !newItem.checkboxVal;
-            if (newItem.checkboxVal) {
-                saveButton.text("Unblock");
-            } else {
-                saveButton.text("Block");
-            }
-            synchronizer.syncBlacklist(siteList);
 
+            if (newItem != null && newItem.checkboxVal) {
+                setSaveButton(false);
+            } else {
+                setSaveButton(true);
+            }
         });
     }
 }
 
+function setSaveButton(blocked){
+    if (blocked)
+        saveButton.text("Block");
+    else
+        saveButton.text("Unblock");
+}
+
 /**
- * Change colour and update functionality of the button when we add a new website to the blacklist
+ * Change colour and update functionality of the button when we add a new website to the blacklist/blockedSiteList
  */
 function setSaveButtonToSuccess() {
-    saveButton.unbind('click', saveCurrentPageToBlacklist);
     saveButton.attr('class', 'btn btn-success');
-    saveButton.text('Added!');
     setTimeout(function () {
         saveButton.attr('class', 'btn btn-info');
-        setSaveButtonFunctionality();
     }, 3000);
 }
 
 function saveCurrentPageToBlacklist() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         let activeTab = arrayOfTabs[0];
-        blockedSiteBuilder.createNewBlockedSite(activeTab.url, function (blockedSite) {
-            synchronizer.addSiteAndSync(blockedSite, setSaveButtonToSuccess());
-        });
+        blockedSiteBuilder.createNewBlockedSite(activeTab.url).then(setSaveButtonToSuccess());
     });
 }
 
 /**
  * Update the functionality of the button to one of 3 states:
- * 1. Add a non-blacklisted website to the blacklist
+ * 1. Add a non-blacklisted website to the blacklist/blockedSiteList
  * 2. Disable the blocking of this blacklisted website
  * 3. Enable the blocking of this blacklisted website
  */
@@ -109,21 +110,30 @@ function setSaveButtonFunctionality() {
         let activeTab = arrayOfTabs[0];
         let url = activeTab.url;
         patternMatchUrl(url, function (matchedBlockedSite) {
+            saveButton.unbind();
             if (matchedBlockedSite != null) {
-                saveButton.unbind('click', saveCurrentPageToBlacklist);
                 saveButton.on('click', toggleBlockedSite(url));
                 if (matchedBlockedSite.checkboxVal) {
-                    saveButton.text("Unblock");
+                    setSaveButton(false);
                 } else {
-                    saveButton.text("Block");
+                    setSaveButton(true);
                 }
             } else {
-                saveButton.unbind('click', toggleBlockedSite(url));
                 saveButton.on('click', saveCurrentPageToBlacklist);
-                saveButton.text("Block");
+                setSaveButton(true);
             }
         });
     });
+}
+
+chrome.storage.onChanged.addListener(changes => {
+    handleStorageChange(changes)
+});
+
+function handleStorageChange(changes){
+    if (tds_blacklist in changes) {
+        setSaveButtonFunctionality();
+    }
 }
 
 /**

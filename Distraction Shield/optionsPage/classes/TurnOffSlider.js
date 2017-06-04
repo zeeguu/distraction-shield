@@ -1,7 +1,7 @@
 import GreenToRedSlider from './GreenToRedSlider'
+import UserSettings from '../../classes/UserSettings'
 import * as constants from '../../constants'
-import * as synchronizer from '../../modules/synchronizer'
-import * as htmlFunctionality from '../htmlFunctionality'
+import * as storage from '../../modules/storage'
 
 /**
  * subclass of the GreenToRedSlider, this also connects a button to the set of html_elements.
@@ -10,82 +10,86 @@ import * as htmlFunctionality from '../htmlFunctionality'
  */
 export default class TurnOffSlider extends GreenToRedSlider {
 
-    constructor(sliderID, settings_object) {
-
+    constructor(sliderID) {
         super(sliderID, (value) => {
             this.selectedTime = parseInt(value);
         });
         this.selectedTime = 10;
         this.offButton = $(this.sliderDiv.find(sliderID + "-offBtn"));
-        this.settings_object = settings_object;
-        this.offButton[0].turnOffSlider = this;
         this.sliderRange[0].max = constants.MAX_TURN_OFF_TIME;
-        this.sliderValue.html(TurnOffSlider.calculateHours(this.sliderRange.val()));
+        this.offButton[0].slider = this;
+        this.sliderValue.html(this.calculateHours(this.sliderRange.val()));
         this.setValue(this.sliderRange.val());
-        this.setSliderRangeFunc(this);
-        this.toggleShowOffMessage();
-        this.offButton.text("Turn " + this.settings_object.notState);
-        htmlFunctionality.connectButton(this.offButton, this.turnOff);
-    }
-
-    setSliderRangeFunc(offSlider) {
-        this.sliderRange.on('input', function () {
-            let inputValue = this.value;
-            offSlider.sliderValue.html(TurnOffSlider.calculateHours(inputValue));
-            offSlider.updateColor(inputValue);
+        this.init();
+        chrome.storage.onChanged.addListener(changes => {
+            this.handleStorageChange(changes)
         });
     }
 
-    toggleShowOffMessage() {
-        if (this.settings_object.state === "Off") {
-            this.sliderValue.html(this.createHtmlOffMessage());
+    init(){
+        storage.getSettings(settings_object => {
+            this.updateSettings(settings_object);
+        });
+    }
+
+    toggleShowOffMessage(settings_object) {
+        if (!settings_object.isInterceptionOn()) {
+            this.sliderValue.html(this.createOffMessage(settings_object));
             this.sliderRange.css('visibility', 'hidden').parent().css('display', 'none');
             this.sliderValue.parent().css('width', '50%');
             this.sliderValue.prop('contenteditable', false);
         } else {
-            this.sliderValue.html(TurnOffSlider.calculateHours(this.selectedTime));
+            this.sliderValue.html(this.calculateHours(this.selectedTime));
             this.sliderRange.css('visibility', 'visible').parent().css('display', 'initial');
             this.sliderValue.parent().css('width', '30%');
             this.sliderValue.prop('contenteditable', true);
         }
     }
 
-    createHtmlOffMessage() {
-        return "Turned off until: " + TurnOffSlider.formatDate(this.settings_object.status.offTill);
-    }
 
     static formatDate(date) {
         let arr = date.toString().split(" ");
         return arr.splice(0, 5).join(" ");
     }
 
-    static calculateHours(val) {
-        let hours = Math.floor(val / 60);
-        let minutes = val % 60;
-        if (minutes < 10 && hours > 0) {
-            minutes = "0" + minutes;
-        }
+    createMessage(hours, minutes, val){
+        if (val == constants.MAX_TURN_OFF_TIME)
+            return "for the rest of the day";
         let returnVal = "for " + (hours > 0 ? hours + ":" + minutes + " hours." : minutes + " minute(s).");
-        if (val == constants.MAX_TURN_OFF_TIME) {
-            returnVal = "for the rest of the day";
-        }
         return returnVal;
-    };
+    }
 
-    turnOff() {
-        let parent = this.turnOffSlider;
-        let settings_object = parent.settings_object;
-        if (settings_object.state === "On") {
-            if (parent.selectedTime === constants.MAX_TURN_OFF_TIME) {
-                settings_object.turnOffForDay(false);
+    createOffMessage(settings_object) {
+        return "Turned off until: " + TurnOffSlider.formatDate(settings_object.status.offTill);
+    }
+
+
+    updateSettings(userSettings) {
+        this.toggleShowOffMessage(userSettings);
+        this.offButton.text("Turn " + (userSettings.isInterceptionOn() ? "Off" : "On"));
+    }
+
+    offButtonFunc() {
+        storage.getSettings(settings_object => {
+            // 'this' is really annoying, (this refers to the offbutton..)
+            let slider = this.slider;
+            if (settings_object.isInterceptionOn()) {
+                if (slider.selectedTime === constants.MAX_TURN_OFF_TIME) {
+                    settings_object.turnOffForDay();
+                } else {
+                    settings_object.turnOffFor(slider.selectedTime);
+                }
             } else {
-                settings_object.turnOffFor(parent.selectedTime, false);
+                settings_object.turnOn();
             }
-        } else {
-            settings_object.turnOn();
+            storage.setSettings(settings_object);
+        });
+    }
+
+    handleStorageChange(changes){
+        if (constants.tds_settings in changes) {
+            let newSettings = UserSettings.deserializeSettings(changes[constants.tds_settings].newValue);
+            this.updateSettings(newSettings);
         }
-        parent.toggleShowOffMessage();
-        $(this).text("Turn " + settings_object.notState);
-        synchronizer.syncSettings(settings_object);
     }
 }

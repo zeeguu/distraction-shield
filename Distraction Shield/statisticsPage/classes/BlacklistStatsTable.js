@@ -6,7 +6,6 @@ import BasicTable from "./BasicTable"
  * has spent on a certain blacklisted website.
  */
 export default class BlacklistStatsTable extends BasicTable {
-
     /**
      * This functions generates HTML rows containing data of one BlockedSite
      * @param site a BlockedSite of which the data is used
