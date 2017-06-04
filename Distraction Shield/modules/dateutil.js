@@ -1,4 +1,6 @@
-// This module is an utility to help get the correct format for dates which are used in the codebase.
+/**
+ * This module is an utility to help get the correct format for dates which are used in the codebase.
+ */
 
 /**
  * Converts seconds to HH:MM:SS format
@@ -17,7 +19,7 @@ export function formatDate(date) {
 }
 
 /**
- * returns the current date, formatted in the correct format.
+ * Returns the current date, formatted in the correct format.
  */
 export function getToday() {
     let dateObject = new Date();
