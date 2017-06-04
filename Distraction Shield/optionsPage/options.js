@@ -26,9 +26,15 @@ let turnOffSlider;
 /* -------------------- Initialization of options --------------------- */
 
 /**
+ * initial function that is fired when the page is loaded.
+ */
+document.addEventListener("DOMContentLoaded", function () {
+    initOptionsPage();
+});
+
+/**
  * Initialize HTML elements and set the local variables
  */
-
 function initOptionsPage() {
     storage.getAll(function (output) {
         connectHtmlFunctionality(output.tds_settings);
@@ -77,11 +83,13 @@ function loadInterceptionCounter(val){
 function reloadTable(blockedSiteList, oldBlockedSiteList){
     connectDataToHtml.reloadHtmlBlacklist(blockedSiteList, oldBlockedSiteList, blockedSiteListTable);
 }
+
+/* -------------------- Act upon change of storage ------------------- */
+
 /**
  * This function should be called onChange, this checks if it needs to act on the storage change.
  * @param changes {Array} array of objects in storage that have been changed. Contains new & old value
  */
-
 function handleStorageChange(changes){
     if (tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
@@ -107,6 +115,7 @@ function saveNewUrl() {
     blockedSiteBuilder.createNewBlockedSite(newUrl);
     html_txtFld.val('');
 }
+
 /* -------------------- -------------------------- -------------------- */
 
 function openFeedbackForm() {
@@ -121,10 +130,3 @@ function openStatisticsPage() {
     openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'));
 
 }
-
-/**
- * initial function that is fired when the page is loaded.
- */
-document.addEventListener("DOMContentLoaded", function () {
-    initOptionsPage();
-});
