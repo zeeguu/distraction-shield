@@ -1,3 +1,4 @@
+/* eslint-env node */
 let assert = require('assert');
 let tabutil = require('../../dist/modules/tabutil.js');
 const chrome = require('sinon-chrome');

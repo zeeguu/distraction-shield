@@ -1,3 +1,4 @@
+/* eslint-env node */
 let assert = require('assert');
 let dateutil = require('../../dist/modules/dateutil.js');
 

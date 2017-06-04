@@ -1,7 +1,7 @@
+/* eslint-env node */
 var assert = require('assert');
 var UserSettings = require('../../dist/classes/UserSettings')['default'];
 const chrome = require('sinon-chrome');
-
 
 describe('UserSettings | unit tests', function() {
     before(function() {

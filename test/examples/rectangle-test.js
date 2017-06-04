@@ -1,3 +1,4 @@
+/* eslint-env node */
 var assert = require('assert');
 var Rectangle = require('../../dist/examples/rectangle.js')['default'];
 

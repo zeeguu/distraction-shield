@@ -1,3 +1,4 @@
+/* eslint-env node */
 let assert = require('assert');
 let stringutil = require('../../dist/modules/stringutil.js');
 
