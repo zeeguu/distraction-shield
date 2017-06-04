@@ -65,9 +65,8 @@ function intercept(details) {
  * @param details the details found by the onWebRequestListener about the current webRequest
  */
 function handleInterception(details) {
-    //TODO magic string!
     if (isInterceptionOn)
-        if (constants.exerciseCompleteRegex.match(details.url)) {
+        if (constants.exerciseCompleteRegex.test(details.url)) {
             let url = details.url.replace(constants.exerciseCompleteRegex, "");
             turnOffInterception();
             return {redirectUrl: url};
