@@ -11,6 +11,10 @@ module.exports = {
   rules: {
   },
   globals: {
-    'chrome': true
+    'chrome': true,
+    'describe': true,
+    'before': true,
+    'it': true,
+    'after': true
   }
 };
