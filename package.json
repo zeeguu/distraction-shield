@@ -28,7 +28,6 @@
     "loader.js": "^4.2.3"
   },
   "engines": {
-    "node": ">= 4"
-  },
-  "dependencies": {}
+    "node": ">= 6"
+  }
 }

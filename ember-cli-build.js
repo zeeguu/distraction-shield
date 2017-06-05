@@ -6,8 +6,7 @@ module.exports = function(defaults) {
     vendorFiles: {
       'jquery.js': null,
       'ember.js': null,
-      'app-shims.js': null,
-      'ember-cli': null
+      'app-shims.js': null
     }
   });
 
