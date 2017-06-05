@@ -6,7 +6,7 @@ import TurnOffSlider from './classes/TurnOffSlider'
 import * as connectDataToHtml from './connectDataToHtml'
 import * as htmlFunctionality from './htmlFunctionality'
 import * as blockedSiteBuilder from '../modules/blockedSiteBuilder'
-import {feedbackLink, tds_blacklist, tds_settings, tds_interceptCounter} from '../constants'
+import {feedbackLink, tds_blacklist, tds_settings, tds_interceptCounter, newUrlNotUniqueError} from '../constants'
 import {openTabSingleton} from '../modules/tabutil'
 
 /**
@@ -80,8 +80,14 @@ function loadInterceptionCounter(val){
     connectDataToHtml.loadHtmlInterceptCounter(val, $('#iCounter'));
 }
 
-function reloadTable(blockedSiteList, oldBlockedSiteList){
+function reloadTable(blockedSiteList, oldBlockedSiteList) {
     connectDataToHtml.reloadHtmlBlacklist(blockedSiteList, oldBlockedSiteList, blockedSiteListTable);
+}
+
+/* -------------------- Manipulate local variables ------------------- */
+
+function resetMessageBox() {
+  document.querySelector('#message-box').innerText = '';
 }
 
 /* -------------------- Act upon change of storage ------------------- */
@@ -110,8 +116,11 @@ chrome.storage.onChanged.addListener(changes => {
 /* -------------------- Manipulate local variables ------------------- */
 
 function saveNewUrl() {
+    resetMessageBox();
     let html_txtFld = $('#textFld');
     let newUrl = html_txtFld.val();
+    //TODO display error message here if this fails.
+    //document.querySelector('#message-box').innerText = newUrlNotUniqueError + newItem.domain;
     blockedSiteBuilder.createNewBlockedSite(newUrl);
     html_txtFld.val('');
 }

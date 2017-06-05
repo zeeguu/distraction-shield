@@ -1,3 +1,4 @@
+/* eslint-env node */
 // import plugins
 var babel = require('broccoli-babel-transpiler');
 var Funnel = require('broccoli-funnel');
