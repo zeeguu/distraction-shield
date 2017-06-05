@@ -48,8 +48,6 @@ function connectHtmlFunctionality() {
     exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
 }
 
-
-//TODO extend repainting.
 function handleStorageChange(changes) {
     if (tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
@@ -63,8 +61,6 @@ function handleStorageChange(changes) {
         let newInterceptDateList = changes[tds_interceptDateList].newValue;
         setInterceptionCounterTable(newInterceptDateList);
     }
-
-
 }
 
 chrome.storage.onChanged.addListener(changes => {
