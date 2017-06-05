@@ -1,14 +1,17 @@
 {
   "name": "distraction-shield",
-  "version": "0.0.0",
-  "description": "Small description for distraction-shield goes here",
+  "version": "1.0.0",
+  "description": "Distraction Shield!",
   "license": "MIT",
   "author": "",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RUGSoftEng/2017-The-Distraction-Shield.git"
+  },
   "scripts": {
     "build": "ember build",
     "start": "ember server",
