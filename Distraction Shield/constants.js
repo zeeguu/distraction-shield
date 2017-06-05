@@ -5,6 +5,8 @@
 
 /* ---------- ----- background ----- ---------- */
 export const zeeguuExLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
+// export const zeeguuExLink = "http://127.0.0.1:5000/get-ex";
+
 export const zeeguuExTracker = "www.zeeguu.unibe.ch/practice/get-ex";
 
 /* ---------- ----- optionspage----- ---------- */
@@ -37,6 +39,8 @@ export const modes = {
 };
 
 export const zeeguLoginLink = "https://www.zeeguu.unibe.ch/login";
+
+export const tdsRedirectParam = /(\?tds_redirect=)(.*)/;
 
 /* ---------- ----- BlockedSiteList ----- ---------- */
 export const newUrlNotUniqueError = "New blocked site item to be added was found to resolve to an already blacklisted website, " +

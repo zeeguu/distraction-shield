@@ -2,13 +2,12 @@ import * as constants from '../constants'
 import * as storage from '../modules/storage'
 
 function mainFlow() {
-    if (window.location.href.indexOf("from_tds=true") == -1) return;
+    if (!constants.tdsRedirectParam.test(window.location.href)) return;
     storage.getMode(initBasis);
 }
 
 function initBasis(mode) {
     let message = mode.zeeguuText;
-
 
     $.ajax({
         url: chrome.extension.getURL('contentInjection/inject.html'),
@@ -34,7 +33,7 @@ function initBasis(mode) {
 
 function getDest() {
     let url = window.location.href;
-    let regex = new RegExp("[?&]redirect(=([^&#]*)|&|#|$)");
+    let regex = new RegExp("(\?tds_redirect=)(.*)");
     let results = regex.exec(url);
     if (!results || !results[2]) {
         return null;

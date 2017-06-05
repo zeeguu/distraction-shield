@@ -92,7 +92,7 @@ function intercept(details) {
     interception.incrementInterceptionCounter(details.url);
     interception.addToInterceptDateList();
     let redirectLink = constants.zeeguuExLink;
-    let params = "?redirect=" + details.url + "&from_tds=true";
+    let params = "?tds_redirect=" + details.url;
     return {redirectUrl: redirectLink + params};
 }
 
