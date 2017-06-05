@@ -1,8 +1,7 @@
-import resolver from './helpers/resolver';
-import {
-  setResolver
-} from 'ember-qunit';
-import { start } from 'ember-cli-qunit';
+import QUnit from 'qunit';
+import TestLoader from 'ember-cli-test-loader/test-support';
 
-setResolver(resolver);
-start();
+// optionally override TestLoader.prototype.shouldLoadModule
+TestLoader.load();
+
+QUnit.start();

@@ -1,3 +1,1 @@
-export default function usm() {
-    return 343;
-}
+export default () => 343
