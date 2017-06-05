@@ -29,6 +29,8 @@ function openOptionsPage() {
     });
 }
 
+/* ----------- ----------- Save button functionality ----------- ----------- */
+
 /**
  * match the current url to the current list of blockedSiteItems
  * @param {string} url to be compared
@@ -126,6 +128,8 @@ function setSaveButtonFunctionality() {
     });
 }
 
+/* ----------- ----------- Storage Listener ----------- ----------- */
+
 chrome.storage.onChanged.addListener(changes => {
     handleStorageChange(changes)
 });
@@ -141,6 +145,8 @@ function handleStorageChange(changes) {
         }
     }
 }
+
+/* ----------- ----------- Initialization ----------- ----------- */
 
 /**
  * function that initiates the functionality of the tooltip
