@@ -8,9 +8,7 @@ alert = chrome.extension.getBackgroundPage().alert;
  */
 export function stripOfFinalSlash(url) {
     if (url[url.length - 1] == '/') {
-        let ans = url.split("");
-        ans.pop();
-        url = ans.join("");
+        url = url.slice(0, url.length - 1);
     }
     return url;
 }
@@ -144,13 +142,13 @@ function readyStateChange(xmlHttp, callback) {
  */
 function errorHandler(status) {
     switch (status) {
-        case 404:
+        case constants.FILE_NOT_FOUND_ERROR:
             alert(constants.INVALID_URL_MESSAGE + 'File not found');
             break;
-        case 500:
+        case constants.SERVER_ERROR:
             alert(constants.INVALID_URL_MESSAGE + 'Server error');
             break;
-        case 0:
+        case constants.REQUEST_ABORTED_ERROR:
             alert(constants.INVALID_URL_MESSAGE + 'Request aborted');
             break;
         default:
