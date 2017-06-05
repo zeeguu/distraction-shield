@@ -45,6 +45,10 @@ export const newUrlNotUniqueError = "New blocked site item to be added was found
 export const INVALID_URL_MESSAGE = "We unfortunately could not reach the site you are trying to block.\n" +
     "Are you sure the url is correct? \n \n";
 
+export const FILE_NOT_FOUND_ERROR  = 404;
+export const SERVER_ERROR = 500;
+export const REQUEST_ABORTED_ERROR = 0;
+
 /**/
 export const dataCollectionMsg = 'Please be aware that anonymous data are collected for purposes of improving the extension. '+
     'The data cannot be traced back to you as a person.\n\nWe respect your privacy.';
