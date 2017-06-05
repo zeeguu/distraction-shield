@@ -192,7 +192,7 @@ export default class Tracker {
     putBackTimeSpent(timeValues) {
         this.blockedsites.list.map((blockedSite) => {
             let bSite = timeValues.find((timeValue) => timeValue.domain == blockedSite.domain);
-            if (bSite != undefined) blockedSite.timeSpent = bSite.timeSpent;
+            if (typeof bSite !== 'undefined') blockedSite.timeSpent = bSite.timeSpent;
         });
     }
 

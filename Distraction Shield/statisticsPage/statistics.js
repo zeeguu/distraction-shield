@@ -47,8 +47,6 @@ function connectHtmlFunctionality() {
     exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
 }
 
-
-//TODO extend repainting.
 function handleStorageChange(changes) {
     if (tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
