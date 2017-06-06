@@ -59,7 +59,7 @@ let css;
   css = Merge([ project, vendor ]);
   css = new Concat(css, {
     inputFiles: ['**/*.css'],
-    outputFile: 'distraction-shield.css'
+    outputFile: 'assets/css/distraction-shield.css'
   });
 }
 
