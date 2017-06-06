@@ -1,9 +1,10 @@
 <!doctype html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Options page for The Distraction Shield</title>
     <script src="../dependencies/jquery/jquery-1.10.2.js"></script>
+    <script src="../dependencies/bootstrap/js/bootstrap.min.js"></script>
     <script src="../js-src/options.bundle.js"></script>
     <link rel="stylesheet" type="text/css" href="../dependencies/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="options.css">
@@ -100,11 +101,17 @@
                         </span> Feedback</button>
                 </div>
                 <div class="col-md-4">
-                    <button class="btn btn-primary option-button">
+                    <button class="btn btn-primary option-button" id="dataSettingsButton" data-remote="../introTour/dataCollectionFrame.html" data-toggle="modal" data-target="#dataConsentModal">
                         <span class="glyphicon glyphicon-wrench">
                         </span> Data Settings</button>
                 </div>
 
+                <div id="dataConsentModal" class="modal fade text-center">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

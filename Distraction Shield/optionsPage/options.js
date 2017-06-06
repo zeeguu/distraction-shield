@@ -9,6 +9,7 @@ import TurnOffSlider from './classes/TurnOffSlider'
 import * as connectDataToHtml from './connectDataToHtml'
 import * as htmlFunctionality from './htmlFunctionality'
 import {feedbackLink, tds_blacklist, tds_settings, tds_interceptCounter} from '../constants'
+import {initDataCollectionModal} from '../introTour/dataCollection'
 
 /**
  * This file contains the core functions of the options page. this has all the local variables,
@@ -55,8 +56,9 @@ function connectHtmlFunctionality(userSettings) {
     htmlFunctionality.connectButton($('#turnOff-slider-offBtn'), turnOffSlider.offButtonFunc);
     htmlFunctionality.connectButton($('#saveBtn'), saveNewUrl);
     htmlFunctionality.connectButton($('#statisticsLink'), openStatisticsPage);
-    htmlFunctionality.connectButton($('#feedbackLink'), openFeedbackForm);
-    htmlFunctionality.connectButton($('#tourRestartLink'), restartTour);
+    htmlFunctionality.connectButton($('#feedbackButton'), openFeedbackForm);
+    htmlFunctionality.connectButton($('#tourRestartButton'), restartTour);
+    htmlFunctionality.connectButton($('#dataSettingsButton'), openDataCollectionConsent)
     htmlFunctionality.setKeyPressFunctions($('#textFld'), saveNewUrl);
 }
 
@@ -90,7 +92,7 @@ function reloadTable(blockedSiteList, oldBlockedSiteList) {
 /* -------------------- Manipulate local variables ------------------- */
 
 function resetMessageBox() {
-  document.querySelector('#message-box').innerText = '';
+    document.querySelector('#message-box').innerText = '';
 }
 
 /* -------------------- Act upon change of storage ------------------- */
@@ -135,4 +137,12 @@ function restartTour() {
 
 function openStatisticsPage() {
     openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'));
+}
+
+/**
+ * This function loads the button functionality for the modal. This can only be loaded when the modal is shown,
+ * since the html is added dynamically
+ */
+function openDataCollectionConsent(){
+    initDataCollectionModal($('#dataConsentModal'));
 }

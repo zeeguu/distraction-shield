@@ -1,7 +1,3 @@
-/* global module __dirname */
-/**
- * Created by pieter on 13-5-17.
- */
 
 module.exports = {
     entry : {
@@ -10,7 +6,8 @@ module.exports = {
         tooltip: './dist/tooltipPage/tooltip.js',
         statistics: './dist/statisticsPage/statistics.js',
         inject: './dist/contentInjection/inject.js',
-        tour: './dist/introTour/introTour.js'
+        tour: './dist/introTour/introTour.js',
+        dataconsent: './dist/introTour/dataCollection.js'
     },
 
     output: {

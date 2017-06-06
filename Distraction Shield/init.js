@@ -3,7 +3,6 @@ import * as storage from './modules/storage/storage';
 import BlockedSiteList from './classes/BlockedSiteList';
 import UserSettings from './classes/UserSettings';
 import Tracker from './modules/statistics/tracker';
-import * as constants from './constants';
 
 /* --------------- ---- Run upon installation ---- ---------------*/
 
@@ -19,7 +18,6 @@ chrome.runtime.onInstalled.addListener((details) => {
         initExerciseTime(output.tds_exerciseTime);
         initSettings(output.tds_settings);
         if (details.reason == 'install') {
-            dataCollectionMsg ();
             runIntroTour();
         }
     });
@@ -55,10 +53,6 @@ function initExerciseTime(exerciseTime) {
     if (exerciseTime == null) {
         storage.setExerciseTimeList([]);
     }
-}
-
-function dataCollectionMsg () {
-    alert (constants.dataCollectionMsg);
 }
 
 function runIntroTour() {
