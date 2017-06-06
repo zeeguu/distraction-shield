@@ -4,22 +4,21 @@
   "description": "Divert attention from social media websites towards learning a new language",
   "version": "2.0.0",
   "icons": {
-    "128": "aikido.png"
+    "128": "assets/images/aikido.png"
   },
   "offline_enabled": false,
-  "options_page": "optionsPage/options.html",
+  "options_page": "options.html",
   "options_ui": {
-    "page": "optionsPage/options.html"
+    "page": "options.html"
   },
   "browser_action": {
-    "default_icon": "aikido.png",
+    "default_icon": "assets/images/aikido.png",
     "default_title": "Distraction Shield Settings",
-    "default_popup": "tooltipPage/tooltip.html"
+    "default_popup": "tooltip.html"
   },
   "background": {
     "scripts": [
-      "./dependencies/jquery/jquery-1.10.2.js",
-      "./js-src/init.bundle.js"
+      "./distraction-shield.js"
     ]
   },
   "content_scripts": [
@@ -29,8 +28,7 @@
         "*://www.zeeguu.unibe.ch/login*"
       ],
       "js": [
-        "dependencies/jquery/jquery-1.10.2.js",
-        "./js-src/inject.bundle.js"
+        "./distraction-shield.js"
       ]
     }
   ],
@@ -44,6 +42,6 @@
     "<all_urls>"
   ],
   "web_accessible_resources": [
-    "contentInjection/inject.html"
+    "inject.html"
   ]
 }
