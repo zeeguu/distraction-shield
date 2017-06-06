@@ -5,6 +5,7 @@ import BlockedSiteList from '../classes/BlockedSiteList.js'
 import * as storage from '../modules/storage'
 import * as interception from '../modules/statistics/interception'
 import {tds_blacklist, tds_interceptDateList, tds_exerciseTime} from '../constants'
+import StorageListener from "../modules/StorageListener"
 
 let interceptionCounterTable = null;
 let blacklistTable = null;
@@ -58,7 +59,7 @@ function connectHtmlFunctionality() {
 }
 
 /* ----------- ----------- Storage Listener ----------- ----------- */
-function handleStorageChange(changes) {
+new StorageListener((changes) => {
     if (tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
         blacklistTable.setDataAndRender(newBlockedSiteList.list);
@@ -71,9 +72,4 @@ function handleStorageChange(changes) {
         let newInterceptDateList = changes[tds_interceptDateList].newValue;
         setInterceptionCounterTable(newInterceptDateList);
     }
-}
-
-chrome.storage.onChanged.addListener(changes => {
-    handleStorageChange(changes)
 });
-

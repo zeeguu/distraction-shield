@@ -6,8 +6,9 @@ import TurnOffSlider from './classes/TurnOffSlider'
 import * as connectDataToHtml from './connectDataToHtml'
 import * as htmlFunctionality from './htmlFunctionality'
 import * as blockedSiteBuilder from '../modules/blockedSiteBuilder'
-import {feedbackLink, tds_blacklist, tds_settings, tds_interceptCounter, newUrlNotUniqueError} from '../constants'
+import {feedbackLink, tds_blacklist, tds_settings, tds_interceptCounter} from '../constants'
 import {openTabSingleton} from '../modules/tabutil'
+import StorageListener from "../modules/StorageListener"
 
 /**
  * This file contains the core functions of the options page. this has all the local variables,
@@ -43,7 +44,7 @@ function initOptionsPage() {
 }
 
 /**
- * connect the funcitonality to the different htl_elements on the optionspage.
+ * connect the functionality to the different htl_elements on the optionspage.
  */
 function connectHtmlFunctionality(userSettings) {
     htmlFunctionality.initModeSelection(modeGroup, userSettings);
@@ -96,7 +97,7 @@ function resetMessageBox() {
  * This function should be called onChange, this checks if it needs to act on the storage change.
  * @param changes {Array} array of objects in storage that have been changed. Contains new & old value
  */
-function handleStorageChange(changes){
+new StorageListener((changes) => {
     if (tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
         let oldBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].oldValue);
@@ -107,10 +108,6 @@ function handleStorageChange(changes){
     } if (tds_interceptCounter in changes) {
         loadInterceptionCounter(changes[tds_interceptCounter].newValue);
     }
-}
-
-chrome.storage.onChanged.addListener(changes => {
-    handleStorageChange(changes)
 });
 
 /* -------------------- Manipulate local variables ------------------- */

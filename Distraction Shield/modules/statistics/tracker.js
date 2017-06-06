@@ -2,6 +2,7 @@ import * as constants from '../../constants';
 import * as exerciseTime from './exerciseTime';
 import * as storage from '../storage'
 import BlockedSiteList from '../../classes/BlockedSiteList'
+import StorageListener from "../StorageListener"
 
 /**
  * The tracker tracks whether you are currently working on exercises.
@@ -39,7 +40,7 @@ export default class Tracker {
      */
     init() {
         this.getBlockedSites();
-        this.addStorageOnChangedListener();
+        new StorageListener(this.handleStorageChange.bind(this));
 
         this.addIdleListener();
         this.addAlarmListener();
@@ -148,13 +149,6 @@ export default class Tracker {
                 });
             }
         });
-    }
-
-    /**
-     * Initiates listener to find updates to the list of blocked sites.
-     */
-    addStorageOnChangedListener() {
-        chrome.storage.onChanged.addListener(this.handleStorageChange.bind(this));
     }
 
     /**

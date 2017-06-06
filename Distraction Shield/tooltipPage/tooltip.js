@@ -4,6 +4,7 @@ import * as stringutil from "../modules/stringutil.js"
 import {openTabSingleton} from "../modules/tabutil"
 import * as storage from '../modules/storage'
 import {tds_blacklist} from '../constants'
+import StorageListener from "../modules/StorageListener"
 
 let saveButton = $('#saveBtn');
 let optionsButton = $('#optionsBtn');
@@ -131,11 +132,7 @@ function setSaveButtonFunctionality() {
 
 /* ----------- ----------- Storage Listener ----------- ----------- */
 
-chrome.storage.onChanged.addListener(changes => {
-    handleStorageChange(changes)
-});
-
-function handleStorageChange(changes) {
+new StorageListener((changes) => {
     if (tds_blacklist in changes) {
         let oldBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].oldValue);
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
@@ -145,7 +142,7 @@ function handleStorageChange(changes) {
             setSaveButtonFunctionality();
         }
     }
-}
+});
 
 /* ----------- ----------- Initialization ----------- ----------- */
 
