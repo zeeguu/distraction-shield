@@ -5,7 +5,6 @@ import BlockedSite from '../classes/BlockedSite'
  */
 export default class BlockedSiteList extends Array {
 
-    get list();
     constructor() {
         super();
         this.__proto__ = BlockedSiteList.prototype;
