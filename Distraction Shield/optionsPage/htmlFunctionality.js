@@ -1,6 +1,6 @@
 import GreenToRedSlider from './classes/GreenToRedSlider'
 import * as constants from '../constants'
-import * as synchronizer from '../modules/synchronizer'
+import * as storage from '../modules/storage/storage'
 
 /**
  * This file contains the specific functionality for the options and some of its elements
@@ -18,9 +18,8 @@ export function connectButton(html_button, method) {
 }
 /* -------------------- Keypress events ----------------------- */
 
-export function setKeyPressFunctions(html_txtFld, blacklistTable, submitFunc, deleteFunc) {
+export function setKeyPressFunctions(html_txtFld, submitFunc) {
     submitOnKeyPress(html_txtFld, submitFunc);
-    deleteOnKeyPress(blacklistTable, deleteFunc);
 }
 
 function submitOnKeyPress(html_elem, submitFunc) {
@@ -31,14 +30,6 @@ function submitOnKeyPress(html_elem, submitFunc) {
     });
 }
 
-function deleteOnKeyPress(blacklistTable, deleteFunc) {
-    $('html').keyup((e) => {
-        if (e.keyCode === constants.KEY_DELETE) {
-            let html = blacklistTable.getSelected();
-            deleteFunc(html);
-        }
-    });
-}
 /* -------------------- Logic for the mode selection -------------------- */
 
 export function initModeSelection(buttonGroup, settings_object) {
@@ -49,7 +40,7 @@ export function initModeSelection(buttonGroup, settings_object) {
         } else {
             settings_object.mode = constants.modes.lazy;
         }
-        synchronizer.syncSettings(settings_object);
+        storage.setSettings(settings_object);
     });
 }
 /* -------------------- Interval slider -------------------- */
@@ -57,6 +48,6 @@ export function initModeSelection(buttonGroup, settings_object) {
 export function initIntervalSlider(settings_object) {
     return new GreenToRedSlider('#interval-slider', function (value) {
         settings_object.interceptionInterval = parseInt(value);
-        synchronizer.syncSettings(settings_object);
+        storage.setSettings(settings_object);
     });
 }

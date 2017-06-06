@@ -3,72 +3,37 @@
  * @module background
  */
 
-import {createNewBlockedSite} from './modules/blockedSiteBuilder';
 import BlockedSiteList from './classes/BlockedSiteList';
 import * as interception from './modules/statistics/interception';
-import * as storage from './modules/storage';
+import * as storage from './modules/storage/storage';
 import UserSettings from  './classes/UserSettings'
 import * as constants from'./constants';
 import {isInRegexList} from './modules/stringutil';
+import StorageListener from './modules/storage/StorageListener'
 
 /**
- * The BlockedSiteList used by the background
- * @type {BlockedSiteList}
+ * Unfortunately are webrequestlisteners not able to process asynchronous functions.
+ * Therefore we need a global variable to keep track of the state of the extension.
+ * @type {boolean}
  */
-let blockedSites = new BlockedSiteList();
 
-/**
- * The UserSettings used by the background scrript.
- * @type {UserSettings}
- */
-let localSettings = new UserSettings();
+let isInterceptionOn = true;
 
-/* --------------- ------ setter for local variables ------ ---------------*/
-
-export function setLocalSettings(newSettings) {
-    let oldState = localSettings.state;
-    localSettings = newSettings;
-    if (oldState != localSettings.state) {
-        localSettings.reInitTimer(replaceListener);
-        replaceListener();
-    }
-}
-
-function setLocalBlacklist(newList) {
-    blockedSites.list = newList.list;
-    replaceListener();
-}
-
-/* --------------- ------ Storage retrieval ------ ---------------*/
-
-export function retrieveBlockedSites(callback) {
-    storage.getBlacklist(function (blacklist) {
-        blockedSites.list = blacklist.list;
-        return callback();
-    });
-}
-/* --------------- ------ Updating of variables ------ ---------------*/
-
-function addUrlToBlockedSites(unformattedUrl, onSuccess) {
-    createNewBlockedSite(unformattedUrl, function (newBS) {
-        if (blockedSites.addToList(newBS)) {
-            replaceListener();
-            storage.setBlacklist(blockedSites);
-            onSuccess();
-        } else {
-          alert('This site was already on the list! (' + newBS + ')');
-        }
+export function initBackground(){
+    storage.getBlacklist(function (blockedSiteList) {
+        replaceListener(blockedSiteList);
     });
 }
 
-/* --------------- ------ webRequest functions ------ ---------------*/
+/* ---------- ---------- Webrequest functions ----------  ---------- */
 
-export function replaceListener() {
+function replaceListener(blockedSiteList) {
     removeWebRequestListener();
-    let urlList = blockedSites.activeUrls;
-    if (localSettings.state == "On" && urlList.length > 0) {
-        addWebRequestListener(urlList);
-    }
+    storage.getSettings(settings_object => {
+        let urlList = blockedSiteList.activeUrls;
+        if (settings_object.isInterceptionOn() && urlList.length > 0)
+            addWebRequestListener(urlList);
+    })
 }
 
 function addWebRequestListener(urlList) {
@@ -86,6 +51,9 @@ function removeWebRequestListener() {
     chrome.webRequest.onBeforeRequest.removeListener(handleInterception);
 }
 
+
+/* ---------- ---------- Interception functions ----------  ---------- */
+
 /**
  * function that does everything that should happen when we decide to intercept the current request.
  * Incrementing counters and modifying url's
@@ -101,14 +69,14 @@ function intercept(details) {
 
 /**
  * Function which fires when we enter a website on the blockedsite list.
- * If we coe from zeeguu and have completed an exercise than we may continue, else we redirect.
+ * If we come from zeeguu and have completed an exercise than we may continue, else we redirect.
  * @param details the details found by the onWebRequestListener about the current webRequest
  */
 function handleInterception(details) {
-    if (localSettings.state == "On" && !isInRegexList(constants.whitelist, details.url)) {
-        if (details.url.indexOf("tds_exComplete=true") > -1) {
+    if (isInterceptionOn && !isInRegexList(constants.whitelist, details.url)) {
+        if (constants.exerciseCompleteRegex.test(details.url)) {
+            let url = details.url.replace(constants.exerciseCompleteRegex, "");
             turnOffInterception();
-            let url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
             return {redirectUrl: url};
         } else {
             return intercept(details);
@@ -120,26 +88,32 @@ function handleInterception(details) {
  * turns off interception from the background
  */
 function turnOffInterception() {
-    localSettings.turnOffFromBackground(replaceListener);
-    storage.setSettings(localSettings);
+    isInterceptionOn = false;
+    storage.getSettings(settings_object => {
+        settings_object.turnOffFor(settings_object.interceptionInterval, true);
+    })
 }
 
-/* --------------- ------ Message Listener ------ ---------------*/
+/* ---------- ---------- Storage Listener ----------  ---------- */
+
 /**
- * Message listener. This listens to message from third party papers, enabling communication between the background scripts
- * and other scripts.
+ * Actual function that is fired upon the change in storage. If the blockedSiteList changes,
+ * we update our listener. If the settings change we encorperate this in the background's behaviour.
+ * @param changes data passed by the storage.onChanged event
  */
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.message === "updateListener") {
-        setLocalBlacklist(BlockedSiteList.deserializeBlockedSiteList(request.siteList));
-    } else if (request.message === "updateSettings") {
-        setLocalSettings(UserSettings.deserializeSettings(request.settings));
-    } else if (request.message === "newUrl") {
-        addUrlToBlockedSites(request.unformattedUrl, sendResponse);
-    } else if (request.message === "requestBlockedSites") {
-        let siteList = BlockedSiteList.serializeBlockedSiteList(blockedSites);
-        sendResponse({blockedSiteList: siteList});
-    } else if (request.message === "printSettings") {
-        console.log(localSettings);
+new StorageListener((changes) => {
+    if (constants.tds_blacklist in changes) {
+        let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[constants.tds_blacklist].newValue);
+        replaceListener(newBlockedSiteList);
+    }
+    if (constants.tds_settings in changes) {
+        let newSettings = UserSettings.deserializeSettings(changes[constants.tds_settings].newValue);
+        let oldSettings = UserSettings.deserializeSettings(changes[constants.tds_settings].oldValue);
+        isInterceptionOn = newSettings.isInterceptionOn();
+        if (!newSettings.isInterceptionOn())
+            newSettings.reInitTimer();
+        else if (!oldSettings || !oldSettings.isInterceptionOn())
+            storage.getBlacklist(blockedSiteList => replaceListener(blockedSiteList));
     }
 });
+

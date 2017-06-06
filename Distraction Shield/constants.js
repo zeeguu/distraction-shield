@@ -4,9 +4,13 @@
  */
 
 /* ---------- ----- background ----- ---------- */
+
+/* ---------- ----- background ----- ---------- */
 export const zeeguuExLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
 
 export const zeeguuExTracker = "www.zeeguu.unibe.ch/practice/get-ex";
+
+export const exerciseCompleteRegex = /(\?|&)tds_exComplete=true/;
 
 export const tdsRedirectParam = "?tds_redirect=";
 
@@ -15,17 +19,15 @@ export const feedbackLink = "https://docs.google.com/forms/d/e/1FAIpQLScHTpTaGD1
 
 /* ---------- ----- BlockedSite ----- ---------- */
 export const FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
+
 /* ---------- ----- export constants for statistics ----- ---------- */
 
 // The time in seconds after which a user is considered to be idle. Important for tracking the amount of time spent on a url.
 // Minimum value is 15 seconds.
 export const idleTime = 15;
 
-// The time in milliseconds of how many times the url of the website is compared to the blacklist or the exercise page.
-export const measureFrequency = 1000;
-
-// The time in milliseconds after which the time tracking export const iables are saved to the local or sync storage.
-export const savingFrequency = 5000;
+// The frequency in minutes after which the tracker statistics are being saved into the storage.
+export const trackerAlarmFrequency = 1.0;
 
 /* ---------- ----- UserSettings, inject ----- ---------- */
 export const modes = {
@@ -57,14 +59,18 @@ export const newUrlSuccess = "Successfully blocked ";
  * @type {RegExp[]}
  */
 export const whitelist = [
-    /_\/chrome\/newtab/,
-    /oauth.*\?.*client_id/,
-    /zeeguu.unibe.ch/
+    "_\/chrome\/newtab",
+    "oauth.*\?.*client_id",
+    "zeeguu.unibe.ch"
 ];
 
 /* ---------- ----- urlFormatter ----- ---------- */
 export const INVALID_URL_MESSAGE = "We unfortunately could not reach the site you are trying to block.\n" +
     "Are you sure the url is correct? \n \n";
+
+export const FILE_NOT_FOUND_ERROR  = 404;
+export const SERVER_ERROR = 500;
+export const REQUEST_ABORTED_ERROR = 0;
 
 /**/
 export const dataCollectionMsg = 'Please be aware that anonymous data are collected for purposes of improving the extension. '+
@@ -85,3 +91,11 @@ export const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 
 /* ---------- ----- turnoffSlider ----- ---------- */
 export const MAX_TURN_OFF_TIME = 480;
+
+/* ---------- ----- Storage constants ----- ---------- */
+export const tds_all = null;
+export const tds_blacklist = "tds_blacklist";
+export const tds_settings = "tds_settings";
+export const tds_interceptCounter = "tds_interceptCounter";
+export const tds_interceptDateList = "tds_interceptDateList";
+export const tds_exerciseTime = "tds_exerciseTime";

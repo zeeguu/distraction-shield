@@ -1,5 +1,5 @@
 import * as constants from '../constants'
-import * as storage from '../modules/storage'
+import * as storage from '../modules/storage/storage'
 
 /**
  * Check if we have come here after tds redirection, if not return, if so get mode and

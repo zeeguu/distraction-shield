@@ -1,26 +1,18 @@
-import * as constants from '../constants';
 import BlockedSite from '../classes/BlockedSite'
 
 /**
  * List that holds BlockedSite Objects and has functionality which is regularly needed on this array
  */
-export default class BlockedSiteList {
+export default class BlockedSiteList extends Array {
 
     constructor() {
-        this._list = [];
-    }
-
-    set list(blockedSiteArr) {
-        this._list = blockedSiteArr
-    }
-
-    get list() {
-        return this._list
+        super();
+        this.__proto__ = BlockedSiteList.prototype;
     }
 
     get urls() {
-        if (this.list != []) {
-            return this.list.map(function (bs) {
+        if (this != []) {
+            return this.map(function (bs) {
                 return bs.url;
             });
         }
@@ -28,7 +20,7 @@ export default class BlockedSiteList {
     }
 
     get activeUrls() {
-        if (this.list != []) {
+        if (this != []) {
             let urlList = this.filterOnChecked();
             if (urlList != []) {
                 return urlList.map(function (bs) {
@@ -45,7 +37,7 @@ export default class BlockedSiteList {
             return urlFromList != newBlockedSite.url;
         });
         if (unique) {
-            this.list.push(newBlockedSite);
+            this.push(newBlockedSite);
             return true;
         } else {
             return false;
@@ -53,24 +45,25 @@ export default class BlockedSiteList {
     }
 
     addAllToList(blockedSiteList) {
-        for (let i = 0; i < blockedSiteList.list.length; i++) {
-            this.addToList(blockedSiteList.list[i]);
+        for (let i = 0; i < blockedSiteList.length; i++) {
+            this.addToList(blockedSiteList[i]);
         }
     }
 
     removeFromList(blockedSiteToDelete) {
-        let urlKey = this.list.indexOf(blockedSiteToDelete);
-        if (urlKey > -1) {
-            this.list.splice(urlKey, 1);
-            return true;
-        } else {
-            return false;
-        }
+        this.splice(this.indexOf(blockedSiteToDelete), 1);
+    }
+
+    updateInList(blockedSite){
+        this.forEach((item, id) => {
+            if (item.url === blockedSite.url)
+                this[id] = blockedSite;
+        });
     }
 
     filterOnChecked() {
-        if (this.list != []) {
-            return this.list.filter(function (a) {
+        if (this != []) {
+            return this.filter(function (a) {
                 return a.checkboxVal == true;
             });
         }
@@ -80,24 +73,21 @@ export default class BlockedSiteList {
     /* --------------- --------------- Serialization --------------- --------------- */
 
     static serializeBlockedSiteList(blockedSiteList) {
-        let obj = {
-            list: blockedSiteList.list
-        };
-        obj.list = obj.list.map(BlockedSite.serializeBlockedSite);
-        return JSON.stringify(obj);
+        let toSerialize = blockedSiteList.map(BlockedSite.serializeBlockedSite);
+        return JSON.stringify(toSerialize);
     }
 
     static parseBlockedSiteList(blockedSiteList) {
         let bl = new BlockedSiteList();
-        bl.list = blockedSiteList.list;
+        bl.addAllToList(blockedSiteList);
         return bl;
     }
 
     static deserializeBlockedSiteList(serializedBlockedSiteList) {
         if (serializedBlockedSiteList != null) {
             let parsed = JSON.parse(serializedBlockedSiteList);
-            parsed.list = parsed.list.map(BlockedSite.deserializeBlockedSite);
-            return this.parseBlockedSiteList(parsed);
+            parsed = parsed.map(BlockedSite.deserializeBlockedSite);
+            return BlockedSiteList.parseBlockedSiteList(parsed);
         }
         return null;
     }
