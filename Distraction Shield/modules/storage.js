@@ -138,7 +138,7 @@ export function addBlockedSiteToStorage(blocked_site){
         if (blockedSiteList.addToList(blocked_site)){
             return setBlacklist(blockedSiteList);
         } else
-            return Promise.reject(blocked_site);
+            return Promise.reject(constants.newUrlNotUniqueError + blocked_site.domain);
     });
 }
 

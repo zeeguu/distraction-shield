@@ -97,7 +97,8 @@ function setSaveButtonToSuccess() {
 function saveCurrentPageToBlacklist() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         let activeTab = arrayOfTabs[0];
-        blockedSiteBuilder.createNewBlockedSite(activeTab.url);
+        blockedSiteBuilder.createBlockedSiteAndAddToStorage(activeTab.url)
+            .catch((error) => {alert(error);});
     });
 }
 

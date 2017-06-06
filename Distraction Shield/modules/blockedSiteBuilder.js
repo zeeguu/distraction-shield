@@ -1,6 +1,6 @@
 import {getUrlFromServer} from "./urlFormatter"
 import BlockedSite from "../classes/BlockedSite"
-import {addBlockedSiteToStorage} from '../modules/storage'
+import {addBlockedSiteToStorage} from "./storage"
 
 // this requires a callback since the getUrlFromServer is asynchronous
 /**
@@ -13,7 +13,22 @@ export function createNewBlockedSite(newUrl) {
     return new Promise((resolve, reject) => {
         getUrlFromServer(newUrl, (url, title) => {
             let blockedSite = new BlockedSite(url, title);
-            addBlockedSiteToStorage(blockedSite).then(resolve).catch(reject);
-        });
+            resolve(blockedSite);
+        }, (errorMessage) => { reject(errorMessage); });
+    });
+}
+
+export function createBlockedSiteAndAddToStorage(newUrl) {
+    return new Promise((resolve, reject) => {
+        createNewBlockedSite(newUrl)
+            .then((blockedSite) => {
+                return addBlockedSiteToStorage(blockedSite)
+                    .catch(error => {
+                        reject(error)
+                    })
+            })
+            .catch(error => {
+                reject(error)
+            });
     });
 }
