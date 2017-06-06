@@ -24,6 +24,10 @@
     "webpack": "^2.5.1"
   },
   "dependencies": {
+    "broccoli-concat": "^3.2.2",
+    "broccoli-source": "^1.1.0",
+    "broccoli-timepiece": "^0.3.0",
+    "global": "^4.3.2",
     "npm": "^5.0.1"
   }
 }

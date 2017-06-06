@@ -1,45 +1,93 @@
 /* eslint-env node */
 // import plugins
-var babel = require('broccoli-babel-transpiler');
-var Funnel = require('broccoli-funnel');
-var BroccoliMergeTrees = require('broccoli-merge-trees');
+const babel = require('broccoli-babel-transpiler');
+const Funnel = require('broccoli-funnel');
+const Merge = require('broccoli-merge-trees');
+const Concat = require('broccoli-concat');
+const path = require('path');
 
-// babel transpilation: grab the source and transpile in 1 step
-var project = babel('Distraction\ Shield', {
-  presets: [ 'env' ]
-});
+/* Funnel all */
+const Project = new Funnel('Distraction\ Shield');
+const Vendor = new Funnel('bower_components');
 
-// copy dependencies into build
-var dependencies = new Funnel('bower_components', {
-  destDir: 'dependencies',
-  include: [
-    '**/*/bootstrap-tour-standalone.min.css',
-    '**/*/bootstrap-tour-standalone.min.js',
-    '**/*/bootstrap.min.css',
-    '**/*/bootstrap.min.js',
-    '**/*/jquery.min.js',
-    '**/*/glyphicons-halflings-regular.woff2',
-    '**/*/glyphicons-halflings-regular.woff',
-    '**/*/glyphicons-halflings-regular.ttf'
-  ],
+/* HTML */
+let html;
+{
+  let project = new Funnel(Project, {
+    include: [ '**/*.html' ],
+    exclude: [ '**/*copy.html' ],
+    getDestinationPath: (file) => path.basename(file)
+  });
+  html = project;
+}
 
-  //  make sure for backwards compatibility with current project
-  getDestinationPath: function(relativePath) {
-    if (relativePath.lastIndexOf('bootstrap-tour-standalone.min.css') != -1) {
-      return 'bootstrapTour/bootstrap-tour-standalone.min.css';
-    } else if (relativePath
-        .lastIndexOf('bootstrap-tour-standalone.min.js') != -1) {
-      return 'bootstrapTour/bootstrap-tour-standalone.min.js';
-    } else if (relativePath.lastIndexOf('bootstrap.min.css') != -1) {
-      return 'bootstrap/css/bootstrap.min.css';
-    } else if (relativePath.lastIndexOf('bootstrap.min.js') != -1) {
-      return 'bootstrap/js/bootstrap.min.js';
-    } else if (relativePath.lastIndexOf('jquery.min.js') != -1) {
-      return 'jquery/jquery-1.10.2.js'
-    }
+/* JS */
+let js;
+{
+  // babel transpilation: grab the source and transpile in 1 step
+  let project = babel(Project, {
+    presets: [ 'env' ],
+    sourceMaps: 'inline'
+  });
 
-    return relativePath;
-  }
-});
+  let vendor = new Funnel(Vendor, {
+    include: [
+      '**/*/jquery.min.js',
+      '**/*/bootstrap.min.js',
+      '**/*/bootstrap-tour-standalone.min.js'
+    ]
+  });
 
-module.exports = new BroccoliMergeTrees([ dependencies, project ]);
+  js = Merge([ project, vendor ]);
+  js = new Concat(js, {
+    inputFiles: ['**/*.js'],
+    outputFile: 'distraction-shield.js'
+  });
+}
+
+/* CSS */
+let css;
+{
+  let project = Project;
+  let vendor = new Funnel(Vendor, {
+    include: [
+      '**/*/bootstrap.min.css',
+      '**/*/bootstrap-tour-standalone.min.css'
+    ]
+  });
+
+  css = Merge([ project, vendor ]);
+  css = new Concat(css, {
+    inputFiles: ['**/*.css'],
+    outputFile: 'distraction-shield.css'
+  });
+}
+
+/* Static assets */
+let assets;
+{
+  // project images
+  let project = new Funnel(Project, {
+    destDir: 'assets/images',
+    include: ['**/*.png'],
+    getDestinationPath: (file) => path.basename(file)
+  });
+
+  // manifest
+  let manifest = new Funnel(Project, {
+    include: ['manifest.json']
+  });
+
+  // bower assets
+  let vendor = new Funnel(Vendor, {
+    srcDir: 'bootstrap/dist',
+    destDir: 'assets',
+    include: ['**/*/glyphicons-*']
+  });
+
+  assets = Merge([ project, manifest, vendor ]);
+}
+
+
+
+module.exports = new Merge([ html, js, css, assets ]);
