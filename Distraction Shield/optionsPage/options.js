@@ -63,8 +63,8 @@ function connectHtmlFunctionality() {
     turnOffSlider = new TurnOffSlider('#turnOff-slider', settings_object);
     htmlFunctionality.setKeyPressFunctions($('#textFld'), blacklistTable, saveNewUrl, removeBlockedSiteFromAll);
     htmlFunctionality.connectButton($('#statisticsLink'), openStatisticsPage);
-    htmlFunctionality.connectButton($('#feedbackLink'), openFeedbackForm);
-    htmlFunctionality.connectButton($('#tourRestartLink'), restartTour);
+    htmlFunctionality.connectButton($('#feedbackButton'), openFeedbackForm);
+    htmlFunctionality.connectButton($('#tourRestartButton'), restartTour);
 }
 
 /**
