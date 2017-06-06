@@ -5,7 +5,7 @@ import * as storage from '../modules/storage'
  * Check if we have come here after tds redirection, if not return, if so get mode and
  */
 function mainFlow() {
-    if (!constants.tdsRedirectParam.test(window.location.href)) return;
+    if (!constants.tdsRedirectParamRegex.test(window.location.href)) return;
     storage.getMode(initBasis);
 }
 
@@ -47,7 +47,7 @@ function initBasis(mode) {
  */
 function extractDestination() {
     let url = window.location.href;
-    let results = constants.tdsRedirectParam.exec(url);
+    let results = constants.tdsRedirectParamRegex.exec(url);
     if (!results || !results[1]) { return null; }
     let newUrl = decodeURIComponent(results[1]);//prevent errors in browsers that dont decode
     newUrl += (/[?]/.test(newUrl) ? "&" : "?") + "tds_exComplete=true";

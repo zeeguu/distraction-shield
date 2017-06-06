@@ -8,6 +8,8 @@ export const zeeguuExLink = "https://www.zeeguu.unibe.ch/practice/get-ex";
 
 export const zeeguuExTracker = "www.zeeguu.unibe.ch/practice/get-ex";
 
+export const tdsRedirectParam = "?tds_redirect=";
+
 /* ---------- ----- optionspage----- ---------- */
 export const feedbackLink = "https://docs.google.com/forms/d/e/1FAIpQLScHTpTaGD19HJd4d7k98FV_20-NwRV0dp9xNMWza7_1KsiGag/viewform";
 
@@ -40,7 +42,7 @@ export const modes = {
 export const zeeguLoginLink = "https://www.zeeguu.unibe.ch/login";
 
 
-export const tdsRedirectParam = /[?]tds_redirect=(.*)/;
+export const tdsRedirectParamRegex = /[?]tds_redirect=(.*)/;
 
 export const loginMessage = "Please log in to get productive!";
 
