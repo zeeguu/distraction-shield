@@ -3,7 +3,7 @@ import * as storage from './modules/storage/storage';
 import BlockedSiteList from './classes/BlockedSiteList';
 import UserSettings from './classes/UserSettings';
 import Tracker from './modules/statistics/tracker';
-import * as constants from'./constants';
+import * as constants from './constants';
 
 /* --------------- ---- Run upon installation ---- ---------------*/
 

@@ -3,13 +3,13 @@
  * @module background
  */
 
-import {createNewBlockedSite} from './modules/blockedSiteBuilder';
 import BlockedSiteList from './classes/BlockedSiteList';
 import * as interception from './modules/statistics/interception';
 import * as storage from './modules/storage/storage';
 import UserSettings from  './classes/UserSettings'
 import * as constants from'./constants';
 import {isInRegexList} from './modules/stringutil';
+import StorageListener from './modules/storage/StorageListener'
 
 /**
  * Unfortunately are webrequestlisteners not able to process asynchronous functions.
