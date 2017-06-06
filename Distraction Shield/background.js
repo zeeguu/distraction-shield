@@ -100,17 +100,6 @@ function intercept(details) {
 }
 
 /**
- * This function checks if a string url is whitelisted.
- * @see {module:constants.whitelist}
- * @param {String} url The string to check against the regexp's in whitelist
- * @returns {Boolean} True if url matches one of the regexp's in whitelist, false otherwise
- */
-function isWhiteListed(url) {
-    let matches = constants.whitelist.map((x) => { return x.test(url) });
-    return matches.reduce((x, y) => { return x || y });
-}
-
-/**
  * Function which fires when we enter a website on the blockedsite list.
  * If we coe from zeeguu and have completed an exercise than we may continue, else we redirect.
  * @param details the details found by the onWebRequestListener about the current webRequest

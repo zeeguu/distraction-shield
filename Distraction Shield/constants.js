@@ -15,7 +15,7 @@ export const feedbackLink = "https://docs.google.com/forms/d/e/1FAIpQLScHTpTaGD1
 
 /* ---------- ----- BlockedSite ----- ---------- */
 export const FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
-/* ---------- ----- export const ants for statistics ----- ---------- */
+/* ---------- ----- export constants for statistics ----- ---------- */
 
 // The time in seconds after which a user is considered to be idle. Important for tracking the amount of time spent on a url.
 // Minimum value is 15 seconds.
@@ -40,7 +40,6 @@ export const modes = {
 };
 
 export const zeeguLoginLink = "https://www.zeeguu.unibe.ch/login";
-
 
 export const tdsRedirectParamRegex = /[?]tds_redirect=(.*)/;
 
@@ -79,7 +78,7 @@ export const zeeguuInfoText = "Hey, you tried to enter one of the sites you want
 export const KEY_DELETE = 46;
 export const KEY_ENTER = 13;
 
-/* -------------------- Number export const ants ----------------------- */
+/* -------------------- Number export constants ----------------------- */
 
 // The amount of milliseconds in one day
 export const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
