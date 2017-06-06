@@ -61,12 +61,14 @@ export default class Tracker {
         let timeSpent = new Date() - this.previousTime;
         this.previousTime = new Date();
         if(!this.wasIdle) {
-            if (this.compareDomain(tab.url, constants.zeeguuExTracker)) {
-                this.incTimeExercises(timeSpent);
-            } else {
-                this.matchToBlockedSites(tab.url).then((site) => {
-                    this.incTimeBlockedSite(site, timeSpent);
-                });
+            if(tab) {
+                if (this.compareDomain(tab.url, constants.zeeguuExTracker)) {
+                    this.incTimeExercises(timeSpent);
+                } else {
+                    this.matchToBlockedSites(tab.url).then((site) => {
+                        this.incTimeBlockedSite(site, timeSpent);
+                    });
+                }
             }
         } else {
             this.wasIdle = false;
@@ -119,6 +121,8 @@ export default class Tracker {
                    } else {
                        this.currentTab = tab;
                    }
+                }).catch((error) => {
+                    this.currentTab = null;
                 })
             }
         });
@@ -186,7 +190,7 @@ export default class Tracker {
     putBackTimeSpent(timeValues) {
         this.blockedsites.list.map((blockedSite) => {
             let bSite = timeValues.find((timeValue) => timeValue.domain == blockedSite.domain);
-            if (!bSite) blockedSite.timeSpent = bSite.timeSpent;
+            if (typeof bSite !== 'undefined') blockedSite.timeSpent = bSite.timeSpent;
         });
     }
 
