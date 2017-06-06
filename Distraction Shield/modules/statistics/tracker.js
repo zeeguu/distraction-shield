@@ -178,7 +178,7 @@ export default class Tracker {
      */
     retrieveTimeSpent(blockedsites) {
         let list = [];
-        blockedsites.list.map((item) => list.push({'domain': item.domain, 'timeSpent': item.timeSpent}));
+        blockedsites.map((item) => list.push({'domain': item.domain, 'timeSpent': item.timeSpent}));
         return list;
     }
 
@@ -188,7 +188,7 @@ export default class Tracker {
      * @param timeValues
      */
     putBackTimeSpent(timeValues) {
-        this.blockedsites.list.map((blockedSite) => {
+        this.blockedsites.map((blockedSite) => {
             let bSite = timeValues.find((timeValue) => timeValue.domain == blockedSite.domain);
             if (typeof bSite !== 'undefined') blockedSite.timeSpent = bSite.timeSpent;
         });
@@ -228,7 +228,7 @@ export default class Tracker {
      */
     matchToBlockedSites(tabActive) {
         return new Promise((resolve, reject) => {
-            let match = this.blockedsites.list.find((site) => this.compareDomain(tabActive, site.domain));
+            let match = this.blockedsites.find((site) => this.compareDomain(tabActive, site.domain));
             if (typeof match !== 'undefined') resolve(match);
         });
     }

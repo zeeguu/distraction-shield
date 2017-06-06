@@ -4,18 +4,15 @@
  */
 
 export function loadHtmlBlacklist(blockedSiteList, table) {
-    let list = blockedSiteList.list;
-    list.forEach(value => {
+    blockedSiteList.forEach(value => {
         table.addToTable(table.generateTableRow(value));
     });
 }
 
 export function reloadHtmlBlacklist(blockedSiteList, oldBlockedSiteList, table) {
-    let oldList = oldBlockedSiteList.list;
-    let list = blockedSiteList.list;
     table.removeAllFromTable();
-    list.forEach((value, key) => {
-        if (key in oldList)
+    blockedSiteList.forEach((value, key) => {
+        if (key in oldBlockedSiteList)
             table.addToTable(table.generateTableRow(value));
         else
             table.addToTableWithFadeIn(table.generateTableRow(value));

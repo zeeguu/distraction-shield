@@ -40,9 +40,8 @@ function openOptionsPage() {
  */
 function patternMatchUrl(url, callback) {
     storage.getBlacklistPromise().then(blockedSiteList => {
-        let list = blockedSiteList.list;
         let item = null;
-        list.some(function (bl) {
+        blockedSiteList.some(function (bl) {
             if (stringutil.wildcardStrComp(url, bl.url)) {
                 item = bl;
                 return true;
