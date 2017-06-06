@@ -1,15 +1,22 @@
-import BlockedSiteList from "./classes/BlockedSiteList"
-import * as interception from "./modules/statistics/interception"
-import UserSettings from "./classes/UserSettings"
-import * as storage from "./modules/storage/storage"
-import StorageListener from "./modules/storage/StorageListener"
-import * as constants from "./constants"
+/**
+ * The functions that form the functionality of the extension that takes place in the background.
+ * @module background
+ */
+
+import {createNewBlockedSite} from './modules/blockedSiteBuilder';
+import BlockedSiteList from './classes/BlockedSiteList';
+import * as interception from './modules/statistics/interception';
+import * as storage from './modules/storage';
+import UserSettings from  './classes/UserSettings'
+import * as constants from'./constants';
+import {isInRegexList} from './modules/stringutil';
 
 /**
  * Unfortunately are webrequestlisteners not able to process asynchronous functions.
  * Therefore we need a global variable to keep track of the state of the extension.
  * @type {boolean}
  */
+
 let isInterceptionOn = true;
 
 export function initBackground(){
@@ -56,7 +63,7 @@ function intercept(details) {
     interception.incrementInterceptionCounter(details.url);
     interception.addToInterceptDateList();
     let redirectLink = constants.zeeguuExLink;
-    let params = "?redirect=" + details.url + "&from_tds=true";
+    let params = constants.tdsRedirectParam + details.url;
     return {redirectUrl: redirectLink + params};
 }
 
@@ -66,14 +73,16 @@ function intercept(details) {
  * @param details the details found by the onWebRequestListener about the current webRequest
  */
 function handleInterception(details) {
-    if (isInterceptionOn)
-        if (constants.exerciseCompleteRegex.test(details.url)) {
+
+    if (isInterceptionOn) {
+        if (constants.exerciseCompleteRegex.test(details.url) && !isInRegexList(constants.whitelist, details.url)) {
             let url = details.url.replace(constants.exerciseCompleteRegex, "");
             turnOffInterception();
             return {redirectUrl: url};
         } else {
             return intercept(details);
         }
+    }
 }
 
 /**

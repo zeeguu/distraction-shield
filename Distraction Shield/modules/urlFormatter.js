@@ -1,7 +1,7 @@
 import * as constants from '../constants';
 
 // use alert for warning popups
-alert = chrome.extension.getBackgroundPage().alert;
+// alert = chrome.extension.getBackgroundPage().alert;
 
 /**
  * removes trailing space from url, if nothing is there returns url

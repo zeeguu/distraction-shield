@@ -9,7 +9,7 @@ module.exports = {
         options: './dist/optionsPage/options.js',
         tooltip: './dist/tooltipPage/tooltip.js',
         statistics: './dist/statisticsPage/statistics.js',
-        inject: './dist/contentInjection/inject.js'
+        inject: './dist/contentInjection/inject.js',
     },
 
     output: {
