@@ -61,7 +61,7 @@ export default class Tracker {
         let timeSpent = new Date() - this.previousTime;
         this.previousTime = new Date();
         if(!this.wasIdle) {
-            if (this.matchToZeeguu(tab.url)) {
+            if (this.compareDomain(tab.url, constants.zeeguuExTracker)) {
                 this.incTimeExercises(timeSpent);
             } else {
                 this.matchToBlockedSites(tab.url).then((site) => {
@@ -186,7 +186,7 @@ export default class Tracker {
     putBackTimeSpent(timeValues) {
         this.blockedsites.list.map((blockedSite) => {
             let bSite = timeValues.find((timeValue) => timeValue.domain == blockedSite.domain);
-            if (typeof bSite !== 'undefined') blockedSite.timeSpent = bSite.timeSpent;
+            if (!bSite) blockedSite.timeSpent = bSite.timeSpent;
         });
     }
 
@@ -197,15 +197,6 @@ export default class Tracker {
         storage.getBlacklistPromise().then((result) => {
             this.blockedsites.addAllToList(result);
         });
-    }
-
-    /**
-     * Matches the url to the Zeeguu regex using regexes. Returns true if the urls match.
-     * @param tabActive
-     * @returns {Boolean}
-     */
-    matchToZeeguu(tabActive) {
-        return this.compareDomain(tabActive, constants.zeeguuExTracker);
     }
 
     /**
