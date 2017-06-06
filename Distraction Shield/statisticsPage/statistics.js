@@ -15,6 +15,16 @@ let exerciseTimeTable = null;
  * Data is retrieved from the storage, and is passed to various tables.
  */
 
+/* ----------- ----------- Initialization ----------- ----------- */
+
+/**
+ * initial function that is fired when the page is loaded.
+ */
+document.addEventListener("DOMContentLoaded", function () {
+    connectHtmlFunctionality();
+    initStatisticsPage();
+});
+
 /**
  * Initialize HTML elements and set the data in the tables. Retrieves the data from the storage using Promises.
  * Waits until all data is retrieved, and then populates the interceptionCounterTable, the blacklistTable and the
@@ -47,6 +57,7 @@ function connectHtmlFunctionality() {
     exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
 }
 
+/* ----------- ----------- Storage Listener ----------- ----------- */
 function handleStorageChange(changes) {
     if (tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
@@ -66,10 +77,3 @@ chrome.storage.onChanged.addListener(changes => {
     handleStorageChange(changes)
 });
 
-/**
- * initial function that is fired when the page is loaded.
- */
-document.addEventListener("DOMContentLoaded", function () {
-    connectHtmlFunctionality();
-    initStatisticsPage();
-});

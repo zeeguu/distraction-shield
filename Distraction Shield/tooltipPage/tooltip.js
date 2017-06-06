@@ -1,12 +1,21 @@
-import * as blockedSiteBuilder from "../modules/blockedSiteBuilder.js";
-import * as stringutil from "../modules/stringutil.js";
-import {openTabSingleton} from "../modules/tabutil";
+import * as blockedSiteBuilder from "../modules/blockedSiteBuilder.js"
+import BlockedSiteList from '../classes/BlockedSiteList'
+import * as stringutil from "../modules/stringutil.js"
+import {openTabSingleton} from "../modules/tabutil"
 import * as storage from '../modules/storage'
 import {tds_blacklist} from '../constants'
 
 let saveButton = $('#saveBtn');
 let optionsButton = $('#optionsBtn');
 let statisticsButton = $('#statisticsBtn');
+
+
+function connectButtons() {
+    optionsButton.on('click', openOptionsPage);
+    statisticsButton.on('click', openStatisticsPage);
+    setSaveButtonFunctionality();
+}
+
 
 function openStatisticsPage() {
     openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'), () => {
@@ -20,12 +29,7 @@ function openOptionsPage() {
     });
 }
 
-
-function connectButtons() {
-    optionsButton.on('click', openOptionsPage);
-    statisticsButton.on('click', openStatisticsPage);
-    setSaveButtonFunctionality();
-}
+/* ----------- ----------- Save button functionality ----------- ----------- */
 
 /**
  * match the current url to the current list of blockedSiteItems
@@ -65,12 +69,6 @@ function toggleBlockedSite(url) {
                     break;
                 }
             }
-
-            if (newItem != null && newItem.checkboxVal) {
-                setSaveButton(false);
-            } else {
-                setSaveButton(true);
-            }
         });
     }
 }
@@ -87,15 +85,20 @@ function setSaveButton(blocked){
  */
 function setSaveButtonToSuccess() {
     saveButton.attr('class', 'btn btn-success');
+    saveButton.text("Succes!");
+    saveButton.unbind();
     setTimeout(function () {
         saveButton.attr('class', 'btn btn-info');
+        setSaveButton(true);
+        setSaveButtonFunctionality();
     }, 3000);
 }
 
 function saveCurrentPageToBlacklist() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         let activeTab = arrayOfTabs[0];
-        blockedSiteBuilder.createNewBlockedSite(activeTab.url).then(setSaveButtonToSuccess());
+        blockedSiteBuilder.createBlockedSiteAndAddToStorage(activeTab.url)
+            .catch((error) => {alert(error);});
     });
 }
 
@@ -126,18 +129,27 @@ function setSaveButtonFunctionality() {
     });
 }
 
+/* ----------- ----------- Storage Listener ----------- ----------- */
+
 chrome.storage.onChanged.addListener(changes => {
     handleStorageChange(changes)
 });
 
-function handleStorageChange(changes){
+function handleStorageChange(changes) {
     if (tds_blacklist in changes) {
-        setSaveButtonFunctionality();
+        let oldBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].oldValue);
+        let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
+        if (oldBlockedSiteList.length < newBlockedSiteList.length) {
+            setSaveButtonToSuccess();
+        } else {
+            setSaveButtonFunctionality();
+        }
     }
 }
+
+/* ----------- ----------- Initialization ----------- ----------- */
 
 /**
  * function that initiates the functionality of the tooltip
  */
 connectButtons();
-

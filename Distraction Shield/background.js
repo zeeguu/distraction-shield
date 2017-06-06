@@ -85,7 +85,7 @@ function turnOffInterception() {
     })
 }
 
-/* ---------- ---------- Storage change functions ----------  ---------- */
+/* ---------- ---------- Storage Listener ----------  ---------- */
 
 /**
  * Listener that makes sure that acts upon the sync.storage changing. Making sure that

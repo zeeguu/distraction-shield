@@ -9,7 +9,6 @@ function mainFlow() {
 function initBasis(mode) {
     let message = mode.zeeguuText;
 
-
     $.ajax({
         url: chrome.extension.getURL('contentInjection/inject.html'),
         type: "GET",
@@ -21,11 +20,14 @@ function initBasis(mode) {
             $("#tds_infoDiv").css('max-width', '800px');
             $("#tds_generalInfoText").append(constants.zeeguuInfoText);
 
-            let putModeText = true;
-            if ((window.location.href == constants.zeeguLoginLink) && (mode.label != constants.modes.lazy.label)) {
-                putModeText = false;
+            if (window.location.href.indexOf(constants.zeeguLoginLink) != -1) {
+                if (mode.label == constants.modes.pro.label) {
+                    message = constants.loginMessage;
+                } else {
+                    message = message +"\n" + constants.loginMessage;
+                }
             }
-            if (putModeText) $("#tds_modeSpecificText").append(message);
+            $("#tds_modeSpecificText").append(message);
 
             $("#originalDestination").attr("href", getDest());
         }
