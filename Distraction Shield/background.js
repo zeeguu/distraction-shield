@@ -1,21 +1,27 @@
+/**
+ * The functions that form the functionality of the extension that takes place in the background.
+ * @module background
+ */
+
 import {createNewBlockedSite} from './modules/blockedSiteBuilder';
 import BlockedSiteList from './classes/BlockedSiteList';
 import * as interception from './modules/statistics/interception';
 import * as storage from './modules/storage';
 import UserSettings from  './classes/UserSettings'
 import * as constants from'./constants';
+import {isInRegexList} from './modules/stringutil';
 
 /**
  * The BlockedSiteList used by the background
  * @type {BlockedSiteList}
  */
 let blockedSites = new BlockedSiteList();
+
 /**
  * The UserSettings used by the background scrript.
  * @type {UserSettings}
  */
 let localSettings = new UserSettings();
-
 
 /* --------------- ------ setter for local variables ------ ---------------*/
 
@@ -99,7 +105,7 @@ function intercept(details) {
  * @param details the details found by the onWebRequestListener about the current webRequest
  */
 function handleInterception(details) {
-    if (localSettings.state == "On") {
+    if (localSettings.state == "On" && !isInRegexList(constants.whitelist, details.url)) {
         if (details.url.indexOf("tds_exComplete=true") > -1) {
             turnOffInterception();
             let url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");
