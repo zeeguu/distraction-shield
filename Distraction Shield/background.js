@@ -73,9 +73,16 @@ function intercept(details) {
  * @param details the details found by the onWebRequestListener about the current webRequest
  */
 function handleInterception(details) {
+    console.log("whitelist: " + JSON.stringify(constants.whitelist));
+    console.log("url: " + details.url);
+    if (!isInRegexList(constants.whitelist, details.url)) {
+        console.log("not in regexList");
+    } else {
+        console.log("in regexList");
+    }
 
-    if (isInterceptionOn) {
-        if (constants.exerciseCompleteRegex.test(details.url) && !isInRegexList(constants.whitelist, details.url)) {
+    if (isInterceptionOn && !isInRegexList(constants.whitelist, details.url)) {
+        if (constants.exerciseCompleteRegex.test(details.url)) {
             let url = details.url.replace(constants.exerciseCompleteRegex, "");
             turnOffInterception();
             return {redirectUrl: url};

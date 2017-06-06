@@ -12,11 +12,12 @@ export function wildcardStrComp(str, rule) {
 /**
  * This function checks if a string url is in a given list of regexes.
  * @see {module:constants.whitelist}
- * @param {Regex[]} regexList the list to check against
+ * @param {RegExp[]} regexList the list to check against
  * @param {String} url The string to check against the regexp's in regexList
  * @returns {Boolean} True if url matches one of the regexp's in regexList, false otherwise
  */
 export function isInRegexList(regexList, url) {
+    regexList = regexList.map((x) => { return new RegExp(x) });
     let matches = regexList.map((x) => { return x.test(url) });
     return matches.reduce((x, y) => { return x || y });
 }

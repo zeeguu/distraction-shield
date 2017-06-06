@@ -59,9 +59,9 @@ export const newUrlSuccess = "Successfully blocked ";
  * @type {RegExp[]}
  */
 export const whitelist = [
-    /_\/chrome\/newtab/,
-    /oauth.*\?.*client_id/,
-    /zeeguu.unibe.ch/
+    "_\/chrome\/newtab",
+    "oauth.*\?.*client_id",
+    "zeeguu.unibe.ch"
 ];
 
 /* ---------- ----- urlFormatter ----- ---------- */
