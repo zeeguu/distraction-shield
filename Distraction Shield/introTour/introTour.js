@@ -1,4 +1,4 @@
-import * as storage from '../modules/storage'
+import * as storage from '../modules/storage/storage'
 
 let id;
 

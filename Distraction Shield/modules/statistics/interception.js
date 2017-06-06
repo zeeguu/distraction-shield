@@ -1,4 +1,4 @@
-import * as storage from '../storage'
+import * as storage from '../storage/storage'
 import * as constants from '../../constants'
 import * as stringutil from '../stringutil'
 import BlockedSiteList from '../../classes/BlockedSiteList'
@@ -48,15 +48,12 @@ export function incrementInterceptionCounter(urlAddress) {
     let blockedSites = new BlockedSiteList();
     storage.getBlacklistPromise().then((result) => {
         blockedSites.addAllToList(result);
-
-        let urlList = blockedSites.list;
-        for (let i = 0; i < urlList.length; i++) {
-            if (stringutil.wildcardStrComp(urlAddress, urlList[i].url)) {
-                urlList[i].counter = urlList[i].counter + 1;
+        for (let i = 0; i < blockedSites.length; i++) {
+            if (stringutil.wildcardStrComp(urlAddress, blockedSites[i].url)) {
+                blockedSites[i].counter = blockedSites[i].counter + 1;
                 break;
             }
         }
-
         storage.setBlacklist(blockedSites);
         storage.getInterceptCounter()
             .then(function (output) {

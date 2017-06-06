@@ -1,11 +1,13 @@
 import * as constants from "../../constants"
 
 /**
- * class that connects a <div> with a span and slider together with all the funcitonality.
+ * class that connects a <div> with a span and slider together with all the functionality.
  * I.E. changing colour, updating eachother's values and functionality to be added to the html_elements
  */
 export default class GreenToRedSlider {
 
+    //TODO replace saveFunction with storage interaction?
+    //We could, but keeping it as save function gives more freedom on how to use it if you want to re-use it
     constructor(sliderID, saveFunction) {
         this.saveValue = saveFunction;
         this.sliderDiv = $(sliderID);
@@ -18,11 +20,11 @@ export default class GreenToRedSlider {
     setOnEventFunc() {
         this.sliderRange.on('input', () => {
             let inputValue = this.sliderRange.val();
-            this.sliderValue.html(GreenToRedSlider.calculateHours(inputValue));
+            this.sliderValue.html(this.calculateHours(inputValue));
             this.updateColor(inputValue);
         });
 
-        this.sliderRange.on('mouseup',  () => {
+        this.sliderRange.on('mouseup', () => {
             let inputValue = this.sliderRange.val();
             this.saveValue(inputValue);
         });
@@ -52,21 +54,25 @@ export default class GreenToRedSlider {
 
     setValue(val) {
         this.sliderRange.val(val);
-        this.sliderValue.html(GreenToRedSlider.calculateHours(val));
+        this.sliderValue.html(this.calculateHours(val));
         this.updateColor(val);
     }
 
     /**
      * format a value in minutes to Hours and minutes.
      */
-    static calculateHours(val) {
+    calculateHours(val) {
         let hours = Math.floor(val / 60);
         let minutes = val % 60;
-        if (minutes < 10 && hours > 0) {
+        if (minutes < 10 && hours > 0)
             minutes = "0" + minutes;
-        }
+        return this.createMessage(hours, minutes, val);
+    }
+
+    createMessage(hours, minutes){
         return (hours > 0 ? hours + ":" + minutes + " hours" : minutes + " minute(s)");
     }
+
 
     /**
      * function that checks the validity of the value inputted in the editable span

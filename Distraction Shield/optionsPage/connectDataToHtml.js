@@ -3,22 +3,16 @@
  * to the actual html representations of this data.
  */
 
-export function sortListOnCheckboxVal(bsA, bsB) {
-    let valueOfA = bsA.checkboxVal;
-    let valueOfB = bsB.checkboxVal;
-    if (valueOfA && !valueOfB)
-        return -1;
-    if (!valueOfA && valueOfB)
-        return 1;
-    return 0;
-}
-
 export function loadHtmlBlacklist(blockedSiteList, table) {
-    let list = blockedSiteList.list;
-    list.sort(sortListOnCheckboxVal);
-    $.each(list, function (key, value) {
+    blockedSiteList.forEach(value => {
         table.addToTable(table.generateTableRow(value));
     });
+}
+
+export function reloadHtmlBlacklist(blockedSiteList, oldBlockedSiteList, table) {
+    let oldList = oldBlockedSiteList.list;
+    let newList = blockedSiteList.list;
+    table.render(newList, oldList)
 }
 
 export function loadHtmlMode(extensionMode, radioGroup) {

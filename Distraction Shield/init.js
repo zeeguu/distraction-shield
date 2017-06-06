@@ -1,15 +1,15 @@
-import {setLocalSettings, retrieveBlockedSites, replaceListener} from './background';
-import * as storage from './modules/storage';
+import {initBackground} from './background';
+import * as storage from './modules/storage/storage';
 import BlockedSiteList from './classes/BlockedSiteList';
 import UserSettings from './classes/UserSettings';
 import Tracker from './modules/statistics/tracker';
-import * as constants from'./constants';
+import * as constants from './constants';
 
 /* --------------- ---- Run upon installation ---- ---------------*/
 
 /**
  * function to be fired only when the extension is installed or updated. It initiates all the data and the storage.
- * Furthermore it shows the intro tour and initializes the extension upon completeion.
+ * Furthermore it shows the intro tour and initializes the extension upon completion.
  */
 chrome.runtime.onInstalled.addListener((details) => {
     storage.getAllUnParsed((output) => {
@@ -27,8 +27,8 @@ chrome.runtime.onInstalled.addListener((details) => {
 
 function initBlacklist(list) {
     if (list == null) {
-        let blacklistToStore = new BlockedSiteList();
-        storage.setBlacklist(blacklistToStore);
+        let blockedSiteListToStore = new BlockedSiteList();
+        storage.setBlacklist(blockedSiteListToStore);
     }
 }
 
@@ -68,21 +68,6 @@ function runIntroTour() {
 /* --------------- ---- Run upon Start of session ---- ---------------*/
 
 /**
- * function which fires upon starting the browser. Initiates the session, like listener and list of blocked sites.
- */
-function initSession() {
-    // Settings need to be loaded before the listener is replaced. The replaceListener
-    // requires the blocked sites to be loaded, so these callbacks are required.
-    storage.getSettings(function (settings) {
-        settings.reInitTimer(replaceListener);
-        setLocalSettings(settings);
-        retrieveBlockedSites(replaceListener);
-    });
-    let tracker = new Tracker();
-    tracker.init();
-}
-
-/**
  * function which checks whether we run a normal session or the special case where the onInstalled function is called.
  */
 storage.getSettingsUnParsed(function (settings) {
@@ -90,4 +75,16 @@ storage.getSettingsUnParsed(function (settings) {
         initSession();
     }
 });
+
+/**
+ * function which fires upon starting the browser. Initiates the session, like listener and list of blocked sites.
+ */
+function initSession() {
+    storage.getSettings(function (settings) {
+        settings.reInitTimer();
+    });
+    let tracker = new Tracker();
+    tracker.init();
+    initBackground();
+}
 

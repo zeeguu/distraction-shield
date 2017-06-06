@@ -125,4 +125,8 @@ input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
 }
 
-/* ---------- ---------- Slider ---------- ---------- */
+/* ---------- ---------- Message box ---------- ---------- */
+.message-box {
+  height: 20px;
+  color: #EF5350;
+}
