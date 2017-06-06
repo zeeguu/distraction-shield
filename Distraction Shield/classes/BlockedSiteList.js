@@ -48,7 +48,6 @@ export default class BlockedSiteList {
             this.list.push(newBlockedSite);
             return true;
         } else {
-            alert(constants.newUrlNotUniqueError + newBlockedSite.domain);
             return false;
         }
     }
@@ -104,4 +103,3 @@ export default class BlockedSiteList {
     }
 
 }
-
