@@ -1,4 +1,4 @@
-import * as storage from '../storage'
+import * as storage from '../storage/storage'
 import * as dateutil from '../dateutil'
 
 /**

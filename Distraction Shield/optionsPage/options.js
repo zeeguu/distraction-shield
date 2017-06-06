@@ -1,14 +1,14 @@
-import * as storage from '../modules/storage'
+import * as blockedSiteBuilder from '../modules/blockedSiteBuilder'
+import {openTabSingleton} from '../modules/tabutil'
+import * as storage from '../modules/storage/storage'
+import StorageListener from "../modules/storage/StorageListener"
 import UserSettings from '../classes/UserSettings'
 import BlockedSiteList from '../classes/BlockedSiteList'
 import BlacklistTable from './classes/BlacklistTable'
 import TurnOffSlider from './classes/TurnOffSlider'
 import * as connectDataToHtml from './connectDataToHtml'
 import * as htmlFunctionality from './htmlFunctionality'
-import * as blockedSiteBuilder from '../modules/blockedSiteBuilder'
 import {feedbackLink, tds_blacklist, tds_settings, tds_interceptCounter} from '../constants'
-import {openTabSingleton} from '../modules/tabutil'
-import StorageListener from "../modules/StorageListener"
 
 /**
  * This file contains the core functions of the options page. this has all the local variables,
@@ -56,7 +56,7 @@ function connectHtmlFunctionality(userSettings) {
     htmlFunctionality.connectButton($('#statisticsLink'), openStatisticsPage);
     htmlFunctionality.connectButton($('#feedbackLink'), openFeedbackForm);
     htmlFunctionality.connectButton($('#tourRestartLink'), restartTour);
-    htmlFunctionality.setKeyPressFunctions($('#textFld'), blockedSiteListTable, saveNewUrl);
+    htmlFunctionality.setKeyPressFunctions($('#textFld'), saveNewUrl);
 }
 
 /**

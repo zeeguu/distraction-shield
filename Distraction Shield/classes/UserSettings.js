@@ -1,5 +1,5 @@
 import * as constants from '../constants'
-import * as storage from '../modules/storage'
+import * as storage from '../modules/storage/storage'
 
 /**
  * Object holding all the data that is connected to the user's preferences.

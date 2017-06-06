@@ -1,6 +1,6 @@
 import {getUrlFromServer} from "./urlFormatter"
 import BlockedSite from "../classes/BlockedSite"
-import {addBlockedSiteToStorage} from "./storage"
+import {addBlockedSiteToStorage} from "./storage/storageModifier"
 
 // this requires a callback since the getUrlFromServer is asynchronous
 /**

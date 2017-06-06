@@ -1,5 +1,5 @@
 import {initBackground} from './background';
-import * as storage from './modules/storage';
+import * as storage from './modules/storage/storage';
 import BlockedSiteList from './classes/BlockedSiteList';
 import UserSettings from './classes/UserSettings';
 import Tracker from './modules/statistics/tracker';

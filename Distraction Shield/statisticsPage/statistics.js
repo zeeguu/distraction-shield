@@ -2,10 +2,10 @@ import BlacklistStatsTable from './classes/BlacklistStatsTable'
 import ExerciseTimeTable from './classes/ExerciseTimeTable'
 import InterceptionCounterTable from './classes/InterceptionCounterTable'
 import BlockedSiteList from '../classes/BlockedSiteList.js'
-import * as storage from '../modules/storage'
+import * as storage from '../modules/storage/storage'
 import * as interception from '../modules/statistics/interception'
 import {tds_blacklist, tds_interceptDateList, tds_exerciseTime} from '../constants'
-import StorageListener from "../modules/StorageListener"
+import StorageListener from "../modules/storage/StorageListener"
 
 let interceptionCounterTable = null;
 let blacklistTable = null;

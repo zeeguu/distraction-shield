@@ -1,8 +1,9 @@
 import BlockedSiteList from "./classes/BlockedSiteList"
 import * as interception from "./modules/statistics/interception"
-import * as storage from "./modules/storage"
 import UserSettings from "./classes/UserSettings"
-import StorageListener from "./modules/StorageListener"
+import * as storage from "./modules/storage/storage"
+import * as storageModifier from "./modules/storage/storageModifier"
+import StorageListener from "./modules/storage/StorageListener"
 import * as constants from "./constants"
 
 /**
@@ -105,7 +106,7 @@ new StorageListener((changes) => {
         if (!newSettings.isInterceptionOn())
             newSettings.reInitTimer();
         else if (!oldSettings || !oldSettings.isInterceptionOn())
-            storage.getBlacklist(blockedSiteList => replaceListener(blockedSiteList));
+            storageModifier.getBlacklist(blockedSiteList => replaceListener(blockedSiteList));
     }
 });
 

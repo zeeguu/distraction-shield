@@ -1,6 +1,6 @@
-import BlockedSiteList from '../classes/BlockedSiteList'
-import UserSettings    from '../classes/UserSettings'
-import * as constants  from '../constants'
+import BlockedSiteList from '../../classes/BlockedSiteList'
+import UserSettings    from '../../classes/UserSettings'
+import * as constants  from '../../constants'
 
 
 /* ---------------- General methods --------------- */
@@ -129,33 +129,6 @@ export function getExerciseTimeList() {
 export function setExerciseTimeList(statList) {
     return setStorage(constants.tds_exerciseTime, statList);
 }
-
-
-/* ----------------  Storage Modifications --------------- */
-
-export function addBlockedSiteToStorage(blocked_site){
-    return getBlacklistPromise().then(blockedSiteList => {
-        if (blockedSiteList.addToList(blocked_site)){
-            return setBlacklist(blockedSiteList);
-        } else
-            return Promise.reject(constants.newUrlNotUniqueError + blocked_site.domain);
-    });
-}
-
-export function removeBlockedSiteFromStorage(blocked_site){
-    return getBlacklistPromise().then(blockedSiteList => {
-        blockedSiteList.removeFromList(blocked_site);
-        return setBlacklist(blockedSiteList);
-    });
-}
-
-export function updateBlockedSiteInStorage(blocked_site){
-    return getBlacklistPromise().then(blockedSiteList => {
-        blockedSiteList.updateInList(blocked_site);
-        return setBlacklist(blockedSiteList);
-    });
-}
-
 
 /* ---------------- not exported--------------- */
 /**

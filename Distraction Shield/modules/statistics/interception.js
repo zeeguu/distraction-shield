@@ -1,4 +1,4 @@
-import * as storage from '../storage'
+import * as storage from '../storage/storage'
 import * as constants from '../../constants'
 import * as stringutil from '../stringutil'
 import BlockedSiteList from '../../classes/BlockedSiteList'
