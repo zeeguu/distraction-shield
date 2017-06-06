@@ -4,7 +4,7 @@
   "description": "Distraction Shield!",
   "scripts": {
     "start": "broccoli serve",
-    "build": "rimraf dist && broccoli build dist && webpack",
+    "build": "rimraf dist && broccoli build dist",
     "test": "npm run build && mocha \"test/**/*-test.js\" "
   },
   "repository": {
