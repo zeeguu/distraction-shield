@@ -1,8 +1,13 @@
+import * as storage from '../modules/storage'
+
 let id;
 
 let tour = new Tour({
     orphan: true,
     steps: [{
+        path: '/introTour/dataCollectionConsent.html',
+        title: 'Terms & Conditions'
+    },{
         path: "/introTour/introTour.html",
         title: "Welcome to The Distaction Shield",
         content: "Wanna know how Distraction Shield protects you ? " +
@@ -112,4 +117,16 @@ chrome.tabs.onRemoved.addListener(function (tabId) {
         tour.end();
     }
 });
+
+$('#allowButton').on('click', () => { setDataCollection(true)});
+$('#denyButton').on('click', () => { setDataCollection(false)});
+
+
+function setDataCollection(bool){
+    storage.getSettings(settings_object => {
+        settings_object.collectData = bool;
+        storage.setSettings(settings_object);
+        tour.next();
+    })
+}
 

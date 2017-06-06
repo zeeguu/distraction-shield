@@ -16,7 +16,6 @@ export default class UserSettings {
 
         this._mode = constants.modes.lazy;
         this._interceptionInterval = 1;
-
         this._collectData = true;
     }
 

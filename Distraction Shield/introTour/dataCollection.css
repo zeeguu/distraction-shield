@@ -1,0 +1,19 @@
+/*body {
+    max-width:500px;
+}*/
+.container {
+    max-width:500px;
+}
+
+.center-block {
+    float: none ;
+    text-align:center;
+}
+
+.textfield {
+    text-align:left;
+}
+
+.buttonGroup {
+    text-align:right;
+}
