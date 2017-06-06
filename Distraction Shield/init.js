@@ -87,4 +87,3 @@ function initSession() {
     tracker.init();
     initBackground();
 }
-
