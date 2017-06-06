@@ -9,6 +9,7 @@ import * as interception from './modules/statistics/interception';
 import * as storage from './modules/storage';
 import UserSettings from  './classes/UserSettings'
 import * as constants from'./constants';
+import {isInRegexList} from './modules/stringutil';
 
 /**
  * The BlockedSiteList used by the background
@@ -115,7 +116,7 @@ function isWhiteListed(url) {
  * @param details the details found by the onWebRequestListener about the current webRequest
  */
 function handleInterception(details) {
-    if (localSettings.state == "On" && !isWhiteListed(details.url)) {
+    if (localSettings.state == "On" && !isInRegexList(constants.whitelist, details.url)) {
         if (details.url.indexOf("tds_exComplete=true") > -1) {
             turnOffInterception();
             let url = details.url.replace(/(\?tds_exComplete=true|&tds_exComplete=true)/, "");

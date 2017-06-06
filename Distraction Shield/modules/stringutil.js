@@ -8,3 +8,15 @@
 export function wildcardStrComp(str, rule) {
     return new RegExp("^" + rule.split("*").join(".*") + "$").test(str);
 }
+
+/**
+ * This function checks if a string url is in a given list of regexes.
+ * @see {module:constants.whitelist}
+ * @param {Regex[]} regexList the list to check against
+ * @param {String} url The string to check against the regexp's in regexList
+ * @returns {Boolean} True if url matches one of the regexp's in regexList, false otherwise
+ */
+export function isInRegexList(regexList, url) {
+    let matches = regexList.map((x) => { return x.test(url) });
+    return matches.reduce((x, y) => { return x || y });
+}
