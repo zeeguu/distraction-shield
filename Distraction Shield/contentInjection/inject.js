@@ -49,7 +49,7 @@ function extractDestination() {
     let url = window.location.href;
     let results = constants.tdsRedirectParam.exec(url);
     if (!results || !results[1]) { return null; }
-    let newUrl = results[1];
+    let newUrl = decodeURIComponent(results[1]);//prevent errors in browsers that dont decode
     newUrl += (/[?]/.test(newUrl) ? "&" : "?") + "tds_exComplete=true";
     return newUrl;
 }
