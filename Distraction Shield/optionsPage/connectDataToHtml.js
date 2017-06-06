@@ -4,8 +4,7 @@
  */
 
 export function loadHtmlBlacklist(blockedSiteList, table) {
-    let list = blockedSiteList.list;
-    list.forEach(value => {
+    blockedSiteList.forEach(value => {
         table.addToTable(table.generateTableRow(value));
     });
 }
