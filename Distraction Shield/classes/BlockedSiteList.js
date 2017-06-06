@@ -51,7 +51,7 @@ export default class BlockedSiteList extends Array {
     }
 
     removeFromList(blockedSiteToDelete) {
-        this.slice(0, this.indexOf(blockedSiteToDelete)).concat(this.slice(this.indexOf(blockedSiteToDelete) + 1, this.length));
+        this.splice(this.indexOf(blockedSiteToDelete), 1);
     }
 
     updateInList(blockedSite){
