@@ -119,9 +119,7 @@ function saveNewUrl() {
     resetMessageBox();
     let html_txtFld = $('#textFld');
     let newUrl = html_txtFld.val();
-    //TODO display error message here if this fails.
-    //document.querySelector('#message-box').innerText = newUrlNotUniqueError + newItem.domain;
-    blockedSiteBuilder.createNewBlockedSite(newUrl);
+    blockedSiteBuilder.createNewBlockedSite(newUrl).catch(item => {$('#message-box').text(newUrlNotUniqueError + item.domain);});
     html_txtFld.val('');
 }
 
