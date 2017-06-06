@@ -1,8 +1,9 @@
-import BlockedSiteList from "./classes/BlockedSiteList";
-import * as interception from "./modules/statistics/interception";
-import * as storage from "./modules/storage";
-import UserSettings from "./classes/UserSettings";
-import * as constants from "./constants";
+import BlockedSiteList from "./classes/BlockedSiteList"
+import * as interception from "./modules/statistics/interception"
+import * as storage from "./modules/storage"
+import UserSettings from "./classes/UserSettings"
+import StorageListener from "./modules/StorageListener"
+import * as constants from "./constants"
 
 /**
  * Unfortunately are webrequestlisteners not able to process asynchronous functions.
@@ -88,19 +89,11 @@ function turnOffInterception() {
 /* ---------- ---------- Storage Listener ----------  ---------- */
 
 /**
- * Listener that makes sure that acts upon the sync.storage changing. Making sure that
- * the background always has the latest, most up-to-dadte data
- */
-chrome.storage.onChanged.addListener(changes => {
-    handleStorageChange(changes)
-});
-
-/**
  * Actual function that is fired upon the change in storage. If the blockedSiteList changes,
  * we update our listener. If the settings change we encorperate this in the background's behaviour.
  * @param changes data passed by the storage.onChanged event
  */
-function handleStorageChange(changes){
+new StorageListener((changes) => {
     if (constants.tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[constants.tds_blacklist].newValue);
         replaceListener(newBlockedSiteList);
@@ -114,5 +107,5 @@ function handleStorageChange(changes){
         else if (!oldSettings || !oldSettings.isInterceptionOn())
             storage.getBlacklist(blockedSiteList => replaceListener(blockedSiteList));
     }
-}
+});
 
