@@ -12,14 +12,8 @@ export function loadHtmlBlacklist(blockedSiteList, table) {
 
 export function reloadHtmlBlacklist(blockedSiteList, oldBlockedSiteList, table) {
     let oldList = oldBlockedSiteList.list;
-    let list = blockedSiteList.list;
-    table.removeAllFromTable();
-    list.forEach((value, key) => {
-        if (key in oldList)
-            table.addToTable(table.generateTableRow(value));
-        else
-            table.addToTableWithFadeIn(table.generateTableRow(value));
-    });
+    let newList = blockedSiteList.list;
+    table.render(newList, oldList)
 }
 
 export function loadHtmlMode(extensionMode, radioGroup) {

@@ -20,8 +20,24 @@ export default class BlacklistTable {
     }
     
     removeAllFromTable(){
-       this.table.find('tr').remove();
+        this.table.find('tr:not(:has(th))').remove();
     }
+
+    /**
+     * this function removes all table rows, compares the old list with the new list and fades in new elements.
+     * @param newList {BlockedSiteList} the new list of blockedsites
+     * @param oldList {BlockedSiteList} the old list of blockedsites
+     */
+    render(newList, oldList){
+        this.removeAllFromTable();
+        newList.forEach((value, key) => {
+            if (key in oldList)
+                this.addToTable(this.generateTableRow(value));
+            else
+                this.addToTableWithFadeIn(this.generateTableRow(value));
+        });
+    }
+
 
     /**
      * set functionality for all checkboxes found within the html_table
