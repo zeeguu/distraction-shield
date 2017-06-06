@@ -1,70 +1,68 @@
+import {removeBlockedSiteFromStorage, updateBlockedSiteInStorage} from '../../modules/storage/storageModifier'
+
 /**
  * The table holding the blockedSites and all of its functionality.
  * Every row has the corresponding BlockedSite Object attached to it in order to have easy acces and manipulation.
  */
 export default class BlacklistTable {
-    constructor(html_element, syncFunction, removeFunction) {
+    constructor(html_element) {
         this.table = html_element;
-        this.syncBlockedSiteListFunc = syncFunction;
-        this.removeBlockedSiteFunc = removeFunction;
-
         this.setCheckboxFunction();
         this.setDeleteButtonFunction();
-        this.enableTableSelection();
     }
 
     addToTable(tableRow) {
+        tableRow.appendTo(this.table);
+    }
+
+    addToTableWithFadeIn(tableRow) {
         tableRow.hide().appendTo(this.table).fadeIn();
     }
-
-    removeFromTable(html_item) {
-        html_item.fadeOut(function () {
-            html_item.remove();
-        });
-    }
-
-    getSelected() {
-        return this.table.find('.highlight');
+    
+    removeAllFromTable(){
+        this.table.find('tr:not(:has(th))').remove();
     }
 
     /**
-     * this function makes the table single row selection only
+     * this function removes all table rows, compares the old list with the new list and fades in new elements.
+     * @param newList {BlockedSiteList} the new list of blockedsites
+     * @param oldList {BlockedSiteList} the old list of blockedsites
      */
-    enableTableSelection() {
-        this.table.on('click', '.table-row', function () {
-            let row = $(this);
-            if (row.hasClass('highlight'))
-                row.removeClass('highlight');
+    render(newList, oldList){
+        this.removeAllFromTable();
+        newList.forEach((value, key) => {
+            if (key in oldList)
+                this.addToTable(this.generateTableRow(value));
             else
-                row.addClass('highlight').siblings().removeClass('highlight');
+                this.addToTableWithFadeIn(this.generateTableRow(value));
         });
     }
+
 
     /**
      * set functionality for all checkboxes found within the html_table
      */
     setCheckboxFunction() {
-        this.table.on('change', 'input[type="checkbox"]', function (data) {
+        this.table.on('change', 'input[type="checkbox"]', data => {
             //Clicking the checkbox automatically selects the row, so we use this to our advantage
             let clicked_checkbox = data.target;
-            let selected_row = $(clicked_checkbox).parent().parent();
+            let selected_row = $(clicked_checkbox).closest('tr');
             let selected_blockedSite = selected_row.data('blockedSite');
             selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
-            //no need to set localBlacklist cause it holds pointers so they get updated automatically
-            this.syncBlockedSiteListFunc();
-        }.bind(this));
+            updateBlockedSiteInStorage(selected_blockedSite);
+        });
     }
 
     /**
      *  if a delete button is clicked, the closest tr element is deleted.
      */
     setDeleteButtonFunction() {
-        this.table.on('click', '.delete-button', function (data) {
+        this.table.on('click', '.delete-button', data => {
             let clicked_button = data.target;
             let rowToDelete = $(clicked_button).closest('tr');
-            this.removeBlockedSiteFunc(rowToDelete);
-            this.removeFromTable(rowToDelete);
-        }.bind(this));
+            let blockedSiteToDelete = rowToDelete.data('blockedSite');
+            rowToDelete.fadeOut(() => removeBlockedSiteFromStorage(blockedSiteToDelete));
+        });
     }
 
     /**

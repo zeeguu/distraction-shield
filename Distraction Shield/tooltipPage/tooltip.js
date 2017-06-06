@@ -1,12 +1,23 @@
-import * as synchronizer from "../modules/synchronizer.js";
-import * as blockedSiteBuilder from "../modules/blockedSiteBuilder.js";
-import * as stringutil from "../modules/stringutil.js";
-import BlockedSiteList from '../classes/BlockedSiteList';
-import {openTabSingleton} from "../modules/tabutil";
+import * as blockedSiteBuilder from "../modules/blockedSiteBuilder.js"
+import BlockedSiteList from "../classes/BlockedSiteList"
+import * as stringutil from "../modules/stringutil.js"
+import {openTabSingleton} from "../modules/tabutil"
+import * as storage from "../modules/storage/storage"
+import * as storageModifier from "../modules/storage/storageModifier"
+import StorageListener from "../modules/storage/StorageListener"
+import {tds_blacklist} from '../constants'
 
 let saveButton = $('#saveBtn');
 let optionsButton = $('#optionsBtn');
 let statisticsButton = $('#statisticsBtn');
+
+
+function connectButtons() {
+    optionsButton.on('click', openOptionsPage);
+    statisticsButton.on('click', openStatisticsPage);
+    setSaveButtonFunctionality();
+}
+
 
 function openStatisticsPage() {
     openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'), () => {
@@ -20,12 +31,7 @@ function openOptionsPage() {
     });
 }
 
-
-function connectButtons() {
-    optionsButton.on('click', openOptionsPage);
-    statisticsButton.on('click', openStatisticsPage);
-    setSaveButtonFunctionality();
-}
+/* ----------- ----------- Save button functionality ----------- ----------- */
 
 /**
  * match the current url to the current list of blockedSiteItems
@@ -33,11 +39,9 @@ function connectButtons() {
  * @param {function} callback function that takes the blockedSite to which the url was found to be equal to
  */
 function patternMatchUrl(url, callback) {
-    chrome.runtime.sendMessage({message: "requestBlockedSites"}, function (response) {
-        let siteList = BlockedSiteList.deserializeBlockedSiteList(response.blockedSiteList);
-        let list = siteList.list;
+    storage.getBlacklistPromise().then(blockedSiteList => {
         let item = null;
-        list.some(function (bl) {
+        blockedSiteList.some(function (bl) {
             if (stringutil.wildcardStrComp(url, bl.url)) {
                 item = bl;
                 return true;
@@ -46,6 +50,7 @@ function patternMatchUrl(url, callback) {
         });
         callback(item);
     });
+
 }
 
 /**
@@ -54,37 +59,38 @@ function patternMatchUrl(url, callback) {
  */
 function toggleBlockedSite(url) {
     return function () {
-        chrome.runtime.sendMessage({message: "requestBlockedSites"}, function (response) {
-            let siteList = BlockedSiteList.deserializeBlockedSiteList(response.blockedSiteList);
-            let list = siteList.list;
+        storage.getBlacklistPromise().then(blockedSiteList => {
+            let list = blockedSiteList.list;
             let newItem = null;
             for (let i = 0; i < list.length; i++) {
                 if (stringutil.wildcardStrComp(url, list[i].url)) {
                     newItem = list[i];
+                    newItem.checkboxVal = !newItem.checkboxVal;
+                    storageModifier.updateBlockedSiteInStorage(newItem);
                     break;
                 }
             }
-            newItem.checkboxVal = !newItem.checkboxVal;
-            if (newItem.checkboxVal) {
-                saveButton.text("Unblock");
-            } else {
-                saveButton.text("Block");
-            }
-            synchronizer.syncBlacklist(siteList);
-
         });
     }
 }
 
+function setSaveButton(blocked){
+    if (blocked)
+        saveButton.text("Block");
+    else
+        saveButton.text("Unblock");
+}
+
 /**
- * Change colour and update functionality of the button when we add a new website to the blacklist
+ * Change colour and update functionality of the button when we add a new website to the blacklist/blockedSiteList
  */
 function setSaveButtonToSuccess() {
-    saveButton.unbind('click', saveCurrentPageToBlacklist);
     saveButton.attr('class', 'btn btn-success');
-    saveButton.text('Added!');
+    saveButton.text("Succes!");
+    saveButton.unbind();
     setTimeout(function () {
         saveButton.attr('class', 'btn btn-info');
+        setSaveButton(true);
         setSaveButtonFunctionality();
     }, 3000);
 }
@@ -92,15 +98,14 @@ function setSaveButtonToSuccess() {
 function saveCurrentPageToBlacklist() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         let activeTab = arrayOfTabs[0];
-        blockedSiteBuilder.createNewBlockedSite(activeTab.url, function (blockedSite) {
-            synchronizer.addSiteAndSync(blockedSite, setSaveButtonToSuccess());
-        });
+        blockedSiteBuilder.createBlockedSiteAndAddToStorage(activeTab.url)
+            .catch((error) => {alert(error);});
     });
 }
 
 /**
  * Update the functionality of the button to one of 3 states:
- * 1. Add a non-blacklisted website to the blacklist
+ * 1. Add a non-blacklisted website to the blacklist/blockedSiteList
  * 2. Disable the blocking of this blacklisted website
  * 3. Enable the blocking of this blacklisted website
  */
@@ -109,25 +114,39 @@ function setSaveButtonFunctionality() {
         let activeTab = arrayOfTabs[0];
         let url = activeTab.url;
         patternMatchUrl(url, function (matchedBlockedSite) {
+            saveButton.unbind();
             if (matchedBlockedSite != null) {
-                saveButton.unbind('click', saveCurrentPageToBlacklist);
                 saveButton.on('click', toggleBlockedSite(url));
                 if (matchedBlockedSite.checkboxVal) {
-                    saveButton.text("Unblock");
+                    setSaveButton(false);
                 } else {
-                    saveButton.text("Block");
+                    setSaveButton(true);
                 }
             } else {
-                saveButton.unbind('click', toggleBlockedSite(url));
                 saveButton.on('click', saveCurrentPageToBlacklist);
-                saveButton.text("Block");
+                setSaveButton(true);
             }
         });
     });
 }
 
+/* ----------- ----------- Storage Listener ----------- ----------- */
+
+new StorageListener((changes) => {
+    if (tds_blacklist in changes) {
+        let oldBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].oldValue);
+        let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
+        if (oldBlockedSiteList.length < newBlockedSiteList.length) {
+            setSaveButtonToSuccess();
+        } else {
+            setSaveButtonFunctionality();
+        }
+    }
+});
+
+/* ----------- ----------- Initialization ----------- ----------- */
+
 /**
  * function that initiates the functionality of the tooltip
  */
 connectButtons();
-

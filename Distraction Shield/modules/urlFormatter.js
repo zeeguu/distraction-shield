@@ -1,16 +1,14 @@
 import * as constants from '../constants';
 
 // use alert for warning popups
-alert = chrome.extension.getBackgroundPage().alert;
+// alert = chrome.extension.getBackgroundPage().alert;
 
 /**
  * removes trailing space from url, if nothing is there returns url
  */
 export function stripOfFinalSlash(url) {
     if (url[url.length - 1] == '/') {
-        let ans = url.split("");
-        ans.pop();
-        url = ans.join("");
+        url = url.slice(0, url.length - 1);
     }
     return url;
 }
@@ -97,26 +95,28 @@ function formatForGetRequest(url) {
 /**
  * fires any valid url and gets the end destination's url and page title. These are passed as arguments in the callback
  * @param {string} url the url to check
- * @param {function} callback the callback function that takes the newly formatted end-url together with it's page title as argument.
+ * @param {function} onSuccess the callback function that takes the newly formatted end-url together with it's page title as argument. This results in resolving the promise
+ * @param {function} onFailure the callback function that when we encounter an error during the asynchronous request. This results in rejecting the promise
  * Used in the BlockedSiteBuilder
  */
-export function getUrlFromServer(url, callback) {
+export function getUrlFromServer(url, onSuccess, onFailure) {
     let urlToGet = formatForGetRequest(url);
-    httpGetAsync(urlToGet, function (url, title) {
+    let resolve = function (url, title) {
         url = stripOfScheme(url);
         url = stripOfFileName(url);
-        callback(url, title);
-    });
+        onSuccess(url, title);
+    };
+    httpGetAsync(urlToGet, resolve, onFailure);
 }
 
 /**
  * fire asynchronous get request to find the end port of the passed url
  */
-function httpGetAsync(theUrlToGet, callback) {
+function httpGetAsync(theUrlToGet, onSuccess, onFailure) {
     let xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", theUrlToGet, true); // true for asynchronous
     xmlHttp.onreadystatechange = function () {
-        readyStateChange(xmlHttp, callback);
+        readyStateChange(xmlHttp, onSuccess, onFailure);
     };
     xmlHttp.send(null);
 }
@@ -124,18 +124,18 @@ function httpGetAsync(theUrlToGet, callback) {
 /**
  * function to be passed to the get-request
  */
-function readyStateChange(xmlHttp, callback) {
+function readyStateChange(xmlHttp, onSuccess, onFailure) {
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         // simple regex to extract data from title tags, ignoring newlines, tabs and returns
         let titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
         if (titleTags != null) {
             let title = titleTags[1];
-            callback(xmlHttp.responseURL, title);
+            onSuccess(xmlHttp.responseURL, title);
         } else {
-            callback(xmlHttp.responseURL, theUrlToGet);
+            onSuccess(xmlHttp.responseURL, theUrlToGet);
         }
     } else if (xmlHttp.readyState == 4) {
-        errorHandler(xmlHttp.status);
+        onFailure(errorHandler(xmlHttp.status));
     }
 }
 
@@ -144,16 +144,16 @@ function readyStateChange(xmlHttp, callback) {
  */
 function errorHandler(status) {
     switch (status) {
-        case 404:
-            alert(constants.INVALID_URL_MESSAGE + 'File not found');
+        case constants.FILE_NOT_FOUND_ERROR:
+            return (constants.INVALID_URL_MESSAGE + 'File not found');
             break;
-        case 500:
-            alert(constants.INVALID_URL_MESSAGE + 'Server error');
+        case constants.SERVER_ERROR:
+            return (constants.INVALID_URL_MESSAGE + 'Server error');
             break;
-        case 0:
-            alert(constants.INVALID_URL_MESSAGE + 'Request aborted');
+        case constants.REQUEST_ABORTED_ERROR:
+            return (constants.INVALID_URL_MESSAGE + 'Request aborted');
             break;
         default:
-            alert(constants.INVALID_URL_MESSAGE + 'Unknown error ' + status);
+            return (constants.INVALID_URL_MESSAGE + 'Unknown error ' + status);
     }
 }
