@@ -39,7 +39,7 @@ function initStatisticsPage() {
             let exerciseTime = response[1];
 
             setInterceptionCounterTable(interceptDateList);
-            blacklistTable.setDataAndRender(blockedSiteList);
+            blacklistTable.setDataAndRender(blockedSiteList.list);
             exerciseTimeTable.setDataAndRender(exerciseTime);
         });
 }
@@ -58,17 +58,15 @@ function connectHtmlFunctionality() {
     exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
 }
 
-
 /* ----------- ----------- Storage Listener ----------- ----------- */
-
 new StorageListener((changes) => {
     if (tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
-        blacklistTable.repaint(newBlockedSiteList);
+        blacklistTable.setDataAndRender(newBlockedSiteList.list);
     }
     if (tds_exerciseTime in changes) {
         let newExerciseTime = changes[tds_exerciseTime].newValue;
-        exerciseTimeTable.repaint(newExerciseTime);
+        exerciseTimeTable.setDataAndRender(newExerciseTime);
     }
     if (tds_interceptDateList in changes) {
         let newInterceptDateList = changes[tds_interceptDateList].newValue;

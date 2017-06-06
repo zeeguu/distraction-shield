@@ -17,11 +17,8 @@ export const FAVICONLINK = "https://www.google.com/s2/favicons?domain=";
 // Minimum value is 15 seconds.
 export const idleTime = 15;
 
-// The time in milliseconds of how many times the url of the website is compared to the blockedSiteList or the exercise page.
-export const measureFrequency = 1000;
-
-// The time in milliseconds after which the time tracking export variables are saved to the local or sync storage.
-export const savingFrequency = 5000;
+// The frequency in minutes after which the tracker statistics are being saved into the storage.
+export const trackerAlarmFrequency = 1.0;
 
 /* ---------- ----- UserSettings, inject ----- ---------- */
 export const modes = {
