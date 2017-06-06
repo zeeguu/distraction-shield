@@ -2,7 +2,7 @@ import * as constants from '../../constants';
 import * as exerciseTime from './exerciseTime';
 import * as storage from '../storage/storage'
 import BlockedSiteList from '../../classes/BlockedSiteList'
-import StorageListener from "../StorageListener"
+import StorageListener from "../storage/StorageListener"
 
 /**
  * The tracker tracks whether you are currently working on exercises.
