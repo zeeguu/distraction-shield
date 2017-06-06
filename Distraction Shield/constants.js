@@ -38,9 +38,11 @@ export const modes = {
 
 export const zeeguLoginLink = "https://www.zeeguu.unibe.ch/login";
 
+export const loginMessage = "Please log in to get productive!";
+
 /* ---------- ----- BlockedSiteList ----- ---------- */
-export const newUrlNotUniqueError = "New blocked site item to be added was found to resolve to an already blacklisted website, " +
-    "please try a different url.\nDuplicate url: ";
+export const newUrlNotUniqueError = "Oops! You already blocked this website: ";
+export const newUrlSuccess = "Successfully blocked ";
 
 /* ---------- ----- Whitelist ----- ----- ---------- */
 
@@ -77,4 +79,3 @@ export const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 
 /* ---------- ----- turnoffSlider ----- ---------- */
 export const MAX_TURN_OFF_TIME = 480;
-

@@ -7,7 +7,7 @@ import TurnOffSlider from './classes/TurnOffSlider'
 import * as connectDataToHtml from './connectDataToHtml'
 import * as htmlFunctionality from './htmlFunctionality'
 import * as blockedSiteBuilder from '../modules/blockedSiteBuilder'
-import {feedbackLink} from '../constants'
+import {feedbackLink, newUrlNotUniqueError, newUrlSuccess} from '../constants'
 import {openTabSingleton} from '../modules/tabutil'
 
 /**
@@ -77,7 +77,12 @@ function connectLocalDataToHtml() {
 
 /* -------------------- Manipulate local variables ------------------- */
 
+function resetMessageBox() {
+  document.querySelector('#message-box').innerText = '';
+}
+
 function removeFromLocalBlacklist(html_item) {
+    resetMessageBox();
     return storage.getBlacklistPromise().then((result) => {
         blacklist = result;
         let blockedSiteToDelete = html_item.data('blockedSite');
@@ -89,6 +94,7 @@ function removeFromLocalBlacklist(html_item) {
 }
 
 function addToLocalBlacklist(blockedSite_item) {
+    resetMessageBox();
     return storage.getBlacklistPromise().then((result) => {
         blacklist = result;
         return blacklist.addToList(blockedSite_item);
@@ -98,6 +104,7 @@ function addToLocalBlacklist(blockedSite_item) {
 /* -------------------- Sync manipulation with other pages and places ------------------- */
 
 function removeBlockedSiteFromAll(html_item) {
+    resetMessageBox();
     removeFromLocalBlacklist(html_item).then((result) => {
         if (result) {
             blacklistTable.removeFromTable(html_item);
@@ -107,10 +114,14 @@ function removeBlockedSiteFromAll(html_item) {
 }
 
 function addBlockedSiteToAll(newItem) {
+    resetMessageBox();
     addToLocalBlacklist(newItem).then((result) => {
         if (result) {
             blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
             syncBlockedSiteList();
+        } else {
+            document.querySelector('#message-box').innerText =
+              newUrlNotUniqueError + newItem.domain;
         }
     });
 }
@@ -145,4 +156,3 @@ function openStatisticsPage() {
 document.addEventListener("DOMContentLoaded", function () {
     initOptionsPage();
 });
-
