@@ -1,6 +1,6 @@
 import GreenToRedSlider from './classes/GreenToRedSlider'
 import * as constants from '../constants'
-import * as storage from '../modules/storage'
+import * as storage from '../modules/storage/storage'
 
 /**
  * This file contains the specific functionality for the options and some of its elements
@@ -18,9 +18,8 @@ export function connectButton(html_button, method) {
 }
 /* -------------------- Keypress events ----------------------- */
 
-export function setKeyPressFunctions(html_txtFld, blacklistTable, submitFunc) {
+export function setKeyPressFunctions(html_txtFld, submitFunc) {
     submitOnKeyPress(html_txtFld, submitFunc);
-    deleteOnKeyPress(blacklistTable);
 }
 
 function submitOnKeyPress(html_elem, submitFunc) {
@@ -31,13 +30,6 @@ function submitOnKeyPress(html_elem, submitFunc) {
     });
 }
 
-function deleteOnKeyPress(blacklistTable) {
-    $('html').keyup((e) => {
-        if (e.keyCode === constants.KEY_DELETE) {
-            blacklistTable.deleteSelected();
-        }
-    });
-}
 /* -------------------- Logic for the mode selection -------------------- */
 
 export function initModeSelection(buttonGroup, settings_object) {

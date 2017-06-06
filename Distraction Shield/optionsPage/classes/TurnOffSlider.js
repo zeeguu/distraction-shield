@@ -1,7 +1,7 @@
 import GreenToRedSlider from './GreenToRedSlider'
 import UserSettings from '../../classes/UserSettings'
 import * as constants from '../../constants'
-import * as storage from '../../modules/storage'
+import * as storage from '../../modules/storage/storage'
 
 /**
  * subclass of the GreenToRedSlider, this also connects a button to the set of html_elements.

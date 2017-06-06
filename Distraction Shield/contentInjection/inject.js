@@ -1,5 +1,5 @@
 import * as constants from '../constants'
-import * as storage from '../modules/storage'
+import * as storage from '../modules/storage/storage'
 
 function mainFlow() {
     if (window.location.href.indexOf("from_tds=true") == -1) return;

@@ -1,6 +1,6 @@
 import * as constants from '../../constants';
 import * as exerciseTime from './exerciseTime';
-import * as storage from '../storage'
+import * as storage from '../storage/storage'
 import BlockedSiteList from '../../classes/BlockedSiteList'
 import StorageListener from "../StorageListener"
 

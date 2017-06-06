@@ -1,4 +1,4 @@
-import {removeBlockedSiteFromStorage, updateBlockedSiteInStorage, getBlacklistPromise} from '../../modules/storage'
+import {removeBlockedSiteFromStorage, updateBlockedSiteInStorage} from '../../modules/storage/storageModifier'
 
 /**
  * The table holding the blockedSites and all of its functionality.
@@ -9,7 +9,6 @@ export default class BlacklistTable {
         this.table = html_element;
         this.setCheckboxFunction();
         this.setDeleteButtonFunction();
-        this.enableTableSelection();
     }
 
     addToTable(tableRow) {
@@ -24,29 +23,6 @@ export default class BlacklistTable {
        this.table.find('tr').remove();
     }
 
-    getSelected() {
-        return this.table.find('.highlight');
-    }
-
-    deleteSelected(){
-        let selected_row = this.getSelected();
-        let selected_blockedSite = selected_row.data('blockedSite');
-        removeBlockedSiteFromStorage(selected_blockedSite);
-    }
-
-    /**
-     * this function makes the table single row selection only
-     */
-    enableTableSelection() {
-        this.table.on('click', '.table-row', function () {
-            let row = $(this);
-            if (row.hasClass('highlight'))
-                row.removeClass('highlight');
-            else
-                row.addClass('highlight').siblings().removeClass('highlight');
-        });
-    }
-
     /**
      * set functionality for all checkboxes found within the html_table
      */
@@ -54,7 +30,7 @@ export default class BlacklistTable {
         this.table.on('change', 'input[type="checkbox"]', data => {
             //Clicking the checkbox automatically selects the row, so we use this to our advantage
             let clicked_checkbox = data.target;
-            let selected_row = $(clicked_checkbox).parent().parent();
+            let selected_row = $(clicked_checkbox).closest('tr');
             let selected_blockedSite = selected_row.data('blockedSite');
             selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
             updateBlockedSiteInStorage(selected_blockedSite);
