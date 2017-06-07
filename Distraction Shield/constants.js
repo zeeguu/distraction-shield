@@ -12,6 +12,8 @@ export const zeeguuExTracker = "www.zeeguu.unibe.ch/practice/get-ex";
 
 export const exerciseCompleteRegex = /(\?|&)tds_exComplete=true/;
 
+export const exerciseCompleteParam = "tds_exComplete=true";
+
 export const tdsRedirectParam = "?tds_redirect=";
 
 /* ---------- ----- optionspage----- ---------- */
@@ -43,7 +45,7 @@ export const modes = {
 
 export const zeeguLoginLink = "https://www.zeeguu.unibe.ch/login";
 
-export const tdsRedirectParamRegex = /[?]tds_redirect=(.*)/;
+export const tdsRedirectRegex = /[?]tds_redirect=(.*)/;
 
 export const loginMessage = "Please log in to get productive!";
 
