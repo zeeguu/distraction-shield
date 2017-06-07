@@ -1,11 +1,18 @@
 import * as constants from '../constants'
-import * as storage from '../modules/storage'
+import * as storage from '../modules/storage/storage'
 
+/**
+ * Check if we have come here after tds redirection, if not return, if so get mode and
+ */
 function mainFlow() {
-    if (window.location.href.indexOf("from_tds=true") == -1) return;
+    if (!constants.tdsRedirectParamRegex.test(window.location.href)) return;
     storage.getMode(initBasis);
 }
 
+/**
+ * Initialize the tds info panel with the proper text based on mode
+ * @param {JSON object} mode
+ */
 function initBasis(mode) {
     let message = mode.zeeguuText;
 
@@ -20,30 +27,31 @@ function initBasis(mode) {
             $("#tds_infoDiv").css('max-width', '800px');
             $("#tds_generalInfoText").append(constants.zeeguuInfoText);
 
-            let putModeText = true;
-            if ((window.location.href == constants.zeeguLoginLink) && (mode.label != constants.modes.lazy.label)) {
-                putModeText = false;
+            if (window.location.href.indexOf(constants.zeeguLoginLink) != -1) {
+                if (mode.label == constants.modes.pro.label) {
+                    message = constants.loginMessage;
+                } else {
+                    message = message +"\n" + constants.loginMessage;
+                }
             }
-            if (putModeText) $("#tds_modeSpecificText").append(message);
+            $("#tds_modeSpecificText").append(message);
 
-            $("#originalDestination").attr("href", getDest());
+            $("#originalDestination").attr("href", extractDestination());
         }
     });
 }
 
-function getDest() {
+/**
+ * This function extracts the original destination from a get parameter in the current url
+ * @returns {String} newUrl The url of the original destination plus a
+ * get parameter indicating that the zeeguu exercise was completed. Should never return null!
+ */
+function extractDestination() {
     let url = window.location.href;
-    let regex = new RegExp("[?&]redirect(=([^&#]*)|&|#|$)");
-    let results = regex.exec(url);
-    if (!results || !results[2]) {
-        return null;
-    }
-    let newUrl = decodeURIComponent(results[2].replace(/\+/g, " "));
-    if (newUrl.indexOf("?") > -1) {
-        newUrl += "&tds_exComplete=true";
-    } else {
-        newUrl += "?tds_exComplete=true";
-    }
+    let results = constants.tdsRedirectParamRegex.exec(url);
+    if (!results || !results[1]) { return null; }
+    let newUrl = decodeURIComponent(results[1]);//prevent errors in browsers that dont decode
+    newUrl += (/[?]/.test(newUrl) ? "&" : "?") + "tds_exComplete=true";
     return newUrl;
 }
 

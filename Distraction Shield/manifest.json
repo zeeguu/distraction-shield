@@ -26,7 +26,7 @@
     {
       "matches": [
         "*://www.zeeguu.unibe.ch/practice/get-ex*",
-        "*://www.zeeguu.unibe.ch/login"
+        "*://www.zeeguu.unibe.ch/login*"
       ],
       "js": [
         "dependencies/jquery/jquery-1.10.2.js",
@@ -40,6 +40,7 @@
     "webRequest",
     "webRequestBlocking",
     "idle",
+    "alarms",
     "<all_urls>"
   ],
   "web_accessible_resources": [
