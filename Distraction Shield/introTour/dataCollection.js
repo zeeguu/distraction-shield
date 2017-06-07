@@ -1,27 +1,33 @@
 import {getSettings, setSettings} from '../modules/storage/storage'
 
-export function initDataCollectionModal(modalContainer) {
+export function initDataCollectionModal(modalContainer, staticModal, callback) {
     modalContainer.unbind();
-    modalContainer.on('shown.bs.modal', function () {
-        modalContainer.find('.modal-content').load("../introTour/dataCollectionFrame.html");
-        getSettings(settings_object => {
-            initDataConsentButtons(settings_object.collectData);
-        })
-        //TODO figure out why this is needed for introtour.
-    })
+    if (staticModal)
+        modalContainer.modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+    modalContainer.modal('show');
+    modalContainer.on('shown.bs.modal', () => {
+        modalContainer.find('.modal-content').load("../introTour/dataCollectionFrame.html", initDataConsentButtons)
+    });
+    modalContainer.on('hidden.bs.modal', callback);
 }
 
-function initDataConsentButtons(bool){
-    chrome.extension.getBackgroundPage().console.log(allowbox, bool);
-    $("#allowBox").change(function () {
-        setDataCollection($('#allowBox').is(':checked'));
-    });
+function initDataConsentButtons(){
+    getSettings(settings_object => {
+        let allowBox = $("#allowBox");
+        allowBox.prop('checked', settings_object.collectData);
+        allowBox.change(() => {
+            setDataCollection($('#allowBox').is(':checked'));
+        });
+    })
+
 }
 
 function setDataCollection(bool){
     getSettings(settings_object => {
-        settings_object.collectData = bool
-        chrome.extension.getBackgroundPage().console.log(bool);
+        settings_object.collectData = bool;
         setSettings(settings_object);
     })
 }

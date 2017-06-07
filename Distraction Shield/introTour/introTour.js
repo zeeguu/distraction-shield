@@ -1,4 +1,4 @@
-import {initDataCollectionModal} from '../introTour/dataCollection'
+import {initDataCollectionModal} from './dataCollection'
 
 let id;
 
@@ -10,10 +10,6 @@ let tour = new Tour({
         content: "Wanna know how Distraction Shield protects you ? " +
         " Click <b> ‘Next’ </b> " +
         "If you want to use it right away, click <b>‘End tour’</b>",
-        onShown: function() {
-            initDataCollectionModal($('#dataConsentModal'));
-            $('#dataConsentModal').modal('show');
-        }
     }, {
         path: "/introTour/introTour.html",
         element: "#tourID",
@@ -85,10 +81,13 @@ let tour = new Tour({
         title: "Thank You!",
         content: "Thanks for choosing The Distraction Shield and Happy Learning!"
     }],
-    onEnd: function () {
-        chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
-            chrome.tabs.update(tab.id, {url: chrome.runtime.getURL('optionsPage/options.html')});
+    onEnd: ()=> {
+        initDataCollectionModal($('#dataConsentModal'), true, () =>{
+            chrome.tabs.query({currentWindow: true, active: true}, tab => {
+                chrome.tabs.update(tab.id, {url: chrome.runtime.getURL('optionsPage/options.html')});
+            });
         });
+
     }
 });
 
@@ -100,7 +99,7 @@ tour.start();
 
 //Restart tour link
 if (tour.ended()) {
-    chrome.tabs.getSelected(null, function (tab) {
+    chrome.tabs.getSelected(null, tab => {
         if (tab.url.indexOf('/introTour/introTour.html') !== -1) {
             tour.restart();
         }
@@ -108,12 +107,12 @@ if (tour.ended()) {
 }
 
 //get current tab
-chrome.tabs.getSelected(null, function (tab) {
+chrome.tabs.getSelected(null, tab =>{
     id = tab.id;
 });
 
 //end tour if tab closed
-chrome.tabs.onRemoved.addListener(function (tabId) {
+chrome.tabs.onRemoved.addListener(tabId => {
     if (tabId === id) {
         tour.end();
     }

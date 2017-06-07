@@ -74,10 +74,6 @@ export const FILE_NOT_FOUND_ERROR  = 404;
 export const SERVER_ERROR = 500;
 export const REQUEST_ABORTED_ERROR = 0;
 
-/**/
-export const dataCollectionMsg = 'Please be aware that anonymous data are collected for purposes of improving the extension. '+
-    'The data cannot be traced back to you as a person.\n\nWe respect your privacy.';
-
 /* -------------------- Text Messages ----------------------- */
 export const zeeguuInfoText = "Hey, you tried to enter one of the sites you wanted to be protected from!";
 

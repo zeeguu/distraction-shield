@@ -1,15 +1,16 @@
 .checkbox-inline {
-    vertical-align: middle;
     padding-top:5px;
-    text-align:left;
 }
 
 .checkbox-div {
     text-align:left;
 }
 
+.modal-header {
+    text-align:center;
+}
+
 .modal-dialog {
     display: inline-block;
     text-align: left;
-    vertical-align: middle;
 }

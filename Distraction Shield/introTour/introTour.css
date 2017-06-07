@@ -11,26 +11,3 @@ h1 {
 .popover.bottom>.arrow {
     margin-left: 20px; !important;
 }
-
-.modal {
-    text-align: center;
-}
-
-@media screen and (min-width: 768px) {
-    .modal:before {
-        display: inline-block;
-        vertical-align: middle;
-        content: " ";
-        height: 100%;
-    }
-}
-
-.modal-dialog {
-    display: inline-block;
-    text-align: left;
-    vertical-align: middle;
-}
-
-.popover[class*=tour-].orphan {
-    z-index:1;
-}
