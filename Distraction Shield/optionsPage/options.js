@@ -20,7 +20,6 @@ import {initDataCollectionModal} from '../introTour/dataCollection'
  */
 
 let modeGroup = "modeOptions";
-let collectData = "collectData";
 
 let blockedSiteListTable;
 let intervalSlider;
@@ -78,7 +77,6 @@ function loadBlockedSiteList(blockedSiteList){
 function loadSettings(settings_object){
     connectDataToHtml.loadHtmlMode(settings_object.mode, modeGroup);
     connectDataToHtml.loadHtmlInterval(settings_object.interceptionInterval, intervalSlider);
-    connectDataToHtml.loadHtmlCollectData(collectData, settings_object.collectData);
 }
 
 function loadInterceptionCounter(val){

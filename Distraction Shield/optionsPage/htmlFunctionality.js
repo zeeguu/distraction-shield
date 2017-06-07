@@ -44,14 +44,6 @@ export function initModeSelection(buttonGroup, settings_object) {
     });
 }
 
-/* -------------------- Data collection checkbox -------------------- */
-
-export function initCollectData(checkbox, settings_object) {
-    $("input[name=" + checkbox + "]").change(function () {
-        settings_object.collectData = $("input[name="+checkbox+"][value=consent]:checked").val();
-        synchronizer.syncSettings(settings_object);
-    });
-}
 /* -------------------- Interval slider -------------------- */
 
 export function initIntervalSlider(settings_object) {
