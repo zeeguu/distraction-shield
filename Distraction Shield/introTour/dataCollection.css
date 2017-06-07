@@ -1,19 +1,15 @@
-/*body {
-    max-width:500px;
-}*/
-.container {
-    max-width:500px;
-}
-
-.center-block {
-    float: none ;
-    text-align:center;
-}
-
-.textfield {
+.checkbox-inline {
+    vertical-align: middle;
+    padding-top:5px;
     text-align:left;
 }
 
-.buttonGroup {
-    text-align:right;
+.checkbox-div {
+    text-align:left;
+}
+
+.modal-dialog {
+    display: inline-block;
+    text-align: left;
+    vertical-align: middle;
 }
