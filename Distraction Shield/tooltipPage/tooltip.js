@@ -20,13 +20,13 @@ function connectButtons() {
 
 
 function openStatisticsPage() {
-    openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'), () => {
+    openTabSingleton(chrome.runtime.getURL('statistics.html'), () => {
         window.close();
     });
 }
 
 function openOptionsPage() {
-    openTabSingleton(chrome.runtime.getURL('optionsPage/options.html'), () => {
+    openTabSingleton(chrome.runtime.getURL('options.html'), () => {
         window.close();
     });
 }

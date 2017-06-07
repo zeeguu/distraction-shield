@@ -26,6 +26,10 @@ const Vendor = new Funnel('bower_components');
 
 ui.startProgress('Constructing pipeline...');
 
+
+const PRODUCTION = false;
+
+
 // TODO broccoli-asset-rev, broccoli-eslint
 
 /* HTML */
@@ -33,7 +37,7 @@ let html;
 {
   let project = new Funnel(Project, {
     include: [ '**/*.html' ],
-    // exclude: [ '**/*copy.html' ], // FIXME those `copy` files are stupid!
+    exclude: [ '**/*copy.html' ], // FIXME those `copy` files are stupid!
     getDestinationPath: (file) => `${path.basename(file)}`
   });
   html = project;
@@ -47,7 +51,7 @@ let rollup = (tree, entry, dest) => {
       format: 'es',
       entry,
       dest,
-      sourceMap: 'inline',
+      sourceMap: PRODUCTION ? false : 'inline',
       plugins: [ filesize() ]
     }
   });
@@ -55,8 +59,8 @@ let rollup = (tree, entry, dest) => {
 let transpile = (tree) => {
   return babel(tree, {
     presets: [ 'env' ],
-    sourceMaps: 'inline',
-    browserPolyfill: true
+    sourceMaps: PRODUCTION ? false : 'inline',
+    minified: PRODUCTION
   });
 };
 let jscomp = (tree, entry, dest) => transpile(rollup(tree, entry, dest));
@@ -70,15 +74,12 @@ let js = Merge([
   jscomp(Project, 'introTour/introTour.js', 'assets/js/introTour.js'),
 ]);
 
-let allVendorJs = new Funnel(Vendor, {
-  include: [
+let vendorJs = new Concat(Vendor, {
+  inputFiles: [
     '**/*/bootstrap.min.js',
     '**/*/bootstrap-tour-standalone.min.js',
     '**/*/jquery.min.js'
-  ]
-});
-let vendorJs = new Concat(allVendorJs, {
-  inputFiles: [ '**/*' ],
+  ],
   outputFile: 'vendor.js',
   headerFiles: ['jquery/dist/jquery.min.js'] // include jquery before bootstrap
 });
