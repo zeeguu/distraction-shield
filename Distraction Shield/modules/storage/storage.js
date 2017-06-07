@@ -130,6 +130,25 @@ export function setExerciseTimeList(statList) {
     return setStorage(constants.tds_exerciseTime, statList);
 }
 
+/* ---------------- Logger --------------- */
+export function getLogs(callback) {
+    getStorage(["tds_logs"]).then(function (output){
+        callback(output);
+    });
+}
+
+export function setLogs(logfile) {
+    return setStorage("tds_logs", logfile);
+}
+
+export function clearLogs(){
+    chrome.storage.sync.remove("tds_logs");
+}
+
+export function setLogFile(dat){
+    return setStorage("tds_logfile", dat);
+}
+
 /* ---------------- not exported--------------- */
 /**
  * Check for a runtime error.

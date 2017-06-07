@@ -2,6 +2,7 @@ import GreenToRedSlider from './GreenToRedSlider'
 import UserSettings from '../../classes/UserSettings'
 import * as constants from '../../constants'
 import * as storage from '../../modules/storage/storage'
+import * as logger from '../../modules/logger'
 
 /**
  * subclass of the GreenToRedSlider, this also connects a button to the set of html_elements.
@@ -83,6 +84,7 @@ export default class TurnOffSlider extends GreenToRedSlider {
                 settings_object.turnOn();
             }
             storage.setSettings(settings_object);
+            logger.logToFile(`turned ${settings_object.state}`, (settings_object.state != "On" ? `${parent.selectedTime}` : ``));
         });
     }
 

@@ -85,6 +85,11 @@ export const KEY_DELETE = 46;
 export const KEY_ENTER = 13;
 
 /* -------------------- Number export constants ----------------------- */
+// time interval in minutes between sending data to server
+export const LOGGING_INTERVAL = 5;
+// time delay between first use of extension and data logging
+export const ALARM_DELAY = 5;
+
 
 // The amount of milliseconds in one day
 export const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds

@@ -7,7 +7,7 @@ import * as storage from '../modules/storage/storage'
  * Since the current state is saved here too.
  */
 export default class UserSettings {
-    constructor() {
+    constructor(id = undefined) {
         this._status = {
             state: true,
             setAt: new Date(),
@@ -16,6 +16,7 @@ export default class UserSettings {
 
         this._mode = constants.modes.lazy;
         this._interceptionInterval = 1;
+        this._UUID = id;
     }
 
     set interceptionInterval(val) { this._interceptionInterval = val; }
@@ -30,7 +31,11 @@ export default class UserSettings {
     set offTill(time) { this._status.offTill = time; }
     get offTill() { return this._status.offTill; }
 
-    get state() { return this.status.state ? "On" : "Off"; }
+
+    set UUID(uuid) {this._UUID = uuid;}
+    get UUID() { return this._UUID;}
+
+    get state() {return this.status.state ? "On" : "Off";}
 
     isInterceptionOn() { return this.status.state; }
 
@@ -105,13 +110,14 @@ export default class UserSettings {
     }
 
     static parseSettingsObject(parsedSettingsObject) {
-        let s = new UserSettings();
-        parsedSettingsObject._status.setAt = new Date(parsedSettingsObject._status.setAt);
-        parsedSettingsObject._status.offTill = new Date(parsedSettingsObject._status.offTill);
-        s.status = parsedSettingsObject._status;
-        s.interceptionInterval = parsedSettingsObject._interceptionInterval;
-        s.mode = parsedSettingsObject._mode;
-        return s;
+            let s = new UserSettings();
+            parsedSettingsObject._status.setAt = new Date(parsedSettingsObject._status.setAt);
+            parsedSettingsObject._status.offTill = new Date(parsedSettingsObject._status.offTill);
+            s.status = parsedSettingsObject._status;
+            s.interceptionInterval = parsedSettingsObject._interceptionInterval;
+            s.mode = parsedSettingsObject._mode;
+            s.UUID = parsedSettingsObject._UUID;
+            return s;
     }
 
     static deserializeSettings(serializedSettingsObject) {

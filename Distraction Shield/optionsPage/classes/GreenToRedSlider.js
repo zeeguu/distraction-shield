@@ -1,4 +1,6 @@
 import * as constants from "../../constants"
+import * as logger from '../../modules/logger'
+
 
 /**
  * class that connects a <div> with a span and slider together with all the functionality.
@@ -26,6 +28,7 @@ export default class GreenToRedSlider {
 
         this.sliderRange.on('mouseup', () => {
             let inputValue = this.sliderRange.val();
+            logger.logToFile(`changed ${this.constructor.name}`, `${inputValue}`);
             this.saveValue(inputValue);
         });
 
@@ -103,5 +106,6 @@ export default class GreenToRedSlider {
     timeInputError() {
         this.setValue(this.sliderRange.val());
         chrome.extension.getBackgroundPage().alert("please input a supported time format");
+        logger.logToFile("failed to input a proper time format");
     }
 }
