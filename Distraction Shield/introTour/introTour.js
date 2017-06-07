@@ -3,13 +3,13 @@ let id;
 let tour = new Tour({
     orphan: true,
     steps: [{
-        path: "/introTour/introTour.html",
+        path: "/introTour.html",
         title: "Welcome to The Distaction Shield",
         content: "Wanna know how Distraction Shield protects you ? " +
         " Click <b> ‘Next’ </b> " +
         "If you want to use it right away, click <b>‘End tour’</b>"
     }, {
-        path: "/introTour/introTour.html",
+        path: "/introTour.html",
         element: "#tourID",
         title: "Tooltip",
         content: "This is the tooltip button. Clicking on this button opens the <b> tooltip menu </b>, from where you can control" +
@@ -95,7 +95,7 @@ tour.start();
 //Restart tour link
 if (tour.ended()) {
     chrome.tabs.getSelected(null, function (tab) {
-        if (tab.url.indexOf('/introTour/introTour.html') !== -1) {
+        if (tab.url.indexOf('/introTour.html') !== -1) {
             tour.restart();
         }
     });

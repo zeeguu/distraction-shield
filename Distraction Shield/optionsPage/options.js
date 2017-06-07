@@ -128,7 +128,7 @@ function openFeedbackForm() {
 }
 
 function restartTour() {
-    openTabSingleton(chrome.runtime.getURL('introTour/introTour.html'));
+    openTabSingleton(chrome.runtime.getURL('introTour.html'));
 }
 
 function openStatisticsPage() {

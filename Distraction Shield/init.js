@@ -62,7 +62,7 @@ function dataCollectionMsg () {
 }
 
 function runIntroTour() {
-    chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
+    chrome.tabs.create({'url': chrome.runtime.getURL('introTour.html')});
 }
 
 /* --------------- ---- Run upon Start of session ---- ---------------*/

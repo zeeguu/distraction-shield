@@ -18,7 +18,7 @@
   },
   "background": {
     "scripts": [
-      "./distraction-shield.js"
+      "assets/js/init.js"
     ]
   },
   "content_scripts": [
@@ -28,7 +28,7 @@
         "*://www.zeeguu.unibe.ch/login*"
       ],
       "js": [
-        "./distraction-shield.js"
+        "assets/js/inject.js"
       ]
     }
   ],
