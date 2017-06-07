@@ -13,6 +13,8 @@ const UI = require('console-ui');
 
 // Rollup plugins
 const filesize = require('rollup-plugin-filesize');
+const resolve = require('rollup-plugin-node-resolve');
+const commonjs = require('rollup-plugin-commonjs');
 
 // Instantiations
 const ui = new UI({
@@ -51,8 +53,22 @@ let rollup = (tree, entry, dest) => {
       format: 'es',
       entry,
       dest,
+      // external: [ // putting in these as external disables inline jquery
+      //   'jquery',
+      //   'node_modules/jquery/'
+      // ],
       sourceMap: PRODUCTION ? false : 'inline',
-      plugins: [ filesize() ]
+      plugins: [
+        filesize(),
+        resolve(),
+        commonjs({
+          include: 'node_modules/**',
+          sourceMap: true,
+          namedExports: {
+            'node_modules/jquery/dist/jquery.min.js': [ 'jquery' ]
+          }
+        }),
+      ]
     }
   });
 };

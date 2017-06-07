@@ -1,5 +1,6 @@
 import * as constants from '../constants'
 import * as storage from '../modules/storage/storage'
+import $ from 'jquery';
 
 /**
  * Check if we have come here after tds redirection, if not return, if so get mode and
@@ -16,7 +17,7 @@ function mainFlow() {
 function initBasis(mode) {
     let message = mode.zeeguuText;
     $.ajax({
-        url: chrome.extension.getURL('contentInjection/inject.html'),
+        url: chrome.extension.getURL('/inject.html'),
         type: "GET",
         timeout: 5000,
         datatype: "html",
