@@ -9,6 +9,7 @@ import * as storage from './modules/storage/storage';
 import UserSettings from  './classes/UserSettings'
 import * as constants from'./constants';
 import {isInRegexList} from './modules/stringutil';
+import {scrubFromHistory} from './modules/browserutil'
 import StorageListener from './modules/storage/StorageListener'
 
 /**
@@ -53,17 +54,6 @@ function removeWebRequestListener() {
 
 
 /* ---------- ---------- Interception functions ----------  ---------- */
-/**
- * This function removes all entries in browserhistory that contain the free-text string query
- * @param {String} query
- */
-function clearHistory(query) {
-    chrome.history.search({text: query}, (results) => {
-        results.forEach((x) => {
-            chrome.history.deleteUrl({url: x.url})
-        })
-    })
-}
 
 /**
  * function that does everything that should happen when we decide to intercept the current request.
@@ -86,7 +76,7 @@ function intercept(details) {
 function handleInterception(details) {
     if (isInterceptionOn && !isInRegexList(constants.whitelist, details.url)) {
         if (constants.exerciseCompleteRegex.test(details.url)) {
-            clearHistory(constants.exerciseCompleteParam);
+            scrubFromHistory(constants.exerciseCompleteParam);
             let url = details.url.replace(constants.exerciseCompleteRegex, "");
             turnOffInterception();
             return {redirectUrl: url};
@@ -94,13 +84,6 @@ function handleInterception(details) {
             return intercept(details);
         }
     }
-    //todo remove testing:
-    chrome.history.search({text: constants.exerciseCompleteParam}, (results) => {
-        console.log("results: ");
-        results.forEach((x) => {
-            console.log("\titem: " + JSON.stringify(x.url))
-        })
-    });
 }
 
 /**

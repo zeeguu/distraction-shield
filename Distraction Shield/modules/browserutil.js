@@ -32,3 +32,15 @@ export function openTabSingleton(url, callback = () => {}) {
     });
 
 }
+
+/**
+ * This function removes (scrubs) all entries in browserhistory that contain the free-text string query
+ * @param {String} query
+ */
+export function scrubFromHistory(query) {
+    chrome.history.search({text: query}, (results) => {
+        results.forEach((x) => {
+            chrome.history.deleteUrl({url: x.url})
+        })
+    })
+}

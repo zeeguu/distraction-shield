@@ -1,7 +1,7 @@
 import * as blockedSiteBuilder from "../modules/blockedSiteBuilder.js"
 import BlockedSiteList from "../classes/BlockedSiteList"
 import * as stringutil from "../modules/stringutil.js"
-import {openTabSingleton} from "../modules/tabutil"
+import {openTabSingleton} from "../modules/browserutil"
 import * as storage from "../modules/storage/storage"
 import * as storageModifier from "../modules/storage/storageModifier"
 import StorageListener from "../modules/storage/StorageListener"

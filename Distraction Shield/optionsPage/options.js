@@ -1,5 +1,5 @@
 import * as blockedSiteBuilder from '../modules/blockedSiteBuilder'
-import {openTabSingleton} from '../modules/tabutil'
+import {openTabSingleton} from '../modules/browserutil'
 import * as storage from '../modules/storage/storage'
 import StorageListener from "../modules/storage/StorageListener"
 import UserSettings from '../classes/UserSettings'
