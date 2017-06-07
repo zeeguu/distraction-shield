@@ -34,9 +34,7 @@ export default class UserSettings {
     set offTill(time) { this._status.offTill = time; }
     get offTill() { return this._status.offTill; }
 
-    isInterceptionOn() {
-        return this.status ? "On" : "Off";
-    }
+    isInterceptionOn() { return this.status.state; }
 
     /**
      * Turn the interception back on
