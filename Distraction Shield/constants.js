@@ -101,4 +101,4 @@ export const tds_interceptCounter = "tds_interceptCounter";
 export const tds_interceptDateList = "tds_interceptDateList";
 export const tds_exerciseTime = "tds_exerciseTime";
 export const tds_logs = "tds_logs";
-export const tds_logfile = "tds_logfile"
+export const tds_logfile = "tds_logfile";

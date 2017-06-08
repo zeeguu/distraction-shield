@@ -9,7 +9,7 @@ import TurnOffSlider from './classes/TurnOffSlider'
 import * as connectDataToHtml from './connectDataToHtml'
 import * as htmlFunctionality from './htmlFunctionality'
 import {feedbackLink, tds_blacklist, tds_settings, tds_interceptCounter} from '../constants'
-import {initDataCollectionModal} from '../introTour/dataCollection'
+import {showDataCollectionModal} from '../introTour/dataCollection'
 
 /**
  * This file contains the core functions of the options page. this has all the local variables,
@@ -57,7 +57,7 @@ function connectHtmlFunctionality(userSettings) {
     htmlFunctionality.connectButton($('#statisticsLink'), openStatisticsPage);
     htmlFunctionality.connectButton($('#feedbackButton'), openFeedbackForm);
     htmlFunctionality.connectButton($('#tourRestartButton'), restartTour);
-    htmlFunctionality.connectButton($('#dataSettingsButton'), openDataCollectionConsent)
+    htmlFunctionality.connectButton($('#dataSettingsButton'), openDataCollectionConsent);
     htmlFunctionality.setKeyPressFunctions($('#textFld'), saveNewUrl);
 }
 
@@ -144,5 +144,5 @@ function openStatisticsPage() {
  * since the html is added dynamically
  */
 export function openDataCollectionConsent(){
-    initDataCollectionModal($('#dataConsentModal'));
+    showDataCollectionModal($('#dataConsentModal'));
 }

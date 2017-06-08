@@ -1,4 +1,4 @@
-import {initDataCollectionModal} from './dataCollection'
+import {showDataCollectionModal} from './dataCollection'
 
 let id;
 
@@ -87,7 +87,7 @@ let tour = new Tour({
          * This makes sure that the user does not accidentally closes the window.
          * After this, the user is redirected to the optionspage
          */
-        initDataCollectionModal($('#dataConsentModal'), true, () =>{
+        showDataCollectionModal($('#dataConsentModal'), true, () =>{
             chrome.tabs.query({currentWindow: true, active: true}, tab => {
                 chrome.tabs.update(tab.id, {url: chrome.runtime.getURL('optionsPage/options.html')});
             });

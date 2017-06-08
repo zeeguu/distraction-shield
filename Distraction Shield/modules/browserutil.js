@@ -20,6 +20,7 @@ export function isOpenTab (url, callback) {
  * A function that opens a tab with a given url, only if none is open yet,
  * switches to the already open tab otherwise
  * @param {string} url Url to check for
+ * @param {function} callback
  */
 export function openTabSingleton(url, callback = () => {}) {
     isOpenTab(url, (result) => {
