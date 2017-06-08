@@ -1,4 +1,6 @@
 import * as constants from "../../constants"
+import {logToFile} from '../../modules/logger'
+
 
 /**
  * class that connects a <div> with a span and slider together with all the functionality.
@@ -6,8 +8,6 @@ import * as constants from "../../constants"
  */
 export default class GreenToRedSlider {
 
-    //TODO replace saveFunction with storage interaction?
-    //We could, but keeping it as save function gives more freedom on how to use it if you want to re-use it
     constructor(sliderID, saveFunction) {
         this.saveValue = saveFunction;
         this.sliderDiv = $(sliderID);
@@ -26,6 +26,7 @@ export default class GreenToRedSlider {
 
         this.sliderRange.on('mouseup', () => {
             let inputValue = this.sliderRange.val();
+            logToFile(constants.logEventType.changed, `${this.constructor.name}`, `${inputValue}`, constants.logType.settings);
             this.saveValue(inputValue);
         });
 
@@ -93,15 +94,16 @@ export default class GreenToRedSlider {
                 regex[1] = Math.round(regex[1]);
                 this.setValue(this.sliderRange[0].max < regex[1] ? this.sliderRange[0].max : regex[1]);
             } else {
-                this.timeInputError();
+                this.timeInputError(val);
             }
         } else {
-            this.timeInputError();
+            this.timeInputError(val);
         }
     }
 
-    timeInputError() {
+    timeInputError(val) {
         this.setValue(this.sliderRange.val());
         chrome.extension.getBackgroundPage().alert("please input a supported time format");
+        logToFile(constants.logEventType.failed, 'slider time input', val, constants.logType.settings);
     }
 }

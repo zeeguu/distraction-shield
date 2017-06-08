@@ -2,12 +2,21 @@ import * as constants from '../constants'
 import * as storage from '../modules/storage/storage'
 
 /**
- * Object holding all the data that is connected to the user's preferences.
+ * @class this class holds all the data that is connected to the user's preferences.
  * Furthermore has the functionality to turn the interception part of the of extension on or off.
  * Since the current state is saved here too.
+ * @field status = The current interception status, it has three fields of its own.
+ *      @field state @fieldOf status = boolean value, if true we interception is On
+ *      @field setAt @fieldOf status = Date object, at which time did we change this status object
+ *      @field offTill @fieldOf status = Date object, until what time is the interception turned off,
+ *                                       less or equal to current time if interception is on.
+ * @field mode = The current mode of the Distraction Shield's interception
+ * @field interceptionInterval = For how many minutes are we allowed to browse after completing ann exercise
+ * @field UUID = the user's current UUID, used for statistics and logging
+ * @field collectData = the value of the data collection checkbox on the optionsPage
  */
 export default class UserSettings {
-    constructor() {
+    constructor(id = undefined) {
         this._status = {
             state: true,
             setAt: new Date(),
@@ -16,6 +25,8 @@ export default class UserSettings {
 
         this._mode = constants.modes.lazy;
         this._interceptionInterval = 1;
+        this._UUID = id;
+        this._collectData = true;
     }
 
     set interceptionInterval(val) { this._interceptionInterval = val; }
@@ -24,13 +35,19 @@ export default class UserSettings {
     set mode(newMode) { this._mode = newMode; }
     get mode() { return this._mode; }
 
+    set collectData (collectData) { this._collectData = collectData; }
+    get collectData () { return this._collectData; }
+
     set status(newStatus) { this._status = newStatus; }
     get status() { return this._status; }
 
     set offTill(time) { this._status.offTill = time; }
     get offTill() { return this._status.offTill; }
 
-    get state() { return this.status.state ? "On" : "Off"; }
+    set UUID(uuid) {this._UUID = uuid;}
+    get UUID() { return this._UUID;}
+
+    get state() {return this.status.state ? "On" : "Off";}
 
     isInterceptionOn() { return this.status.state; }
 
@@ -38,7 +55,7 @@ export default class UserSettings {
      * Turn the interception back on
      */
     turnOn() {
-        if (this.state == "Off") {
+        if (!this.isInterceptionOn()) {
             this.status = {state: true, setAt: new Date(), offTill: new Date()};
         } else {
             console.log("Already turned on, should not happen!");
@@ -111,8 +128,11 @@ export default class UserSettings {
         s.status = parsedSettingsObject._status;
         s.interceptionInterval = parsedSettingsObject._interceptionInterval;
         s.mode = parsedSettingsObject._mode;
+        s.collectData = parsedSettingsObject._collectData;
+        s.UUID = parsedSettingsObject._UUID;
         return s;
     }
+
 
     static deserializeSettings(serializedSettingsObject) {
         if (serializedSettingsObject != null) {

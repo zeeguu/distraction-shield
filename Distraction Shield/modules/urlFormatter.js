@@ -1,7 +1,16 @@
-import * as constants from '../constants';
+/**
+ * @module urlFormatter
+ * General module which contains two functionalities:
+ *      1.  It takes string versions of url's and strips them of certain parts in the url, we do this in order to be able
+ *          to format them so we can do GET-requests with them.
+ *      2.  We fire the aforementioned GET-request in order to retrieve an end-point url of a given url. In other words
+ *          we retrieve the url we'd find when we type this into the address bar.
+ *
+ * It is used throughout the extension by calling the blockedSiteBuilder module. This builder will use this module in order
+ * to build the correct blockedSite.
+ */
 
-// use alert for warning popups
-// alert = chrome.extension.getBackgroundPage().alert;
+import * as constants from '../constants';
 
 /**
  * removes trailing space from url, if nothing is there returns url

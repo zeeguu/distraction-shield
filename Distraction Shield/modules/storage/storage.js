@@ -2,6 +2,12 @@ import BlockedSiteList from '../../classes/BlockedSiteList'
 import UserSettings    from '../../classes/UserSettings'
 import * as constants  from '../../constants'
 
+/**
+ * @module The general API between the chrome.sync.storage and the extension. This is the
+ * part throughout which we get and set, store and retrieve, data that is concerned with the application.
+ * This module has one purpose only: getting and setting
+ * Due to asynchronousness this is all done through promises
+ */
 
 /* ---------------- General methods --------------- */
 
@@ -59,6 +65,7 @@ export function getAllUnParsed(callback) {
         return callback(output);
     });
 }
+
 /* ---------------- BlockedSiteList / Blacklist --------------- */
 
 export function getBlacklist(callback) {
@@ -93,15 +100,18 @@ export function getSettingsUnParsed(callback) {
         return callback(output.tds_settings);
     });
 }
+
 export function setSettings(settingsObject) {
     return setStorage(constants.tds_settings, UserSettings.serializeSettings(settingsObject));
 }
+
 export function setSettingsWithCallback(settingsObject, callback) {
     let serializedSettings = UserSettings.serializeSettings(settingsObject);
     setStorage(constants.tds_settings, serializedSettings).then(function () {
         return callback()
     });
 }
+
 export function getMode(callback) {
     getSettings(function (settings) {
         callback(settings.mode);
@@ -112,12 +122,15 @@ export function getMode(callback) {
 export function getInterceptCounter() {
     return getStorage(constants.tds_interceptCounter);
 }
+
 export function setInterceptCounter(number) {
     return setStorage(constants.tds_interceptCounter, number);
 }
+
 export function getInterceptDateList() {
     return getStorage(constants.tds_interceptDateList);
 }
+
 export function setInterceptDateList(dateList) {
     return setStorage(constants.tds_interceptDateList, dateList);
 }
@@ -130,7 +143,26 @@ export function setExerciseTimeList(statList) {
     return setStorage(constants.tds_exerciseTime, statList);
 }
 
-/* ---------------- not exported--------------- */
+/* ---------------- Logger --------------- */
+
+export function getLogs(callback) {
+    getStorage([constants.tds_logs]).then(output => {
+        callback(output);
+    });
+}
+
+export function setLogs(logfile) {
+    return setStorage(constants.tds_logs, logfile);
+}
+
+export function clearLogs(){
+    chrome.storage.sync.remove(constants.tds_logs);
+}
+
+export function setLogFile(data){
+    return setStorage(constants.tds_logfile, data);
+}
+
 /**
  * Check for a runtime error.
  */

@@ -1,6 +1,7 @@
 import GreenToRedSlider from './classes/GreenToRedSlider'
 import * as constants from '../constants'
 import * as storage from '../modules/storage/storage'
+import * as logger from '../modules/logger'
 
 /**
  * This file contains the specific functionality for the options and some of its elements
@@ -41,8 +42,10 @@ export function initModeSelection(buttonGroup, settings_object) {
             settings_object.mode = constants.modes.lazy;
         }
         storage.setSettings(settings_object);
+        logger.logToFile(constants.logEventType.changed, `mode`, `${settings_object.mode.label}`, constants.logType.settings);
     });
 }
+
 /* -------------------- Interval slider -------------------- */
 
 export function initIntervalSlider(settings_object) {

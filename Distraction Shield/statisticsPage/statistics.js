@@ -39,7 +39,7 @@ function initStatisticsPage() {
             let exerciseTime = response[1];
 
             setInterceptionCounterTable(interceptDateList);
-            blacklistTable.render(blockedSiteList.list);
+            blacklistTable.render(blockedSiteList);
             exerciseTimeTable.render(exerciseTime);
         });
 }
@@ -62,7 +62,7 @@ function connectHtmlFunctionality() {
 new StorageListener((changes) => {
     if (tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
-        blacklistTable.render(newBlockedSiteList.list);
+        blacklistTable.render(newBlockedSiteList);
     }
     if (tds_exerciseTime in changes) {
         let newExerciseTime = changes[tds_exerciseTime].newValue;

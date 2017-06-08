@@ -2,8 +2,9 @@ import {initBackground} from './background';
 import * as storage from './modules/storage/storage';
 import BlockedSiteList from './classes/BlockedSiteList';
 import UserSettings from './classes/UserSettings';
+import * as uuid from './modules/UUIDGenerator'
 import Tracker from './modules/statistics/tracker';
-import * as constants from './constants';
+import * as logger from './modules/logger'
 
 /* --------------- ---- Run upon installation ---- ---------------*/
 
@@ -18,8 +19,8 @@ chrome.runtime.onInstalled.addListener((details) => {
         initInterceptDateList(output.tds_interceptDateList);
         initExerciseTime(output.tds_exerciseTime);
         initSettings(output.tds_settings);
+        initAlarm();
         if (details.reason == 'install') {
-            dataCollectionMsg ();
             runIntroTour();
         }
     });
@@ -34,7 +35,8 @@ function initBlacklist(list) {
 
 function initSettings(settings) {
     if (settings == null) {
-        let settingsToStore = new UserSettings();
+        let id = uuid.generateUUID();
+        let settingsToStore = new UserSettings(id);
         storage.setSettingsWithCallback(settingsToStore, initSession);
     }
 }
@@ -57,12 +59,12 @@ function initExerciseTime(exerciseTime) {
     }
 }
 
-function dataCollectionMsg () {
-    alert (constants.dataCollectionMsg);
-}
-
 function runIntroTour() {
     chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
+}
+
+function initAlarm(){
+    logger.setAlarm();
 }
 
 /* --------------- ---- Run upon Start of session ---- ---------------*/

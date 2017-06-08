@@ -9,8 +9,7 @@ export default class ExerciseTimeTable extends BasicTable {
 
     /**
      * This functions generates HTML rows containing data of one BlockedSite
-     * @param date date at which the user spent time on exercises
-     * @param exerciseTime how much time the user has spent on exercises
+     * @param item {BlockedSite} blockedSite which data is used for the table row
      * @return string containing a HTML row
      */
     generateTableRow(item) {
