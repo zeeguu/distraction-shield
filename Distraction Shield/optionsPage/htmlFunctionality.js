@@ -1,11 +1,7 @@
 import GreenToRedSlider from './classes/GreenToRedSlider'
 import * as constants from '../constants'
 import * as storage from '../modules/storage/storage'
-
-// this is for testing purposes only!
 import * as logger from '../modules/logger'
-
-
 
 /**
  * This file contains the specific functionality for the options and some of its elements
