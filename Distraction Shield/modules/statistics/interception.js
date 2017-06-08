@@ -63,7 +63,7 @@ export function incrementInterceptionCounter(urlAddress) {
                 storage.setInterceptCounter(counter);
             });
     });
-    logger.logToFile(`intercepted from`, `${urlAddress}`, 'statistics');
+    logger.logToFile(`intercepted from`, ``, `${urlAddress}`, 'statistics');
 }
 
 /**
