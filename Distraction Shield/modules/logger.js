@@ -1,9 +1,9 @@
 import * as storage from '../modules/storage/storage'
 import * as constants from '../constants'
 
-/** @module logger */
-
-/**
+/** @module logger
+ *
+ *
  * This module is meant to be used for logging actions of the user and for statistics.
  * This module retrieves the UUID, generated on install, from the storage and uses this to link data to the user anonymously.
  * The module also dumps the logs every specified time interval.
@@ -19,7 +19,6 @@ import * as constants from '../constants'
  * @param value value of event, default = null
  * @param type {string} type of the event (options, statistics ..)
  */
-
 export function logToFile(event, trigger = '', value = null, type = 'undefined') {
     let time = new Date().toJSON();
     getUUID(id => {
@@ -41,7 +40,6 @@ export function setAlarm() {
  * This dumps the log from the storage to the server (if user gave permission?)
  * After that, it clears the logs.
  */
-
 function scheduledLogDump() {
     storage.getSettings(settings_object => {
         storage.getLogs(data => {
@@ -62,7 +60,6 @@ function clearLogs(){
  * This function dumps the array of logs in a logfile containing the date & logs.
  * @param data
  */
-
 function dumpToFile(data){
     let time = new Date().toJSON();
     let string = `'{"date":${time},"data":${data}}'`;
@@ -73,7 +70,6 @@ function dumpToFile(data){
  * retrieves UUID from userSettings
  * @callback callback for UUID
  */
-
 function getUUID(callback){
     storage.getSettings(data => {
         callback(data.UUID);
@@ -83,7 +79,6 @@ function getUUID(callback){
 /**
  * Append new log to existing log.
  */
-
 function storeLog(data){
     storage.getLogs(logs => {
         if (logs != undefined)
@@ -98,7 +93,6 @@ function storeLog(data){
  * Sends current log file to dst
  * @param data formatted data to be sent
  */
-
 function sendLogsTo(data){
     $.ajax({
         headers: {

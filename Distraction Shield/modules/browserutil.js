@@ -1,4 +1,10 @@
 /**
+ * @module browserutil
+ * This module has some functions we'd like to have in the browser, for special casing things like opening a tab or
+ * modifying user-history
+ */
+
+/**
  * This function uses the chrome tabs api to see if a tab is open with a certain url.
  * Calls the callback with: the id of the tab if a tab is open with the given url, false otherwise
  * @param {string} url Url to check for
