@@ -14,18 +14,19 @@ import * as constants from '../constants'
 
 /**
  * creates a log format "ID + args + on time"
- * @param event describes the action performed
+ * @param event {string} describes the action performed
+ * @param trigger {string}  what triggered the event
  * @param value value of event, default = null
  * @param type {string} type of the event (options, statistics ..)
  */
 
-export function logToFile(event, value = null, type='undefined') {
+export function logToFile(event, trigger = '', value = null, type = 'undefined') {
     //Time must be in JSON format at this point otherwise you lose it's value when retrieving from storage
     //for some reason
     let time = new Date().toJSON();
     getUUID(id => {
-        storeLog(id, event, value, time, type);
-        chrome.extension.getBackgroundPage().console.log(`${id} ${event} ${value} on ${time} at ${type}`);
+        storeLog(id, event, trigger, value, time, type);
+        chrome.extension.getBackgroundPage().console.log(`${id} ${event} ${trigger} ${value} on ${time} at ${type}`);
     });
 }
 
@@ -82,11 +83,11 @@ function getUUID(callback){
  * Append new log to existing log.
  */
 
-function storeLog(id, event, value, time, type){
+function storeLog(id, event, trigger, value, time, type){
     //We save the logs as an array strings in storage now and convert to JSON at point of sending
     //This allows the sending of multiple logs, as keeping the logs as JSON and appending new ones
     //doesn't give you a nice format for sending.
-    let string = {id:id, event:event, value:value, time:time, type:type};
+    let string = {id:id, event:event, trigger:trigger, value:value, time:time, type:type};
     storage.getLogs(data => {
 
         if (data != undefined)
