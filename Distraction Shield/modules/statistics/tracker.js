@@ -3,6 +3,7 @@ import * as exerciseTime from './exerciseTime';
 import * as storage from '../storage/storage'
 import BlockedSiteList from '../../classes/BlockedSiteList'
 import StorageListener from "../storage/StorageListener"
+import * as logger from '../../modules/logger'
 
 /**
  * The tracker tracks whether you are currently working on exercises.
@@ -16,7 +17,7 @@ export default class Tracker {
         this.blockedsites = new BlockedSiteList();
         this.previousTime = new Date();
         this.currentTab = null;
-        this.getCurrentTab().then((tab) => this.currentTab = tab);
+        this.getCurrentTab().then((tab) => this.currentTab = tab).catch(() => this.currentTab = null);
     }
 
     /**
@@ -64,9 +65,11 @@ export default class Tracker {
             if(tab) {
                 if (this.compareDomain(tab.url, constants.zeeguuExTracker)) {
                     this.incTimeExercises(timeSpent);
+                    logger.logToFile(`spent`, `exercises`, `${timeSpent/1000}`, 'statistics');
                 } else {
                     this.matchToBlockedSites(tab.url).then((site) => {
                         this.incTimeBlockedSite(site, timeSpent);
+                        logger.logToFile(`spent`, `${tab.url}`, `${timeSpent/1000}`, 'statistics');
                     });
                 }
             }
@@ -121,7 +124,7 @@ export default class Tracker {
                    } else {
                        this.currentTab = tab;
                    }
-                }).catch((error) => {
+                }).catch(() => {
                     this.currentTab = null;
                 })
             }
