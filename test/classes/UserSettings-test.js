@@ -1,3 +1,5 @@
+"use strict";
+
 /* eslint-env node */
 var assert = require('assert');
 var UserSettings = require('../../dist/classes/UserSettings')['default'];
@@ -6,22 +8,21 @@ describe('UserSettings | unit tests', function() {
     before(function() {
         this.userSettings = new UserSettings();
         this.userSettings.offTill = new Date();
+        this.userSettings._status = {state: false, setAt: new Date(), offTill: new Date()}
     });
 
-    it('turn on the extension', function() {
-        this.userSettings.state = 'Off';
+    it('should turn on the extension', function() {
         this.userSettings.turnOn();
-        assert.equal(this.userSettings.state, 'On');
+        assert.ok(this.userSettings.isInterceptionOn());
     });
 
     it('turnOff the extension', function () {
-        this.userSettings.state = 'On';
-        this.userSettings.turnOff(true);
-        assert.equal(this.userSettings.state, 'Off');
+        this.userSettings.turnOff();
+        assert.ok(!this.userSettings.isInterceptionOn());
     });
 
     it('turnOffFor minutes the extension', function () {
-        this.userSettings.state = 'On';
+        this.userSettings.turnOn();
         var minutes = 10;
 
         const curDate = new Date();
@@ -35,7 +36,7 @@ describe('UserSettings | unit tests', function() {
     });
 
     it('turnOffForDay the extension', function () {
-        this.userSettings.state = 'On';
+        this.userSettings.turnOn();
 
        let offTill = new Date(new Date().setHours(24, 0, 0, 0));
        this.userSettings.turnOffForDay(true);

@@ -1,13 +1,16 @@
+"use strict";
+
+
 /* eslint-env node */
 let assert = require('assert');
 let dateutil = require('../../dist/modules/dateutil.js');
 
-describe('dateutil | unti test', function() {
+describe('dateutil | unit test', function() {
     it('should transform seconds to HH:MM:SS ', function() {
-        let seconds = 5000;
+        let seconds = 5;
         let date    = new Date(seconds*1000).toISOString().substr(11,8);
 
-        assert.equal(dateutil.secondsToHHMMSS(seconds), date);
+        assert.equal(dateutil.msToHHMMSS(seconds*1000), date);
     });
 
     it('should stringify date', function () {
