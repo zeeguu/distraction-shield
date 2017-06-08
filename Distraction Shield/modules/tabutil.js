@@ -5,8 +5,7 @@
  * @param {function} callback Function to call with the result of the search
  */
 export function isOpenTab (url, callback) {
-    console.log("isOpenTab called");
-    console.log(chrome.tabs.query);
+
     chrome.tabs.query({}, (tabs) => {
         console.log("chrome.tabs.query called");
         for (let t of tabs) {
@@ -17,7 +16,6 @@ export function isOpenTab (url, callback) {
         }
         callback(false);
     });
-    console.log("isOpenTab ended");
 }
 
 /**
@@ -38,5 +36,4 @@ export function openTabSingleton(url, callback = () => {}) {
         }
         callback();
     });
-
 }

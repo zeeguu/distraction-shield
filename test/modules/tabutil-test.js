@@ -10,20 +10,24 @@ const chrome = require('sinon-chrome');
 describe('tabutil | unit test', function() {
     before(function () {
         global.chrome = chrome;
+
+        chrome.tabs.query.yields([
+            {id: 1, title: 'Tab 1', url : 'https://www.facebook.com'},
+            {id: 2, title: 'Tab 2', url : 'https://www.9gag.com'},
+        ]);
     });
 
     it('should singleton open tab',function () {
         let url = "https://www.google.com";
         assert.ok(chrome.tabs.create.notCalled, 'tabs.create should not be called');
+        tabutil.openTabSingleton(url);
 
-        // tabutil.openTabSingleton(url);
-        // assert.calledOnce(chrome.tabs.create, 'tabs.create should be called');
-        chrome.tabs.create({url : url});
+        assert.ok(chrome.tabs.query.calledOnce);
         assert.ok(chrome.tabs.create.calledOnce, 'tabs.create should be called');
 
-        // chrome.tabs.create({url : url});
+
+        url = 'https://www.facebook.com';
         tabutil.openTabSingleton(url);
-        // assert.calledOnce(chrome.tabs.create, 'tabs.create should be called');
         assert.ok(chrome.tabs.update.calledOnce, 'tabs.update should be called once');
 
     });
