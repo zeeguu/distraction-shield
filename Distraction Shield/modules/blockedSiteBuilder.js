@@ -1,7 +1,8 @@
+
 /**
- * @module blockedSiteBuilder
  * This module is a utility used to construct and initialize instances of the BlockedSite class. This module is the
  * only right way of creating a new BlockedSiteItem.
+ * @module blockedSiteBuilder
  */
 
 import {getUrlFromServer} from "./urlFormatter"

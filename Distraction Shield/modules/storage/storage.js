@@ -3,10 +3,11 @@ import UserSettings    from '../../classes/UserSettings'
 import * as constants  from '../../constants'
 
 /**
- * @module The general API between the chrome.sync.storage and the extension. This is the
+ * The general API between the chrome.sync.storage and the extension. This is the
  * part throughout which we get and set, store and retrieve, data that is concerned with the application.
  * This module has one purpose only: getting and setting
  * Due to asynchronousness this is all done through promises
+ * @module storage
  */
 
 /* ---------------- General methods --------------- */

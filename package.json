@@ -1,6 +1,6 @@
 {
-  "name": "distraction-shield",
-  "version": "1.0.0",
+  "name": "Distraction Shield",
+  "version": "2.1.0",
   "description": "Distraction Shield!",
   "scripts": {
     "start": "broccoli serve",

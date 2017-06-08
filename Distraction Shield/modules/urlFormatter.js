@@ -1,5 +1,4 @@
 /**
- * @module urlFormatter
  * General module which contains two functionalities:
  *      1.  It takes string versions of url's and strips them of certain parts in the url, we do this in order to be able
  *          to format them so we can do GET-requests with them.
@@ -8,6 +7,7 @@
  *
  * It is used throughout the extension by calling the blockedSiteBuilder module. This builder will use this module in order
  * to build the correct blockedSite.
+ * @module urlFormatter
  */
 
 import * as constants from '../constants';

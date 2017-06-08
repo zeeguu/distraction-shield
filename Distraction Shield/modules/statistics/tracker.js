@@ -6,9 +6,10 @@ import StorageListener from "../storage/StorageListener"
 import * as logger from '../../modules/logger'
 
 /**
- * @module The tracker tracks whether you are currently working on exercises.
+ * The tracker tracks whether you are currently working on exercises.
  * Every second, the "alarm" is fired, and the url of the current tab is examined.
  * If this url corresponds with the zeeguu url, the time spent on exercises counter is incremented.
+ * @module tracker
  */
 export default class Tracker {
 

@@ -1,6 +1,6 @@
 /**
- * @module UUIDGenerator
  * module that generates a uuid with the help of the npm package.
+ * @module UUIDGenerator
  */
 
 import * as uuid from 'uuid'

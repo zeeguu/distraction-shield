@@ -11,7 +11,7 @@ function mainFlow() {
 
 /**
  * Initialize the tds info panel with the proper text based on mode
- * @param {JSON object} mode
+ * @param {modes} mode
  */
 function initBasis(mode) {
     let message = mode.zeeguuText;

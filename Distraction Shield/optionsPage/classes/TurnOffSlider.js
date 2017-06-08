@@ -3,6 +3,7 @@ import UserSettings from '../../classes/UserSettings'
 import * as constants from '../../constants'
 import * as storage from '../../modules/storage/storage'
 import * as logger from '../../modules/logger'
+import StorageListener from '../../modules/storage/StorageListener'
 
 /**
  * subclass of the GreenToRedSlider, this also connects a button to the set of html_elements.
@@ -22,26 +23,24 @@ export default class TurnOffSlider extends GreenToRedSlider {
         this.sliderValue.html(this.calculateHours(this.sliderRange.val()));
         this.setValue(this.sliderRange.val());
         this.init();
-        chrome.storage.onChanged.addListener(changes => {
-            this.handleStorageChange(changes)
-        });
     }
 
     init(){
         storage.getSettings(settings_object => {
             this.updateSettings(settings_object);
         });
+        this.addStorageListener();
     }
 
     toggleShowOffMessage(settings_object) {
         if (!settings_object.isInterceptionOn()) {
             this.sliderValue.html(this.createOffMessage(settings_object));
-            this.sliderRange.css('visibility', 'hidden').parent().css('display', 'none');
+            this.sliderRange.hide();
             this.sliderValue.parent().css('width', '50%');
             this.sliderValue.prop('contenteditable', false);
         } else {
             this.sliderValue.html(this.calculateHours(this.selectedTime));
-            this.sliderRange.css('visibility', 'visible').parent().css('display', 'initial');
+            this.sliderRange.show();
             this.sliderValue.parent().css('width', '30%');
             this.sliderValue.prop('contenteditable', true);
         }
@@ -87,10 +86,14 @@ export default class TurnOffSlider extends GreenToRedSlider {
         });
     }
 
-    handleStorageChange(changes){
-        if (constants.tds_settings in changes) {
-            let newSettings = UserSettings.deserializeSettings(changes[constants.tds_settings].newValue);
-            this.updateSettings(newSettings);
-        }
+    addStorageListener(){
+        new StorageListener(changes => {
+            if (constants.tds_settings in changes) {
+                chrome.extension.getBackgroundPage().console.log('changed')
+                let newSettings = UserSettings.deserializeSettings(changes[constants.tds_settings].newValue);
+                this.updateSettings(newSettings);
+            }
+        });
     }
+
 }

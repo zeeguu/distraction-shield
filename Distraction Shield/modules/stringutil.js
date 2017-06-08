@@ -1,6 +1,6 @@
 /**
- * @module stringutil
  * This module is a utility that is used for functions we use in more than one place in order to things like comparison
+ * @module stringutil
  */
 
 /**
