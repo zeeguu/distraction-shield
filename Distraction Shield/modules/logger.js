@@ -14,10 +14,10 @@ import * as constants from '../constants'
 
 /**
  * creates a log format "ID + args + on time"
- * @param event {string} describes the action performed
+ * @param event {logEventType} describes the action performed
  * @param trigger {string}  what triggered the event
  * @param value value of event, default = null
- * @param type {string} type of the event (options, statistics ..)
+ * @param type {logType} type of the event (options, statistics ..)
  */
 export function logToFile(event, trigger = '', value = null, type = 'undefined') {
     let time = new Date().toJSON();
@@ -28,7 +28,7 @@ export function logToFile(event, trigger = '', value = null, type = 'undefined')
 }
 
 export function setAlarm() {
-    chrome.alarms.create('logdump', {delayInMinutes: constants.ALARM_DELAY, periodInMinutes: constants.LOGGING_INTERVAL });
+    chrome.alarms.create('logdump', {delayInMinutes: constants.LOGGING_ALARM_DELAY, periodInMinutes: constants.LOGGING_INTERVAL });
     chrome.alarms.onAlarm.addListener(alarm => {
         if (alarm.name === 'logdump') {
             scheduledLogDump();

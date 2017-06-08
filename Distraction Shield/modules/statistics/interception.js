@@ -67,7 +67,7 @@ export function incrementInterceptionCounter(urlAddress) {
                 storage.setInterceptCounter(counter);
             });
     });
-    logger.logToFile(`intercepted`, ``, `${urlAddress}`, 'statistics');
+    logger.logToFile(constants.logEventType.intercepted, ``, `${urlAddress}`, constants.logType.statistics);
 }
 
 /**

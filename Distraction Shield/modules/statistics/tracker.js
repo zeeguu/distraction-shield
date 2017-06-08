@@ -65,11 +65,11 @@ export default class Tracker {
             if(tab) {
                 if (this.compareDomain(tab.url, constants.zeeguuExTracker)) {
                     this.incTimeExercises(timeSpent);
-                    logger.logToFile(`spent`, `exercises`, `${timeSpent/1000}`, 'statistics');
+                    logger.logToFile(constants.logEventType.spent, `exercises`, `${timeSpent/1000}`, constants.logType.statistics);
                 } else {
                     this.matchToBlockedSites(tab.url).then((site) => {
                         this.incTimeBlockedSite(site, timeSpent);
-                        logger.logToFile(`spent`, `${tab.url}`, `${timeSpent/1000}`, 'statistics');
+                        logger.logToFile(constants.logEventType.spent, `${tab.url}`, `${timeSpent/1000}`, constants.logType.statistics);
                     });
                 }
             }

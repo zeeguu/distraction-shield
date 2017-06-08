@@ -7,6 +7,7 @@ import * as storageModifier from "../modules/storage/storageModifier"
 import StorageListener from "../modules/storage/StorageListener"
 import {tds_blacklist} from '../constants'
 import {logToFile} from '../modules/logger'
+import * as constants from '../constants'
 
 let saveButton = $('#saveBtn');
 let optionsButton = $('#optionsBtn');
@@ -68,7 +69,7 @@ function toggleBlockedSite(url) {
                     newItem = list[i];
                     newItem.checkboxVal = !newItem.checkboxVal;
                     storageModifier.updateBlockedSiteInStorage(newItem);
-                    logToFile('changed', newItem.name, (newItem.checkboxVal ? 'enabled' : 'disabled'), 'settings');
+                    logToFile(constants.logEventType.changed, newItem.name, (newItem.checkboxVal ? 'enabled' : 'disabled'), constants.logType.settings);
                     break;
                 }
             }

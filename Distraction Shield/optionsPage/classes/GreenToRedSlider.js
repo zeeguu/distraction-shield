@@ -26,7 +26,7 @@ export default class GreenToRedSlider {
 
         this.sliderRange.on('mouseup', () => {
             let inputValue = this.sliderRange.val();
-            logToFile(`changed`, `${this.constructor.name}`, `${inputValue}`, 'settings');
+            logToFile(constants.logEventType.changed, `${this.constructor.name}`, `${inputValue}`, constants.logType.settings);
             this.saveValue(inputValue);
         });
 
@@ -104,6 +104,6 @@ export default class GreenToRedSlider {
     timeInputError(val) {
         this.setValue(this.sliderRange.val());
         chrome.extension.getBackgroundPage().alert("please input a supported time format");
-        logToFile("failed", 'slider time input', val, 'settings');
+        logToFile(constants.logEventType.failed, 'slider time input', val, constants.logType.settings);
     }
 }

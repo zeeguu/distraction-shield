@@ -82,7 +82,8 @@ export default class TurnOffSlider extends GreenToRedSlider {
                 settings_object.turnOn();
             }
             storage.setSettings(settings_object);
-            logger.logToFile('changed', `extension ${(settings_object.isInterceptionOn() ? 'on' : 'off')}`, (!settings_object.isInterceptionOn() ? slider.selectedTime : ``), 'settings');
+            logger.logToFile(constants.logEventType.changed, `extension ${(settings_object.isInterceptionOn() ? 'on' : 'off')}`,
+                (!settings_object.isInterceptionOn() ? slider.selectedTime : ``), constants.logType.settings);
         });
     }
 
