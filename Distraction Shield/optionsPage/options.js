@@ -90,7 +90,10 @@ function reloadTable(blockedSiteList, oldBlockedSiteList) {
 /* -------------------- Manipulate local variables ------------------- */
 
 function resetMessageBox() {
-    document.querySelector('#message-box').innerText = '';
+    let messageBox = $('#message-box');
+    messageBox.text('');
+    messageBox.show();
+
 }
 
 /* -------------------- Act upon change of storage ------------------- */
@@ -119,7 +122,7 @@ function saveNewUrl() {
     let html_txtFld = $('#textFld');
     let newUrl = html_txtFld.val();
     blockedSiteBuilder.createBlockedSiteAndAddToStorage(newUrl)
-        .catch(error => {$('#message-box').text(error)});
+        .catch(error => {$('#message-box').text(error).fadeOut(8000, resetMessageBox)});
     html_txtFld.val('');
 }
 
