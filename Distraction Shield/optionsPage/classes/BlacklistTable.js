@@ -1,4 +1,5 @@
 import {removeBlockedSiteFromStorage, updateBlockedSiteInStorage} from '../../modules/storage/storageModifier'
+import {logToFile} from '../../modules/logger'
 
 /**
  * The table holding the blockedSites and all of its functionality.
@@ -49,6 +50,7 @@ export default class BlacklistTable {
             let selected_row = $(clicked_checkbox).closest('tr');
             let selected_blockedSite = selected_row.data('blockedSite');
             selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
+            logToFile('changed', selected_blockedSite.name, (selected_blockedSite.checkboxVal ? 'enabled' : 'disabled'), 'settings');
             updateBlockedSiteInStorage(selected_blockedSite);
         });
     }

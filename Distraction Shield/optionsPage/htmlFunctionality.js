@@ -57,6 +57,7 @@ export function initModeSelection(buttonGroup, settings_object) {
             settings_object.mode = constants.modes.lazy;
         }
         storage.setSettings(settings_object);
+        logger.logToFile(`changed`, `mode`, `${settings_object.mode.label}`, 'settings');
     });
 }
 /* -------------------- Interval slider -------------------- */

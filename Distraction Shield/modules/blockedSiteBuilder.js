@@ -2,7 +2,6 @@ import {getUrlFromServer} from "./urlFormatter"
 import BlockedSite from "../classes/BlockedSite"
 import {addBlockedSiteToStorage} from "./storage/storageModifier"
 
-// this requires a callback since the getUrlFromServer is asynchronous
 /**
  * Constructs a new blockedSite instance using the given url, and passes it on using a promise
  * The only real right way of creating a new blocked site. For this it uses the BlockedSite and the urlFormatter.
