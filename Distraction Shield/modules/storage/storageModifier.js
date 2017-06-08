@@ -2,6 +2,12 @@ import * as constants from '../../constants'
 import {getBlacklistPromise, setBlacklist} from './storage'
 import {logToFile} from '../../modules/logger'
 
+/**
+ * @module This module is used for changing stuff inside the storage. This is used for getting, updating and setting
+ * data that is supposed to be in the storage.
+ */
+
+
 /* ----------------  BlockedSiteList/Blacklist Modifications --------------- */
 
 export function addBlockedSiteToStorage(blocked_site) {
