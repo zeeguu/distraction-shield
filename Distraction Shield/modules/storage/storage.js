@@ -59,6 +59,7 @@ export function getAllUnParsed(callback) {
         return callback(output);
     });
 }
+
 /* ---------------- BlockedSiteList / Blacklist --------------- */
 
 export function getBlacklist(callback) {
@@ -93,15 +94,18 @@ export function getSettingsUnParsed(callback) {
         return callback(output.tds_settings);
     });
 }
+
 export function setSettings(settingsObject) {
     return setStorage(constants.tds_settings, UserSettings.serializeSettings(settingsObject));
 }
+
 export function setSettingsWithCallback(settingsObject, callback) {
     let serializedSettings = UserSettings.serializeSettings(settingsObject);
     setStorage(constants.tds_settings, serializedSettings).then(function () {
         return callback()
     });
 }
+
 export function getMode(callback) {
     getSettings(function (settings) {
         callback(settings.mode);
@@ -112,12 +116,15 @@ export function getMode(callback) {
 export function getInterceptCounter() {
     return getStorage(constants.tds_interceptCounter);
 }
+
 export function setInterceptCounter(number) {
     return setStorage(constants.tds_interceptCounter, number);
 }
+
 export function getInterceptDateList() {
     return getStorage(constants.tds_interceptDateList);
 }
+
 export function setInterceptDateList(dateList) {
     return setStorage(constants.tds_interceptDateList, dateList);
 }
@@ -131,25 +138,25 @@ export function setExerciseTimeList(statList) {
 }
 
 /* ---------------- Logger --------------- */
+
 export function getLogs(callback) {
-    getStorage(["tds_logs"]).then(function (output){
+    getStorage([constants.tds_logs]).then(output => {
         callback(output);
     });
 }
 
 export function setLogs(logfile) {
-    return setStorage("tds_logs", logfile);
+    return setStorage(constants.tds_logs, logfile);
 }
 
 export function clearLogs(){
-    chrome.storage.sync.remove("tds_logs");
+    chrome.storage.sync.remove(constants.tds_logs);
 }
 
-export function setLogFile(dat){
-    return setStorage("tds_logfile", dat);
+export function setLogFile(data){
+    return setStorage(constants.tds_logfile, data);
 }
 
-/* ---------------- not exported--------------- */
 /**
  * Check for a runtime error.
  */

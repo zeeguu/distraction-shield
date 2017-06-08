@@ -50,7 +50,6 @@ export const loginMessage = "Please log in to get productive!";
 
 /* ---------- ----- BlockedSiteList ----- ---------- */
 export const newUrlNotUniqueError = "Oops! You already blocked this website: ";
-export const newUrlSuccess = "Successfully blocked ";
 
 /* ---------- ----- Whitelist ----- ----- ---------- */
 
@@ -81,7 +80,6 @@ export const zeeguuInfoText = "Hey, you tried to enter one of the sites you want
 
 /* -------------------- Keypress export constants ----------------------- */
 /* ---------- ----- optionsPage/htmlFunctionality ----- ---------- */
-export const KEY_DELETE = 46;
 export const KEY_ENTER = 13;
 
 /* -------------------- Number export constants ----------------------- */
@@ -104,3 +102,5 @@ export const tds_settings = "tds_settings";
 export const tds_interceptCounter = "tds_interceptCounter";
 export const tds_interceptDateList = "tds_interceptDateList";
 export const tds_exerciseTime = "tds_exerciseTime";
+export const tds_logs = "tds_logs";
+export const tds_logfile = "tds_logfile"

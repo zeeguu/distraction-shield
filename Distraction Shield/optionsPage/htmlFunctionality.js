@@ -12,15 +12,6 @@ import * as logger from '../modules/logger'
  * This file holds all javascript functions used by the html_elements like buttons and fields.
  * Here things like, onClicked or onChanged events are monitored
  */
-function setLoggingFunctions(){
-    $('#printLogs').on('click', () => {
-        logger.printLogs();
-    })
-    $('#deleteLogs').on('click', () => {
-        logger.clearLogs();
-    })
-}
-
 
 /* -------------------- Button Click functions ----------------------- */
 
@@ -34,8 +25,6 @@ export function connectButton(html_button, method) {
 
 export function setKeyPressFunctions(html_txtFld, submitFunc) {
     submitOnKeyPress(html_txtFld, submitFunc);
-    // TESTING PURPOSES ONLY!
-    setLoggingFunctions();
 }
 
 function submitOnKeyPress(html_elem, submitFunc) {

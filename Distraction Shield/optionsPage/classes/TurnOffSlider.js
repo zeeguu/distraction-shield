@@ -56,8 +56,7 @@ export default class TurnOffSlider extends GreenToRedSlider {
     createMessage(hours, minutes, val){
         if (val == constants.MAX_TURN_OFF_TIME)
             return "for the rest of the day";
-        let returnVal = "for " + (hours > 0 ? hours + ":" + minutes + " hours." : minutes + " minute(s).");
-        return returnVal;
+        return "for " + (hours > 0 ? hours + ":" + minutes + " hours." : minutes + " minute(s).");
     }
 
     createOffMessage(settings_object) {
@@ -72,7 +71,6 @@ export default class TurnOffSlider extends GreenToRedSlider {
 
     offButtonFunc() {
         storage.getSettings(settings_object => {
-            // 'this' is really annoying, (this refers to the offbutton..)
             let slider = this.slider;
             if (settings_object.isInterceptionOn()) {
                 if (slider.selectedTime === constants.MAX_TURN_OFF_TIME) {

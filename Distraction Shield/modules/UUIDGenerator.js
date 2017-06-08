@@ -1,6 +1,9 @@
 import * as uuid from 'uuid'
 
+/**
+ * Generates a UUID using the uuid npm package
+ * @returns {string} UUID in string format
+ */
 export function generateUUID() {
-    let UUID = uuid.v1();
-    return UUID;
+    return uuid.v1();
 }

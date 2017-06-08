@@ -21,20 +21,18 @@ import * as constants from '../constants'
  */
 
 export function logToFile(event, trigger = '', value = null, type = 'undefined') {
-    //Time must be in JSON format at this point otherwise you lose it's value when retrieving from storage
-    //for some reason
     let time = new Date().toJSON();
     getUUID(id => {
-        storeLog(id, event, trigger, value, time, type);
-        chrome.extension.getBackgroundPage().console.log(`${id} ${event} ${trigger} ${value} on ${time} at ${type}`);
+        let data = {id:id, event:event, trigger:trigger, value:value, time:time, type:type};
+        storeLog(data);
+        chrome.extension.getBackgroundPage().console.log(`${id} ${event} ${trigger} ${value} on ${time} ${type}`);
     });
 }
 
 export function setAlarm() {
     chrome.alarms.create('logdump', {delayInMinutes: constants.ALARM_DELAY, periodInMinutes: constants.LOGGING_INTERVAL });
-    chrome.alarms.onAlarm.addListener((alarm) => {
-        if (alarm.name == 'logdump') {
-            chrome.extension.getBackgroundPage().console.log("scheduled log dumping");
+    chrome.alarms.onAlarm.addListener(alarm => {
+        if (alarm.name === 'logdump') {
             scheduledLogDump();
         }
     });
@@ -46,15 +44,18 @@ export function setAlarm() {
  */
 
 function scheduledLogDump() {
-    //To be implemented, set true for testing
-    const PLACEHOLDER = true;  // TODO get user permission to send data?
-    const API_PLACEHOLDER = "/test_upload_user_activity_data";
+    //TODO implemented, needs to be merged with consent-checkbox
+    const PLACEHOLDER = true;
     storage.getLogs(data => {
         if (PLACEHOLDER)
             sendLogsTo(data);
         dumpToFile(data);
         clearLogs();
     });
+}
+
+function clearLogs(){
+    storage.clearLogs();
 }
 
 /**
@@ -83,51 +84,27 @@ function getUUID(callback){
  * Append new log to existing log.
  */
 
-function storeLog(id, event, trigger, value, time, type){
-    //We save the logs as an array strings in storage now and convert to JSON at point of sending
-    //This allows the sending of multiple logs, as keeping the logs as JSON and appending new ones
-    //doesn't give you a nice format for sending.
-    let string = {id:id, event:event, trigger:trigger, value:value, time:time, type:type};
-    storage.getLogs(data => {
-
-        if (data != undefined)
-             data.push(string);
+function storeLog(data){
+    storage.getLogs(logs => {
+        if (logs != undefined)
+            logs.push(data);
         else
-            data = [string];
-        storage.setLogs(data);
+            logs = [data];
+        storage.setLogs(logs);
     });
 }
 
-export function clearLogs(){
-    storage.clearLogs();
-}
-
-export function printLogs(){
-    storage.getLogs(data => {
-        //Sends the data when you hit print logs
-        sendLogsTo(data);
-        chrome.extension.getBackgroundPage().console.log(data);
-    });
-}
 /**
  * Sends current log file to dst
- * @param api to send file to.
- * @param param destination
  * @param data formatted data to be sent
  */
 
-/*
- *I removed the two params that were here before, as they
- * were causing issues at the start. They could possible be added back in so there is a way of specifiy the
- * address to send too that isn't hardcoding it in below, but we can look at that later.
- */
 function sendLogsTo(data){
     $.ajax({
         headers: {
             'content-type': 'application/json'
         },
-        url: 'http://127.0.0.1:5000/submit',
-        //convert logs to JSON at point of sending, an array of strings converts nicely
+        url: 'http://127.0.0.1:5000/submit', //TODO get API url to send data to
         data: JSON.stringify(data),
         type: "POST"
     });
