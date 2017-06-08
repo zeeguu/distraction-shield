@@ -25,7 +25,6 @@ export function logToFile(event, trigger = '', value = null, type = 'undefined')
     getUUID(id => {
         let data = {id:id, event:event, trigger:trigger, value:value, time:time, type:type};
         storeLog(data);
-        chrome.extension.getBackgroundPage().console.log(`${id} ${event} ${trigger} ${value} on ${time} ${type}`);
     });
 }
 
@@ -46,7 +45,6 @@ export function setAlarm() {
 function scheduledLogDump() {
     storage.getSettings(settings_object => {
         storage.getLogs(data => {
-            chrome.extension.getBackgroundPage().console.log("scheduled going");
             if (settings_object.collectData)
                 sendLogsTo(data);
             dumpToFile(data);
