@@ -1,24 +1,25 @@
-
 // This module is an utility to help get the correct format for dates which are used in the codebase.
-function DateUtil() {
-    var self = this;
-    this.bg = chrome.extension.getBackgroundPage();
 
-    // Converts seconds to the format HH:MM:SS
-    this.secondsToHHMMSS = function (seconds) {
-        return new Date(seconds * 1000).toISOString().substr(11, 8);
-    };
-
-    // Formats the date parameter to DD/MM/YY
-    this.formatDate = function(date){
-        return date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
-    };
-
-    // Function which returns the current date, formatted in the correct format.
-    this.getToday = function(){
-        var dateObject = new Date();
-        return self.formatDate(dateObject);
-    }
+/**
+ * Converts milliseconds to HH:MM:SS format
+ * @param {int} seconds amount of seconds
+ */
+export function msToHHMMSS(ms) {
+    return new Date(ms).toISOString().substr(11, 8);
 }
 
-var dateUtil = new DateUtil();
+/**
+ * Converts date object to string format
+ * @param {Date} date date object to format
+ */
+export function formatDate(date) {
+    return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+}
+
+/**
+ * returns the current date, formatted in the correct format.
+ */
+export function getToday() {
+    let dateObject = new Date();
+    return formatDate(dateObject);
+}

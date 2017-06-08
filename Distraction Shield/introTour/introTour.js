@@ -1,14 +1,12 @@
-var console = chrome.extension.getBackgroundPage().console;
+let id;
 
-var id;
-
-var tour = new Tour({
+let tour = new Tour({
     orphan: true,
     steps: [{
         path: "/introTour/introTour.html",
         title: "Welcome to The Distaction Shield",
         content: "Wanna know how Distraction Shield protects you ? " +
-        " Click <b> ‘Next’ </b> "+
+        " Click <b> ‘Next’ </b> " +
         "If you want to use it right away, click <b>‘End tour’</b>"
     }, {
         path: "/introTour/introTour.html",
@@ -77,7 +75,7 @@ var tour = new Tour({
         "amount of time you want and click <b>’Turn Off’</b>.",
         placement: "bottom"
     }, {
-    path: "/introTour/optionscopy.html",
+        path: "/introTour/optionscopy.html",
         title: "Thank You!",
         content: "Thanks for choosing The Distraction Shield and Happy Learning!"
     }],
@@ -95,24 +93,23 @@ tour.init();
 tour.start();
 
 //Restart tour link
-if(tour.ended()) {
-    chrome.tabs.getSelected(null, function(tab) {
-        if (tab.url.indexOf('/introTour/introTour.html') != -1) {
+if (tour.ended()) {
+    chrome.tabs.getSelected(null, function (tab) {
+        if (tab.url.indexOf('/introTour/introTour.html') !== -1) {
             tour.restart();
         }
     });
 }
 
 //get current tab
-chrome.tabs.getSelected(null, function(tab) {
+chrome.tabs.getSelected(null, function (tab) {
     id = tab.id;
 });
 
 //end tour if tab closed
-chrome.tabs.onRemoved.addListener(function(tabId) {
-    if(tabId == id) {
+chrome.tabs.onRemoved.addListener(function (tabId) {
+    if (tabId === id) {
         tour.end();
     }
 });
-
 

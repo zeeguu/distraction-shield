@@ -1,74 +1,89 @@
-
-/* --------------- ---- Session initializer ---- ---------------*/
-
-//First receive the blacklist and settings from the sync storage,
-//then create a onBeforeRequest listener using this list and the settings.
-initSession = function () {
-    // Settings need to be loaded before the listener is replaced. The replaceListener
-    // requires the blocked sites to be loaded, so these weird callbacks are required.
-    storage.getSettings(function(settings) {
-        settings.reInitTimer();
-        setLocalSettings(settings);
-        retrieveBlockedSites(replaceListener);
-    });
-};
+import {initBackground} from './background';
+import * as storage from './modules/storage/storage';
+import BlockedSiteList from './classes/BlockedSiteList';
+import UserSettings from './classes/UserSettings';
+import Tracker from './modules/statistics/tracker';
+import * as constants from './constants';
 
 /* --------------- ---- Run upon installation ---- ---------------*/
 
-chrome.runtime.onInstalled.addListener(function() {
-    storage.getAll( function(output) {
+/**
+ * function to be fired only when the extension is installed or updated. It initiates all the data and the storage.
+ * Furthermore it shows the intro tour and initializes the extension upon completion.
+ */
+chrome.runtime.onInstalled.addListener((details) => {
+    storage.getAllUnParsed((output) => {
         initBlacklist(output.tds_blacklist);
         initInterceptCounter(output.tds_interceptCounter);
         initInterceptDateList(output.tds_interceptDateList);
         initExerciseTime(output.tds_exerciseTime);
         initSettings(output.tds_settings);
-        runIntroTour();
+        if (details.reason == 'install') {
+            dataCollectionMsg ();
+            runIntroTour();
+        }
     });
 });
 
-initBlacklist = function(list) {
+function initBlacklist(list) {
     if (list == null) {
-        blacklistToStore = new BlockedSiteList();
-        storage.setBlacklist(blacklistToStore);
+        let blockedSiteListToStore = new BlockedSiteList();
+        storage.setBlacklist(blockedSiteListToStore);
     }
-};
+}
 
-initSettings = function(settings) {
+function initSettings(settings) {
     if (settings == null) {
-        settingsToStore = new UserSettings();
+        let settingsToStore = new UserSettings();
         storage.setSettingsWithCallback(settingsToStore, initSession);
     }
-};
+}
 
-initInterceptCounter = function(counter) {
+function initInterceptCounter(counter) {
     if (counter == null) {
-        storage.setInterceptionCounter(0);
+        storage.setInterceptCounter(0);
     }
-};
+}
 
-initInterceptDateList = function(dateList) {
+function initInterceptDateList(dateList) {
     if (dateList == null) {
         storage.setInterceptDateList([]);
     }
-};
+}
 
-initExerciseTime = function(exerciseTime){
+function initExerciseTime(exerciseTime) {
     if (exerciseTime == null) {
-        storage.setExerciseTimeList({});
+        storage.setExerciseTimeList([]);
     }
-};
+}
 
+function dataCollectionMsg () {
+    alert (constants.dataCollectionMsg);
+}
 
-runIntroTour = function() {
+function runIntroTour() {
     chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
-};
-
+}
 
 /* --------------- ---- Run upon Start of session ---- ---------------*/
 
-//fix that checks whether everything that should be is indeed initialized
-storage.getSettings(function(settings) {
+/**
+ * function which checks whether we run a normal session or the special case where the onInstalled function is called.
+ */
+storage.getSettingsUnParsed(function (settings) {
     if (settings != null) {
         initSession();
     }
 });
+
+/**
+ * function which fires upon starting the browser. Initiates the session, like listener and list of blocked sites.
+ */
+function initSession() {
+    storage.getSettings(function (settings) {
+        settings.reInitTimer();
+    });
+    let tracker = new Tracker();
+    tracker.init();
+    initBackground();
+}

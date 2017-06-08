@@ -1,42 +1,22 @@
+import * as dateutil from "../../modules/dateutil"
+import BasicTable from "./BasicTable"
 
-function ExerciseTimeTable(html_element) {
-    var self = this;
-    this.table = html_element;
-    this.timeSpentData = null;
+/**
+ * Table which is used to display the amount of time the user
+ * has spent on exercises on the Zeeguu page.
+ */
+export default class ExerciseTimeTable extends BasicTable {
 
-    this.setData = function(data){
-        self.timeSpentData = data;
-    };
-
-    this.addToTable = function(tableRow) {
-        html_element.append(tableRow);
-
-    };
-
-    this.generateExerciseTimeHtmlRow = function(date, exerciseTime) {
-        var tableRow =
-            $("<tr>" +
-                "<td>"+date+"</td>" +
-                "<td>"+bg.dateUtil.secondsToHHMMSS(exerciseTime)+"</td>" +
-                "</tr>");
-        return tableRow;
-    };
-
-    this.createExerciseTimeTable = function(list) {
-        let keys = Object.keys(list);
-        for(var i = keys.length-1; i >= 0; i--){
-            self.addToTable(self.generateExerciseTimeHtmlRow(keys[i], list[keys[i]]));
-        }
-    };
-
-    this.render = function(){
-        self.createExerciseTimeTable(self.timeSpentData);
-    };
-
-    this.setDataAndRender = function(data){
-        Promise.resolve(this.setData(data)).then(self.render());
-    };
+    /**
+     * This functions generates HTML rows containing data of one BlockedSite
+     * @param date date at which the user spent time on exercises
+     * @param exerciseTime how much time the user has spent on exercises
+     * @return string containing a HTML row
+     */
+    generateTableRow(item) {
+        return $("<tr>" +
+            "<td>" + item.date + "</td>" +
+            "<td>" + dateutil.msToHHMMSS(item.timeSpent) + "</td>" +
+            "</tr>");
+    }
 }
-
-
-

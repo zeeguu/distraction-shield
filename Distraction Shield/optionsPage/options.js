@@ -1,3 +1,15 @@
+import * as blockedSiteBuilder from '../modules/blockedSiteBuilder'
+import {openTabSingleton} from '../modules/browserutil'
+import * as storage from '../modules/storage/storage'
+import StorageListener from "../modules/storage/StorageListener"
+import UserSettings from '../classes/UserSettings'
+import BlockedSiteList from '../classes/BlockedSiteList'
+import BlacklistTable from './classes/BlacklistTable'
+import TurnOffSlider from './classes/TurnOffSlider'
+import * as connectDataToHtml from './connectDataToHtml'
+import * as htmlFunctionality from './htmlFunctionality'
+import {feedbackLink, tds_blacklist, tds_settings, tds_interceptCounter} from '../constants'
+
 /**
  * This file contains the core functions of the options page. this has all the local variables,
  * initializes everything javascript related and connects the syncStorage,
@@ -6,104 +18,119 @@
  * found here
  */
 
-// Log console messages to the background page console instead of the content page.
-var console = chrome.extension.getBackgroundPage().console;
-var localSettings = chrome.extension.getBackgroundPage().localSettings;
+let modeGroup = "modeOptions";
 
-//Local variables that hold the html elements
-var html_txtFld = $('#textFld');
-var html_intCnt = $('#iCounter');
-var html_saveButton = $('#saveBtn');
-var modeGroup = "modeOptions";
-
-
-var blacklistTable;
-var intervalSlider;
-var turnOffSlider;
-var tr = document.getElementById("tourRestart");
-var feedback = document.getElementById("feedback");
-
-//Local variables that hold all necessary data.
-var settings_object = new UserSettings();
-var blacklist = new BlockedSiteList();
-var interceptionCounter = 0;
+let blockedSiteListTable;
+let intervalSlider;
+let turnOffSlider;
 
 /* -------------------- Initialization of options --------------------- */
 
-//Initialize HTML elements and set the local variables
-initOptionsPage = function() {
-    storage.getAll(function(output) {
-        setLocalVariables(output);
-        connectHtmlFunctionality();
-        connectLocalDataToHtml();
-    });
-};
-
-//Retrieve data from storage and store in local variables
-setLocalVariables = function(storage_output) {
-    blacklist.addAllToList(storage_output.tds_blacklist);
-    settings_object.copySettings(storage_output.tds_settings);
-    interceptionCounter = storage_output.tds_interceptCounter;
-};
-
-// functionality from htmlFunctionality, blacklist_table and slider files
-connectHtmlFunctionality = function() {
-    initModeSelection(modeGroup);
-    initIntervalSlider();
-    blacklistTable = new BlacklistTable($('#blacklistTable'));
-    connectButton(html_saveButton, saveNewUrl);
-    turnOffSlider = new TurnOffSlider('#turnOff-slider');
-    setKeyPressFunctions();
-};
-
-// functionality from connectDataToHtml file
-connectLocalDataToHtml = function() {
-    loadHtmlInterceptCounter(interceptionCounter, html_intCnt);
-    loadHtmlBlacklist(blacklist, blacklistTable);
-    loadHtmlMode(settings_object.getMode(), modeGroup);
-    loadHtmlInterval(settings_object.getInterceptionInterval(), intervalSlider);
-};
-
-/* -------------------- Manipulate local variables ------------------- */
-
-removeFromLocalBlacklist = function(html_item) {
-    var blockedSiteToDelete = html_item.data('blockedSite');
-    return blacklist.removeFromList(blockedSiteToDelete);
-};
-
-addToLocalBlacklist = function(blockedSite_item) {
-    return blacklist.addToList(blockedSite_item);
-};
-
-removeBlockedSiteFromAll = function (html_item) {
-    if (removeFromLocalBlacklist(html_item)) {
-        blacklistTable.removeFromTable(html_item);
-        synchronizer.syncBlacklist(blacklist);
-    }
-};
-
-addBlockedSiteToAll = function (newItem) {
-    if (addToLocalBlacklist(newItem)) {
-        blacklistTable.addToTable(blacklistTable.generateTableRow(newItem));
-        synchronizer.syncBlacklist(blacklist);
-    }
-};
-
-/* -------------------- -------------------------- -------------------- */
-
-//Run this when the page is loaded.
-document.addEventListener("DOMContentLoaded", function() {
+/**
+ * initial function that is fired when the page is loaded.
+ */
+document.addEventListener("DOMContentLoaded", function () {
     initOptionsPage();
 });
 
-//Tour Restart Function
-tr.onclick = function(){
-    chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
-};
+/**
+ * Initialize HTML elements and set the local variables
+ */
+function initOptionsPage() {
+    storage.getAll(function (output) {
+        connectHtmlFunctionality(output.tds_settings);
+        connectStorageDataToHtml(output);
+    });
+}
 
-//Feedback Function
-feedback.onclick = function(){
-    chrome.tabs.create({'url' :feedbackForm});
-    /* The full functionality of the feedback page will be implemented for the next iteration */
-    //chrome.tabs.create({'url': chrome.runtime.getURL('feedbackPage/feedback.html')});
-};
+/**
+ * connect the functionality to the different htl_elements on the optionspage.
+ */
+function connectHtmlFunctionality(userSettings) {
+    htmlFunctionality.initModeSelection(modeGroup, userSettings);
+    intervalSlider = htmlFunctionality.initIntervalSlider(userSettings);
+    blockedSiteListTable = new BlacklistTable($('#blacklistTable'));
+    turnOffSlider = new TurnOffSlider('#turnOff-slider');
+    htmlFunctionality.connectButton($('#turnOff-slider-offBtn'), turnOffSlider.offButtonFunc);
+    htmlFunctionality.connectButton($('#saveBtn'), saveNewUrl);
+    htmlFunctionality.connectButton($('#statisticsLink'), openStatisticsPage);
+    htmlFunctionality.connectButton($('#feedbackLink'), openFeedbackForm);
+    htmlFunctionality.connectButton($('#tourRestartLink'), restartTour);
+    htmlFunctionality.setKeyPressFunctions($('#textFld'), saveNewUrl);
+}
+
+/**
+ * connect the data found in the storage to the html_elements on the page
+ */
+function connectStorageDataToHtml(storage_output) {
+    loadInterceptionCounter(storage_output.tds_interceptCounter);
+    loadBlockedSiteList(storage_output.tds_blacklist);
+    loadSettings(storage_output.tds_settings);
+}
+
+function loadBlockedSiteList(blockedSiteList){
+    connectDataToHtml.loadHtmlBlacklist(blockedSiteList, blockedSiteListTable);
+}
+
+function loadSettings(settings_object){
+    connectDataToHtml.loadHtmlMode(settings_object.mode, modeGroup);
+    connectDataToHtml.loadHtmlInterval(settings_object.interceptionInterval, intervalSlider);
+}
+
+function loadInterceptionCounter(val){
+    connectDataToHtml.loadHtmlInterceptCounter(val, $('#iCounter'));
+}
+
+function reloadTable(blockedSiteList, oldBlockedSiteList) {
+    connectDataToHtml.reloadHtmlBlacklist(blockedSiteList, oldBlockedSiteList, blockedSiteListTable);
+}
+
+/* -------------------- Manipulate local variables ------------------- */
+
+function resetMessageBox() {
+  document.querySelector('#message-box').innerText = '';
+}
+
+/* -------------------- Act upon change of storage ------------------- */
+
+/**
+ * This function should be called onChange, this checks if it needs to act on the storage change.
+ * @param changes {Array} array of objects in storage that have been changed. Contains new & old value
+ */
+new StorageListener((changes) => {
+    if (tds_blacklist in changes) {
+        let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);
+        let oldBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].oldValue);
+        reloadTable(newBlockedSiteList,oldBlockedSiteList);
+    } if (tds_settings in changes) {
+        let newSettings = UserSettings.deserializeSettings(changes[tds_settings].newValue);
+        loadSettings(newSettings);
+    } if (tds_interceptCounter in changes) {
+        loadInterceptionCounter(changes[tds_interceptCounter].newValue);
+    }
+});
+
+/* -------------------- Manipulate local variables ------------------- */
+
+function saveNewUrl() {
+    resetMessageBox();
+    let html_txtFld = $('#textFld');
+    let newUrl = html_txtFld.val();
+    blockedSiteBuilder.createBlockedSiteAndAddToStorage(newUrl)
+        .catch(error => {$('#message-box').text(error)});
+    html_txtFld.val('');
+}
+
+/* -------------------- -------------------------- -------------------- */
+
+function openFeedbackForm() {
+    openTabSingleton(feedbackLink);
+}
+
+function restartTour() {
+    openTabSingleton(chrome.runtime.getURL('introTour/introTour.html'));
+}
+
+function openStatisticsPage() {
+    openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'));
+}

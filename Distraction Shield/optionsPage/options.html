@@ -1,105 +1,99 @@
 <!doctype html>
 
 <html>
-    <head>
-        <title>Options page for The Distraction Shield</title>
-        <link rel="stylesheet" type="text/css" href="../dependencies/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="options.css">
-    </head>
+<head>
+    <title>Options page for The Distraction Shield</title>
+    <script src="../dependencies/jquery/jquery-1.10.2.js"></script>
+    <script src="../js-src/options.bundle.js"></script>
+    <link rel="stylesheet" type="text/css" href="../dependencies/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="options.css">
+</head>
 
-    <body>
-        <div class="container">
-            <div class="row">
-                <div class="panel panel-primary col-md-offset-2 col-md-8">
-                    <div class="panel-heading ">
-                        <h1 class="page-header">The Distraction Shield</h1>
-                    </div>
-                    <div class="panel panel-body">
-                        Modify the extension to suit your needs here.
-                        Also have a look at some of the <a target=_blank href="../statisticsPage/statistics.html">statistics</a>.
-                        Interceptions made since installation: <span id="iCounter"></span> <br>
-                    </div>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="panel panel-primary col-md-offset-2 col-md-8">
+            <div class="panel-heading ">
+                <h1 class="page-header">The Distraction Shield</h1>
+            </div>
+            <div class="panel panel-body">
+                Modify the extension to suit your needs here.
+                Also have a look at some of the <a id="statisticsLink" href="javascript:void(0)">statistics</a>.
+                Interceptions made since installation: <span id="iCounter"></span> <br>
+            </div>
+        </div>
+    </div>
+
+    <div id="modeWrapper" class="row">
+        <div class="panel panel-default col-md-offset-2 col-md-8">
+            <div id="modeRadioDiv" class="col-md-2">
+                Pick a mode:
+                <form id="modeSelector" name="modePicker">
+                    <input type="radio" name="modeOptions" value="lazy" checked> Lazy<br>
+                    <input type="radio" name="modeOptions" value="pro"> Pro
+                </form>
+            </div>
+            <div id="interval-slider-div" class="col-md-10">
+                Set time interval between intercepts:
+                <div id="interval-slider" class="range-slider">
+                    <input id="interval-slider-range" class="range-slider__range" type="range" value="15" min="1"
+                           max="90"
+                           step="1">
+                    <span contenteditable id="interval-slider-value" class="range-slider__value editable-span">00:15 minute(s)</span>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div id="modeWrapper" class="row">
-                <div class="panel panel-default col-md-offset-2 col-md-8">
-                    <div id="modeRadioDiv" class="col-md-2">
-                        Pick a mode:
-                        <form id="modeSelector" name="modePicker">
-                            <input type="radio" name="modeOptions" value="lazy" checked> Lazy<br>
-                            <input type="radio" name="modeOptions" value="pro"> Pro
-                        </form>
-                    </div>
-                    <div id="interval-slider-div" class="col-md-10">
-                        Set time interval between intercepts:
-                        <div id="interval-slider" class="range-slider">
-                            <input id="interval-slider-range" class="range-slider__range" type="range" value="15" min="1" max="90"
-                                   step="1">
-                            <span contenteditable id="interval-slider-value" class="range-slider__value editable-span">00:15 minute(s)</span>
-                        </div>
-                    </div>
-                </div>
+    <div class="row">
+        <div class="panel panel-default col-md-offset-2 col-md-8">
+            <h4>Websites that should be blocked:</h4>
+            <div class="offset-md-0">
+                <table id="blacklistTable" class="table table-striped table-bordered table-nowrap ">
+                    <tr style="display:none;">
+                        <th>Icon</th>
+                        <th>Page title</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </table>
             </div>
-
-            <div class="row">
-                <div class="panel panel-default col-md-offset-2 col-md-8">
-                    <h4>Websites that should be blocked:</h4>
-                    <div class="offset-md-0">
-                        <table id="blacklistTable" class="table table-striped table-bordered table-nowrap ">
-                        </table>
-                    </div>  
-                    <div id="addUrlDiv">
-                        Enter the url you want to block:
-                        <div class="input-group">
-                            <input id="textFld" type="text" class="form-control" placeholder="example: www.facebook.com">
-                            <span class="input-group-btn">
+            <div id="addUrlDiv">
+                Enter the url you want to block:
+                <div class="input-group">
+                    <input id="textFld" type="text" class="form-control" placeholder="example: www.facebook.com">
+                    <span class="input-group-btn">
                                 <button id="saveBtn" class="btn btn-default" type="button">Save</button>
                             </span>
-                        </div>
-                    </div>
-                    </div>
                 </div>
-
-            <div id="turnOffWrapper" class="row">
-                <div id="turnOff-slider" class="panel panel-default col-md-offset-2 col-md-8">
-                    <div id="offBtnDiv" class="col-md-2">
-                        <button id="turnOff-slider-offBtn" class="btn btn-default" type="button">Turn Off</button>
-                    </div>
-                    <div id="offValDiv" class="col-md-3">
-                        <span contenteditable id="turnOff-slider-value" class="range-slider__value editable-span">00:10 hours.</span>
-                    </div>
-                    <div id="offRanDiv" class="col-md-10">
-                        <input id="turnOff-slider-range" class="range-slider__range" type="range" value="10" min="10" max="10" step="5" />
-                    </div>
-                </div>
+                <div class="message-box" id="message-box"></div>
             </div>
+        </div>
+    </div>
 
-            <div class="link1">
-                <a id="tourRestart" href="../optionsPage/options.html">Click to take the welcome tour again.</a>
+    <div id="turnOffWrapper" class="row">
+        <div id="turnOff-slider" class="panel panel-default col-md-offset-2 col-md-8">
+            <div id="offBtnDiv" class="col-md-2">
+                <button id="turnOff-slider-offBtn" class="btn btn-default" type="button">Turn Off</button>
             </div>
-
-            <div class="link1">
-                <a id="feedback" href="../optionsPage/options.html">We'd love to hear what you have to say. Click to send us some feedback.</a>
+            <div id="offValDiv" class="col-md-3">
+                <span contenteditable id="turnOff-slider-value"
+                      class="range-slider__value editable-span">00:10 hours.</span>
             </div>
-
-
-                <script src="../dependencies/jquery/jquery-1.10.2.js"></script>
-                <script src="../modules/urlFormatter.js"></script>
-                <script src="../modules/synchronizer.js"></script>
-                <script src="../modules/storage.js"></script>
-                <script src="../modules/blockedSiteBuilder.js"></script>
-                <script src="../constants.js"></script>
-                <script src="../classes/BlockedSiteList.js"></script>
-                <script src="../classes/BlockedSite.js"></script>
-                <script src="../classes/UserSettings.js"></script>
-                <script src="classes/TurnOffSlider.js"></script>
-                <script src="classes/BlacklistTable.js"></script>
-                <script src="classes/GreenToRedSlider.js"></script>
-                <script src="htmlFunctionality.js"></script>
-                <script src="connectDataToHtml.js"></script>
-                <script src="options.js"></script>
-
+            <div id="offRanDiv" class="col-md-10">
+                <input id="turnOff-slider-range" class="range-slider__range" type="range" value="10" min="10" max="10"
+                       step="5"/>
             </div>
+        </div>
+    </div>
+
+    <div class="link-bottom">
+        <a id="tourRestartLink" href="javascript:void(0)">Click to take the welcome tour again.</a>
+    </div>
+
+    <div  class="link-bottom">
+        <a id="feedbackLink" href="javascript:void(0)">We would love to hear what you have to say. Click to send us some feedback.</a>
+    </div>
+</div>
 </body>
 </html>

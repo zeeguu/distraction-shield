@@ -1,39 +1,57 @@
+import * as constants from '../constants'
+import * as storage from '../modules/storage/storage'
 
-mainFlow = function() {
+/**
+ * Check if we have come here after tds redirection, if not return, if so get mode and
+ */
+function mainFlow() {
+    if (!constants.tdsRedirectRegex.test(window.location.href)) return;
     storage.getMode(initBasis);
-};
+}
 
-initBasis = function(mode) {
-    var message = mode.zeeguuText;
-
+/**
+ * Initialize the tds info panel with the proper text based on mode
+ * @param {JSON object} mode
+ */
+function initBasis(mode) {
+    let message = mode.zeeguuText;
     $.ajax({
         url: chrome.extension.getURL('contentInjection/inject.html'),
         type: "GET",
         timeout: 5000,
         datatype: "html",
         success: function (data) {
-            infoDiv = $.parseHTML(data);
+            let infoDiv = $.parseHTML(data);
             $("body").after(infoDiv);
             $("#tds_infoDiv").css('max-width', '800px');
-            $("#tds_generalInfoText").append(zeeguuInfoText);
+            $("#tds_generalInfoText").append(constants.zeeguuInfoText);
+
+            if (window.location.href.indexOf(constants.zeeguLoginLink) != -1) {
+                if (mode.label == constants.modes.pro.label) {
+                    message = constants.loginMessage;
+                } else {
+                    message = message +"\n" + constants.loginMessage;
+                }
+            }
             $("#tds_modeSpecificText").append(message);
-            $("#originalDestination").attr("href", getDest());
+
+            $("#originalDestination").attr("href", extractDestination());
         }
     });
-};
+}
 
-getDest = function() {
-    var url = window.location.href;
-    var regex = new RegExp("[?&]redirect(=([^&#]*)|&|#|$)");
-    var results = regex.exec(url);
-    if (!results || !results[2]) { return null; }
-    var newUrl = decodeURIComponent(results[2].replace(/\+/g, " "));
-    if (newUrl.indexOf("?") > -1) {
-        newUrl += "&tds_exComplete=true";
-    } else {
-        newUrl += "?tds_exComplete=true";
-    }
+/**
+ * This function extracts the original destination from a get parameter in the current url
+ * @returns {String} newUrl The url of the original destination plus a
+ * get parameter indicating that the zeeguu exercise was completed. Should never return null!
+ */
+function extractDestination() {
+    let url = window.location.href;
+    let results = constants.tdsRedirectRegex.exec(url);
+    if (!results || !results[1]) { return null; }
+    let newUrl = decodeURIComponent(results[1]);//prevent errors in browsers that dont decode
+    newUrl += (/[?]/.test(newUrl) ? "&" : "?") + "tds_exComplete=true";
     return newUrl;
-};
+}
 
 mainFlow();
