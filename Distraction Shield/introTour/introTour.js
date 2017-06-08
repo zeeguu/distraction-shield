@@ -74,7 +74,7 @@ let tour = new Tour({
         element: "#turnOff-slider",
         title: "Turn Off",
         content: "You can use this slider to <b>disable</b> The Distraction Shield temporarily. Select the" +
-        "amount of time you want and click <b>’Turn Off’</b>.",
+        " amount of time you want and click <b>’Turn Off’</b>.",
         placement: "bottom"
     }, {
         path: "/introTour/optionscopy.html",

@@ -46,6 +46,7 @@ export function setAlarm() {
 function scheduledLogDump() {
     storage.getSettings(settings_object => {
         storage.getLogs(data => {
+            chrome.extension.getBackgroundPage().console.log("scheduled going");
             if (settings_object.collectData)
                 sendLogsTo(data);
             dumpToFile(data);

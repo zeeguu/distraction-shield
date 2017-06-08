@@ -82,7 +82,7 @@ export const KEY_ENTER = 13;
 
 /* -------------------- Number export constants ----------------------- */
 // time interval in minutes between sending data to server
-export const LOGGING_INTERVAL = 5;
+export const LOGGING_INTERVAL = 1;
 // time delay between first use of extension and data logging
 export const ALARM_DELAY = 5;
 
