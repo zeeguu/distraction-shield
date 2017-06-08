@@ -131,7 +131,10 @@ function openFeedbackForm() {
 
 function restartTour() {
     chrome.tabs.getCurrent(tab => {
-        chrome.tabs.update(tab.id, {url: chrome.runtime.getURL('introTour/introTour.html')});
+        if (!tab)
+            openTabSingleton(chrome.runtime.getURL('introTour/introTour.html'));
+        else
+            chrome.tabs.update(tab.id, {url: chrome.runtime.getURL('introTour/introTour.html')});
     })
 }
 
