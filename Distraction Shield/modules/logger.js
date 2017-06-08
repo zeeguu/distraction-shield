@@ -44,14 +44,15 @@ export function setAlarm() {
  */
 
 function scheduledLogDump() {
-    //TODO implemented, needs to be merged with consent-checkbox
-    const PLACEHOLDER = true;
-    storage.getLogs(data => {
-        if (PLACEHOLDER)
-            sendLogsTo(data);
-        dumpToFile(data);
-        clearLogs();
+    storage.getSettings(settings_object => {
+        storage.getLogs(data => {
+            if (settings_object.collectData)
+                sendLogsTo(data);
+            dumpToFile(data);
+            clearLogs();
+        });
     });
+
 }
 
 function clearLogs(){
