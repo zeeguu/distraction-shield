@@ -1,7 +1,7 @@
 import * as blockedSiteBuilder from "../modules/blockedSiteBuilder.js"
 import BlockedSiteList from "../classes/BlockedSiteList"
 import * as stringutil from "../modules/stringutil.js"
-import {openTabSingleton} from "../modules/tabutil"
+import {openTabSingleton} from "../modules/browserutil"
 import * as storage from "../modules/storage/storage"
 import * as storageModifier from "../modules/storage/storageModifier"
 import StorageListener from "../modules/storage/StorageListener"
@@ -88,7 +88,7 @@ function setSaveButton(blocked){
  */
 function setSaveButtonToSuccess() {
     saveButton.attr('class', 'btn btn-success');
-    saveButton.text("Succes!");
+    saveButton.text("Success!");
     saveButton.unbind();
     setTimeout(function () {
         saveButton.attr('class', 'btn btn-info');
@@ -101,7 +101,9 @@ function saveCurrentPageToBlacklist() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         let activeTab = arrayOfTabs[0];
         blockedSiteBuilder.createBlockedSiteAndAddToStorage(activeTab.url)
-            .catch((error) => {alert(error);});
+            .catch((error) => {
+                chrome.extension.getBackgroundPage().alert(error);
+            });
     });
 }
 

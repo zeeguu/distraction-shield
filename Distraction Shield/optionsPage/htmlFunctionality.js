@@ -49,6 +49,7 @@ export function initModeSelection(buttonGroup, settings_object) {
         logger.logToFile(`changed`, `mode`, `${settings_object.mode.label}`, 'settings');
     });
 }
+
 /* -------------------- Interval slider -------------------- */
 
 export function initIntervalSlider(settings_object) {

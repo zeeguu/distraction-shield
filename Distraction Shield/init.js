@@ -5,7 +5,6 @@ import UserSettings from './classes/UserSettings';
 import * as uuid from './modules/UUIDGenerator'
 import Tracker from './modules/statistics/tracker';
 import * as logger from './modules/logger'
-import * as constants from './constants';
 
 /* --------------- ---- Run upon installation ---- ---------------*/
 
@@ -22,7 +21,6 @@ chrome.runtime.onInstalled.addListener((details) => {
         initSettings(output.tds_settings);
         initAlarm();
         if (details.reason == 'install') {
-            dataCollectionMsg ();
             runIntroTour();
         }
     });
@@ -61,10 +59,6 @@ function initExerciseTime(exerciseTime) {
     }
 }
 
-function dataCollectionMsg () {
-    alert (constants.dataCollectionMsg);
-}
-
 function runIntroTour() {
     chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
 }
@@ -95,4 +89,3 @@ function initSession() {
     tracker.init();
     initBackground();
 }
-

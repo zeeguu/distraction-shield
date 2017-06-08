@@ -12,6 +12,8 @@ export const zeeguuExTracker = "www.zeeguu.unibe.ch/practice/get-ex";
 
 export const exerciseCompleteRegex = /(\?|&)tds_exComplete=true/;
 
+export const exerciseCompleteParam = "tds_exComplete=true";
+
 export const tdsRedirectParam = "?tds_redirect=";
 
 /* ---------- ----- optionspage----- ---------- */
@@ -43,7 +45,7 @@ export const modes = {
 
 export const zeeguLoginLink = "https://www.zeeguu.unibe.ch/login";
 
-export const tdsRedirectParamRegex = /[?]tds_redirect=(.*)/;
+export const tdsRedirectRegex = /[?]tds_redirect=(.*)/;
 
 export const loginMessage = "Please log in to get productive!";
 
@@ -70,10 +72,6 @@ export const INVALID_URL_MESSAGE = "We unfortunately could not reach the site yo
 export const FILE_NOT_FOUND_ERROR  = 404;
 export const SERVER_ERROR = 500;
 export const REQUEST_ABORTED_ERROR = 0;
-
-/**/
-export const dataCollectionMsg = 'Please be aware that anonymous data are collected for purposes of improving the extension. '+
-    'The data cannot be traced back to you as a person.\n\nWe respect your privacy.';
 
 /* -------------------- Text Messages ----------------------- */
 export const zeeguuInfoText = "Hey, you tried to enter one of the sites you wanted to be protected from!";

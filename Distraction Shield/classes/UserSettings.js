@@ -17,6 +17,7 @@ export default class UserSettings {
         this._mode = constants.modes.lazy;
         this._interceptionInterval = 1;
         this._UUID = id;
+        this._collectData = true;
     }
 
     set interceptionInterval(val) { this._interceptionInterval = val; }
@@ -25,12 +26,14 @@ export default class UserSettings {
     set mode(newMode) { this._mode = newMode; }
     get mode() { return this._mode; }
 
+    set collectData (collectData) { this._collectData = collectData; }
+    get collectData () { return this._collectData; }
+
     set status(newStatus) { this._status = newStatus; }
     get status() { return this._status; }
 
     set offTill(time) { this._status.offTill = time; }
     get offTill() { return this._status.offTill; }
-
 
     set UUID(uuid) {this._UUID = uuid;}
     get UUID() { return this._UUID;}
@@ -43,7 +46,7 @@ export default class UserSettings {
      * Turn the interception back on
      */
     turnOn() {
-        if (this.state == "Off") {
+        if (!this.isInterceptionOn()) {
             this.status = {state: true, setAt: new Date(), offTill: new Date()};
         } else {
             console.log("Already turned on, should not happen!");
@@ -110,15 +113,17 @@ export default class UserSettings {
     }
 
     static parseSettingsObject(parsedSettingsObject) {
-            let s = new UserSettings();
-            parsedSettingsObject._status.setAt = new Date(parsedSettingsObject._status.setAt);
-            parsedSettingsObject._status.offTill = new Date(parsedSettingsObject._status.offTill);
-            s.status = parsedSettingsObject._status;
-            s.interceptionInterval = parsedSettingsObject._interceptionInterval;
-            s.mode = parsedSettingsObject._mode;
-            s.UUID = parsedSettingsObject._UUID;
-            return s;
+        let s = new UserSettings();
+        parsedSettingsObject._status.setAt = new Date(parsedSettingsObject._status.setAt);
+        parsedSettingsObject._status.offTill = new Date(parsedSettingsObject._status.offTill);
+        s.status = parsedSettingsObject._status;
+        s.interceptionInterval = parsedSettingsObject._interceptionInterval;
+        s.mode = parsedSettingsObject._mode;
+        s.collectData = parsedSettingsObject._collectData;
+        s.UUID = parsedSettingsObject._UUID;
+        return s;
     }
+
 
     static deserializeSettings(serializedSettingsObject) {
         if (serializedSettingsObject != null) {

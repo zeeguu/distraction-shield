@@ -9,6 +9,7 @@ import * as storage from './modules/storage/storage';
 import UserSettings from  './classes/UserSettings'
 import * as constants from'./constants';
 import {isInRegexList} from './modules/stringutil';
+import {scrubFromHistory} from './modules/browserutil'
 import StorageListener from './modules/storage/StorageListener'
 
 /**
@@ -75,6 +76,7 @@ function intercept(details) {
 function handleInterception(details) {
     if (isInterceptionOn && !isInRegexList(constants.whitelist, details.url)) {
         if (constants.exerciseCompleteRegex.test(details.url)) {
+            scrubFromHistory(constants.exerciseCompleteParam);
             let url = details.url.replace(constants.exerciseCompleteRegex, "");
             turnOffInterception();
             return {redirectUrl: url};

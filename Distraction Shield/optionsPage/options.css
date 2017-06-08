@@ -79,6 +79,13 @@ body {
     border-bottom: 2px solid;
 }
 
+/* ---------- ---------- option button ---------- ---------- */
+.option-button {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    width:90%;
+}
+
 /* ---------- ---------- Slider ---------- ---------- */
 
 input[type=range] {
