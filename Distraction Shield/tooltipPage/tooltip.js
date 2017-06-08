@@ -6,6 +6,7 @@ import * as storage from "../modules/storage/storage"
 import * as storageModifier from "../modules/storage/storageModifier"
 import StorageListener from "../modules/storage/StorageListener"
 import {tds_blacklist} from '../constants'
+import {logToFile} from '../modules/logger'
 
 let saveButton = $('#saveBtn');
 let optionsButton = $('#optionsBtn');
@@ -60,13 +61,14 @@ function patternMatchUrl(url, callback) {
 function toggleBlockedSite(url) {
     return function () {
         storage.getBlacklistPromise().then(blockedSiteList => {
-            let list = blockedSiteList.list;
+            let list = blockedSiteList;
             let newItem = null;
             for (let i = 0; i < list.length; i++) {
                 if (stringutil.wildcardStrComp(url, list[i].url)) {
                     newItem = list[i];
                     newItem.checkboxVal = !newItem.checkboxVal;
                     storageModifier.updateBlockedSiteInStorage(newItem);
+                    logToFile('changed', newItem.name, (newItem.checkboxVal ? 'enabled' : 'disabled'), 'settings');
                     break;
                 }
             }
