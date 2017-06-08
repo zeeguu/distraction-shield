@@ -45,7 +45,7 @@ function initOptionsPage() {
 }
 
 /**
- * connect the functionality to the different htl_elements on the optionspage.
+ * connect the functionality to the different html_elements on the optionspage.
  */
 function connectHtmlFunctionality(userSettings) {
     htmlFunctionality.initModeSelection(modeGroup, userSettings);
@@ -130,7 +130,9 @@ function openFeedbackForm() {
 }
 
 function restartTour() {
-    openTabSingleton(chrome.runtime.getURL('introTour/introTour.html'));
+    chrome.tabs.getCurrent(tab => {
+        chrome.tabs.update(tab.id, {url: chrome.runtime.getURL('introTour/introTour.html')});
+    })
 }
 
 function openStatisticsPage() {
@@ -141,6 +143,6 @@ function openStatisticsPage() {
  * This function loads the button functionality for the modal. This can only be loaded when the modal is shown,
  * since the html is added dynamically
  */
-function openDataCollectionConsent(){
+export function openDataCollectionConsent(){
     initDataCollectionModal($('#dataConsentModal'));
 }

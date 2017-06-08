@@ -82,12 +82,16 @@ let tour = new Tour({
         content: "Thanks for choosing The Distraction Shield and Happy Learning!"
     }],
     onEnd: ()=> {
+        /**
+         * This function inits the data consent message with the parameter isStatic.
+         * This makes sure that the user does not accidentally closes the window.
+         * After this, the user is redirected to the optionspage
+         */
         initDataCollectionModal($('#dataConsentModal'), true, () =>{
             chrome.tabs.query({currentWindow: true, active: true}, tab => {
                 chrome.tabs.update(tab.id, {url: chrome.runtime.getURL('optionsPage/options.html')});
             });
         });
-
     }
 });
 

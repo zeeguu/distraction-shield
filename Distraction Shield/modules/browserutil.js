@@ -30,7 +30,6 @@ export function openTabSingleton(url, callback = () => {}) {
         }
         callback();
     });
-
 }
 
 /**

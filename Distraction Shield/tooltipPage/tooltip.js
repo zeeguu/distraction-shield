@@ -60,7 +60,7 @@ function patternMatchUrl(url, callback) {
 function toggleBlockedSite(url) {
     return function () {
         storage.getBlacklistPromise().then(blockedSiteList => {
-            let list = blockedSiteList.list;
+            let list = blockedSiteList;
             let newItem = null;
             for (let i = 0; i < list.length; i++) {
                 if (stringutil.wildcardStrComp(url, list[i].url)) {

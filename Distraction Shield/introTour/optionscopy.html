@@ -3,11 +3,10 @@
 <html>
 <head>
     <title>Options page for The Distraction Shield</title>
-    <script src="../dependencies/jquery/jquery-1.10.2.js"></script>
-    <link href="../dependencies/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <script src="../dependencies/bootstrapTour/bootstrap-tour-standalone.min.js"></script>
     <link href="../dependencies/bootstrapTour/bootstrap-tour-standalone.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../dependencies/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../optionsPage/options.css">
+    <link rel="stylesheet" type="text/css" href="../introTour/dataCollection.css">
 </head>
 
 <body>
@@ -86,9 +85,37 @@
             </div>
         </div>
     </div>
-    <div  class="link-bottom">
-        <a id="feedbackLink" href="javascript:void(0)">Give us feedback!</a>
+    <div class="row">
+        <div class="panel panel-default col-md-offset-2 col-md-8 d-flex justify-content-between">
+
+            <div class="col-md-4">
+                <button class="btn btn-primary option-button" id="tourRestartButton">
+                    <span class="glyphicon glyphicon-repeat">
+                    </span> Tour</button>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary option-button" id="feedbackButton">
+                    <span class="glyphicon glyphicon-pencil">
+                    </span> Feedback</button>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary option-button" id="dataSettingsButton">
+                    <span class="glyphicon glyphicon-wrench">
+                    </span> Data Settings</button>
+            </div>
+
+            <div id="dataConsentModal" class="modal fade text-center">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script src="../dependencies/jquery/jquery-1.10.2.js"></script>
+    <script src="../dependencies/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../dependencies/bootstrapTour/bootstrap-tour-standalone.min.js"></script>
     <script src="../js-src/options.bundle.js"></script>
     <script src="../js-src/tour.bundle.js"></script>
 </div>
