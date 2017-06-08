@@ -5,6 +5,10 @@ import BlockedSiteList from '../../classes/BlockedSiteList'
 import * as logger from '../../modules/logger'
 
 /**
+ * @module this module takes care of all the data that needs to be updated when we are intercepted
+ */
+
+/**
  * This method goes through the interceptDateList and count how many times the user was intercepted last day,
  * last week, last month and the total amount of interceptions.
  * @param {List} dateList the total list with all interceptions on the different days
