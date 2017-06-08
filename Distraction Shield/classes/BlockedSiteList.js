@@ -52,9 +52,10 @@ export default class BlockedSiteList extends Array {
     }
 
     removeFromList(blockedSiteToDelete) {
-        this.splice(this.indexOf(blockedSiteToDelete), 1);
+        let index = this.map(function(e) { return e.domain; }).indexOf(blockedSiteToDelete.domain);
+        this.splice(index, 1);
     }
-
+    
     updateInList(blockedSite){
         this.forEach((item, id) => {
             if (item.url === blockedSite.url)
