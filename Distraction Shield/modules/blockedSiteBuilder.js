@@ -14,6 +14,7 @@ import {addBlockedSiteToStorage} from "./storage/storageModifier"
  * The only real right way of creating a new blocked site. For this it uses the BlockedSite and the urlFormatter.
  * It also adds it to the current list of blockedSites.
  * @param {string} newUrl the unformatted url of which to construct a BlockedSite
+ * @methodOf blockedSiteBuilder
  */
 export function createNewBlockedSite(newUrl) {
     return new Promise((resolve, reject) => {
@@ -24,6 +25,11 @@ export function createNewBlockedSite(newUrl) {
     });
 }
 
+/**
+ * constructs a new BlockedSite and instantly adds it to the storage as well
+ * @param {string} newUrl the unformatted url of which to construct a BlockedSite
+ * @methodOf blockedSiteBuilder
+ */
 export function createBlockedSiteAndAddToStorage(newUrl) {
     return new Promise((resolve, reject) => {
         createNewBlockedSite(newUrl)

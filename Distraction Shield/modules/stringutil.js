@@ -1,5 +1,5 @@
 /**
- * This module is a utility that is used for functions we use in more than one place in order to things like comparison
+ * This module is a utility that is used for functions we use in more than one place in order to do things like comparison
  * @module stringutil
  */
 
@@ -7,6 +7,7 @@
  * used to compare if a string is a substring of, with ReqExp
  * @param {string} str compared with rule
  * @param {string} rule compare str to this
+ * @methodOf stringutil
  */
 export function wildcardStrComp(str, rule) {
     return new RegExp("^" + rule.split("*").join(".*") + "$").test(str);
@@ -18,6 +19,7 @@ export function wildcardStrComp(str, rule) {
  * @param {RegExp[]} regexList the list to check against
  * @param {String} url The string to check against the regexp's in regexList
  * @returns {Boolean} True if url matches one of the regexp's in regexList, false otherwise
+ * @methodOf stringutil
  */
 export function isInRegexList(regexList, url) {
     regexList = regexList.map((x) => { return new RegExp(x) });
