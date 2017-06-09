@@ -137,10 +137,13 @@ export default class Tracker {
     addOnActiveTabChangeListener() {
         chrome.tabs.onActivated.addListener((activeInfo) => {
             chrome.tabs.get(activeInfo.tabId, (tab) => {
-                if(!chrome.runtime.lastError) {
+                if(typeof tab !== 'undefined') {
                     this.triggerUpdateTime();
                     this.currentTab = tab;
+                } else {
+                    this.currentTab = null;
                 }
+                if(chrome.runtime.lastError) return;
             })
         });
     }
