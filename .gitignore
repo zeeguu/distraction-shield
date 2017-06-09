@@ -16,3 +16,4 @@ sampleExtension/.idea
 
 #documentation
 /out
+.esdoc.json

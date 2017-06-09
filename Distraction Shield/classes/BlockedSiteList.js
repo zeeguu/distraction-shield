@@ -112,7 +112,7 @@ export default class BlockedSiteList extends Array {
 
     /**
      * Parses the JSON blockedSiteList to a BlockedSiteList object
-     * @param {JSON} blockedSite BlockedSiteList to parse
+     * @param {JSON} blockedSiteList BlockedSiteList to parse
      * @returns {BlockedSiteList} parsed BlockedSiteList
      * @function BlockedSiteList#parseBlockedSite
      */

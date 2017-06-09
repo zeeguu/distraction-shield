@@ -18,6 +18,7 @@ import {showDataCollectionModal} from '../introTour/dataCollection'
  * connectDataToHtml, blacklistTable and HtmlFunctionality
  * to one smoothly running file. Besides the initialization it contains the functions to manipulate the local variables
  * found here
+ * @module options
  */
 
 let modeGroup = "modeOptions";

@@ -1,6 +1,11 @@
 import {getSettings, setSettings} from '../modules/storage/storage'
 
 /**
+ * Module to append dataCollectionFrame to a modal container
+ * @module dataCollection
+ */
+
+/**
  *
  * @param {JQuery|HTMLElement} modalContainer  should be the html element in which the modal frame will be loaded.
  * @param {boolean} staticModal  can be used to prevent the modal from closing on click or esc

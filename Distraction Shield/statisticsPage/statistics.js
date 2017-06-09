@@ -7,16 +7,15 @@ import * as interception from '../modules/statistics/interception'
 import {tds_blacklist, tds_interceptDateList, tds_exerciseTime} from '../constants'
 import StorageListener from "../modules/storage/StorageListener"
 
-let interceptionCounterTable = null;
-let blacklistTable = null;
-let exerciseTimeTable = null;
-
 /**
  * This file contains the code and functions which control the statistics page.
  * Data is retrieved from the storage, and is passed to various tables.
+ * @module statistics
  */
 
-/* ----------- ----------- Initialization ----------- ----------- */
+let interceptionCounterTable = null;
+let blacklistTable = null;
+let exerciseTimeTable = null;
 
 /**
  * initial function that is fired when the page is loaded.
@@ -43,7 +42,10 @@ function initStatisticsPage() {
             exerciseTimeTable.render(exerciseTime);
         });
 }
-
+/**
+ *
+ * @param interceptDateList
+ */
 function setInterceptionCounterTable(interceptDateList){
     let counters = interception.calcInterceptData(interceptDateList);
     interceptionCounterTable.render(counters);
@@ -58,7 +60,10 @@ function connectHtmlFunctionality() {
     exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
 }
 
-/* ----------- ----------- Storage Listener ----------- ----------- */
+/**
+ * Storage Listener
+ * @type {StorageListener}
+ */
 new StorageListener((changes) => {
     if (tds_blacklist in changes) {
         let newBlockedSiteList = BlockedSiteList.deserializeBlockedSiteList(changes[tds_blacklist].newValue);

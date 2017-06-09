@@ -9,24 +9,33 @@ import {tds_blacklist} from '../constants'
 import {logToFile} from '../modules/logger'
 import * as constants from '../constants'
 
+/**
+ * Scripts for the tooltip, assigning functions to buttons
+ * @module tooltip
+ */
+
+/** @var {JQuery|jQuery|HTMLElement} saveButton Block/Unblock button */
 let saveButton = $('#saveBtn');
+/** @var {JQuery|jQuery|HTMLElement} optionsButton Options button */
 let optionsButton = $('#optionsBtn');
+/** @var {JQuery|jQuery|HTMLElement} statisticsButton Statistics button */
 let statisticsButton = $('#statisticsBtn');
 
-
+/** Connects html buttons to their corresponding functions */
 function connectButtons() {
     optionsButton.on('click', openOptionsPage);
     statisticsButton.on('click', openStatisticsPage);
     setSaveButtonFunctionality();
 }
 
-
+/** Opens statistics page and closes tooltip */
 function openStatisticsPage() {
     openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'), () => {
         window.close();
     });
 }
 
+/** Opens options page and closes tooltip */
 function openOptionsPage() {
     openTabSingleton(chrome.runtime.getURL('optionsPage/options.html'), () => {
         window.close();
@@ -76,7 +85,10 @@ function toggleBlockedSite(url) {
         });
     }
 }
-
+/**
+ * Changes the text of {@link saveButton} to Block/Unblock
+ * @param blocked {boolean} true = 'Block', false = 'Unblock'
+ */
 function setSaveButton(blocked){
     if (blocked)
         saveButton.text("Block");
@@ -85,7 +97,7 @@ function setSaveButton(blocked){
 }
 
 /**
- * Change colour and update functionality of the button when we add a new website to the blacklist/blockedSiteList
+ * Change colour and update functionality of {@link saveButton} when we add a new website to the blockedSiteList
  */
 function setSaveButtonToSuccess() {
     saveButton.attr('class', 'btn btn-success');
@@ -109,10 +121,12 @@ function saveCurrentPageToBlacklist() {
 }
 
 /**
- * Update the functionality of the button to one of 3 states:
- * 1. Add a non-blacklisted website to the blacklist/blockedSiteList
- * 2. Disable the blocking of this blacklisted website
- * 3. Enable the blocking of this blacklisted website
+ * Update the functionality of {@see saveButton} to one of 3 states:
+ * <ul style="list-style: none;">
+ * <li>1. Add a non-blacklisted website to the blacklist/blockedSiteList
+ * <li>2. Disable the blocking of this blacklisted website
+ * <li>3. Enable the blocking of this blacklisted website
+ * </ul>
  */
 function setSaveButtonFunctionality() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
@@ -135,7 +149,10 @@ function setSaveButtonFunctionality() {
     });
 }
 
-/* ----------- ----------- Storage Listener ----------- ----------- */
+/**
+ * Storage Listener
+ * @type {StorageListener}
+ */
 
 new StorageListener((changes) => {
     if (tds_blacklist in changes) {
@@ -149,9 +166,9 @@ new StorageListener((changes) => {
     }
 });
 
-/* ----------- ----------- Initialization ----------- ----------- */
-
 /**
  * function that initiates the functionality of the tooltip
  */
-connectButtons();
+document.addEventListener("DOMContentLoaded", function () {
+    connectButtons();
+});
