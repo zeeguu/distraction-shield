@@ -32,7 +32,7 @@ ui.startProgress('Constructing pipeline...');
 const PRODUCTION = false;
 
 
-// TODO broccoli-asset-rev, broccoli-eslint
+// TODO broccoli-asset-rev, broccoli-eslint, stfsy/broccoli-livereload
 
 /* HTML */
 let html;
