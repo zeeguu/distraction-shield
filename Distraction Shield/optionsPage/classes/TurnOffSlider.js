@@ -9,6 +9,9 @@ import StorageListener from '../../modules/storage/StorageListener'
  * subclass of the GreenToRedSlider, this also connects a button to the set of html_elements.
  * Furthermore it connects a userSettings item and fires functions according to the values of the
  * html_elements in order to manipulate the settings and let the user specify what he/she wants from the extension
+ * Specifically turning the interception off or back on for a given amount of time
+ *
+ * @class TurnOffSlider
  */
 export default class TurnOffSlider extends GreenToRedSlider {
 

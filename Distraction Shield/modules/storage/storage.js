@@ -16,12 +16,14 @@ import * as constants  from '../../constants'
  * used to set items stored in the storage of the chrome api. Returns a promise
  * @param {string} dataKey key of the data to store
  * @param {string} dataValue value of data to store
+ * @param {boolean} isLocal used to distinguish between using local or sync storage (default sync)
  */
-function setStorage(dataKey, dataValue) {
+function setStorage(dataKey, dataValue, isLocal = false) {
     return new Promise(function (resolve, reject) {
+        let storage = (isLocal ? chrome.storage.local : chrome.storage.sync);
         let newObject = {};
         newObject[dataKey] = dataValue;
-        chrome.storage.sync.set(newObject, function () {
+        storage.set(newObject, function () {
             if (handleRuntimeError()) {
                 resolve();
             } else {
@@ -34,10 +36,12 @@ function setStorage(dataKey, dataValue) {
 /**
  * used to retrieve items stored from the storage of the chrome api. Returns a promise due to asynchronousness
  * @param {string} dataKey key of the data to store
+ * @param {boolean} isLocal used to distinguish between using local or sync storage (default sync)
  */
-function getStorage(dataKey) {
+function getStorage(dataKey, isLocal = false) {
     return new Promise(function (resolve, reject) {
-        chrome.storage.sync.get(dataKey, function (output) {
+        let storage = (isLocal ? chrome.storage.local : chrome.storage.sync);
+        storage.get(dataKey, function (output) {
             if (handleRuntimeError()) {
                 if (dataKey === null || dataKey.length > 1) {
                     resolve(output);
@@ -147,21 +151,21 @@ export function setExerciseTimeList(statList) {
 /* ---------------- Logger --------------- */
 
 export function getLogs(callback) {
-    getStorage([constants.tds_logs]).then(output => {
+    getStorage([constants.tds_logs], true).then(output => {
         callback(output);
     });
 }
 
 export function setLogs(logfile) {
-    return setStorage(constants.tds_logs, logfile);
+    return setStorage(constants.tds_logs, logfile, true);
 }
 
 export function clearLogs(){
-    chrome.storage.sync.remove(constants.tds_logs);
+    chrome.storage.local.remove(constants.tds_logs);
 }
 
 export function setLogFile(data){
-    return setStorage(constants.tds_logfile, data);
+    return setStorage(constants.tds_logfile, data, true);
 }
 
 /**
