@@ -2,7 +2,7 @@ import * as constants from '../constants';
 
 export default class BlockedSite {
     /**
-     * BlockedSite constructor
+     * Basic datatype of the extension. One BlockedSite instance represents one website that the user wants to block.
      * @param {string} urlBase Domain of the BlockedSite
      * @param {string} title Title of the BlockedSite
      * @constructs BlockedSite

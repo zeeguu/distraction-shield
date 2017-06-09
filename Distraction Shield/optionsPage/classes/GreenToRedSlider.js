@@ -3,16 +3,20 @@ import {logToFile} from '../../modules/logger'
 
 
 /**
- * class that connects a <div> with a span and slider together with all the functionality.
+ * class that connects a <.div> with a span and slider together with all the functionality.
  * I.E. changing colour, updating eachother's values and functionality to be added to the html_elements.
  * The structure this class wants to receive is:
- *      <div id=sliderID>, holding all other components
- *          <input type=range id=sliderID + "-range">
- *          <span id=sliderID + "-value">
-*       </div>
+ *      <pre>
+ *      <.div id=sliderID>, holding all other components
+ *          <.input type=range id=sliderID + "-range">
+ *          <.span id=sliderID + "-value">
+ *      <./div>
+ *      </pre>
  *
  * @abstract
  * @class GreenToRedSlider
+ * @param sliderID {string} The ID of the sliderDiv
+ * @param saveFunction {function} The function that takes the newly updated value and does what is supposed to happen with it
  */
 export default class GreenToRedSlider {
 

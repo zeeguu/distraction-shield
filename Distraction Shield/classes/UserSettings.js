@@ -1,31 +1,35 @@
 import * as constants from '../constants'
 import * as storage from '../modules/storage/storage'
 
-/**
- * @class this class holds all the data that is connected to the user's preferences.
- * Furthermore has the functionality to turn the interception part of the of extension on or off.
- * Since the current state is saved here too.
- * @field status = The current interception status, it has three fields of its own.
- *      @field state @fieldOf status = boolean value, if true we interception is On
- *      @field setAt @fieldOf status = Date object, at which time did we change this status object
- *      @field offTill @fieldOf status = Date object, until what time is the interception turned off,
- *                                       less or equal to current time if interception is on.
- * @field mode = The current mode of the Distraction Shield's interception
- * @field interceptionInterval = For how many minutes are we allowed to browse after completing ann exercise
- * @field UUID = the user's current UUID, used for statistics and logging
- * @field collectData = the value of the data collection checkbox on the optionsPage
- */
 export default class UserSettings {
+
+    /**
+     * This object holds all the data that is connected to the user's preferences.
+     * Furthermore has the functionality to turn the interception part of the of extension on or off.
+     * Since the current state is saved here too.
+     * @param {string} id default parameter for user's uuid
+     * @constructs UserSettings
+     * @class
+     */
     constructor(id = undefined) {
+
+        /** @member {object} UserSettings#status The current interception status, it has three fields of its own */
         this._status = {
+            /** @member {boolean} UserSettings#status#state Is interception on? */
             state: true,
+            /** @member {Date} UserSettings#status#setAt Time at which we changed this status object */
             setAt: new Date(),
+            /** @member {Date} UserSettings#status#offTill Time until when the interception turned off,
+             *                                             less or equal to current time if interception is on */
             offTill: new Date()
         };
-
+        /** @member {object} UserSettings#mode The current mode of the Distraction Shield's interception */
         this._mode = constants.modes.lazy;
+        /** @member {int} UserSettings#interceptionInterval Amount of minutes user is allowed to browse after completing an exercise */
         this._interceptionInterval = 1;
+        /** @member {string} UserSettings#UUID The user's current UUID, used for statistics and logging */
         this._UUID = id;
+        /** @member {boolean} UserSettings#collectData the value of the data collection checkbox on the optionsPage */
         this._collectData = true;
     }
 
@@ -53,6 +57,7 @@ export default class UserSettings {
 
     /**
      * Turn the interception back on
+     * @function UserSettings#turnOn
      */
     turnOn() {
         if (!this.isInterceptionOn()) {
@@ -67,6 +72,7 @@ export default class UserSettings {
      * Which will automatically turn the interception back on after it stops. This nonly happens in the background, because
      * third party pages might close while the timer runs. Which makes the turning off and on of the interception go wrong.
      * @param {boolean} timer should we set a timer, for when to turn on? (true for background, false for other (third party) page)
+     * @function UserSettings#turnOff
      */
     turnOff(timer) {
         if (this.isInterceptionOn()) {
@@ -79,17 +85,32 @@ export default class UserSettings {
         }
     }
 
+    /**
+     * Turns extension off for the specified amount of minutes
+     * @param {int} minutes amount of minutes that interception needs to be off
+     * @param {boolean} timer should we set a timer, for when to turn on? (true for background, false for other (third party) page)
+     * @function UserSettings#turnOffFor
+     */
     turnOffFor(minutes, timer) {
         let curDate = new Date();
         this.offTill = new Date(curDate.setMinutes(minutes + curDate.getMinutes()));
         this.turnOff(timer);
     }
 
+    /**
+     * Turns interception off until 00:00:00 the next day.
+     * @param {boolean} timer should we set a timer, for when to turn on? (true for background, false for other (third party) page)
+     * @function UserSettings#turnOffForDay
+     */
     turnOffForDay(timer) {
         this.offTill = new Date(new Date().setHours(24, 0, 0, 0));
         this.turnOff(timer);
     }
 
+    /**
+     * Turn the interception of the extension back on and update the storage to the new settingObject
+     * @function UserSettings#turnExtensionBackOn
+     */
     turnExtensionBackOn() {
         return () => {
             if (!this.isInterceptionOn()) {
@@ -99,11 +120,21 @@ export default class UserSettings {
         };
     }
 
+    /**
+     * Run a timer until we need to turn interception back on
+     * @function UserSettings#setTimer
+     * @private
+     */
     setTimer() {
         let timerInMS = this.status.offTill - new Date();
         setTimeout(this.turnExtensionBackOn(), timerInMS);
     }
 
+    /**
+     * reInitialize the timer that turns interception back on, if there is need for this. Used for example when browser
+     * is closed and re-opened.
+     * @function UserSettings#reInitTimer
+     */
     reInitTimer() {
         if (!this.isInterceptionOn()) {
             if (this.offTill < new Date()) {
@@ -117,10 +148,20 @@ export default class UserSettings {
 
     /* --------------- --------------- Serialization --------------- --------------- */
 
+    /**
+     * @param {UserSettings} settingsObject SettingsObject to serialize
+     * @returns {string} stringified UserSettings
+     * @function UserSettings#serializeSettings
+     */
     static serializeSettings(settingsObject) {
         return JSON.stringify(settingsObject);
     }
 
+    /**
+     * @param {object} parsedSettingsObject SettingsObject in object form, needs to be converted to instance of SettingsObject
+     * @returns {UserSettings}
+     * @function UserSettings#parseSettingsObject
+     */
     static parseSettingsObject(parsedSettingsObject) {
         let s = new UserSettings();
         parsedSettingsObject._status.setAt = new Date(parsedSettingsObject._status.setAt);
@@ -133,7 +174,11 @@ export default class UserSettings {
         return s;
     }
 
-
+    /**
+     * @param {string} serializedSettingsObject Stringified SettingsObject to be deserialized
+     * @returns {UserSettings}
+     * @function UserSettings#deserializeSettings
+     */
     static deserializeSettings(serializedSettingsObject) {
         if (serializedSettingsObject != null) {
             let parsed = JSON.parse(serializedSettingsObject);
