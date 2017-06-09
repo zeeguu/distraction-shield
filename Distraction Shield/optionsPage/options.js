@@ -147,6 +147,6 @@ function openStatisticsPage() {
  * This function loads the button functionality for the modal. This can only be loaded when the modal is shown,
  * since the html is added dynamically
  */
-export function openDataCollectionConsent(){
+function openDataCollectionConsent(){
     showDataCollectionModal($('#dataConsentModal'));
 }
