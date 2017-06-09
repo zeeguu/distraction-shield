@@ -15,7 +15,7 @@ export function showDataCollectionModal(modalContainer, staticModal = false, cal
         });
     modalContainer.modal('show');
     modalContainer.on('shown.bs.modal', () => {
-        modalContainer.find('.modal-content').load("../introTour/dataCollectionFrame.html", initDataConsentButtons)
+        modalContainer.find('.modal-content').load("../dataCollectionFrame.html", initDataConsentButtons)
     });
     modalContainer.on('hidden.bs.modal', callback);
 }
