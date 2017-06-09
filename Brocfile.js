@@ -60,14 +60,16 @@ let rollup = (tree, entry, dest) => {
       sourceMap: PRODUCTION ? false : 'inline',
       plugins: [
         filesize(),
-        resolve(),
+        resolve({
+          // browser: true
+        }),
         commonjs({
           include: 'node_modules/**',
           sourceMap: true,
           namedExports: {
             'node_modules/jquery/dist/jquery.min.js': [ 'jquery' ]
           }
-        }),
+        })
       ]
     }
   });

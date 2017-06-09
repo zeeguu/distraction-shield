@@ -3,7 +3,7 @@
  * module that generates a uuid with the help of the npm package.
  */
 
-import * as uuid from 'uuid'
+import uuid from 'js-uuid';
 
 /**
  * Generates a UUID using the uuid npm package
