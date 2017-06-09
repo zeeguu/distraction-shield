@@ -5,6 +5,7 @@ import * as storage from '../../modules/storage/storage'
  * of the user's settings.
  *
  * @class IntervalSlider
+ * @param sliderID {string} The ID of the sliderDiv
  */
 
 export default class IntervalSlider extends GreenToRedSlider {

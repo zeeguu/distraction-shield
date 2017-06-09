@@ -6,12 +6,13 @@ import * as logger from '../../modules/logger'
 import StorageListener from '../../modules/storage/StorageListener'
 
 /**
- * subclass of the GreenToRedSlider, this also connects a button to the set of html_elements.
+ * Subclass of the GreenToRedSlider, this also connects a button to the set of html_elements.
  * Furthermore it connects a userSettings item and fires functions according to the values of the
  * html_elements in order to manipulate the settings and let the user specify what he/she wants from the extension
  * Specifically turning the interception off or back on for a given amount of time
  *
  * @class TurnOffSlider
+ * @param sliderID {string} The ID of the sliderDiv
  */
 export default class TurnOffSlider extends GreenToRedSlider {
 
@@ -28,6 +29,11 @@ export default class TurnOffSlider extends GreenToRedSlider {
         this.init();
     }
 
+    /**
+     * Initializer function for a TurnOffSlider
+     * @function TurnOffSlider#init
+     * @inner
+     */
     init(){
         storage.getSettings(settings_object => {
             this.updateSettings(settings_object);
@@ -35,6 +41,12 @@ export default class TurnOffSlider extends GreenToRedSlider {
         this.addStorageListener();
     }
 
+    /**
+     * Create the right type of message or slider to be shown next to the turn off/on button.
+     * @param {UserSettings} settings_object the {@link UserSettings} on which we decide what to show
+     * @function TurnOffSlider#toggleShowOffMessage
+     * @inner
+     */
     toggleShowOffMessage(settings_object) {
         if (!settings_object.isInterceptionOn()) {
             this.sliderValue.html(this.createOffMessage(settings_object));
@@ -49,28 +61,57 @@ export default class TurnOffSlider extends GreenToRedSlider {
         }
     }
 
-
+    /**
+     * Format a Date object to the correct displayable version
+     * @param {Date} date
+     * @function TurnOffSlider#formatDate
+     * @inner
+     */
     static formatDate(date) {
         let arr = date.toString().split(" ");
         return arr.splice(0, 5).join(" ");
     }
 
+    /**
+     * Function that overrides the {@link GreenToRedSlider} function
+     * @param {int} hours
+     * @param {int} minutes
+     * @param {int} val the value of the slider
+     * @function TurnOffSlider#createMessage
+     * @inner
+     */
     createMessage(hours, minutes, val){
         if (val == constants.MAX_TURN_OFF_TIME)
             return "for the rest of the day";
         return "for " + (hours > 0 ? hours + ":" + minutes + " hours." : minutes + " minute(s).");
     }
 
+    /**
+     * Create the right type of message or slider to be shown next to the turn off/on button.
+     * @param {UserSettings} settings_object the {@link UserSettings} that we use to generate the TurnOffMessage
+     * @function TurnOffSlider#createOffMessage
+     * @inner
+     */
     createOffMessage(settings_object) {
         return "Turned off until: " + TurnOffSlider.formatDate(settings_object.status.offTill);
     }
 
-
+    /**
+     * Updater function that updates the slider with the new {@link UserSettings}
+     * @param {UserSettings} userSettings the {@link UserSettings} on which we want the slider to update
+     * @function TurnOffSlider#updateSettings
+     * @inner
+     */
     updateSettings(userSettings) {
         this.toggleShowOffMessage(userSettings);
         this.offButton.text("Turn " + (userSettings.isInterceptionOn() ? "Off" : "On"));
     }
 
+    /**
+     * The function to be fired when we hit the TurnOff/On button
+     * @function TurnOffSlider#offButtonFunc
+     * @inner
+     */
     offButtonFunc() {
         storage.getSettings(settings_object => {
             let slider = this.slider;
@@ -89,6 +130,11 @@ export default class TurnOffSlider extends GreenToRedSlider {
         });
     }
 
+    /**
+     * Adds the right storage listener to this object
+     * @function TurnOffSlider#addStorageListener
+     * @inner
+     */
     addStorageListener(){
         new StorageListener(changes => {
             if (constants.tds_settings in changes) {
