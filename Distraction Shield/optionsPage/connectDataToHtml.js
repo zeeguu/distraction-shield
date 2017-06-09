@@ -9,10 +9,8 @@ export function loadHtmlBlacklist(blockedSiteList, table) {
     });
 }
 
-export function reloadHtmlBlacklist(blockedSiteList, oldBlockedSiteList, table) {
-    let oldList = oldBlockedSiteList.list;
-    let newList = blockedSiteList.list;
-    table.render(newList, oldList)
+export function reloadHtmlBlacklist(newBlockedSiteList, oldBlockedSiteList, table) {
+    table.render(newBlockedSiteList, oldBlockedSiteList);
 }
 
 export function loadHtmlMode(extensionMode, radioGroup) {
@@ -26,4 +24,3 @@ export function loadHtmlInterval(interceptInterval, html_slider) {
 export function loadHtmlInterceptCounter(count, html_counter) {
     html_counter.text(count);
 }
-

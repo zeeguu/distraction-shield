@@ -2,6 +2,11 @@ import * as storage from '../storage/storage'
 import * as constants from '../../constants'
 import * as stringutil from '../stringutil'
 import BlockedSiteList from '../../classes/BlockedSiteList'
+import * as logger from '../../modules/logger'
+
+/**
+ * @module this module takes care of all the data that needs to be updated when we are intercepted
+ */
 
 /**
  * This method goes through the interceptDateList and count how many times the user was intercepted last day,
@@ -62,8 +67,7 @@ export function incrementInterceptionCounter(urlAddress) {
                 storage.setInterceptCounter(counter);
             });
     });
-
-
+    logger.logToFile(constants.logEventType.intercepted, ``, `${urlAddress}`, constants.logType.statistics);
 }
 
 /**

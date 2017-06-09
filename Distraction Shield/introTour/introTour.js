@@ -1,3 +1,5 @@
+import {showDataCollectionModal} from './dataCollection'
+
 let id;
 
 let tour = new Tour({
@@ -7,7 +9,7 @@ let tour = new Tour({
         title: "Welcome to The Distaction Shield",
         content: "Wanna know how Distraction Shield protects you ? " +
         " Click <b> ‘Next’ </b> " +
-        "If you want to use it right away, click <b>‘End tour’</b>"
+        "If you want to use it right away, click <b>‘End tour’</b>",
     }, {
         path: "/introTour.html",
         element: "#tourID",
@@ -72,16 +74,23 @@ let tour = new Tour({
         element: "#turnOff-slider",
         title: "Turn Off",
         content: "You can use this slider to <b>disable</b> The Distraction Shield temporarily. Select the" +
-        "amount of time you want and click <b>’Turn Off’</b>.",
+        " amount of time you want and click <b>’Turn Off’</b>.",
         placement: "bottom"
     }, {
         path: "/options.html",
         title: "Thank You!",
         content: "Thanks for choosing The Distraction Shield and Happy Learning!"
     }],
-    onEnd: function () {
-        chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
-            chrome.tabs.update(tab.id, {url: chrome.runtime.getURL('options.html')});
+    onEnd: ()=> {
+        /**
+         * This function inits the data consent message with the parameter isStatic.
+         * This makes sure that the user does not accidentally closes the window.
+         * After this, the user is redirected to the optionspage
+         */
+        showDataCollectionModal($('#dataConsentModal'), true, () =>{
+            chrome.tabs.query({currentWindow: true, active: true}, tab => {
+                chrome.tabs.update(tab.id, {url: chrome.runtime.getURL('options.html')});
+            });
         });
     }
 });
@@ -94,7 +103,7 @@ tour.start();
 
 //Restart tour link
 if (tour.ended()) {
-    chrome.tabs.getSelected(null, function (tab) {
+    chrome.tabs.getSelected(null, tab => {
         if (tab.url.indexOf('/introTour.html') !== -1) {
             tour.restart();
         }
@@ -102,12 +111,12 @@ if (tour.ended()) {
 }
 
 //get current tab
-chrome.tabs.getSelected(null, function (tab) {
+chrome.tabs.getSelected(null, tab =>{
     id = tab.id;
 });
 
 //end tour if tab closed
-chrome.tabs.onRemoved.addListener(function (tabId) {
+chrome.tabs.onRemoved.addListener(tabId => {
     if (tabId === id) {
         tour.end();
     }

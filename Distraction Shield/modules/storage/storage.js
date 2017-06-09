@@ -2,6 +2,12 @@ import BlockedSiteList from '../../classes/BlockedSiteList'
 import UserSettings    from '../../classes/UserSettings'
 import * as constants  from '../../constants'
 
+/**
+ * @module The general API between the chrome.sync.storage and the extension. This is the
+ * part throughout which we get and set, store and retrieve, data that is concerned with the application.
+ * This module has one purpose only: getting and setting
+ * Due to asynchronousness this is all done through promises
+ */
 
 /* ---------------- General methods --------------- */
 
@@ -9,12 +15,14 @@ import * as constants  from '../../constants'
  * used to set items stored in the storage of the chrome api. Returns a promise
  * @param {string} dataKey key of the data to store
  * @param {string} dataValue value of data to store
+ * @param {boolean} isLocal used to distinguish between using local or sync storage (default sync)
  */
-function setStorage(dataKey, dataValue) {
+function setStorage(dataKey, dataValue, isLocal = false) {
     return new Promise(function (resolve, reject) {
+        let storage = (isLocal ? chrome.storage.local : chrome.storage.sync);
         let newObject = {};
         newObject[dataKey] = dataValue;
-        chrome.storage.sync.set(newObject, function () {
+        storage.set(newObject, function () {
             if (handleRuntimeError()) {
                 resolve();
             } else {
@@ -27,10 +35,12 @@ function setStorage(dataKey, dataValue) {
 /**
  * used to retrieve items stored from the storage of the chrome api. Returns a promise due to asynchronousness
  * @param {string} dataKey key of the data to store
+ * @param {boolean} isLocal used to distinguish between using local or sync storage (default sync)
  */
-function getStorage(dataKey) {
+function getStorage(dataKey, isLocal = false) {
     return new Promise(function (resolve, reject) {
-        chrome.storage.sync.get(dataKey, function (output) {
+        let storage = (isLocal ? chrome.storage.local : chrome.storage.sync);
+        storage.get(dataKey, function (output) {
             if (handleRuntimeError()) {
                 if (dataKey === null || dataKey.length > 1) {
                     resolve(output);
@@ -59,6 +69,7 @@ export function getAllUnParsed(callback) {
         return callback(output);
     });
 }
+
 /* ---------------- BlockedSiteList / Blacklist --------------- */
 
 export function getBlacklist(callback) {
@@ -93,15 +104,18 @@ export function getSettingsUnParsed(callback) {
         return callback(output.tds_settings);
     });
 }
+
 export function setSettings(settingsObject) {
     return setStorage(constants.tds_settings, UserSettings.serializeSettings(settingsObject));
 }
+
 export function setSettingsWithCallback(settingsObject, callback) {
     let serializedSettings = UserSettings.serializeSettings(settingsObject);
     setStorage(constants.tds_settings, serializedSettings).then(function () {
         return callback()
     });
 }
+
 export function getMode(callback) {
     getSettings(function (settings) {
         callback(settings.mode);
@@ -112,12 +126,15 @@ export function getMode(callback) {
 export function getInterceptCounter() {
     return getStorage(constants.tds_interceptCounter);
 }
+
 export function setInterceptCounter(number) {
     return setStorage(constants.tds_interceptCounter, number);
 }
+
 export function getInterceptDateList() {
     return getStorage(constants.tds_interceptDateList);
 }
+
 export function setInterceptDateList(dateList) {
     return setStorage(constants.tds_interceptDateList, dateList);
 }
@@ -130,7 +147,26 @@ export function setExerciseTimeList(statList) {
     return setStorage(constants.tds_exerciseTime, statList);
 }
 
-/* ---------------- not exported--------------- */
+/* ---------------- Logger --------------- */
+
+export function getLogs(callback) {
+    getStorage([constants.tds_logs], true).then(output => {
+        callback(output);
+    });
+}
+
+export function setLogs(logfile) {
+    return setStorage(constants.tds_logs, logfile, true);
+}
+
+export function clearLogs(){
+    chrome.storage.local.remove(constants.tds_logs);
+}
+
+export function setLogFile(data){
+    return setStorage(constants.tds_logfile, data, true);
+}
+
 /**
  * Check for a runtime error.
  */
