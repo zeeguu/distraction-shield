@@ -4,11 +4,22 @@ import {logToFile} from '../../modules/logger'
 
 /**
  * class that connects a <div> with a span and slider together with all the functionality.
- * I.E. changing colour, updating eachother's values and functionality to be added to the html_elements
+ * I.E. changing colour, updating eachother's values and functionality to be added to the html_elements.
+ * The structure this class wants to receive is:
+ *      <div id=sliderID>, holding all other components
+ *          <input type=range id=sliderID + "-range">
+ *          <span id=sliderID + "-value">
+*       </div>
+ *
+ * @abstract
+ * @class GreenToRedSlider
  */
 export default class GreenToRedSlider {
 
     constructor(sliderID, saveFunction) {
+        if (new.target === GreenToRedSlider) {
+            throw new TypeError("Cannot construct instances directly, GreenToRedSlider is an abstract class");
+        }
         this.saveValue = saveFunction;
         this.sliderDiv = $(sliderID);
         this.sliderRange = $(this.sliderDiv.find(sliderID + "-range"));

@@ -5,6 +5,7 @@ import StorageListener from "../modules/storage/StorageListener"
 import UserSettings from '../classes/UserSettings'
 import BlockedSiteList from '../classes/BlockedSiteList'
 import BlacklistTable from './classes/BlacklistTable'
+import IntervalSlider from './classes/IntervalSlider'
 import TurnOffSlider from './classes/TurnOffSlider'
 import * as connectDataToHtml from './connectDataToHtml'
 import * as htmlFunctionality from './htmlFunctionality'
@@ -39,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
  */
 function initOptionsPage() {
     storage.getAll(function (output) {
-        connectHtmlFunctionality(output.tds_settings);
+        connectHtmlFunctionality();
         connectStorageDataToHtml(output);
     });
 }
@@ -47,9 +48,9 @@ function initOptionsPage() {
 /**
  * connect the functionality to the different html_elements on the optionspage.
  */
-function connectHtmlFunctionality(userSettings) {
-    htmlFunctionality.initModeSelection(modeGroup, userSettings);
-    intervalSlider = htmlFunctionality.initIntervalSlider(userSettings);
+function connectHtmlFunctionality() {
+    htmlFunctionality.initModeSelection(modeGroup);
+    intervalSlider = new IntervalSlider('#interval-slider');
     blockedSiteListTable = new BlacklistTable($('#blacklistTable'));
     turnOffSlider = new TurnOffSlider('#turnOff-slider');
     htmlFunctionality.connectButton($('#turnOff-slider-offBtn'), turnOffSlider.offButtonFunc);
