@@ -12,7 +12,7 @@ export default class BlockedSite {
         /** @member {string} BlockedSite#url String with url formatted in the way the google API uses them for webRequest listeners. \n
          *  I.E. " http://www.facebook.com " -> " *://www.facebook.com/* "
          */
-        this._url = string.constructUrl(urlBase);
+        this._url = this.constructUrl(urlBase);
         /** @member {string} BlockedSite#domain Nice (displayable to the user) version of the url field*/
         this._domain = urlBase;
         /** @member {string} BlockedSite#title Title of the tab we find if we were to go to the endpoint of this url*/
