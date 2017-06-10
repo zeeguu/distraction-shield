@@ -1,4 +1,4 @@
-import {showDataCollectionModal} from './dataCollection'
+import {showDataCollectionModal} from '../dataCollection/dataCollection'
 
 let id;
 

@@ -7,7 +7,7 @@ module.exports = {
         statistics: './dist/statisticsPage/statistics.js',
         inject: './dist/contentInjection/inject.js',
         tour: './dist/introTour/introTour.js',
-        dataconsent: './dist/introTour/dataCollection.js'
+        dataconsent: './dist/dataCollection/dataCollection.js'
     },
 
     output: {

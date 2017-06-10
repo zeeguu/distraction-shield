@@ -10,7 +10,7 @@ import TurnOffSlider from './classes/TurnOffSlider'
 import * as connectDataToHtml from './connectDataToHtml'
 import * as htmlFunctionality from './htmlFunctionality'
 import {feedbackLink, tds_blacklist, tds_settings, tds_interceptCounter} from '../constants'
-import {showDataCollectionModal} from '../introTour/dataCollection'
+import {showDataCollectionModal} from '../dataCollection/dataCollection'
 
 /**
  * This file contains the core functions of the options page. this has all the local variables,
