@@ -15,6 +15,7 @@ const UI = require('console-ui');
 const filesize = require('rollup-plugin-filesize');
 const resolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
+const multiEntry = require('rollup-plugin-multi-entry');
 
 // Instantiations
 const ui = new UI({
@@ -25,6 +26,7 @@ const ui = new UI({
 // Folder setup
 const Project = new Funnel('Distraction\ Shield');
 const Vendor = new Funnel('bower_components');
+const Test = new Funnel('test');
 
 ui.startProgress('Constructing pipeline...');
 
@@ -46,17 +48,19 @@ let html;
 }
 
 /* JS */
-let rollup = (tree, entry, dest) => {
+let rollup = (tree, entry, dest, format = 'es') => {
   return new Rollup(tree, {
-    inputFiles: ['**/*.js'],
     rollup: {
-      format: 'es',
+      format,
       entry,
       dest,
       // external: [ // putting in these as external disables inline jquery
       //   'jquery',
       //   'node_modules/jquery/'
       // ],
+      external: [
+        'ava'
+      ],
       sourceMap: PRODUCTION ? false : 'inline',
       plugins: [
         filesize(),
@@ -69,7 +73,8 @@ let rollup = (tree, entry, dest) => {
           namedExports: {
             'node_modules/jquery/dist/jquery.min.js': [ 'jquery' ]
           }
-        })
+        }),
+        multiEntry()
       ]
     }
   });
@@ -81,7 +86,8 @@ let transpile = (tree) => {
     minified: PRODUCTION
   });
 };
-let jscomp = (tree, entry, dest) => transpile(rollup(tree, entry, dest));
+let jscomp = (tree, entry, dest, format) =>
+  transpile(rollup(tree, entry, dest, format));
 
 let js = Merge([
   jscomp(Project, 'init.js', 'assets/js/init.js'),
@@ -90,6 +96,10 @@ let js = Merge([
   jscomp(Project, 'statisticsPage/statistics.js', 'assets/js/statistics.js'),
   jscomp(Project, 'contentInjection/inject.js', 'assets/js/inject.js'),
   jscomp(Project, 'introTour/introTour.js', 'assets/js/introTour.js'),
+
+  PRODUCTION ? false : jscomp(Merge([ Project, Test ]), [
+    '**/*-test.js'
+  ], 'tests.js'),
 ]);
 
 let vendorJs = new Concat(Vendor, {
