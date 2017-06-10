@@ -1,8 +1,14 @@
 import * as constants from '../constants'
 import * as storage from '../modules/storage/storage'
 
+
 /**
- * Check if we have come here after tds redirection, if not return, if so get mode and
+ * This module injects html to all content script matches in the manifest.
+ * @module inject
+ */
+
+/**
+ * Check if we have come here after tds redirection, if not return, if so get mode and inject html.
  */
 function mainFlow() {
     if (!constants.tdsRedirectRegex.test(window.location.href)) return;
@@ -11,7 +17,7 @@ function mainFlow() {
 
 /**
  * Initialize the tds info panel with the proper text based on mode
- * @param {JSON object} mode
+ * @param {modes} mode used to set the text for the generalInfoText
  */
 function initBasis(mode) {
     let message = mode.zeeguuText;

@@ -1,7 +1,7 @@
 /**
- * @module dateutil
  * This module is an utility to help get the correct format for dates which are used in the codebase.
-  */
+ * @module dateutil
+ */
 
 
 /**
