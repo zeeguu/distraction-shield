@@ -18,7 +18,7 @@ let tour = new Tour({
         " The Distraction Shield. We'll have a look at it now. Click <b>'Next'</b> to continue.",
         placement: "bottom"
     }, {
-        path: "/tooltip.html",
+        path: "/tooltipcopy.html",
         element: "#saveBtn",
         title: "Save Button",
         content: "Clicking this button will add the current website to <b> your personal blacklist </b>. " +
@@ -26,19 +26,19 @@ let tour = new Tour({
         "sites to a blacklist <b>fast and easy</b>. Click <b>'Next'</b> to continue. ",
         placement: "left"
     }, {
-        path: "/tooltip.html",
+        path: "/tooltipcopy.html",
         element: "#statisticsBtn",
         title: "Statistics Button",
         content: "Wanna know <b>how much time </b> you save? Click here and find interesting <b>statistics</b>.",
         placement: "left"
     }, {
-        path: "/tooltip.html",
+        path: "/tooltipcopy.html",
         element: "#optionsBtn",
         title: "Options Button",
         content: "Do you want to <b>customize your experience</b>? <br> By pressing this button you can open the <b>options page</b>.",
         placement: "left"
     }, {
-        path: "/options.html",
+        path: "/optionscopy.html",
         element: "#modeSelector",
         title: "Modes",
         content: "Here you can select which <b>mode</b> you want The Distraction Shield to use. <br>" +
@@ -47,7 +47,7 @@ let tour = new Tour({
         " sites, you will <b>have to solve a set of exercises </b>.",
         placement: "left"
     }, {
-        path: "/options.html",
+        path: "/optionscopy.html",
         element: "#interval-slider",
         title: "Interval Slider",
         content: "Use the slider to chose <b>how often</b> you want to be redirected. <br> " +
@@ -56,7 +56,7 @@ let tour = new Tour({
         placement: "right"
 
     }, {
-        path: "/options.html",
+        path: "/optionscopy.html",
         element: "#blacklistTable",
         title: "Blacklist",
         content: "Here you can see <b>the list of websites</b> that you will be redirected from.<br> You " +
@@ -64,20 +64,20 @@ let tour = new Tour({
         "completely.",
         placement: "left"
     }, {
-        path: "/options.html",
+        path: "/optionscopy.html",
         element: "#addUrlDiv",
         title: "Add to Blacklist",
         content: "You can <b>add</b> a site to the blacklist here. Just enter the address and hit <b>save</b>.",
         placement: "left"
     }, {
-        path: "/options.html",
+        path: "/optionscopy.html",
         element: "#turnOff-slider",
         title: "Turn Off",
         content: "You can use this slider to <b>disable</b> The Distraction Shield temporarily. Select the" +
         " amount of time you want and click <b>’Turn Off’</b>.",
         placement: "bottom"
     }, {
-        path: "/options.html",
+        path: "/optionscopy.html",
         title: "Thank You!",
         content: "Thanks for choosing The Distraction Shield and Happy Learning!"
     }],

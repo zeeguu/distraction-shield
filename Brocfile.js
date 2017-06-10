@@ -41,7 +41,7 @@ let html;
 {
   let project = new Funnel(Project, {
     include: [ '**/*.html' ],
-    exclude: [ '**/*copy.html' ], // FIXME those `copy` files are stupid!
+    exclude: [  ], // FIXME those `copy` files are stupid!
     getDestinationPath: (file) => `${path.basename(file)}`
   });
   html = project;
