@@ -7,20 +7,23 @@ export default class UserSettings {
      * This object holds all the data that is connected to the user's preferences.
      * Furthermore has the functionality to turn the interception part of the of extension on or off.
      * Since the current state is saved here too.
-     * @param {string} id default parameter for user's uuid
+     * @param {string} id parameter for user's uuid (default = undefined)
      * @constructs UserSettings
      * @class
      */
     constructor(id = undefined) {
 
-        /** @member {object} UserSettings#status The current interception status, it has three fields of its own */
+        /**
+         * @typedef {Object} settingsStatus
+         * @property {boolean} state Is interception on?
+         * @property {Date} setAt Time at which we changed this status object
+         * @property {Date} offTill Time until when the interception turned off,
+         * less or equal to current time if interception is on
+         * @member {settingsStatus} UserSettings#status The current interception status, it has three fields of its own
+         */
         this._status = {
-            /** @member {boolean} UserSettings#status#state Is interception on? */
             state: true,
-            /** @member {Date} UserSettings#status#setAt Time at which we changed this status object */
             setAt: new Date(),
-            /** @member {Date} UserSettings#status#offTill Time until when the interception turned off,
-             *                                             less or equal to current time if interception is on */
             offTill: new Date()
         };
         /** @member {object} UserSettings#mode The current mode of the Distraction Shield's interception */
@@ -50,8 +53,6 @@ export default class UserSettings {
 
     set UUID(uuid) {this._UUID = uuid;}
     get UUID() { return this._UUID;}
-
-    get state() {return this.status.state ? "On" : "Off";}
 
     isInterceptionOn() { return this.status.state; }
 

@@ -13,13 +13,16 @@ import {scrubFromHistory} from './modules/browserutil'
 import StorageListener from './modules/storage/StorageListener'
 
 /**
- * Unfortunately are webrequestlisteners not able to process asynchronous functions.
+ * Unfortunately webrequestlisteners are not able to process asynchronous functions.
  * Therefore we need a global variable to keep track of the state of the extension.
  * @type {boolean}
  */
 
 let isInterceptionOn = true;
 
+/**
+ * inits the background by setting the listener to the {@link BlockedSiteList}
+ */
 export function initBackground(){
     storage.getBlacklist(function (blockedSiteList) {
         replaceListener(blockedSiteList);
@@ -28,6 +31,12 @@ export function initBackground(){
 
 /* ---------- ---------- Webrequest functions ----------  ---------- */
 
+/**
+ * This function updates the webrequestlistener by passing a {@link BlockedSiteList} to it. From this list, the active urls
+ * are taken. If the {@link UserSettings}  is on and there are active urls, a new webrequestlistener is added which intercepts
+ * the active urls.
+ * @param blockedSiteList {BlockedSiteList} the new list of BlockedSites
+ */
 function replaceListener(blockedSiteList) {
     removeWebRequestListener();
     storage.getSettings(settings_object => {
@@ -37,6 +46,10 @@ function replaceListener(blockedSiteList) {
     })
 }
 
+/**
+ * Adds a listener to the onBeforeRequest which blocks all requests to the urls in the urlList
+ * @param urlList {Array} the active urls to be intercepted
+ */
 function addWebRequestListener(urlList) {
     chrome.webRequest.onBeforeRequest.addListener(
         handleInterception
@@ -48,6 +61,9 @@ function addWebRequestListener(urlList) {
     );
 }
 
+/**
+ * Clears the onBeforeRequest listener. Used to turn the extension off & to update the listener with a new listener.
+ */
 function removeWebRequestListener() {
     chrome.webRequest.onBeforeRequest.removeListener(handleInterception);
 }
@@ -87,7 +103,8 @@ function handleInterception(details) {
 }
 
 /**
- * turns off interception from the background
+ * turns off interception from the background by setting {@link isInterceptionOn} to false and by retrieving
+ * the {@link UserSettings}  from {@link storage} and triggering the turnOffFor function
  */
 function turnOffInterception() {
     isInterceptionOn = false;
