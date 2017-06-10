@@ -19,7 +19,9 @@
     "broccoli-cli": "^1.0.0",
     "broccoli-funnel": "^1.2.0",
     "broccoli-merge-trees": "^2.0.0",
+    "eslint": "^3.19.0",
     "mocha": "^3.3.0",
+    "rewire": "^2.5.2",
     "rimraf": "^2.6.1",
     "sinon-chrome": "^2.2.1",
     "webpack": "^2.5.1"

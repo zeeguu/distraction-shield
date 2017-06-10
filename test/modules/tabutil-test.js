@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 
 /* eslint-env node */
@@ -18,7 +18,8 @@ describe('tabutil | unit test', function() {
     });
 
     it('should singleton open tab',function () {
-        let url = "https://www.google.com";
+        let url = 'https://www.google.com';
+
         assert.ok(chrome.tabs.create.notCalled, 'tabs.create should not be called');
         tabutil.openTabSingleton(url);
 
@@ -30,6 +31,18 @@ describe('tabutil | unit test', function() {
         tabutil.openTabSingleton(url);
         assert.ok(chrome.tabs.update.calledOnce, 'tabs.update should be called once');
 
+    });
+
+    it('should find the id of an open tab or return false', function () {
+       let urlOpenTab =  'https://www.facebook.com';
+       let urlNotOpenTab =  'https://www.google.com';
+
+       tabutil.isOpenTab(urlNotOpenTab, function(result) {
+           assert.ok(result === false);
+       });
+       tabutil.isOpenTab(urlOpenTab, function(result) {
+           assert.ok(result === 1);
+       });
     });
 
 

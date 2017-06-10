@@ -7,7 +7,6 @@
 export function isOpenTab (url, callback) {
 
     chrome.tabs.query({}, (tabs) => {
-        console.log("chrome.tabs.query called");
         for (let t of tabs) {
             if (t.url == url) {
                 callback(t.id);
@@ -24,14 +23,10 @@ export function isOpenTab (url, callback) {
  * @param {string} url Url to check for
  */
 export function openTabSingleton(url, callback = () => {}) {
-    console.log("\topenTabsingleton called");
     isOpenTab(url, (result) => {
-        console.log("\t\tisOpenTab returned")
         if (result === false) {//meaning: tab not yet open
-            console.log("\t\t\ttab create called");
             chrome.tabs.create({url : url});
         } else {
-            console.log("\t\t\ttab update called");
             chrome.tabs.update(result, {active: true});
         }
         callback();
