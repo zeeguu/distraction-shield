@@ -5,13 +5,14 @@ import BlockedSiteList from '../../classes/BlockedSiteList'
 import * as logger from '../../modules/logger'
 
 /**
- * @module this module takes care of all the data that needs to be updated when we are intercepted
+ * This module takes care of all the data that needs to be updated when we are intercepted
+ * @module interception
  */
 
 /**
  * This method goes through the interceptDateList and count how many times the user was intercepted last day,
  * last week, last month and the total amount of interceptions.
- * @param {List} dateList the total list with all interceptions on the different days
+ * @param {Array} dateList the total list with all interceptions on the different days
  */
 export function calcInterceptData(dateList) {
     let tmp = dateList;
