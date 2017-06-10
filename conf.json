@@ -1,6 +1,6 @@
 {
   "tags": {
-    "allowUnknownTags": true
+    "allowUnknownTags": false
   },
   "source": {
     "includePattern": ".+\\.js(doc|x)?$",

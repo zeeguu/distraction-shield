@@ -10,7 +10,7 @@ import StorageListener from "../modules/storage/StorageListener"
 /**
  * This file contains the code and functions which control the statistics page.
  * Data is retrieved from the storage, and is passed to various tables.
- * @module statistics
+ * @mixin statisticsPage
  */
 
 let interceptionCounterTable = null;
@@ -19,6 +19,7 @@ let exerciseTimeTable = null;
 
 /**
  * initial function that is fired when the page is loaded.
+ * @memberOf statisticsPage
  */
 document.addEventListener("DOMContentLoaded", function () {
     connectHtmlFunctionality();
@@ -29,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
  * Initialize HTML elements and set the data in the tables. Retrieves the data from the storage using Promises.
  * Waits until all data is retrieved, and then populates the interceptionCounterTable, the blacklistTable and the
  * exerciseTimeTable.
+ * @memberOf statisticsPage
  */
 function initStatisticsPage() {
     Promise.all([storage.getInterceptDateList(), storage.getExerciseTimeList(), storage.getBlacklistPromise()])
@@ -43,8 +45,8 @@ function initStatisticsPage() {
         });
 }
 /**
- *
  * @param interceptDateList
+ * @memberOf statisticsPage
  */
 function setInterceptionCounterTable(interceptDateList){
     let counters = interception.calcInterceptData(interceptDateList);
@@ -53,6 +55,7 @@ function setInterceptionCounterTable(interceptDateList){
 
 /**
  * Connects HTML functionality to javascript classes
+ * @memberOf statisticsPage
  */
 function connectHtmlFunctionality() {
     interceptionCounterTable = new InterceptionCounterTable();
@@ -63,6 +66,8 @@ function connectHtmlFunctionality() {
 /**
  * Storage Listener
  * @type {StorageListener}
+ * @method onStorageChange
+ * @memberOf statisticsPage
  */
 new StorageListener((changes) => {
     if (tds_blacklist in changes) {

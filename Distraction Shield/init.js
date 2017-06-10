@@ -9,12 +9,13 @@ import * as logger from './modules/logger'
 
 /**
  * This is ran when the extension is loaded.
- * @module init
+ * @mixin init
  */
 
 /**
  * This function to be fired only when the extension is installed or updated. It initializes all the data and the storage.
  * Furthermore it starts the intro tour and initializes the extension upon completion.
+ * @memberOf init
  */
 chrome.runtime.onInstalled.addListener(details => {
     storage.getAllUnParsed((output) => {
@@ -33,6 +34,7 @@ chrome.runtime.onInstalled.addListener(details => {
 /**
  * Initializes the storage with a BlockedSiteList object.
  * @param list {?BlockedSiteList} BlockedSiteList received from storage
+ * @memberOf init
  */
 function initBlacklist(list) {
     if (list == null) {
@@ -44,6 +46,7 @@ function initBlacklist(list) {
 /**
  * Initializes the storage with a BlockedSiteList object.
  * @param settings {?UserSettings} BlockedSiteList received from storage
+ * @memberOf init
  */
 function initSettings(settings) {
     if (settings == null) {
@@ -56,6 +59,7 @@ function initSettings(settings) {
 /**
  * Initializes the storage with a BlockedSiteList object.
  * @param counter {?number} BlockedSiteList received from storage
+ * @memberOf init
  */
 function initInterceptCounter(counter) {
     if (counter == null)
@@ -65,6 +69,7 @@ function initInterceptCounter(counter) {
 /**
  * Initializes the storage with a date list.
  * @param dateList {?Array} Date list received from storage
+ * @memberOf init
  */
 function initInterceptDateList(dateList) {
     if (dateList == null)
@@ -74,6 +79,7 @@ function initInterceptDateList(dateList) {
 /**
  * Initializes the storage with an exercise time list.
  * @param exerciseTime {?Array} exercise time list received from storage
+ * @memberOf init
  */
 function initExerciseTime(exerciseTime) {
     if (exerciseTime == null)
@@ -82,6 +88,7 @@ function initExerciseTime(exerciseTime) {
 
 /**
  * Runs the intro tour in a new tab.
+ * @memberOf init
  */
 function runIntroTour() {
     chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
@@ -89,6 +96,7 @@ function runIntroTour() {
 
 /**
  * Starts the logger alarm. {@link logger}
+ * @memberOf init
  */
 function initAlarm(){
     logger.setAlarm();
@@ -98,6 +106,7 @@ function initAlarm(){
 
 /**
  * function which checks whether we run a normal session or the special case where the onInstalled function is called.
+ * @memberOf init
  */
 storage.getSettingsUnParsed(settings => {
     if (settings != null)
@@ -106,6 +115,7 @@ storage.getSettingsUnParsed(settings => {
 
 /**
  * function which fires upon starting the browser. Initiates the session.
+ * @memberOf init
  */
 function initSession() {
     storage.getSettings(settings => {

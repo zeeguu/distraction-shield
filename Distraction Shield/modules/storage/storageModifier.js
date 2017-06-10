@@ -15,7 +15,7 @@ import {logToFile} from '../../modules/logger'
  *
  * @param {BlockedSite} blocked_site The item we want to add to our {@link BlockedSiteList} in the storage
  * @returns {Promise} Promise that is either resolved or rejected. If rejected passes the type of error. (catch with Promise.catch)
- * @methodOf storageModifier
+ * @method addBlockedSiteToStorage
  */
 export function addBlockedSiteToStorage(blocked_site) {
     return getBlacklistPromise().then(blockedSiteList => {
@@ -31,7 +31,7 @@ export function addBlockedSiteToStorage(blocked_site) {
  *
  * @param {BlockedSite} blocked_site The item we want to remove from our {@link BlockedSiteList} in the storage
  * @returns {Promise} Promise that is either resolved or rejected. If rejected passes the type of error. (catch with Promise.catch)
- * @methodOf storageModifier
+ * @method removeBlockedSiteFromStorage
  */
 export function removeBlockedSiteFromStorage(blocked_site) {
     return getBlacklistPromise().then(blockedSiteList => {
@@ -45,7 +45,7 @@ export function removeBlockedSiteFromStorage(blocked_site) {
  *
  * @param {BlockedSite} blocked_site The item we want to add to update in our {@link BlockedSiteList} in the storage
  * @returns {Promise} Promise that is either resolved or rejected. If rejected passes the type of error. (catch with Promise.catch)
- * @methodOf storageModifier
+ * @method updateBlockedSiteInStorage
  */
 export function updateBlockedSiteInStorage(blocked_site) {
     return getBlacklistPromise().then(blockedSiteList => {

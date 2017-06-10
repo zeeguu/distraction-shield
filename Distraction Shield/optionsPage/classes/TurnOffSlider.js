@@ -11,6 +11,7 @@ import StorageListener from '../../modules/storage/StorageListener'
  * html_elements in order to manipulate the settings and let the user specify what he/she wants from the extension
  * Specifically turning the interception off or back on for a given amount of time
  *
+ * @augments GreenToRedSlider
  * @class TurnOffSlider
  * @param sliderID {string} The ID of the sliderDiv
  */

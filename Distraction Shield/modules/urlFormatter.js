@@ -19,7 +19,7 @@ import * as constants from '../constants';
  * removes trailing space from url, if nothing is there returns url
  * @param {string} url to strip
  * @returns {string} the newly formatted url
- * @methodOf urlFormatter
+ * @method stripOfFinalSlash
  */
 export function stripOfFinalSlash(url) {
     if (url[url.length - 1] == '/') {
@@ -32,7 +32,7 @@ export function stripOfFinalSlash(url) {
  * removes scheme from url, if nothing is there returns url
  * @param {string} url to strip
  * @returns {string} the newly formatted url
- * @methodOf urlFormatter
+ * @method stripOfScheme
  */
 export function stripOfScheme(url) {
     let schemeless = url;
@@ -47,7 +47,7 @@ export function stripOfScheme(url) {
  * removes port from url, if nothing is there returns url
  * @param {string} url to strip
  * @returns {string} the newly formatted url
- * @methodOf urlFormatter
+ * @method stripOfPort
  */
 export function stripOfPort(url) {
     let portless = [];
@@ -69,7 +69,7 @@ export function stripOfPort(url) {
  * removes filename from url, if nothing is there returns url
  * @param {string} url to strip
  * @returns {string} the newly formatted url
- * @methodOf urlFormatter
+ * @method stripOfFileName
  */
 export function stripOfFileName(url) {
     if (url.indexOf("/") > -1) {
@@ -92,7 +92,7 @@ export function stripOfFileName(url) {
 /**
  * @param {string} url the url of which we want the domain
  * @returns {string} the domain
- * @methodOf urlFormatter
+ * @method getDomainOnly
  * @private
  */
 function getDomainOnly(url) {
@@ -107,7 +107,7 @@ function getDomainOnly(url) {
  * removes scheme, final slash, port and filename from url, returns tuple of new url and the domain of the url
  * @param {string} url to strip of all
  * @returns {array} a tuple of the actual url and only the domain=: "www.website.com"
- * @methodOf urlFormatter
+ * @method stripOfAll
  */
 export function stripOfAll(url) {
     url = stripOfScheme(url);
@@ -121,7 +121,7 @@ export function stripOfAll(url) {
 /**
  * @param {string} url the url to be formatted
  * @returns {string} the formatted url
- * @methodOf urlFormatter
+ * @method formatForGetRequest
  * @private
  */
 function formatForGetRequest(url) {
@@ -135,7 +135,7 @@ function formatForGetRequest(url) {
  * @param {function} onSuccess the callback function that takes the newly formatted end-url together with it's page title as argument. This results in resolving the promise
  * @param {function} onFailure the callback function that when we encounter an error during the asynchronous request. This results in rejecting the promise
  * Used in the BlockedSiteBuilder
- * @methodOf urlFormatter
+ * @method getUrlFromServer
  */
 export function getUrlFromServer(url, onSuccess, onFailure) {
     let urlToGet = formatForGetRequest(url);
@@ -152,7 +152,7 @@ export function getUrlFromServer(url, onSuccess, onFailure) {
  * @param {function} onSuccess the callback function that takes the newly formatted end-url together with it's page title as argument. This results in resolving the promise
  * @param {function} onFailure the callback function that when we encounter an error during the asynchronous request. This results in rejecting the promise
  * fire asynchronous get request to find the end port of the passed url
- * @methodOf urlFormatter
+ * @method httpGetAsync
  */
 function httpGetAsync(theUrlToGet, onSuccess, onFailure) {
     let xmlHttp = new XMLHttpRequest();
@@ -168,7 +168,7 @@ function httpGetAsync(theUrlToGet, onSuccess, onFailure) {
  * @param {function} onSuccess the callback function that takes the newly formatted end-url together with it's page title as argument. This results in resolving the promise
  * @param {function} onFailure the callback function that when we encounter an error during the asynchronous request. This results in rejecting the promise
  * function to be passed to the get-request
- * @methodOf urlFormatter
+ * @method readyStateChange
  * @private
  */
 function readyStateChange(xmlHttp, onSuccess, onFailure) {
@@ -188,7 +188,7 @@ function readyStateChange(xmlHttp, onSuccess, onFailure) {
 
 /**
  * internal error handler
- * @methodOf urlFormatter
+ * @method errorHandler
  * @private
  */
 function errorHandler(status) {
