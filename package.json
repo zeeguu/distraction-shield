@@ -23,8 +23,13 @@
     "mocha": "^3.3.0",
     "rewire": "^2.5.2",
     "rimraf": "^2.6.1",
+<<<<<<< HEAD
     "sinon-chrome": "^2.2.1",
     "webpack": "^2.5.1"
+=======
+    "webpack": "^2.5.1",
+    "uuid": "^3.0.1"
+>>>>>>> development
   },
   "dependencies": {
     "npm": "^5.0.1"

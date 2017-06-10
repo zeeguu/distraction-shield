@@ -1,4 +1,7 @@
-
+/**
+ * @module stringutil
+ * This module is a utility that is used for functions we use in more than one place in order to things like comparison
+ */
 
 /**
  * used to compare if a string is a substring of, with ReqExp

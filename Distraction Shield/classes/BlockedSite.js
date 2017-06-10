@@ -3,7 +3,15 @@ import * as constants from '../constants';
 /* --------------- --------------- --------------- --------------- --------------- */
 
 /**
- * Class of the basic Object of one website that should be blocked.
+ * @class of the basic Object of one website that should be blocked.
+ * @field url           =   String with url formatted in the way the google API uses them for webRequest listeners.
+ *                          I.E. " http://www.facebook.com " -> " *://www.facebook.com/* "
+ * @field domain        =   Nice (displayable to the user) version of the url field
+ * @field name          =   Title of the tab we find if we were to go to the endpoint of this url
+ * @field icon          =   Html-code which gets the favicon of the page
+ * @field checkboxVal   =   Is interception enabled for this blockedSite? = checkbox in the optionsPage
+ * @field counter       =   How many times were we intercepted from this page
+ * @field timeSpent     =   How much time did we waste on this website
  */
 export default class BlockedSite {
 

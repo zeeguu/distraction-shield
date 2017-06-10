@@ -1,7 +1,8 @@
 import BlockedSite from '../classes/BlockedSite'
 
 /**
- * List that holds BlockedSite Objects and has functionality which is regularly needed on this array
+ * @class List that extends the standard JavaScript Array and
+ * that holds BlockedSite Objects and has functionality which is regularly needed on this array
  */
 export default class BlockedSiteList extends Array {
 
@@ -51,7 +52,8 @@ export default class BlockedSiteList extends Array {
     }
 
     removeFromList(blockedSiteToDelete) {
-        this.splice(this.indexOf(blockedSiteToDelete), 1);
+        let index = this.map(function(e) { return e.domain; }).indexOf(blockedSiteToDelete.domain);
+        this.splice(index, 1);
     }
 
     updateInList(blockedSite){

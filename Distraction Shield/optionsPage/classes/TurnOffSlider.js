@@ -2,11 +2,15 @@ import GreenToRedSlider from './GreenToRedSlider'
 import UserSettings from '../../classes/UserSettings'
 import * as constants from '../../constants'
 import * as storage from '../../modules/storage/storage'
+import * as logger from '../../modules/logger'
 
 /**
  * subclass of the GreenToRedSlider, this also connects a button to the set of html_elements.
  * Furthermore it connects a userSettings item and fires functions according to the values of the
  * html_elements in order to manipulate the settings and let the user specify what he/she wants from the extension
+ * Specifically turning the interception off or back on for a given amount of time
+ *
+ * @class TurnOffSlider
  */
 export default class TurnOffSlider extends GreenToRedSlider {
 
@@ -55,8 +59,7 @@ export default class TurnOffSlider extends GreenToRedSlider {
     createMessage(hours, minutes, val){
         if (val == constants.MAX_TURN_OFF_TIME)
             return "for the rest of the day";
-        let returnVal = "for " + (hours > 0 ? hours + ":" + minutes + " hours." : minutes + " minute(s).");
-        return returnVal;
+        return "for " + (hours > 0 ? hours + ":" + minutes + " hours." : minutes + " minute(s).");
     }
 
     createOffMessage(settings_object) {
@@ -71,7 +74,6 @@ export default class TurnOffSlider extends GreenToRedSlider {
 
     offButtonFunc() {
         storage.getSettings(settings_object => {
-            // 'this' is really annoying, (this refers to the offbutton..)
             let slider = this.slider;
             if (settings_object.isInterceptionOn()) {
                 if (slider.selectedTime === constants.MAX_TURN_OFF_TIME) {
@@ -83,6 +85,8 @@ export default class TurnOffSlider extends GreenToRedSlider {
                 settings_object.turnOn();
             }
             storage.setSettings(settings_object);
+            logger.logToFile(constants.logEventType.changed, `extension ${(settings_object.isInterceptionOn() ? 'on' : 'off')}`,
+                (!settings_object.isInterceptionOn() ? slider.selectedTime : ``), constants.logType.settings);
         });
     }
 

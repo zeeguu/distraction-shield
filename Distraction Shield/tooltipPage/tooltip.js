@@ -1,11 +1,13 @@
 import * as blockedSiteBuilder from "../modules/blockedSiteBuilder.js"
 import BlockedSiteList from "../classes/BlockedSiteList"
 import * as stringutil from "../modules/stringutil.js"
-import {openTabSingleton} from "../modules/tabutil"
+import {openTabSingleton} from "../modules/browserutil"
 import * as storage from "../modules/storage/storage"
 import * as storageModifier from "../modules/storage/storageModifier"
 import StorageListener from "../modules/storage/StorageListener"
 import {tds_blacklist} from '../constants'
+import {logToFile} from '../modules/logger'
+import * as constants from '../constants'
 
 let saveButton = $('#saveBtn');
 let optionsButton = $('#optionsBtn');
@@ -60,13 +62,14 @@ function patternMatchUrl(url, callback) {
 function toggleBlockedSite(url) {
     return function () {
         storage.getBlacklistPromise().then(blockedSiteList => {
-            let list = blockedSiteList.list;
+            let list = blockedSiteList;
             let newItem = null;
             for (let i = 0; i < list.length; i++) {
                 if (stringutil.wildcardStrComp(url, list[i].url)) {
                     newItem = list[i];
                     newItem.checkboxVal = !newItem.checkboxVal;
                     storageModifier.updateBlockedSiteInStorage(newItem);
+                    logToFile(constants.logEventType.changed, newItem.name, (newItem.checkboxVal ? 'enabled' : 'disabled'), constants.logType.settings);
                     break;
                 }
             }
@@ -86,7 +89,7 @@ function setSaveButton(blocked){
  */
 function setSaveButtonToSuccess() {
     saveButton.attr('class', 'btn btn-success');
-    saveButton.text("Succes!");
+    saveButton.text("Success!");
     saveButton.unbind();
     setTimeout(function () {
         saveButton.attr('class', 'btn btn-info');
@@ -99,7 +102,9 @@ function saveCurrentPageToBlacklist() {
     chrome.tabs.query({active: true, currentWindow: true}, function (arrayOfTabs) {
         let activeTab = arrayOfTabs[0];
         blockedSiteBuilder.createBlockedSiteAndAddToStorage(activeTab.url)
-            .catch((error) => {alert(error);});
+            .catch((error) => {
+                chrome.extension.getBackgroundPage().alert(error);
+            });
     });
 }
 

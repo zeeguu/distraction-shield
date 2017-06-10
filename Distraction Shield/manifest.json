@@ -41,9 +41,11 @@
     "webRequestBlocking",
     "idle",
     "alarms",
+    "history",
     "<all_urls>"
   ],
   "web_accessible_resources": [
-    "contentInjection/inject.html"
+    "contentInjection/inject.html",
+    "aikido.png"
   ]
 }

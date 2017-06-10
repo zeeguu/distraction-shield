@@ -1,6 +1,6 @@
-import GreenToRedSlider from './classes/GreenToRedSlider'
 import * as constants from '../constants'
 import * as storage from '../modules/storage/storage'
+import * as logger from '../modules/logger'
 
 /**
  * This file contains the specific functionality for the options and some of its elements
@@ -32,22 +32,17 @@ function submitOnKeyPress(html_elem, submitFunc) {
 
 /* -------------------- Logic for the mode selection -------------------- */
 
-export function initModeSelection(buttonGroup, settings_object) {
-    $("input[name=" + buttonGroup + "]").change(function () {
-        let selectedMode = $("input[name=" + buttonGroup + "]:checked").val();
-        if (selectedMode === 'pro') {
-            settings_object.mode = constants.modes.pro;
-        } else {
-            settings_object.mode = constants.modes.lazy;
-        }
-        storage.setSettings(settings_object);
-    });
-}
-/* -------------------- Interval slider -------------------- */
-
-export function initIntervalSlider(settings_object) {
-    return new GreenToRedSlider('#interval-slider', function (value) {
-        settings_object.interceptionInterval = parseInt(value);
-        storage.setSettings(settings_object);
+export function initModeSelection(buttonGroup) {
+    $("input[name=" + buttonGroup + "]").change(() => {
+        storage.getSettings((settings_object) => {
+            let selectedMode = $("input[name=" + buttonGroup + "]:checked").val();
+            if (selectedMode === 'pro') {
+                settings_object.mode = constants.modes.pro;
+            } else {
+                settings_object.mode = constants.modes.lazy;
+            }
+            storage.setSettings(settings_object);
+            logger.logToFile(constants.logEventType.changed, `mode`, `${settings_object.mode.label}`, constants.logType.settings);
+        });
     });
 }

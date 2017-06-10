@@ -24,4 +24,3 @@ export function loadHtmlInterval(interceptInterval, html_slider) {
 export function loadHtmlInterceptCounter(count, html_counter) {
     html_counter.text(count);
 }
-
