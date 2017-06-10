@@ -1,15 +1,14 @@
 import * as storage from '../modules/storage/storage'
 import * as constants from '../constants'
 
-/** @module logger
- *
- *
+/**
  * This module is meant to be used for logging actions of the user and for statistics.
  * This module retrieves the UUID, generated on install, from the storage and uses this to link data to the user anonymously.
  * The module also dumps the logs every specified time interval.
  * This is simply done by clearing the separate log lines and combining them into one file which is stored in the storage.
  * This can be retrieved using the “tds_logfile” key.
  * Also when given permission by the user (default yes), the data is sent to a specified API.
+ * @module logger
  */
 
 /**

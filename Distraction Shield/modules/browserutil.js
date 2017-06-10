@@ -1,7 +1,7 @@
 /**
- * @module browserutil
  * This module has some functions we'd like to have in the browser, for special casing things like opening a tab or
  * modifying user-history
+ * @module browserutil
  */
 
 /**
