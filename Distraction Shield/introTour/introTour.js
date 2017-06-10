@@ -95,13 +95,13 @@ let tour = new Tour({
     }
 });
 
-// Initialize the tour
+/** Initialize the tour */
 tour.init();
 
-// Start the tour
+/** Start the tour */
 tour.start();
 
-//Restart tour link
+/** Restart tour link */
 if (tour.ended()) {
     chrome.tabs.getSelected(null, tab => {
         if (tab.url.indexOf('/introTour/introTour.html') !== -1) {
@@ -110,12 +110,12 @@ if (tour.ended()) {
     });
 }
 
-//get current tab
+/** get current tab */
 chrome.tabs.getSelected(null, tab =>{
     id = tab.id;
 });
 
-//end tour if tab closed
+/** end tour if tab closed */
 chrome.tabs.onRemoved.addListener(tabId => {
     if (tabId === id) {
         tour.end();

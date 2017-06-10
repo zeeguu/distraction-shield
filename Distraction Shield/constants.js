@@ -32,6 +32,11 @@ export const idleTime = 15;
 export const trackerAlarmFrequency = 1.0;
 
 /* ---------- ----- UserSettings, inject ----- ---------- */
+/**
+ * Extension interception modes.
+ * @readonly
+ * @enum {lazy | pro} mode
+ */
 export const modes = {
     lazy: {
         label: "lazy",
