@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "The Distraction Shield",
   "description": "Divert attention from social media websites towards learning a new language",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "icons": {
     "128": "aikido.png"
   },
