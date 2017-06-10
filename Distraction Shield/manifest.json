@@ -1,5 +1,6 @@
 {
   "manifest_version": 2,
+  "short_name": "Dist. Shield",
   "name": "The Distraction Shield",
   "description": "Divert attention from social media websites towards learning a new language",
   "version": "2.1.0",
