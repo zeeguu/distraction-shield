@@ -93,6 +93,7 @@ function turnOffInterception() {
     isInterceptionOn = false;
     storage.getSettings(settings_object => {
         settings_object.turnOffFor(settings_object.interceptionInterval, true);
+        storage.setSettings(settings_object);
     })
 }
 
