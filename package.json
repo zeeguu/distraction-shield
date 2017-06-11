@@ -5,6 +5,7 @@
   "scripts": {
     "start": "broccoli-timepiece dist/",
     "build": "rimraf dist && broccoli build dist",
+    "build:production": "npm run build env=production",
     "test": "npm run build && ava dist/tests.js --verbose"
   },
   "repository": {
@@ -25,6 +26,7 @@
     "broccoli-rollup": "^1.3.0",
     "broccoli-timepiece": "^0.3.0",
     "chalk": "^1.1.3",
+    "command-line-args": "^4.0.6",
     "console-ui": "^1.0.3",
     "mocha": "^3.3.0",
     "rimraf": "^2.6.1",

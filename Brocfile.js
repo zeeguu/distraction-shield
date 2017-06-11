@@ -10,6 +10,7 @@ const Rollup = require('broccoli-rollup');
 const path = require('path');
 const chalk = require('chalk');
 const UI = require('console-ui');
+const commandLineArgs = require('command-line-args');
 
 // Rollup plugins
 const filesize = require('rollup-plugin-filesize');
@@ -22,17 +23,26 @@ const ui = new UI({
   inputStream: process.stdin,
   outputStream: process.stdout
 });
+const optionDefinitions = [
+  { name: 'env', type: String, defaultValue: ['env', 'development'],
+  multiple: true, defaultOption: true }
+];
+const options = commandLineArgs(optionDefinitions);
+const env = options.env.filter((v) =>
+  v.includes('env=')).join('').replace('env=', '') || 'development';
+const DEV = env === 'development';
+const PROD = env === 'production';
+const TEST = env === 'test';
+const MIN = PROD ? '.min' : '';
 
 // Folder setup
 const Project = new Funnel('Distraction\ Shield');
 const Vendor = new Funnel('bower_components');
 const Test = new Funnel('test');
 
+// Build
+ui.writeLine(chalk.blue(`Building ${env} project`));
 ui.startProgress('Constructing pipeline...');
-
-
-const PRODUCTION = false;
-const MIN = PRODUCTION ? '.min' : '';
 
 // TODO broccoli-asset-rev, broccoli-eslint, stfsy/broccoli-livereload
 
@@ -54,7 +64,7 @@ let rollup = (tree, entry, dest, format = 'es') => {
       entry,
       dest,
       external: [ 'ava' ],
-      sourceMap: PRODUCTION ? false : 'inline',
+      sourceMap: PROD ? false : 'inline',
       plugins: [
         filesize(),
         resolve(),
@@ -73,24 +83,24 @@ let rollup = (tree, entry, dest, format = 'es') => {
 let transpile = (tree) => {
   return babel(tree, {
     presets: [ 'env' ],
-    sourceMaps: PRODUCTION ? false : 'inline',
-    minified: PRODUCTION
+    sourceMaps: PROD ? false : 'inline',
+    minified: PROD
   });
 };
 let jscomp = (tree, entry, dest, format) =>
   transpile(rollup(tree, entry, dest, format));
 
-let js = Merge([
+let jstrees = [
   jscomp(Project, 'init.js', 'assets/js/init.js'),
   jscomp(Project, 'optionsPage/options.js', 'assets/js/options.js'),
   jscomp(Project, 'tooltipPage/tooltip.js', 'assets/js/tooltip.js'),
   jscomp(Project, 'statisticsPage/statistics.js', 'assets/js/statistics.js'),
   jscomp(Project, 'contentInjection/inject.js', 'assets/js/inject.js'),
-  jscomp(Project, 'introTour/introTour.js', 'assets/js/introTour.js'),
-
-  PRODUCTION ? false :
-    jscomp(Merge([ Project, Test ]), '**/*-test.js', 'tests.js'),
-]);
+  jscomp(Project, 'introTour/introTour.js', 'assets/js/introTour.js')
+];
+if (DEV || TEST)
+  jstrees.push(jscomp(Merge([ Project, Test ]), '**/*-test.js', 'tests.js'));
+let js = Merge(jstrees);
 
 let vendorJs = new Concat(Vendor, {
   inputFiles: [
