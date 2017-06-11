@@ -19,12 +19,12 @@ export function showDataCollectionModal(modalContainer, staticModal = false, cal
             keyboard: false
         });
     modalContainer.on('shown.bs.modal', () => {
-        modalContainer.find('.modal-content').load("../dataCollectionFrame.html", () => {
+        modalContainer.find('.modal-content').load("../html/dataCollectionFrame.html", () => {
             initDataConsentButtons(modalContainer);
         });
     }).modal('show');
     modalContainer.on('hidden.bs.modal', () => {
-        modalContainer.find('.modal-content').load("../dataCollectionFrame.html");
+        modalContainer.find('.modal-content').load("../html/dataCollectionFrame.html");
         callback();
     });
 }
@@ -35,7 +35,7 @@ export function showDataCollectionModal(modalContainer, staticModal = false, cal
  */
 function initDataConsentButtons(modalContainer){
     $("#learn_more").on('click', () => {
-        modalContainer.find('.modal-body').load("../dataCollectionInfo.html");
+        modalContainer.find('.modal-body').load("../html/dataCollectionInfo.html");
     });
     getSettings(settings_object => {
         let allowBox = $("#allowBox");

@@ -35,7 +35,7 @@ function connectButtons() {
 /** Opens statistics page and closes tooltip
  * @memberOf tooltipPage*/
 function openStatisticsPage() {
-    openTabSingleton(chrome.runtime.getURL('statistics.html'), () => {
+    openTabSingleton(chrome.runtime.getURL('/assets/html/statistics.html'), () => {
         window.close();
     });
 }
@@ -43,7 +43,7 @@ function openStatisticsPage() {
 /** Opens options page and closes tooltip
  * @memberOf tooltipPage*/
 function openOptionsPage() {
-    openTabSingleton(chrome.runtime.getURL('options.html'), () => {
+    openTabSingleton(chrome.runtime.getURL('/assets/html/options.html'), () => {
         window.close();
     });
 }

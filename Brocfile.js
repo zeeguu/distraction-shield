@@ -41,8 +41,7 @@ let html;
 {
   let project = new Funnel(Project, {
     include: [ '**/*.html' ],
-    exclude: [  ], // FIXME those `copy` files are stupid!
-    getDestinationPath: (file) => `${path.basename(file)}`
+    getDestinationPath: (file) => `assets/html/${path.basename(file)}`
   });
   html = project;
 }
@@ -54,19 +53,11 @@ let rollup = (tree, entry, dest, format = 'es') => {
       format,
       entry,
       dest,
-      // external: [ // putting in these as external disables inline jquery
-      //   'jquery',
-      //   'node_modules/jquery/'
-      // ],
-      external: [
-        'ava'
-      ],
+      external: [ 'ava' ],
       sourceMap: PRODUCTION ? false : 'inline',
       plugins: [
         filesize(),
-        resolve({
-          // browser: true
-        }),
+        resolve(),
         commonjs({
           include: 'node_modules/**',
           sourceMap: true,
@@ -97,9 +88,8 @@ let js = Merge([
   jscomp(Project, 'contentInjection/inject.js', 'assets/js/inject.js'),
   jscomp(Project, 'introTour/introTour.js', 'assets/js/introTour.js'),
 
-  PRODUCTION ? false : jscomp(Merge([ Project, Test ]), [
-    '**/*-test.js'
-  ], 'tests.js'),
+  PRODUCTION ? false :
+    jscomp(Merge([ Project, Test ]), '**/*-test.js', 'tests.js'),
 ]);
 
 let vendorJs = new Concat(Vendor, {
@@ -108,7 +98,7 @@ let vendorJs = new Concat(Vendor, {
     `bootstrap-tour/build/js/bootstrap-tour${MIN}.js`,
     `jquery/dist/jquery${MIN}.js`
   ],
-  outputFile: 'vendor.js',
+  outputFile: 'assets/js/vendor.js',
   headerFiles: [`jquery/dist/jquery${MIN}.js`] // include jquery before bootstrap
 });
 
