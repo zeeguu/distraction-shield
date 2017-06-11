@@ -45,6 +45,6 @@
   ],
   "web_accessible_resources": [
     "/assets/html/inject.html",
-    "aikido.png"
+    "/assets/images/aikido.png"
   ]
 }

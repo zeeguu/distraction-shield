@@ -43,7 +43,7 @@ function initBasis(mode) {
             $("#tds_modeSpecificText").append(message);
 
             $("#originalDestination").attr("href", extractDestination());
-            $("#aikido").attr("src",chrome.extension.getURL('aikido.png'));
+            $("#aikido").attr("src",chrome.extension.getURL('/assets/images/aikido.png'));
         }
     });
 }
