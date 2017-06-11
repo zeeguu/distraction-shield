@@ -100,7 +100,7 @@ export default class BlacklistTable {
                 "<td width='50'>" + blockedSite.icon + "</td>" +
                 "<td class='pageTitle'>" + blockedSite.name + "</td>" +
                 "<td width='25'>" + "<input class='checkbox-toggle' type='checkbox' name='state'>" + "</td>" +
-                "<td width='25'>" + "<img class='delete-button' type='deleteButton' src='../optionsPage/classes/tableRow_delete_button.png' width='16' height='16'>" + "</td>" +
+                "<td width='25'>" + "<img class='delete-button' type='deleteButton' src='/assets/images/tableRow_delete_button.png' width='16' height='16'>" + "</td>" +
                 "</tr>");
         tableRow.find('.checkbox-toggle').prop('checked', blockedSite.checkboxVal);
         //add the actual object to the html_element

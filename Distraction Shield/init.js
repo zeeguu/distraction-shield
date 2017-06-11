@@ -91,7 +91,7 @@ function initExerciseTime(exerciseTime) {
  * @memberOf init
  */
 function runIntroTour() {
-    chrome.tabs.create({'url': chrome.runtime.getURL('introTour/introTour.html')});
+    chrome.tabs.create({'url': chrome.runtime.getURL('/assets/html/introTour.html')});
 }
 
 /**

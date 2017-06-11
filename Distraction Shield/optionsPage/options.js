@@ -202,9 +202,9 @@ function openFeedbackForm() {
 function restartTour() {
     chrome.tabs.getCurrent(tab => {
         if (!tab)
-            openTabSingleton(chrome.runtime.getURL('introTour/introTour.html'));
+            openTabSingleton(chrome.runtime.getURL('/assets/html/introTour.html'));
         else
-            chrome.tabs.update(tab.id, {url: chrome.runtime.getURL('introTour/introTour.html')});
+            chrome.tabs.update(tab.id, {url: chrome.runtime.getURL('/assets/html/introTour.html')});
     })
 }
 
@@ -214,7 +214,7 @@ function restartTour() {
  * @memberOf optionsPage
  */
 function openStatisticsPage() {
-    openTabSingleton(chrome.runtime.getURL('statisticsPage/statistics.html'));
+    openTabSingleton(chrome.runtime.getURL('/assets/html/statistics.html'));
 }
 
 /**
@@ -223,6 +223,6 @@ function openStatisticsPage() {
  * @method openDataCollectionConsent
  * @memberOf optionsPage
  */
-export function openDataCollectionConsent(){
+function openDataCollectionConsent(){
     showDataCollectionModal($('#dataConsentModal'));
 }

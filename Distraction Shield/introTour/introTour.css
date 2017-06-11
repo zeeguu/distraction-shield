@@ -1,13 +1,13 @@
-h1 {
+#introTour h1 {
     text-align: center;
 }
 
-.tour1 {
+#introTour .tour1 {
     float: right;
     width: 155px;
     height: 1px;
 }
 
-.popover.bottom>.arrow {
-    margin-left: 20px; !important;
+#introTour .popover.bottom>.arrow {
+    margin-left: 20px;
 }

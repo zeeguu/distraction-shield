@@ -1,86 +1,86 @@
-body {
+#options {
     margin: 0 auto;
     min-width: 1000px;
 }
 
-#addUrlDiv {
+#options #addUrlDiv {
     margin-bottom: 15px;
 }
 
 /* ---------- ---------- options alignment ---------- ---------- */
 
-#modeRadioDiv {
+#options #modeRadioDiv {
     float: left;
     width: 30%;
 }
 
-#interval-slider-div {
+#options #interval-slider-div {
     width: 70%;
     overflow: hidden;
 }
 
 /* ---------- ---------- TurnOff Slider ---------- ---------- */
 
-#offBtnDiv {
+#options #offBtnDiv {
     margin-top: 4px;
     margin-bottom: 4px;
     width: 20%;
 }
 
-#offRanDiv {
+#options #offRanDiv {
     margin-top: 3px;
     margin-bottom: 3px;
     width: 50%;
 }
 
-#offValDiv {
+#options #offValDiv {
     margin-top: 11px;
     width: 30%;
     overflow: visible;
 }
 
-.editable-span {
+#options .editable-span {
     display: block;
     max-width: 200px;
     white-space: nowrap;
 }
 
-.editable-span:focus {
+#options .editable-span:focus {
     overflow: hidden;
 }
 
 /* ---------- ---------- table ---------- ---------- */
 
-.pageTitle {
+#options .pageTitle {
     max-width: 500px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.link-bottom {
+#options .link-bottom {
     text-align: center;
     bottom: 0;
 }
 
-.panel {
+#options .panel {
     padding-top: 5px;
     padding-bottom: 5px;
 }
 
-.panel-primary {
+#options .panel-primary {
     padding-top: 0px;
     padding-bottom: 0px;
 }
 
-.page-header {
+#options .page-header {
     margin: 0 auto 0 auto;
     text-align: center;
     border-bottom: 2px solid;
 }
 
 /* ---------- ---------- option button ---------- ---------- */
-.option-button {
+#options .option-button {
     margin-top: 4px;
     margin-bottom: 4px;
     width:90%;
@@ -88,7 +88,7 @@ body {
 
 /* ---------- ---------- Slider ---------- ---------- */
 
-input[type=range] {
+#options input[type=range] {
     -webkit-appearance: none;
     margin: 10px 0;
     width: 99%;
@@ -99,11 +99,11 @@ input[type=range] {
     background-size: cover;
 }
 
-input[type=range]:focus {
+#options input[type=range]:focus {
     outline: none;
 }
 
-input[type=range]::-webkit-slider-thumb {
+#options input[type=range]::-webkit-slider-thumb {
     border: 1px solid #8A8A8A;
     height: 16px;
     width: 35px;
@@ -114,7 +114,7 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 /* ---------- ---------- Message box ---------- ---------- */
-.message-box {
+#options .message-box {
   height: 20px;
   color: #EF5350;
 }

@@ -2,8 +2,7 @@
   "name": "distraction-shield",
   "description": "Distraction Shield!",
   "main": "",
-  "authors": [
-  ],
+  "authors": [],
   "license": "MIT",
   "homepage": "https://github.com/RUGSoftEng/2017-The-Distraction-Shield",
   "ignore": [
