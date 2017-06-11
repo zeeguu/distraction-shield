@@ -32,7 +32,7 @@ ui.startProgress('Constructing pipeline...');
 
 
 const PRODUCTION = false;
-
+const MIN = PRODUCTION ? '.min' : '';
 
 // TODO broccoli-asset-rev, broccoli-eslint, stfsy/broccoli-livereload
 
@@ -71,7 +71,7 @@ let rollup = (tree, entry, dest, format = 'es') => {
           include: 'node_modules/**',
           sourceMap: true,
           namedExports: {
-            'node_modules/jquery/dist/jquery.min.js': [ 'jquery' ]
+            [`node_modules/jquery/dist/jquery${MIN}.js`]: [ 'jquery' ]
           }
         }),
         multiEntry()
@@ -104,12 +104,12 @@ let js = Merge([
 
 let vendorJs = new Concat(Vendor, {
   inputFiles: [
-    '**/*/bootstrap.min.js',
-    '**/*/bootstrap-tour-standalone.min.js',
-    '**/*/jquery.min.js'
+    `bootstrap/dist/js/bootstrap${MIN}.js`,
+    `bootstrap-tour/build/js/bootstrap-tour${MIN}.js`,
+    `jquery/dist/jquery${MIN}.js`
   ],
   outputFile: 'vendor.js',
-  headerFiles: ['jquery/dist/jquery.min.js'] // include jquery before bootstrap
+  headerFiles: [`jquery/dist/jquery${MIN}.js`] // include jquery before bootstrap
 });
 
 /* CSS */
@@ -118,8 +118,8 @@ let css;
   let project = Project;
   let vendor = new Funnel(Vendor, {
     include: [
-      '**/*/bootstrap.min.css',
-      '**/*/bootstrap-tour-standalone.min.css'
+      `**/*/bootstrap${MIN}.css`,
+      `**/*/bootstrap-tour${MIN}.css`
     ]
   });
 

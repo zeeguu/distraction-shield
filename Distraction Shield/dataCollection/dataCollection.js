@@ -35,7 +35,7 @@ export function showDataCollectionModal(modalContainer, staticModal = false, cal
  */
 function initDataConsentButtons(modalContainer){
     $("#learn_more").on('click', () => {
-        modalContainer.find('.modal-body').load("../dataCollection/dataCollectionInfo.html");
+        modalContainer.find('.modal-body').load("../dataCollectionInfo.html");
     });
     getSettings(settings_object => {
         let allowBox = $("#allowBox");
