@@ -19,6 +19,7 @@
     "babel-preset-env": "^1.4.0",
     "broccoli": "^1.1.2",
     "broccoli-babel-transpiler": "^6.0.0",
+    "broccoli-clean-css": "^2.0.1",
     "broccoli-cli": "^1.0.0",
     "broccoli-concat": "^3.2.2",
     "broccoli-funnel": "^1.2.0",

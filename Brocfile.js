@@ -5,6 +5,7 @@ const Funnel = require('broccoli-funnel');
 const Merge = require('broccoli-merge-trees');
 const Concat = require('broccoli-concat');
 const Rollup = require('broccoli-rollup');
+const CleanCss = require('broccoli-clean-css');
 
 // NPM deps
 const path = require('path');
@@ -115,7 +116,12 @@ let vendorJs = new Concat(Vendor, {
 /* CSS */
 let css;
 {
-  let project = Project;
+  let project = new Funnel(Project, {
+    include: ['**/*.css']
+  });
+  if (PROD) {
+    project = new CleanCss(project);
+  }
   let vendor = new Funnel(Vendor, {
     include: [
       `**/*/bootstrap${MIN}.css`,
