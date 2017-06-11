@@ -16,7 +16,7 @@ function requestHTML(link, elem){
     xhr.open('GET', link, true);
     xhr.send();
     xhr.onload = function(){
-        elem.innerHTML = (/<article.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/article>/m).exec(xhr.responseText);
+        elem.innerHTML = (/<article.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/article>/m).exec(xhr.responseText)[0];
     }
 }
 
