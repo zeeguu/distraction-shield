@@ -26,3 +26,8 @@ install:
 
 script:
   - npm test
+
+# Deploy docs to gh-pages
+after_success:
+  - npm run docs
+  - npm run deploy

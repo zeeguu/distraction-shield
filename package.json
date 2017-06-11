@@ -6,7 +6,10 @@
     "start": "broccoli-timepiece dist/",
     "build": "rimraf dist && broccoli build dist",
     "build:production": "npm run build env=production",
-    "test": "npm run build && ava dist/tests.js --verbose"
+    "test": "npm run build && ava dist/tests.js --verbose",
+    "docs": "rimraf dist && esdoc",
+    "predeploy": "rev=\"$(git rev-parse --short HEAD)\"",
+    "deploy": "gh-pages -d dist -m \"Deploy $rev\""
   },
   "repository": {
     "type": "git",
@@ -29,6 +32,8 @@
     "chalk": "^1.1.3",
     "command-line-args": "^4.0.6",
     "console-ui": "^1.0.3",
+    "esdoc": "^0.5.2",
+    "gh-pages": "^1.0.0",
     "mocha": "^3.3.0",
     "rimraf": "^2.6.1",
     "rollup-plugin-commonjs": "^8.0.2",

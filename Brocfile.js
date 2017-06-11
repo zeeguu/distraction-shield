@@ -65,7 +65,7 @@ let rollup = (tree, entry, dest, format = 'es') => {
       entry,
       dest,
       external: [ 'ava' ],
-      sourceMap: PROD ? false : 'inline',
+      sourceMap: PROD ? true : 'inline',
       plugins: [
         filesize(),
         resolve(),
@@ -84,7 +84,7 @@ let rollup = (tree, entry, dest, format = 'es') => {
 let transpile = (tree) => {
   return babel(tree, {
     presets: [ 'env' ],
-    sourceMaps: PROD ? false : 'inline',
+    sourceMaps: PROD ? true : 'inline',
     minified: PROD
   });
 };
