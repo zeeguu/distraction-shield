@@ -1,0 +1,25 @@
+---
+layout: default
+---
+<div class="row">
+    <div class="col-md-1"></div>
+        <div class="col-md-10 jsdocs-div">
+            {% for item in site.data.docs_list.docs %}
+            <h2 class="jsdocs-title">Documentation</h2>
+            <div class="col-md-8 jsdocs-content">
+                <span class="content-span"></span>
+            </div>
+            <nav class="col-md-2 jsdocs-navbar">
+
+                <h3>{{ item.title }}</h3>
+                <ul>
+                    {% for entry in item.subfolderitems %}
+                    <li><a href={{entry.url}}>{{ entry.page }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% endfor %}
+            </nav>
+        </div>
+    <div class="col-md-1"></div>
+</div>
+<script src="../js/jsdocExtractor.js"></script>

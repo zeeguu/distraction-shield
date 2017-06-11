@@ -1,0 +1,13 @@
+docs_list_title: Documentation
+docs:
+
+  - title: Content Scripts
+    subfolderitems:
+      - page: background
+        url: /docs/background.html
+      - page: optionsPage
+        url: /docs/optionsPage.html
+      - page: statisticsPage
+        url: /docs/statisticsPage.html
+      - page: tooltipPage
+        url: /docs/tooltipPage.html
