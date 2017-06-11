@@ -27,7 +27,11 @@ install:
 script:
   - npm test
 
-# Deploy docs to gh-pages
-after_success:
+before_deploy:
   - npm run docs
-  - npm run deploy
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  local_dir: docs
