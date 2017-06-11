@@ -16,7 +16,7 @@ docs:
       - page: blockedSiteBuilder
         url: /docs/module-blockedSiteBuilder.html
       - page: browerserutil
-        url: /docs/module-browerserutil.html
+        url: /docs/module-browserutil.html
       - page: connectDataToHtml
         url: /docs/module-connectDataToHtml.html
       - page: constants

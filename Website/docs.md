@@ -1,7 +1,7 @@
 ---
 layout: documentation
 title: Documentation
-permalink: /docs/
+permalink: /documentation/
 ---
 
 Content placeholder, maybe write some cool stuff on our docs, how its generated n stuff.

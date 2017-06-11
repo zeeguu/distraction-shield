@@ -29,5 +29,3 @@ gems:
 exclude:
   - Gemfile
   - Gemfile.lock
-include:
-  - docs_list.yml
