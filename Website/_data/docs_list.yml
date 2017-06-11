@@ -11,3 +11,27 @@ docs:
         url: /docs/statisticsPage.html
       - page: tooltipPage
         url: /docs/tooltipPage.html
+  - title: Modules
+    subfolderitems:
+      - page: blockedSiteBuilder
+        url: /docs/module-blockedSiteBuilder.html
+      - page: browerserutil
+        url: /docs/module-browerserutil.html
+      - page: connectDataToHtml
+        url: /docs/module-connectDataToHtml.html
+      - page: constants
+        url: /docs/module-constants.html
+      - page: dataCollection
+        url: /docs/module-dataCollection.html
+      - page: dateutil
+        url: /docs/module-dateutil.html
+      - page: exerciseTime
+        url: /docs/module-exerciseTime.html
+      - page: htmlFunctionality
+        url: /docs/module-htmlFunctionality.html
+      - page: inject
+        url: /docs/module-inject.html
+      - page: interception
+        url: /docs/module-interception.html
+      - page: logger
+        url: /docs/module-logger.html

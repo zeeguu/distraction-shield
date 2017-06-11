@@ -3,11 +3,15 @@ document.addEventListener("DOMContentLoaded", function () {
     var content = document.getElementsByClassName('jsdocs-content');
     var title = document.getElementsByClassName('jsdocs-title');
 
+
+
     navbar[0].addEventListener('click', function(a){
-        a.preventDefault();
-        var link = a.srcElement.href;
-        title[0].innerHTML = a.srcElement.innerHTML;
-        requestHTML(link, content[0]);
+        if (a.srcElement.id === "navbar-link"){
+          a.preventDefault();
+          var link = a.srcElement.href;
+          title[0].innerHTML = a.srcElement.innerHTML;
+          requestHTML(link, content[0]);
+        }
     });
 });
 
@@ -16,7 +20,7 @@ function requestHTML(link, elem){
     xhr.open('GET', link, true);
     xhr.send();
     xhr.onload = function(){
-        elem.innerHTML = (/<article.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/article>/m).exec(xhr.responseText)[0];
+        var xml = (/<article.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/article>/m).exec(xhr.responseText)[0];
+        elem.innerHTML = (xml ? xml : '');
     }
 }
-
