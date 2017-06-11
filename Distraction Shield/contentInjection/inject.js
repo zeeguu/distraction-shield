@@ -1,5 +1,6 @@
 import * as constants from '../constants'
 import * as storage from '../modules/storage/storage'
+import $ from 'jquery';
 
 
 /**
@@ -22,7 +23,7 @@ function mainFlow() {
 function initBasis(mode) {
     let message = mode.zeeguuText;
     $.ajax({
-        url: chrome.extension.getURL('contentInjection/inject.html'),
+        url: chrome.extension.getURL('/assets/html/inject.html'),
         type: "GET",
         timeout: 5000,
         datatype: "html",
@@ -42,7 +43,7 @@ function initBasis(mode) {
             $("#tds_modeSpecificText").append(message);
 
             $("#originalDestination").attr("href", extractDestination());
-            $("#aikido").attr("src",chrome.extension.getURL('aikido.png'));
+            $("#aikido").attr("src",chrome.extension.getURL('/assets/images/aikido.png'));
         }
     });
 }

@@ -1,21 +1,21 @@
-.checkbox-inline {
+#dataCollection .checkbox-inline {
     padding-top:5px;
 }
 
-.checkbox-div {
+#dataCollection .checkbox-div {
     text-align:left;
 }
 
-.modal-header {
+#dataCollection .modal-header {
     text-align:center;
 }
 
-.modal-dialog {
+#dataConsentModal .modal-dialog {
     display: inline-block;
     text-align: left;
 }
 
-.modal-content {
+#dataCollection .modal-content {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
     line-height: 1.42857143;

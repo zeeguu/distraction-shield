@@ -1,12 +1,7 @@
-var assert = require('assert');
-var Rectangle = require('../../dist/examples/rectangle.js')['default'];
+import test from 'ava';
+import Rectangle from './rectangle';
 
-describe('Rectangle | module example', function() {
-  before(function() {
-    this.rect = new Rectangle(5, 4);
-  });
-
-  it('should compute surface correctly', function() {
-    assert.equal(this.rect.surface, 20);
-  });
+test('surface area', t => {
+	let r = new Rectangle(8, 10);
+  t.is(r.surface, 80);
 });
