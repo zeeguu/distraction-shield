@@ -6,8 +6,7 @@ let chalk = require('chalk');
 console.log(chalk.green('Publishing docs...'));
 
 ghpages.publish('docs', {
-  message: `Deploy ${git.short()} from ${git.branch()}`,
-  push: false
+  message: `Deploy ${git.short()} from ${git.branch()}`
 }, (err) => {
   if (err) throw Error(err);
 
