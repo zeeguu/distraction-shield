@@ -7,8 +7,7 @@
     "build": "rimraf dist && broccoli build dist",
     "build:production": "npm run build env=production",
     "test": "npm run build && ava dist/tests.js --verbose",
-    "docs": "rimraf docs && esdoc",
-    "deploy": "node ./scripts/deploy-gh-pages"
+    "docs": "rimraf docs && esdoc"
   },
   "repository": {
     "type": "git",
