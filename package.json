@@ -8,8 +8,7 @@
     "build:production": "npm run build env=production",
     "test": "npm run build && ava dist/tests.js --verbose",
     "docs": "rimraf docs && esdoc",
-    "predeploy": "rev=\"$(git rev-parse --short HEAD)\"",
-    "deploy": "gh-pages -d docs -m \"Deploy $rev\""
+    "deploy": "node ./scripts/deploy-gh-pages"
   },
   "repository": {
     "type": "git",
@@ -34,6 +33,7 @@
     "console-ui": "^1.0.3",
     "esdoc": "^0.5.2",
     "gh-pages": "^1.0.0",
+    "git-rev-sync": "^1.9.1",
     "mocha": "^3.3.0",
     "rimraf": "^2.6.1",
     "rollup-plugin-commonjs": "^8.0.2",
