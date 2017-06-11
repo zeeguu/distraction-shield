@@ -25,7 +25,7 @@ install:
   - bower install
 
 script:
-  - npm test
+  - npm run test:ci
 
 before_deploy:
   - npm run docs

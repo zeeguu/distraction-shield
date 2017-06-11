@@ -6,7 +6,9 @@
     "start": "broccoli-timepiece dist/",
     "build": "rimraf dist && broccoli build dist",
     "build:production": "npm run build env=production",
-    "test": "npm run build && ava dist/tests.js --verbose",
+    "build:test": "npm run build env=test",
+    "test": "npm run build:test && ava dist/tests.js --verbose",
+    "test:ci": "npm run build && ava dist/tests.js --verbose",
     "docs": "rimraf docs && esdoc"
   },
   "repository": {
