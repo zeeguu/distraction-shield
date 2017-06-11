@@ -8,7 +8,7 @@
     "128": "/assets/images/aikido.png"
   },
   "offline_enabled": false,
-  "options_page": "options.html",
+  "options_page": "/assets/html/options.html",
   "options_ui": {
     "page": "/assets/html/options.html"
   },
