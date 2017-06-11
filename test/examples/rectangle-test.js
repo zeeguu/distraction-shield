@@ -1,5 +1,5 @@
 import test from 'ava';
-import Rectangle from './Rectangle';
+import Rectangle from './rectangle';
 
 test('surface area', t => {
 	let r = new Rectangle(8, 10);
