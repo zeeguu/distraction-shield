@@ -16,7 +16,7 @@ layout: default
                 <h3 id="navbar-title">{{ item.title }}</h3>
                 <ul>
                     {% for entry in item.subfolderitems %}
-                    <li><a id="navbar-link" href={{entry.url}}>{{ entry.page }}</a></li>
+                    <li><a id="navbar-link" href="{{site.baseurl}}{{entry.url}}">{{ entry.page }}</a></li>
                     {% endfor %}
                 </ul>
                 {% endfor %}

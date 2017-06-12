@@ -1,5 +1,5 @@
 /**
- * The functions that form the functionality of the extension that takes place in the background. HEE DIT IS EEN TEST
+ * The functions that form the functionality of the extension that takes place in the background.
  * @mixin background
  */
 

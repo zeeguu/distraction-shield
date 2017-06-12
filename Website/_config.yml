@@ -17,8 +17,8 @@ title: The Distraction Shield
 email: distractionshield.devteam@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
   Welcome to The Distraction Shield
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "/2017-The-Distraction-Shield" # the subpath of your site, e.g. /blog
+url: "https://rugsofteng.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 favicon: favicon.ico
 github_username:  RUGSoftEng/2017-The-Distraction-Shield
 # Build settings

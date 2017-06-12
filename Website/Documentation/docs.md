@@ -1,6 +1,6 @@
 ---
 layout: documentation
-title: Documentation
+title: Code Documentation
 permalink: /documentation/
 id: 3
 ---

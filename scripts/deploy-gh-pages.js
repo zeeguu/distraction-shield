@@ -7,8 +7,8 @@ let async = require('async');
 console.log(chalk.green('Publishing docs...'));
 async.series([
   (callback) => {
-    ghpages.publish('docs', {
-      message: `Deploy ${git.short()} from ${git.branch()}`,push:false
+    ghpages.publish('Website/_site', {
+      message: `Deploy ${git.short()} from ${git.branch()}`
     }, (err) => {
       if (err) console.error(err);
 
