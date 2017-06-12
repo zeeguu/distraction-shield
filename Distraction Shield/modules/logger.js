@@ -39,7 +39,7 @@ export function setAlarm() {
  * This dumps the log from the storage to the server (if user gave permission?)
  * After that, it clears the logs.
  */
-function scheduledLogDump() {
+export function scheduledLogDump() {//todo remove export
     storage.getSettings(settings_object => {
         storage.getLogs(data => {
             if (settings_object.collectData)
@@ -97,7 +97,7 @@ function sendLogsTo(data){
         headers: {
             'content-type': 'application/json'
         },
-        url: 'http://127.0.0.1:5000/submit', //TODO get API url to send data to
+        url: constants.loggingApiLink,
         data: JSON.stringify(data),
         type: "POST"
     });
