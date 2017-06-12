@@ -5,8 +5,11 @@ permalink: /intro/
 id: 1
 ---
 # Introduction
+The Distraction Shield is a browser extension that would help you value your time. 
 
-The Distraction Shield is a browser extension designed to take advantage of our human nature. 
+**How?**  Turning your **Procrastination** time into **Learning** time! 
+
+The extension is designed to take advantage of our human nature. 
 It is a very common scenario to find ourselves browsing sites such as Facebook or Reddit while we are supposed to be working. 
 The Distraction Shield can help you to do something useful and enriching; a distraction 'Aikido'. 
 
