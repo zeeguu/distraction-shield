@@ -17,3 +17,6 @@ sampleExtension/.idea
 #documentation
 /out
 /docs
+
+# Jekyll
+Website/vendor/
