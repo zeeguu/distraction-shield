@@ -1,7 +1,7 @@
 docs_list_title: Documentation
 docs:
 
-  - title: Content Scripts
+  - title: Scripts
     subfolderitems:
       - page: background
         url: /docs/background.html
@@ -73,3 +73,7 @@ docs:
         url: /docs/TurnOffSlider.html
       - page: UserSettings
         url: /docs/UserSettings.html
+  - title: Content Scripts
+    subfolderitems:
+      - page: inject
+        url: /docs/inject.html
