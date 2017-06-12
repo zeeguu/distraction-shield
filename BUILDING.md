@@ -16,6 +16,10 @@ npm install
 bower install
 ```
 
+For testing :
+
+npm install sinon-chrome --save-dev
+
 ### Step 4 ###
 Build the project!
 
@@ -34,3 +38,5 @@ To run all tests:
 ```
 npm test
 ```
+
+Load the 'dist' folder for in the Chrome browser as a developer extension

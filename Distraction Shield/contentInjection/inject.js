@@ -22,6 +22,7 @@ function mainFlow() {
  */
 function initBasis(mode) {
     let message = mode.zeeguuText;
+
     $.ajax({
         url: chrome.extension.getURL('/assets/html/inject.html'),
         type: "GET",

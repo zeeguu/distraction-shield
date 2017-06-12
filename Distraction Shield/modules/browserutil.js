@@ -11,7 +11,8 @@
  * @param {function} callback Function to call with the result of the search
  */
 export function isOpenTab (url, callback) {
-    chrome.tabs.query({},(tabs) => {
+
+    chrome.tabs.query({}, (tabs) => {
         for (let t of tabs) {
             if (t.url == url) {
                 callback(t.id);

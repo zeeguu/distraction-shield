@@ -158,7 +158,7 @@ function httpGetAsync(theUrlToGet, onSuccess, onFailure) {
     let xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", theUrlToGet, true); // true for asynchronous
     xmlHttp.onreadystatechange = function () {
-        readyStateChange(xmlHttp, onSuccess, onFailure);
+        readyStateChange(xmlHttp, onSuccess, onFailure, theUrlToGet);
     };
     xmlHttp.send(null);
 }
@@ -171,7 +171,7 @@ function httpGetAsync(theUrlToGet, onSuccess, onFailure) {
  * @method readyStateChange
  * @private
  */
-function readyStateChange(xmlHttp, onSuccess, onFailure) {
+function readyStateChange(xmlHttp, onSuccess, onFailure, theUrlToGet) {
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         // simple regex to extract data from title tags, ignoring newlines, tabs and returns
         let titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
@@ -195,13 +195,10 @@ function errorHandler(status) {
     switch (status) {
         case constants.FILE_NOT_FOUND_ERROR:
             return (constants.INVALID_URL_MESSAGE + 'File not found');
-            break;
         case constants.SERVER_ERROR:
             return (constants.INVALID_URL_MESSAGE + 'Server error');
-            break;
         case constants.REQUEST_ABORTED_ERROR:
             return (constants.INVALID_URL_MESSAGE + 'Request aborted');
-            break;
         default:
             return (constants.INVALID_URL_MESSAGE + 'Unknown error ' + status);
     }
