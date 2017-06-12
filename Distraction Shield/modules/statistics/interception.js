@@ -56,10 +56,13 @@ export function incrementInterceptionCounter(urlAddress) {
         blockedSites.addAllToList(result);
         for (let i = 0; i < blockedSites.length; i++) {
             if (stringutil.wildcardStrComp(urlAddress, blockedSites[i].url)) {
-                blockedSites[i].counter = blockedSites[i].counter + 1;
+                let blockedSite = blockedSites[i];
+                blockedSite.counter = blockedSite.counter + 1;
+                logger.logToFile(constants.logEventType.intercepted, ``, `${blockedSite.domain}`, constants.logType.statistics);
                 break;
             }
         }
+
         storage.setBlacklist(blockedSites);
         storage.getInterceptCounter()
             .then(function (output) {
@@ -67,8 +70,9 @@ export function incrementInterceptionCounter(urlAddress) {
                 counter++;
                 storage.setInterceptCounter(counter);
             });
+
+
     });
-    logger.logToFile(constants.logEventType.intercepted, ``, `${urlAddress}`, constants.logType.statistics);
 }
 
 /**
