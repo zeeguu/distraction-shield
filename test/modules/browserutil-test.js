@@ -20,7 +20,7 @@ test.before(() => {
   ]);
 });
 
-test('tabutil | should singleton open tab', t => {
+test('browserutil should singleton open tab', t => {
   let url = 'https://www.google.com';
   t.truthy(global.chrome.tabs.create.notCalled, 'tabs.create should not be called');
   openTabSingleton(url);
@@ -35,7 +35,7 @@ test('tabutil | should singleton open tab', t => {
 
 });
 
-test('tabutil | should find the id of an open tab or return false', t => {
+test('browserutil should find the id of an open tab or return false', t => {
   let urlOpenTab = 'https://www.facebook.com';
   let urlNotOpenTab = 'https://www.google.com';
 

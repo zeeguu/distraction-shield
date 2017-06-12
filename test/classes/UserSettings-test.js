@@ -20,19 +20,17 @@ test.beforeEach(t => {
 
 });
 
-test('UserSettings | should turn on the extension', t => {
+test('UserSettings should turn on the extension', t => {
   t.context.userSettingsOff.turnOn();
   t.truthy(t.context.userSettingsOff.isInterceptionOn());
-  console.log("1 finished");
 });
 
-test('UserSettings | turnOff the extension', t => {
+test('UserSettings turnOff the extension', t => {
   t.context.userSettingsOn.turnOff();
-  t.truthy(!t.context.userSettingsOn.isInterceptionOn());
-  console.log("2 finished");
+  t.falsy(t.context.userSettingsOn.isInterceptionOn());
 });
 
-test('UserSettings | turnOffFor minutes the extension', t => {
+test('UserSettings turnOffFor minutes the extension', t => {
   t.context.userSettingsOff.turnOn();
   var minutes = 10;
 
@@ -41,18 +39,16 @@ test('UserSettings | turnOffFor minutes the extension', t => {
 
   t.context.userSettingsOff.turnOffFor(minutes, true);
 
-  t.is(t.context.userSettingsOff.state, 'Off');
+  t.falsy(t.context.userSettingsOff.isInterceptionOn());
   t.is(t.context.userSettingsOff.offTill.getMinutes(), offTill.getMinutes());
-  console.log("3 finished");
 });
 
-test('UserSettings | turnOffForDay the extension', t => {
+test('UserSettings turnOffForDay the extension', t => {
   t.context.userSettingsOff.turnOn();
 
   let offTill = new Date(new Date().setHours(24, 0, 0, 0));
   t.context.userSettingsOff.turnOffForDay(true);
 
-  t.is(t.context.userSettingsOff.state, 'Off');
+  t.falsy(t.context.userSettingsOff.isInterceptionOn());
   t.is(t.context.userSettingsOff.offTill.getDay(), offTill.getDay());
-  console.log("4 finished");
 });
