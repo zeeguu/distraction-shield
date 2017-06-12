@@ -26,28 +26,6 @@ title: Requirements document
     * Rowan van Beckhoven
     * Jeroen Overschie
 
-## Change Log
-
-
-|Who|When|Which section|What|
-|:---|:---|:---|:---|
-|Alex+Pieter|22-02-17|All|Created Doc|
-|Pieter|25-02-17|All|Processed meeting notes into Requirements Doc (not complete)|
-|Edser, Erik + Elena|25-02-17|All|Editing Doc|
-|Alex|07-03-17|All|Updating Doc as per feedback|
-|Alex|23-03-17|All|Implementing feedback|
-|Elena|10-04-17|All|Implementing feedback|
-|Erik, Mark|01-05-17|All|Implementing feedback|
-|Pieter|15-05-17|Introduction, Title Page|Moved the logo to the Title Page|
-|Pieter|15-05-17|Major Features|Removed floating pieces of text, revised requirements to not refer to current implementation|
-|Pieter|15-05-17|Major Features|User requirements are general requirements, moved all the requirements that are out of place to appropriate sections, restructured in general|
-|Elena|15-05-17|Weekly progress|Added weekly progress|
-|Alex|27-05-17|Weekly progress|Added weekly progress|
-|Edser|10-06-17|Target Users|Rewrote the message|
-|Edser|10-06-17|Layout|Removed random whitespace|
-|Edser|10-06-17|All|Implement feedback of past iterations|
-|Elena|12-06-17|Weekly progress|Updated the weekly progress|
-{:.mbtablestyle}
 
 
 ## Introduction
@@ -146,6 +124,10 @@ The main features of the extension are presented in this section. Distinction is
 
     * ...there is a button that opens the options page, unless that page is open already, then it switches to that tab.
 
+* Create a minimal website that presents the extension
+
+    * The site should be developed using the GitHub pages
+
 #### System Requirements:
 
 * Integrate extension with a third party that provides a platform where the user can make better users can make better use of their time.
@@ -169,6 +151,10 @@ The main features of the extension are presented in this section. Distinction is
         * After how much time the user deactivates the extension
 
     * The users should be notified when they skip too many exercises (NOTE:  Became out of scope before final Iteration of this development team).
+
+#### System Requirements: 
+
+* The extension is ported to work on Firefox. 
 
 ### **Excluded Features**
 
@@ -229,7 +215,7 @@ Here, the requirements of the customer are shown chronologically.
     * **Change slider and input minutes**: 
         in the options page, it is now possible to input a certain amount of time instead of just using the slider. Also, the color of the slider is changed. 
 
-2. Second meeting for SE2  - 04.05.2017
+2. Second meeting for SE2 - 04.05.2017
 
     * **Polish application**: 
         implement visual changes as provided in the feedback
@@ -243,7 +229,7 @@ Here, the requirements of the customer are shown chronologically.
     * **Clean code and modularize application**: 
         create a clean version of the extension using ECMA Script 6 
 
-3. Third meeting for SE2  - 24.05.2017
+3. Third meeting for SE2 - 24.05.2017
 
     * **ES6**: 
         Finish our implementation of ECMA Script 6 
@@ -257,3 +243,30 @@ Here, the requirements of the customer are shown chronologically.
     * **Terms and Conditions**: 
         Add terms and conditions for the user to accept upon installation
 
+4. Fourth online meeting for SE2 - 06.06.2017
+    * **Set up a minimal website**: using gh-pages for introduction purposes. This site can be used both for your final presentation as well as serve as an introduction for potential users.
+
+    * Look into the **prerequisites for publishing the extension** on the Chrome store.
+    
+## Change Log
+
+
+|Who|When|Which section|What|
+|:---|:---|:---|:---|
+|Alex+Pieter|22-02-17|All|Created Doc|
+|Pieter|25-02-17|All|Processed meeting notes into Requirements Doc (not complete)|
+|Edser, Erik + Elena|25-02-17|All|Editing Doc|
+|Alex|07-03-17|All|Updating Doc as per feedback|
+|Alex|23-03-17|All|Implementing feedback|
+|Elena|10-04-17|All|Implementing feedback|
+|Erik, Mark|01-05-17|All|Implementing feedback|
+|Pieter|15-05-17|Introduction, Title Page|Moved the logo to the Title Page|
+|Pieter|15-05-17|Major Features|Removed floating pieces of text, revised requirements to not refer to current implementation|
+|Pieter|15-05-17|Major Features|User requirements are general requirements, moved all the requirements that are out of place to appropriate sections, restructured in general|
+|Elena|15-05-17|Weekly progress|Added weekly progress|
+|Alex|27-05-17|Weekly progress|Added weekly progress|
+|Edser|10-06-17|Target Users|Rewrote the message|
+|Edser|10-06-17|Layout|Removed random whitespace|
+|Edser|10-06-17|All|Implement feedback of past iterations|
+|Elena|12-06-17|Weekly progress|Updated the weekly progress|
+{:.mbtablestyle}
