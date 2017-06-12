@@ -12,6 +12,7 @@ import {
 
 
 test.beforeEach(t => {
+
   t.context.userSettings = new UserSettings();
 
   t.context.blockedList = new BlockedSiteList();
