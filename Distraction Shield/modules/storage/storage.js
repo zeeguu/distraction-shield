@@ -88,7 +88,7 @@ export function getAllUnParsed(callback) {
 /* ---------------- BlockedSiteList / Blacklist --------------- */
 
 /**
- * Gets the {@link BlockedSiteList} from the storage and parses it, before passing it on to the callback
+ * Gets the BlockedSiteList from the storage and parses it, before passing it on to the callback
  * @param {function} callback function that takes the result of this get as parameter
  * @method getBlacklist
  */
@@ -100,7 +100,7 @@ export function getBlacklist(callback) {
 }
 
 /**
- * Gets a promise to the @link BlockedSiteList in the storage
+ * Gets a promise to the BlockedSiteList in the storage
  * @returns {Promise}
  * @method getBlacklistPromise
  */
@@ -111,7 +111,7 @@ export function getBlacklistPromise() {
 }
 
 /**
- * Serializes and then sets the {@link BlockedSiteList} in the storage.
+ * Serializes and then sets the BlockedSiteList in the storage.
  * @param {BlockedSiteList} blockedSiteList function that takes the result of this get as parameter
  * @method setBlacklist
  */
@@ -123,7 +123,7 @@ export function setBlacklist(blockedSiteList) {
 /* ---------------- Settings Object --------------- */
 
 /**
- * Gets the {@link UserSettings} from the storage and parses it, before passing it on to the callback
+ * Gets the UserSettings from the storage and parses it, before passing it on to the callback
  * @param {function} callback function that takes the result of this get as parameter
  * @method getSettings
  */
@@ -135,7 +135,7 @@ export function getSettings(callback) {
 }
 
 /**
- * Gets an unparsed version of the {@link UserSettings} from the storage
+ * Gets an unparsed version of the UserSettings from the storage
  * @param callback function that takes this unparsed output
  * @method getSettingsUnParsed
  */
@@ -146,7 +146,7 @@ export function getSettingsUnParsed(callback) {
 }
 
 /**
- * Serializes and then sets the {@link UserSettings} in the storage.
+ * Serializes and then sets the UserSettings in the storage.
  * @param {UserSettings} settingsObject The object we want to set in the storage
  * @method setSettings
  */
@@ -155,7 +155,7 @@ export function setSettings(settingsObject) {
 }
 
 /**
- * Serializes and then sets the {@link UserSettings} in the storage, after this it calls the callback function.
+ * Serializes and then sets the UserSettings in the storage, after this it calls the callback function.
  * @param {UserSettings} settingsObject The object we want to set in the storage
  * @param {function} callback the function to be called once we return
  * @method setSettingsWithCallback

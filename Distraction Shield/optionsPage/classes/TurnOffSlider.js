@@ -44,7 +44,7 @@ export default class TurnOffSlider extends GreenToRedSlider {
 
     /**
      * Create the right type of message or slider to be shown next to the turn off/on button.
-     * @param {UserSettings} settings_object the {@link UserSettings} on which we decide what to show
+     * @param {UserSettings} settings_object the UserSettings on which we decide what to show
      * @function TurnOffSlider#toggleShowOffMessage
      * @inner
      */
@@ -74,7 +74,7 @@ export default class TurnOffSlider extends GreenToRedSlider {
     }
 
     /**
-     * Function that overrides the {@link GreenToRedSlider} function
+     * Function that overrides the GreenToRedSlider function
      * @param {int} hours
      * @param {int} minutes
      * @param {int} val the value of the slider
@@ -89,7 +89,7 @@ export default class TurnOffSlider extends GreenToRedSlider {
 
     /**
      * Create the right type of message or slider to be shown next to the turn off/on button.
-     * @param {UserSettings} settings_object the {@link UserSettings} that we use to generate the TurnOffMessage
+     * @param {UserSettings} settings_object the UserSettings that we use to generate the TurnOffMessage
      * @function TurnOffSlider#createOffMessage
      * @inner
      */
@@ -98,8 +98,8 @@ export default class TurnOffSlider extends GreenToRedSlider {
     }
 
     /**
-     * Updater function that updates the slider with the new {@link UserSettings}
-     * @param {UserSettings} userSettings the {@link UserSettings} on which we want the slider to update
+     * Updater function that updates the slider with the new UserSettings
+     * @param {UserSettings} userSettings the UserSettings on which we want the slider to update
      * @function TurnOffSlider#updateSettings
      * @inner
      */

@@ -5,7 +5,7 @@
  */
 
 /**
- * loads the {@link BlockedSiteList} into the {@link BlacklistTable}
+ * loads the BlockedSiteList into the BlacklistTable
  * @param {BlockedSiteList} blockedSiteList
  * @param {BlockedSiteList} table
  * @method loadHtmlBlacklist
@@ -41,7 +41,7 @@ export function loadHtmlMode(extensionMode, radioGroup) {
 }
 
 /**
- * Sets the interceptionInterval from the settings to the {@link IntervalSlider}
+ * Sets the interceptionInterval from the settings to the IntervalSlider
  * @param {int} interceptInterval
  * @param {IntervalSlider} html_slider
  * @method loadHtmlInterval

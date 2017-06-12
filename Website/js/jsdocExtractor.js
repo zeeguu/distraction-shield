@@ -3,8 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
     var content = document.getElementsByClassName('jsdocs-content');
     var title = document.getElementsByClassName('jsdocs-title');
 
-
-
     navbar[0].addEventListener('click', function(a){
         if (a.srcElement.id === "navbar-link"){
           a.preventDefault();

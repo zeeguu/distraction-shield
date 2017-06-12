@@ -1,5 +1,5 @@
 /**
- * The functions that form the functionality of the extension that takes place in the background.
+ * The functions that form the functionality of the extension that takes place in the background. HEE DIT IS EEN TEST
  * @mixin background
  */
 
@@ -22,7 +22,7 @@ import StorageListener from './modules/storage/StorageListener'
 let isInterceptionOn = true;
 
 /**
- * inits the background by setting the listener to the {@link BlockedSiteList}
+ * inits the background by setting the listener to the BlockedSiteList
  * @memberOf background
  */
 export function initBackground(){
@@ -34,8 +34,8 @@ export function initBackground(){
 /* ---------- ---------- Webrequest functions ----------  ---------- */
 
 /**
- * This function updates the webrequestlistener by passing a {@link BlockedSiteList} to it. From this list, the active urls
- * are taken. If the {@link UserSettings}  is on and there are active urls, a new webrequestlistener is added which intercepts
+ * This function updates the webrequestlistener by passing a BlockedSiteList to it. From this list, the active urls
+ * are taken. If the UserSettings is on and there are active urls, a new webrequestlistener is added which intercepts
  * the active urls.
  * @param blockedSiteList {BlockedSiteList} the new list of BlockedSites
  * @memberOf background
@@ -110,8 +110,8 @@ function handleInterception(details) {
 }
 
 /**
- * turns off interception from the background by setting {@link isInterceptionOn} to false and by retrieving
- * the {@link UserSettings}  from {@link storage} and triggering the turnOffFor function
+ * turns off interception from the background by setting isInterceptionOn to false and by retrieving
+ * the UserSettings  from storage and triggering the turnOffFor function
  * @memberOf background
  */
 function turnOffInterception() {
