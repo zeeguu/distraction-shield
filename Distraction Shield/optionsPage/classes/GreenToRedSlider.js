@@ -1,7 +1,6 @@
 import * as constants from "../../constants"
 import {logToFile} from '../../modules/logger'
 
-
 /**
  * class that connects a <.div> with a span and slider together with all the functionality.
  * I.E. changing colour, updating eachother's values and functionality to be added to the html_elements.
