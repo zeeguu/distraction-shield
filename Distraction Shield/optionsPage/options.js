@@ -26,17 +26,17 @@ import {showDataCollectionModal} from '../dataCollection/dataCollection'
  * @memberOf optionsPage*/
 let modeGroup = "modeOptions";
 
-/** Link to the {@link BlacklistTable} on this page
+/** Link to the BlacklistTable on this page
  * @type {BlacklistTable}
  * @memberOf optionsPage*/
 let blockedSiteListTable;
 
-/** Link to the {@link IntervalSlider} on this page
+/** Link to the IntervalSlider on this page
  * @type {IntervalSlider}
  * @memberOf optionsPage*/
 let intervalSlider;
 
-/**Link to the {@link TurnOffSlider} at this page.
+/**Link to the  TurnOffSlider at this page.
  * @type {TurnOffSlider}
  * @memberOf optionsPage*/
 let turnOffSlider;
@@ -91,7 +91,7 @@ function connectStorageDataToHtml(storage_output) {
 }
 
 /**
- * Connect the {@link BlockedSiteList} to the {@link BlacklistTable}.
+ * Connect the BlockedSiteList to the {BlacklistTable.
  * @param {BlockedSiteList} blockedSiteList
  * @method loadBlockedSiteList
  * @memberOf optionsPage

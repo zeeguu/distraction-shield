@@ -34,7 +34,7 @@ export default class BlockedSiteList extends Array {
 
     /**
      * Adds the BlockedSite if this doesn't exist in the list yet.
-     * @param newBlockedSite {BlockedSite} {@link BlockedSite} to be added
+     * @param newBlockedSite {BlockedSite} BlockedSite to be added
      * @returns {boolean} Returns true if added to the list
      * @function BlockedSiteList#addToList
      */
@@ -53,7 +53,7 @@ export default class BlockedSiteList extends Array {
 
     /**
      * Adds all BlockedSites to the list
-     * @param blockedSiteList {BlockedSiteList} {@link BlockedSite} to be added
+     * @param blockedSiteList {BlockedSiteList}BlockedSite to be added
      * @function BlockedSiteList#addAllToList
      */
     addAllToList(blockedSiteList) {
@@ -85,7 +85,7 @@ export default class BlockedSiteList extends Array {
     }
 
     /**
-     * Filters BlockedSiteList based on checkboxVal of {@link BlockedSite}
+     * Filters BlockedSiteList based on checkboxVal of BlockedSite
      * @returns {BlockedSiteList} filtered BlockedSiteList
      * @function BlockedSiteList#filterOnChecked
      */

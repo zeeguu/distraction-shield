@@ -7,7 +7,7 @@
     "build": "rimraf dist && broccoli build dist",
     "build:production": "npm run build env=production",
     "test": "npm run build && ava dist/tests.js --verbose",
-    "docs": "rimraf docs && esdoc",
+    "docs": "jsdoc ./\"Distraction Shield\" -c .jsdoc.json",
     "deploy": "node ./scripts/deploy-gh-pages"
   },
   "repository": {
@@ -40,7 +40,8 @@
     "rollup-plugin-commonjs": "^8.0.2",
     "rollup-plugin-filesize": "^1.3.2",
     "rollup-plugin-multi-entry": "^2.0.1",
-    "rollup-plugin-node-resolve": "^3.0.0"
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "jsdoc": "^3.4.3"
   },
   "dependencies": {
     "jquery": "^3.2.1",

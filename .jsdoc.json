@@ -9,13 +9,14 @@
   "plugins": [],
   "templates": {
     "cleverLinks": true,
+    "monospaceLinks": true,
     "default": {
       "outputSourceFiles": false
     }
   },
   "opts": {
     "template": "templates/default",
-    "destination": "./docs/",
+    "destination": "./Website/docs/",
     "recurse": true
   }
 }
