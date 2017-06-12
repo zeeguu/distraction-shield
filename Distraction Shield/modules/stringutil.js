@@ -15,7 +15,6 @@ export function wildcardStrComp(str, rule) {
 
 /**
  * This function checks if a string url is in a given list of regexes.
- * @see {module:constants.whitelist}
  * @param {RegExp[]} regexList the list to check against
  * @param {String} url The string to check against the regexp's in regexList
  * @returns {Boolean} True if url matches one of the regexp's in regexList, false otherwise

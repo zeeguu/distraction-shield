@@ -2,7 +2,7 @@
 export default class BasicTable {
 
     /**
-     * Abstract Class for rendering {@link BlockedSiteList} data to tables
+     * Abstract Class for rendering BlockedSiteList data to tables
      * @param html_element table element to fill with data
      * @abstract
      * @constructs BasicTable

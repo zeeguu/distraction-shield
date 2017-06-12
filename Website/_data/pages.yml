@@ -1,0 +1,13 @@
+pages:
+  title: Introduction
+  url: /introduction/
+
+  title: Documentation
+  url: /docs/
+  subcategories:
+    - title: Code Documentation
+      url: /Documentation/documentation/
+    - title: Architecture Documentation
+      url: /Documentation/architecture_doc/
+    - title: Requirements Documentation
+      url: /Documentation/requirements_doc/

@@ -11,7 +11,7 @@ import BasicTable from "./BasicTable"
 export default class ExerciseTimeTable extends BasicTable {
 
     /**
-     * This functions generates an HTML row containing the icon, name, counter & timespent of one {@link BlockedSite}
+     * This functions generates an HTML row containing the icon, name, counter & timespent of one BlockedSite
      * @param item item containing the date + time spent on exercises
      * @return {JQuery|jQuery|HTMLElement} HTML row from the data
      * @function BlacklistStatsTable#generateTableRow

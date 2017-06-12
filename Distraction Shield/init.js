@@ -95,7 +95,7 @@ function runIntroTour() {
 }
 
 /**
- * Starts the logger alarm. {@link logger}
+ * Starts the logger alarm.
  * @memberOf init
  */
 function initAlarm(){

@@ -10,7 +10,7 @@ import BasicTable from "./BasicTable"
  */
 export default class BlacklistStatsTable extends BasicTable {
     /**
-     * This functions generates an HTML row containing the icon, name, counter & timespent of one {@link BlockedSite}
+     * This functions generates an HTML row containing the icon, name, counter & timespent of one BlockedSite
      * @param {BlockedSite} site a BlockedSite of which the data is used
      * @return {JQuery|jQuery|HTMLElement} HTML row from the data
      * @function BlacklistStatsTable#generateTableRow

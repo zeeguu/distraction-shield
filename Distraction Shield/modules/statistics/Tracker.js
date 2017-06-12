@@ -209,7 +209,7 @@ export default class Tracker {
 
     /**
      * Puts the timeValues previously extracted using the retrieveTimeSpent method back in to the
-     * {@link Tracker#blockedsites} field.
+     * Tracker#blockedsites field.
      * @param timeValues
      * @function Tracker#putBackTimeSpent
      */
@@ -221,7 +221,7 @@ export default class Tracker {
     }
 
     /**
-     * adds the BlockedSiteList from the storage to {@link Tracker#blockedsites}.
+     * adds the BlockedSiteList from the storage to Tracker#blockedsites.
      * @function Tracker#getBlockedSites
      */
     getBlockedSites() {

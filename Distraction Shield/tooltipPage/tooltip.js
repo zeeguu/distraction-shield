@@ -94,7 +94,7 @@ function toggleBlockedSite(url) {
     }
 }
 /**
- * Changes the text of {@link saveButton} to Block/Unblock
+ * Changes the text of saveButton to Block/Unblock
  * @param blocked {boolean} true = 'Block', false = 'Unblock'
  * @memberOf tooltipPage
  */
@@ -106,7 +106,7 @@ function setSaveButton(blocked){
 }
 
 /**
- * Change colour and update functionality of {@link saveButton} when we add a new website to the blockedSiteList
+ * Change colour and update functionality of saveButton when we add a new website to the blockedSiteList
  * @memberOf tooltipPage
  */
 function setSaveButtonToSuccess() {
@@ -131,7 +131,7 @@ function saveCurrentPageToBlacklist() {
 }
 
 /**
- * Update the functionality of {@see saveButton} to one of 3 states:
+ * Update the functionality of saveButton to one of 3 states:
  * <ul style="list-style: none;">
  * <li>1. Add a non-blacklisted website to the blacklist/blockedSiteList
  * <li>2. Disable the blocking of this blacklisted website
