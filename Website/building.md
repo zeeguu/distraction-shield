@@ -2,6 +2,7 @@
 title: Building
 layout: page
 permalink: /building/
+id: 2
 ---
 # Building the project ##
 In order to build the project you need to complete the following steps.
