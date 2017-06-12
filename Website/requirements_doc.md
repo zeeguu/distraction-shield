@@ -46,6 +46,7 @@ title: Requirements document
 |Edser|10-06-17|Target Users|Rewrote the message|
 |Edser|10-06-17|Layout|Removed random whitespace|
 |Edser|10-06-17|All|Implement feedback of past iterations|
+|Elena|12-06-17|Weekly progress|Updated the weekly progress|
 {:.mbtablestyle}
 
 
@@ -76,9 +77,6 @@ The main features of the extension are presented in this section. Distinction is
 #### System Requirements
 
 * The extension is developed for Chrome.
-
-* The extension is ported to work on Firefox. (NOTE:  Became out of scope before final Iteration of this development team)
-
 
 ### **Important**
 
