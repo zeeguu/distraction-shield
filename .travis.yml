@@ -26,7 +26,7 @@ install:
 
 script:
   - npm run test:ci
-  - eslint 'Distraction Shield'
+  - eslint Distraction\ Shield
 
 before_deploy:
   - npm run docs

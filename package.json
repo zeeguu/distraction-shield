@@ -36,6 +36,7 @@
     "console-ui": "^1.0.3",
     "crx": "^3.2.1",
     "esdoc": "^0.5.2",
+    "eslint": "^4.0.0",
     "gh-pages": "^1.0.0",
     "git-rev-sync": "^1.9.1",
     "mocha": "^3.3.0",
