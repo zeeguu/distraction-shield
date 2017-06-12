@@ -179,7 +179,7 @@ function readyStateChange(xmlHttp, onSuccess, onFailure, theUrlToGet) {
             let title = titleTags[1];
             onSuccess(xmlHttp.responseURL, title);
         } else {
-            onSuccess(xmlHttp.responseURL, 'theUrlToGet');
+            onSuccess(xmlHttp.responseURL, theUrlToGet);
         }
     } else if (xmlHttp.readyState == 4) {
         onFailure(errorHandler(xmlHttp.status));
