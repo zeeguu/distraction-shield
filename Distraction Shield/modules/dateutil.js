@@ -1,8 +1,12 @@
-// This module is an utility to help get the correct format for dates which are used in the codebase.
+/**
+ * This module is an utility to help get the correct format for dates which are used in the codebase.
+ * @module dateutil
+ */
+
 
 /**
  * Converts milliseconds to HH:MM:SS format
- * @param {int} seconds amount of seconds
+ * @param {int} ms amount of milliseconds
  */
 export function msToHHMMSS(ms) {
     return new Date(ms).toISOString().substr(11, 8);
@@ -17,7 +21,7 @@ export function formatDate(date) {
 }
 
 /**
- * returns the current date, formatted in the correct format.
+ * Returns the current date, formatted in the correct format.
  */
 export function getToday() {
     let dateObject = new Date();

@@ -1,8 +1,15 @@
 import * as constants from '../constants'
 import * as storage from '../modules/storage/storage'
+import $ from 'jquery';
+
 
 /**
- * Check if we have come here after tds redirection, if not return, if so get mode and
+ * This module injects html to all content script matches in the manifest.
+ * @module inject
+ */
+
+/**
+ * Check if we have come here after tds redirection, if not return, if so get mode and inject html.
  */
 function mainFlow() {
     if (!constants.tdsRedirectRegex.test(window.location.href)) return;
@@ -11,12 +18,13 @@ function mainFlow() {
 
 /**
  * Initialize the tds info panel with the proper text based on mode
- * @param {JSON object} mode
+ * @param {modes} mode used to set the text for the generalInfoText
  */
 function initBasis(mode) {
     let message = mode.zeeguuText;
+
     $.ajax({
-        url: chrome.extension.getURL('contentInjection/inject.html'),
+        url: chrome.extension.getURL('/assets/html/inject.html'),
         type: "GET",
         timeout: 5000,
         datatype: "html",
@@ -25,6 +33,10 @@ function initBasis(mode) {
             $("body").after(infoDiv);
             $("#tds_infoDiv").css('max-width', '800px');
             $("#tds_generalInfoText").append(constants.zeeguuInfoText);
+            $("#tds_close").click(function () {
+                this.parentNode.parentNode.removeChild(this.parentNode);
+                return false;
+            });
 
             if (window.location.href.indexOf(constants.zeeguLoginLink) != -1) {
                 if (mode.label == constants.modes.pro.label) {
@@ -36,6 +48,7 @@ function initBasis(mode) {
             $("#tds_modeSpecificText").append(message);
 
             $("#originalDestination").attr("href", extractDestination());
+            $("#aikido").attr("src",chrome.extension.getURL('/assets/images/aikido.png'));
         }
     });
 }

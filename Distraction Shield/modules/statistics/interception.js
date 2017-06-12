@@ -2,11 +2,17 @@ import * as storage from '../storage/storage'
 import * as constants from '../../constants'
 import * as stringutil from '../stringutil'
 import BlockedSiteList from '../../classes/BlockedSiteList'
+import * as logger from '../../modules/logger'
+
+/**
+ * This module takes care of all the data that needs to be updated when we are intercepted
+ * @module interception
+ */
 
 /**
  * This method goes through the interceptDateList and count how many times the user was intercepted last day,
  * last week, last month and the total amount of interceptions.
- * @param {List} dateList the total list with all interceptions on the different days
+ * @param {Array} dateList the total list with all interceptions on the different days
  */
 export function calcInterceptData(dateList) {
     let tmp = dateList;
@@ -50,10 +56,13 @@ export function incrementInterceptionCounter(urlAddress) {
         blockedSites.addAllToList(result);
         for (let i = 0; i < blockedSites.length; i++) {
             if (stringutil.wildcardStrComp(urlAddress, blockedSites[i].url)) {
-                blockedSites[i].counter = blockedSites[i].counter + 1;
+                let blockedSite = blockedSites[i];
+                blockedSite.counter = blockedSite.counter + 1;
+                logger.logToFile(constants.logEventType.intercepted, ``, `${blockedSite.domain}`, constants.logType.statistics);
                 break;
             }
         }
+
         storage.setBlacklist(blockedSites);
         storage.getInterceptCounter()
             .then(function (output) {
@@ -61,9 +70,9 @@ export function incrementInterceptionCounter(urlAddress) {
                 counter++;
                 storage.setInterceptCounter(counter);
             });
+
+
     });
-
-
 }
 
 /**

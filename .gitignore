@@ -1,6 +1,5 @@
-.gitignore
-
 npm-debug.log
+package-lock.json
 
 sampleExtension/.idea
 .idea/
@@ -15,8 +14,10 @@ sampleExtension/.idea
 
 #documentation
 /out
+/docs
 
-
-sampleExtension/.idea
-.idea/
-
+# Jekyll
+Website/vendor/
+Website/_site/
+Website/.sass-cache/
+Website/.idea
