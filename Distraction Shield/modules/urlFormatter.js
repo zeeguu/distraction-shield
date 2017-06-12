@@ -179,7 +179,7 @@ function readyStateChange(xmlHttp, onSuccess, onFailure) {
             let title = titleTags[1];
             onSuccess(xmlHttp.responseURL, title);
         } else {
-            onSuccess(xmlHttp.responseURL, theUrlToGet);
+            onSuccess(xmlHttp.responseURL, 'theUrlToGet');
         }
     } else if (xmlHttp.readyState == 4) {
         onFailure(errorHandler(xmlHttp.status));
@@ -195,13 +195,10 @@ function errorHandler(status) {
     switch (status) {
         case constants.FILE_NOT_FOUND_ERROR:
             return (constants.INVALID_URL_MESSAGE + 'File not found');
-            break;
         case constants.SERVER_ERROR:
             return (constants.INVALID_URL_MESSAGE + 'Server error');
-            break;
         case constants.REQUEST_ABORTED_ERROR:
             return (constants.INVALID_URL_MESSAGE + 'Request aborted');
-            break;
         default:
             return (constants.INVALID_URL_MESSAGE + 'Unknown error ' + status);
     }

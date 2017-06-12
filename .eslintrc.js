@@ -9,10 +9,12 @@ module.exports = {
     browser: true
   },
   rules: {
+    'no-console': 0
   },
   globals: {
     'chrome': true,
     '$': true,
-    'Promise': true
+    'Promise': true,
+    'Tour': true
   }
 };
