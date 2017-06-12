@@ -11,7 +11,6 @@ import * as connectDataToHtml from './connectDataToHtml'
 import * as htmlFunctionality from './htmlFunctionality'
 import {feedbackLink, tds_blacklist, tds_settings, tds_interceptCounter} from '../constants'
 import {showDataCollectionModal} from '../dataCollection/dataCollection'
-import {scheduledLogDump} from '../modules/logger'
 
 /**
  * This file contains the core functions of the options page. this has all the local variables,
@@ -76,7 +75,6 @@ function connectHtmlFunctionality() {
     htmlFunctionality.connectButton($('#feedbackButton'), openFeedbackForm);
     htmlFunctionality.connectButton($('#tourRestartButton'), restartTour);
     htmlFunctionality.connectButton($('#dataSettingsButton'), openDataCollectionConsent);
-    htmlFunctionality.connectButton($('#sendLogsBtn'), scheduledLogDump );
     htmlFunctionality.setKeyPressFunctions($('#textFld'), saveNewUrl);
 }
 

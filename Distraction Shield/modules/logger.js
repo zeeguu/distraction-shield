@@ -39,7 +39,7 @@ export function setAlarm() {
  * This dumps the log from the storage to the server (if user gave permission?)
  * After that, it clears the logs.
  */
-export function scheduledLogDump() {//todo remove export
+function scheduledLogDump() {
     storage.getSettings(settings_object => {
         storage.getLogs(data => {
             if (settings_object.collectData)
