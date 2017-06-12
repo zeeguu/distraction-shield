@@ -11,6 +11,8 @@ module.exports = {
   rules: {
   },
   globals: {
-    'chrome': true
+    'chrome': true,
+    '$': true,
+    'Promise': true
   }
 };
