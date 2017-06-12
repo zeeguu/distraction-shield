@@ -2,35 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>BlackListStatsTable - Documentation</title>
+    <title>JSDoc: Class: BlackListStatsTable</title>
 
-    <script src="scripts/prettify/prettify.js"></script>
-    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
 </head>
+
 <body>
 
-<input type="checkbox" id="nav-trigger" class="nav-trigger" />
-<label for="nav-trigger" class="navicon-button x">
-  <div class="navicon"></div>
-</label>
-
-<label for="nav-trigger" class="overlay"></label>
-
-<nav>
-    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BasicTable.html">BasicTable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BasicTable.html#createTable">createTable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BasicTable.html#generateTableRow">generateTableRow</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BasicTable.html#render">render</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BlackListStatsTable.html">BlackListStatsTable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlackListStatsTable.html#createTable">createTable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlackListStatsTable.html#generateTableRow">generateTableRow</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlackListStatsTable.html#render">render</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BlacklistTable.html">BlacklistTable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlacklistTable.html#addToTable">addToTable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlacklistTable.html#addToTableWithFadeIn">addToTableWithFadeIn</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlacklistTable.html#generateTableRow">generateTableRow</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlacklistTable.html#removeAllFromTable">removeAllFromTable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlacklistTable.html#render">render</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlacklistTable.html#setCheckboxFunction">setCheckboxFunction</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlacklistTable.html#setDeleteButtonFunction">setDeleteButtonFunction</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BlockedSite.html">BlockedSite</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlockedSite.html#constructIcon">constructIcon</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlockedSite.html#constructUrl">constructUrl</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlockedSite.html#deserializeBlockedSite">deserializeBlockedSite</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlockedSite.html#parseBlockedSite">parseBlockedSite</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlockedSite.html#serializeBlockedSite">serializeBlockedSite</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="BlockedSiteList.html">BlockedSiteList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlockedSiteList.html#addAllToList">addAllToList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlockedSiteList.html#addToList">addToList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlockedSiteList.html#deserializeBlockedSiteList">deserializeBlockedSiteList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlockedSiteList.html#filterOnChecked">filterOnChecked</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlockedSiteList.html#parseBlockedSite">parseBlockedSite</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlockedSiteList.html#removeFromList">removeFromList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlockedSiteList.html#serializeBlockedSiteList">serializeBlockedSiteList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="BlockedSiteList.html#updateInList">updateInList</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ExerciseTimeTable.html">ExerciseTimeTable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExerciseTimeTable.html#..BlacklistStatsTable#generateTableRow">.BlacklistStatsTable#generateTableRow</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExerciseTimeTable.html#createTable">createTable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExerciseTimeTable.html#generateTableRow">generateTableRow</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="ExerciseTimeTable.html#render">render</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="GreenToRedSlider.html">GreenToRedSlider</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GreenToRedSlider.html#calculateHours">calculateHours</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GreenToRedSlider.html#checkTimeValidity">checkTimeValidity</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GreenToRedSlider.html#setOnEventFunc">setOnEventFunc</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GreenToRedSlider.html#setValue">setValue</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GreenToRedSlider.html#timeInputError">timeInputError</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GreenToRedSlider.html#updateColor">updateColor</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="InterceptionCounterTable.html">InterceptionCounterTable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="InterceptionCounterTable.html#createTable">createTable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="InterceptionCounterTable.html#generateTableRow">generateTableRow</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="InterceptionCounterTable.html#render">render</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="IntervalSlider.html">IntervalSlider</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="IntervalSlider.html#calculateHours">calculateHours</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="IntervalSlider.html#checkTimeValidity">checkTimeValidity</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="IntervalSlider.html#setOnEventFunc">setOnEventFunc</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="IntervalSlider.html#setValue">setValue</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="IntervalSlider.html#timeInputError">timeInputError</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="IntervalSlider.html#updateColor">updateColor</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="StorageListener.html">StorageListener</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Tracker.html">Tracker</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#addAlarmListener">addAlarmListener</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#addIdleListener">addIdleListener</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#addOnActiveTabChangeListener">addOnActiveTabChangeListener</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#addOnTabUpdateListener">addOnTabUpdateListener</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#compareDomain">compareDomain</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#compareUrlToRegex">compareUrlToRegex</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#createRegexFromDomain">createRegexFromDomain</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#createTrackerAlarm">createTrackerAlarm</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#getBlockedSites">getBlockedSites</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#getCurrentTab">getCurrentTab</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#handleStorageChange">handleStorageChange</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#incTimeBlockedSite">incTimeBlockedSite</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#incTimeExercises">incTimeExercises</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#init">init</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#matchToBlockedSites">matchToBlockedSites</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#putBackTimeSpent">putBackTimeSpent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#retrieveTimeSpent">retrieveTimeSpent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#triggerUpdateTime">triggerUpdateTime</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Tracker.html#updateIdleState">updateIdleState</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="TurnOffSlider.html">TurnOffSlider</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TurnOffSlider.html#addStorageListener">addStorageListener</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TurnOffSlider.html#calculateHours">calculateHours</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TurnOffSlider.html#checkTimeValidity">checkTimeValidity</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TurnOffSlider.html#createMessage">createMessage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TurnOffSlider.html#createOffMessage">createOffMessage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TurnOffSlider.html#formatDate">formatDate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TurnOffSlider.html#init">init</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TurnOffSlider.html#offButtonFunc">offButtonFunc</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TurnOffSlider.html#setOnEventFunc">setOnEventFunc</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TurnOffSlider.html#setValue">setValue</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TurnOffSlider.html#timeInputError">timeInputError</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TurnOffSlider.html#toggleShowOffMessage">toggleShowOffMessage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TurnOffSlider.html#updateColor">updateColor</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="TurnOffSlider.html#updateSettings">updateSettings</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="UserSettings.html">UserSettings</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UserSettings.html#deserializeSettings">deserializeSettings</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UserSettings.html#parseSettingsObject">parseSettingsObject</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UserSettings.html#reInitTimer">reInitTimer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UserSettings.html#serializeSettings">serializeSettings</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UserSettings.html#turnExtensionBackOn">turnExtensionBackOn</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UserSettings.html#turnOff">turnOff</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UserSettings.html#turnOffFor">turnOffFor</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UserSettings.html#turnOffForDay">turnOffForDay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="UserSettings.html#turnOn">turnOn</a></span></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-blockedSiteBuilder.html">blockedSiteBuilder</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-blockedSiteBuilder.html#~createBlockedSiteAndAddToStorage">createBlockedSiteAndAddToStorage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-blockedSiteBuilder.html#~createNewBlockedSite">createNewBlockedSite</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-browserutil.html">browserutil</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-browserutil.html#.isOpenTab">isOpenTab</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-browserutil.html#.openTabSingleton">openTabSingleton</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-browserutil.html#.scrubFromHistory">scrubFromHistory</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-connectDataToHtml.html">connectDataToHtml</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-constants.html">constants</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-dataCollection.html">dataCollection</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-dataCollection.html#.showDataCollectionModal">showDataCollectionModal</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-dataCollection.html#~initDataConsentButtons">initDataConsentButtons</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-dataCollection.html#~setDataCollection">setDataCollection</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-dateutil.html">dateutil</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-dateutil.html#.formatDate">formatDate</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-dateutil.html#.getToday">getToday</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-dateutil.html#.msToHHMMSS">msToHHMMSS</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-exerciseTime.html">exerciseTime</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-htmlFunctionality.html">htmlFunctionality</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-inject.html">inject</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-inject.html#~extractDestination">extractDestination</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-inject.html#~initBasis">initBasis</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-inject.html#~mainFlow">mainFlow</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-interception.html">interception</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-interception.html#.addToInterceptDateList">addToInterceptDateList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-interception.html#.calcInterceptData">calcInterceptData</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-interception.html#.incrementInterceptionCounter">incrementInterceptionCounter</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-logger.html">logger</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-logger.html#.logToFile">logToFile</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-logger.html#~dumpToFile">dumpToFile</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-logger.html#~scheduledLogDump">scheduledLogDump</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-logger.html#~sendLogsTo">sendLogsTo</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-logger.html#~storeLog">storeLog</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-storage.html">storage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~clearLogs">clearLogs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~getAll">getAll</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~getAllUnParsed">getAllUnParsed</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~getBlacklist">getBlacklist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~getBlacklistPromise">getBlacklistPromise</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~getExerciseTimeList">getExerciseTimeList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~getInterceptCounter">getInterceptCounter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~getInterceptDateList">getInterceptDateList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~getLogs">getLogs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~getMode">getMode</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~getSettings">getSettings</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~getSettingsUnParsed">getSettingsUnParsed</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~setBlacklist">setBlacklist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~setExerciseTimeList">setExerciseTimeList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~setInterceptCounter">setInterceptCounter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~setInterceptDateList">setInterceptDateList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~setLogFile">setLogFile</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~setLogs">setLogs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~setSettings">setSettings</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storage.html#~setSettingsWithCallback">setSettingsWithCallback</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-storageModifier.html">storageModifier</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storageModifier.html#~addBlockedSiteToStorage">addBlockedSiteToStorage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storageModifier.html#~removeBlockedSiteFromStorage">removeBlockedSiteFromStorage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-storageModifier.html#~updateBlockedSiteInStorage">updateBlockedSiteInStorage</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-stringutil.html">stringutil</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-stringutil.html#~isInRegexList">isInRegexList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-stringutil.html#~wildcardStrComp">wildcardStrComp</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-urlFormatter.html">urlFormatter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-urlFormatter.html#~getUrlFromServer">getUrlFromServer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-urlFormatter.html#~httpGetAsync">httpGetAsync</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-urlFormatter.html#~stripOfAll">stripOfAll</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-urlFormatter.html#~stripOfFileName">stripOfFileName</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-urlFormatter.html#~stripOfFinalSlash">stripOfFinalSlash</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-urlFormatter.html#~stripOfPort">stripOfPort</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-urlFormatter.html#~stripOfScheme">stripOfScheme</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-UUIDGenerator.html">UUIDGenerator</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-UUIDGenerator.html#~generateUUID">generateUUID</a></span></li><li class="nav-heading">Mixins</li><li class="nav-heading"><span class="nav-item-type type-mixin">M</span><span class="nav-item-name"><a href="background.html">background</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="background.html#.addWebRequestListener">addWebRequestListener</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="background.html#.exports.initBackground">exports.initBackground</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="background.html#.handleInterception">handleInterception</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="background.html#.handleStorageChange">handleStorageChange</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="background.html#.intercept">intercept</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="background.html#.removeWebRequestListener">removeWebRequestListener</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="background.html#.replaceListener">replaceListener</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="background.html#.turnOffInterception">turnOffInterception</a></span></li><li class="nav-heading"><span class="nav-item-type type-mixin">M</span><span class="nav-item-name"><a href="init.html">init</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="init.html#.initAlarm">initAlarm</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="init.html#.initBlacklist">initBlacklist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="init.html#.initExerciseTime">initExerciseTime</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="init.html#.initInterceptCounter">initInterceptCounter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="init.html#.initInterceptDateList">initInterceptDateList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="init.html#.initSession">initSession</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="init.html#.initSettings">initSettings</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="init.html#.runIntroTour">runIntroTour</a></span></li><li class="nav-heading"><span class="nav-item-type type-mixin">M</span><span class="nav-item-name"><a href="optionsPage.html">optionsPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.connectButton">connectButton</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.connectHtmlFunctionality">connectHtmlFunctionality</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.connectStorageDataToHtml">connectStorageDataToHtml</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.initModeSelection">initModeSelection</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.initOptionsPage">initOptionsPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.loadBlockedSiteList">loadBlockedSiteList</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.loadHtmlBlacklist">loadHtmlBlacklist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.loadHtmlInterceptCounter">loadHtmlInterceptCounter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.loadHtmlInterval">loadHtmlInterval</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.loadHtmlMode">loadHtmlMode</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.loadInterceptionCounter">loadInterceptionCounter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.loadSettings">loadSettings</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.onStorageChanged">onStorageChanged</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.openDataCollectionConsent">openDataCollectionConsent</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.openFeedbackForm">openFeedbackForm</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.openStatisticsPage">openStatisticsPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.reloadHtmlBlacklist">reloadHtmlBlacklist</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.reloadTable">reloadTable</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.resetMessageBox">resetMessageBox</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.restartTour">restartTour</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.saveNewUrl">saveNewUrl</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.setKeyPressFunctions">setKeyPressFunctions</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="optionsPage.html#.submitOnKeyPress">submitOnKeyPress</a></span></li><li class="nav-heading"><span class="nav-item-type type-mixin">M</span><span class="nav-item-name"><a href="statisticsPage.html">statisticsPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="statisticsPage.html#.connectHtmlFunctionality">connectHtmlFunctionality</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="statisticsPage.html#.initStatisticsPage">initStatisticsPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="statisticsPage.html#.onStorageChange">onStorageChange</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="statisticsPage.html#.setInterceptionCounterTable">setInterceptionCounterTable</a></span></li><li class="nav-heading"><span class="nav-item-type type-mixin">M</span><span class="nav-item-name"><a href="tooltipPage.html">tooltipPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="tooltipPage.html#.connectButtons">connectButtons</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="tooltipPage.html#.onStorageChange">onStorageChange</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="tooltipPage.html#.openOptionsPage">openOptionsPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="tooltipPage.html#.openStatisticsPage">openStatisticsPage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="tooltipPage.html#.patternMatchUrl">patternMatchUrl</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="tooltipPage.html#.setSaveButton">setSaveButton</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="tooltipPage.html#.setSaveButtonFunctionality">setSaveButtonFunctionality</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="tooltipPage.html#.setSaveButtonToSuccess">setSaveButtonToSuccess</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="tooltipPage.html#.toggleBlockedSite">toggleBlockedSite</a></span></li>
-</nav>
-
 <div id="main">
-    
-    <h1 class="page-title">BlackListStatsTable</h1>
-    
+
+    <h1 class="page-title">Class: BlackListStatsTable</h1>
 
     
 
@@ -41,9 +28,7 @@
 
 <header>
     
-        <h2>
-        BlackListStatsTable
-        </h2>
+        <h2>BlackListStatsTable</h2>
         
     
 </header>
@@ -52,13 +37,20 @@
     <div class="container-overview">
     
         
-<div class="section-method">
 
     
 
     <h4 class="name" id="BlackListStatsTable"><span class="type-signature"></span>new BlackListStatsTable<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
+
+
+
+
+
+
+
+
 
 
 
@@ -116,14 +108,6 @@
 
 
 
-
-
-
-
-
-
-
-</div>
     
     </div>
 
@@ -155,7 +139,6 @@
 
         
             
-<div class="section-method">
 
     
 
@@ -166,8 +149,65 @@
 
 
 <div class="description">
-    <p>Removes old tablerow elements, leaving only the header, to fill the table with data.</p>
+    Removes old tablerow elements, leaving only the header, to fill the table with data.
 </div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="BlockedSiteList.html">BlockedSiteList</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">to fill the table with</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
 
 
 
@@ -221,6 +261,36 @@
 
 
 
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="generateTableRow"><span class="type-signature"></span>generateTableRow<span class="signature">(dataElement)</span><span class="type-signature"> &rarr; {JQuery|jQuery|HTMLElement}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Constructs a table row element from a BlockedSite
+</div>
+
+
+
+
+
+
+
+
+
     <h5>Parameters:</h5>
     
 
@@ -246,13 +316,13 @@
 
         <tr>
             
-                <td class="name"><code>data</code></td>
+                <td class="name"><code>dataElement</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><code><a href="BlockedSiteList.html">BlockedSiteList</a></code></span>
+<span class="param-type"><a href="BlockedSite.html">BlockedSite</a></span>
 
 
             
@@ -262,47 +332,13 @@
 
             
 
-            <td class="description last">
-                <p>to fill the table with</p>
-                
-            </td>
+            <td class="description last"></td>
         </tr>
 
     
     </tbody>
 </table>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-        
-            
-<div class="section-method">
-
-    
-
-    <h4 class="name" id="generateTableRow"><span class="type-signature"></span>generateTableRow<span class="signature">(dataElement)</span><span class="type-signature"> &rarr; {JQuery|jQuery|HTMLElement}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Constructs a table row element from a BlockedSite</p>
-</div>
 
 
 
@@ -356,6 +392,64 @@
 
 
 
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    table row element
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">JQuery</span>
+|
+
+<span class="param-type">jQuery</span>
+|
+
+<span class="param-type">HTMLElement</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="render"><span class="type-signature"></span>render<span class="signature">(data)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Use this function to render data in the table.
+</div>
+
+
+
+
+
+
+
+
+
     <h5>Parameters:</h5>
     
 
@@ -381,13 +475,13 @@
 
         <tr>
             
-                <td class="name"><code>dataElement</code></td>
+                <td class="name"><code>data</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><code><a href="BlockedSite.html">BlockedSite</a></code></span>
+<span class="param-type"><a href="BlockedSiteList.html">BlockedSiteList</a></span>
 
 
             
@@ -397,78 +491,13 @@
 
             
 
-            <td class="description last">
-                
-                
-            </td>
+            <td class="description last">BlockedSiteList to render</td>
         </tr>
 
     
     </tbody>
 </table>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="section-returns">
-<h5>Returns:</h5>
-
-        
-
-<dl class="param-type">
-    <dt>
-        Type:
-    </dt>
-    <dd>
-        
-<span class="param-type"><code>JQuery</code></span>
-|
-
-<span class="param-type"><code>jQuery</code></span>
-|
-
-<span class="param-type"><code>HTMLElement</code></span>
-
-
-    </dd>
-</dl>
-
-
-<div class="param-desc">
-    <p>table row element</p>
-</div>
-
-    
-</div>
-
-
-
-</div>
-        
-            
-<div class="section-method">
-
-    
-
-    <h4 class="name" id="render"><span class="type-signature"></span>render<span class="signature">(data)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Use this function to render data in the table.</p>
-</div>
 
 
 
@@ -522,56 +551,6 @@
 
 
 
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>data</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><code><a href="BlockedSiteList.html">BlockedSiteList</a></code></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <p>BlockedSiteList to render</p>
-                
-            </td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -579,16 +558,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-</div>
         
     
 
@@ -604,13 +573,17 @@
 
 </div>
 
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockedSiteBuilder.html">blockedSiteBuilder</a></li><li><a href="module-browserutil.html">browserutil</a></li><li><a href="module-connectDataToHtml.html">connectDataToHtml</a></li><li><a href="module-constants.html">constants</a></li><li><a href="module-dataCollection.html">dataCollection</a></li><li><a href="module-dateutil.html">dateutil</a></li><li><a href="module-exerciseTime.html">exerciseTime</a></li><li><a href="module-htmlFunctionality.html">htmlFunctionality</a></li><li><a href="module-inject.html">inject</a></li><li><a href="module-interception.html">interception</a></li><li><a href="module-logger.html">logger</a></li><li><a href="module-storage.html">storage</a></li><li><a href="module-storageModifier.html">storageModifier</a></li><li><a href="module-stringutil.html">stringutil</a></li><li><a href="module-urlFormatter.html">urlFormatter</a></li><li><a href="module-UUIDGenerator.html">UUIDGenerator</a></li></ul><h3>Classes</h3><ul><li><a href="BasicTable.html">BasicTable</a></li><li><a href="BlackListStatsTable.html">BlackListStatsTable</a></li><li><a href="BlacklistTable.html">BlacklistTable</a></li><li><a href="BlockedSite.html">BlockedSite</a></li><li><a href="BlockedSiteList.html">BlockedSiteList</a></li><li><a href="ExerciseTimeTable.html">ExerciseTimeTable</a></li><li><a href="GreenToRedSlider.html">GreenToRedSlider</a></li><li><a href="InterceptionCounterTable.html">InterceptionCounterTable</a></li><li><a href="IntervalSlider.html">IntervalSlider</a></li><li><a href="StorageListener.html">StorageListener</a></li><li><a href="Tracker.html">Tracker</a></li><li><a href="TurnOffSlider.html">TurnOffSlider</a></li><li><a href="UserSettings.html">UserSettings</a></li></ul><h3>Mixins</h3><ul><li><a href="background.html">background</a></li><li><a href="init.html">init</a></li><li><a href="optionsPage.html">optionsPage</a></li><li><a href="statisticsPage.html">statisticsPage</a></li><li><a href="tooltipPage.html">tooltipPage</a></li></ul>
+</nav>
+
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Sun Jun 11 2017 00:35:13 GMT+0200 (W. Europe Daylight Time) using the Minami theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Jun 12 2017 12:19:33 GMT+0200 (West-Europa (zomertijd))
 </footer>
 
-<script>prettyPrint();</script>
-<script src="scripts/linenumber.js"></script>
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
 </body>
 </html>
