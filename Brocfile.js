@@ -46,8 +46,6 @@ let build = [];
 ui.writeLine(chalk.blue(`Building ${env} project`));
 ui.startProgress('Constructing pipeline...');
 
-// TODO broccoli-asset-rev, broccoli-eslint, stfsy/broccoli-livereload
-
 /* HTML */
 if (!TEST) {
   let project = new Funnel(Project, {
