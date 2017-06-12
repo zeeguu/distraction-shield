@@ -19,6 +19,13 @@ function requestHTML(link, elem){
     xhr.send();
     xhr.onload = function(){
         var xml = (/<article.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/article>/m).exec(xhr.responseText)[0];
-        elem.innerHTML = (xml ? xml : '');
+        var hrefRegex = /<a href.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/a>/mg;
+        var x = xml.match(hrefRegex).length;
+        while (x>0) {
+            var result = hrefRegex.exec(xml);
+            xml = result.input.replace(result[0], result[1]);
+            x--;
+        }
+    elem.innerHTML = (xml ? xml : '');
     }
 }
