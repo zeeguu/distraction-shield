@@ -76,4 +76,4 @@ docs:
   - title: Content Scripts
     subfolderitems:
       - page: inject
-        url: /docs/inject.html
+        url: /docs/module-inject.html
