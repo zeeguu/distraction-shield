@@ -1,9 +1,7 @@
 import GreenToRedSlider from './GreenToRedSlider'
-import UserSettings from '../../classes/UserSettings'
 import * as constants from '../../constants'
 import * as storage from '../../modules/storage/storage'
 import * as logger from '../../modules/logger'
-import StorageListener from '../../modules/storage/StorageListener'
 
 /**
  * Subclass of the GreenToRedSlider, this also connects a button to the set of html_elements.
@@ -39,7 +37,6 @@ export default class TurnOffSlider extends GreenToRedSlider {
         storage.getSettings(settings_object => {
             this.updateSettings(settings_object);
         });
-        this.addStorageListener();
     }
 
     /**
@@ -128,21 +125,6 @@ export default class TurnOffSlider extends GreenToRedSlider {
             storage.setSettings(settings_object);
             logger.logToFile(constants.logEventType.changed, `extension ${(settings_object.isInterceptionOn() ? 'on' : 'off')}`,
                 (!settings_object.isInterceptionOn() ? slider.selectedTime : ``), constants.logType.settings);
-        });
-    }
-
-    /**
-     * Adds the right storage listener to this object
-     * @function TurnOffSlider#addStorageListener
-     * @inner
-     */
-    addStorageListener(){
-        new StorageListener(changes => {
-            if (constants.tds_settings in changes) {
-                chrome.extension.getBackgroundPage().console.log('changed')
-                let newSettings = UserSettings.deserializeSettings(changes[constants.tds_settings].newValue);
-                this.updateSettings(newSettings);
-            }
         });
     }
 
