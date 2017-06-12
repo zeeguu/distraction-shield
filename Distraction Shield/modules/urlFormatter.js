@@ -173,7 +173,6 @@ function httpGetAsync(theUrlToGet, onSuccess, onFailure) {
  */
 function readyStateChange(xmlHttp, onSuccess, onFailure, theUrlToGet) {
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-        console.log("responseURL: " + xmlHttp.responseURL);
         // simple regex to extract data from title tags, ignoring newlines, tabs and returns
         let titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
         if (titleTags != null) {
