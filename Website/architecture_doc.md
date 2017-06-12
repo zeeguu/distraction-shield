@@ -27,7 +27,36 @@ id: 5
     * Rowan van Beckhoven
     * Jeroen Overschie
 
+Table of Contents
+=================
 
+   * [Architecture Document](#architecture-document)
+      * [Introduction](#introduction)
+      * [Architectural overview](#architectural-overview)
+         * [The extension platform](#the-extension-platform)
+         * [The exercise platform](#the-exercise-platform)
+         * [Visual design](#visual-design)
+            * [The tooltip page](#the-tooltip-page)
+            * [The options page](#the-options-page)
+            * [The statistics page](#the-statistics-page)
+            * [The feedback form](#the-feedback-form)
+            * [The interception](#the-interception)
+         * [Control](#control)
+            * [The background page](#the-background-page)
+            * [Content Scripts](#content-scripts)
+         * [Usage flow](#usage-flow)
+         * [Storage](#storage)
+      * [First utilization](#first-utilization)
+          * [Log in](#log-in)
+      * [Technology Stack](#technology-stack)
+      * [Team Organization](#team-organization)
+      * [Appendix](#appendix)
+         * [Module dependencies](#module-dependencies)
+            * [Options page](#options-page)
+            * [Statistics page](#statistics-page)
+            * [Tooltip page](#tooltip-page)
+            * [Background](#background)
+      * [Change Log](#change-log)
 
 ## Introduction
 
@@ -39,17 +68,21 @@ The learning experience can be personalized, among other things, by having an ac
 
 ## Architectural overview
 
-In order to provide an overview of the Distraction Shield extension, in the appendix of the attached file there is a map of the modules that the application is using and their dependencies. The image can be viewed at a different scale by following this link : 
+In order to provide an overview of the Distraction Shield extension, in the appendix of the attached file there is a map of the modules that the application is using and their dependencies. 
+
+Each part of the map is explained with regards to the its dependencies.
+
+The image can be viewed at a different scale by following this link : 
 
 [Diagram of the module dependencies ](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1#G0B-uaz9aO7hIDa3AwUDF2aHdYWnM)
 
 [https://drive.google.com/file/d/0B-uaz9aO7hIDa3AwUDF2aHdYWnM/view?usp=sharing](https://drive.google.com/file/d/0B-uaz9aO7hIDa3AwUDF2aHdYWnM/view?usp=sharing)
 
-A diagram without dependencies is presented below, in order to have an overview of the files and modules of the application. These represent how the application is divided.
+A diagram that shows the division of the files in the application and its is presented below :
 
  ![image alt text](image_1.png)
 
-## The extension platform
+### The extension platform
 
 The extension is currently developed only for the Chrome web browser. This means that certain parts of the functionality are dependent on what chrome expects from an extension, and the api that is available to extensions in Chrome.
 
@@ -63,19 +96,19 @@ It should be noted that, although content scripts are able to interact with the 
 
 All this dictates the main structure of the extension’s code.
 
-## The exercise platform
+### The exercise platform
 
 The exercises used to help the user spend their time on learning a new language come from the Zeeguu research project ( [https://zeeguu.unibe.ch](https://zeeguu.unibe.ch) ). Zeeguu is a language learning platform that provides exercises based on your previous reading on different articles written in a foreign language. Currently a simple sample page with one exercise has been set up for the extension to use.
 
-## Visual design 
+### Visual design 
 
-### **The tooltip page**
+#### **The tooltip page**
 
 In order to make it easy for the user to access the options and statistics page, we made a tooltip page that is accessible by clicking on the extension’s icon.
 
 Here the user can also add the current page into the blacklist, in order for him/her not to have to write the site in the options page.
 
-### **The options page**
+#### **The options page**
 
 In this page the user can customize his/her learning experience by choosing : the sites that should be in the blacklist, the mode, the time interval for intercepts or the option to turn off the extension for a certain time. 
 
@@ -89,11 +122,11 @@ The user can set **a time interval between intercepts**, which means that after 
 
 Also, the user can set **the time between redirections**, which means that the extension will not intercept your browsing for that given time.
 
-### The statistics page
+#### The statistics page
 
 The user can access a dashboard with **statistics** based on: the number of times he/she was intercepted from a certain site and how much time was spent on this site. Also, the amount of time spent on exercises is being tracked.![image alt text](image_3.png)
 
-### The feedback form
+#### The feedback form
 
 In order to enable users to provide feedback for the extensions, a form can be accessed from the options page.
 
@@ -200,6 +233,60 @@ In order to merge the work of different groups, we met and explained each other�
 ## Appendix
 
 ![image alt text](image_10.png)
+
+### Module dependencies 
+
+#### Options page
+
+![image alt text](image_11.png)
+
+The options page is one of the core parts of the extension, therefore it is highly dependent of the other modules. 
+
+* The classes are needed for the user settings and for the list with blocked sites.
+
+* Options page listens to the modification that are happening in the storage and updates the objects corresponding to that.
+
+*  As we collect data about the modification in the user settings, the options page is dependent on the data collection.
+
+#### Statistics page
+
+![image alt text](image_12.png)
+
+The Statistics page shows the user information about the : 
+
+* Number of interceptions in different time periods ( per day, week, month, total number of intercepts) (**InterceptionCounterTable**)
+
+* A list of blocked sites and the amount of time the user spent on that site. (**BlacklistStatsTable**)
+
+* The amount of time a user spent doing exercises for each day. (**ExerciseTimeTable**)
+
+The statistics listens to the changes made in **storage** in order to update all the information.
+
+#### Tooltip page
+
+![image alt text](image_13.png)
+
+The tooltip page is of course very small and has a small amount of functionality therefore this diagram stays quite clean. It only has 3 functions:
+
+* Open the options-page
+
+* Open the statistics-page
+
+* Influence the **Blacklist**.
+
+    * All dependencies are due to the functionality for this last function. It is because it has 3 functions in itself:
+
+        * Add The current page to the **Blacklist**
+
+        * Stop the interception of the current page (if it is in the blacklist)
+
+        * Start the interception of the current page (if it is in the Blacklist and its interception is turned off)
+
+#### Background
+
+![image alt text](image_14.png)
+
+The background page is the script that always runs. This runs, as the name makes us suspect, in the background of chrome. You don’t see this, but this is essentially what makes the extension. It contains the webRequestListener and does the actual intercepting. Since all of this needs updating everytime the user changes something, there are a lot of dependecies on things like storage and classes. Since everything basically comes together through here we see a lot of dependecies.
 
 ## Change Log
 
