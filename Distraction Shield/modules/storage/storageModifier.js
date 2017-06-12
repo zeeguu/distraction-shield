@@ -20,7 +20,7 @@ import {logToFile} from '../../modules/logger'
 export function addBlockedSiteToStorage(blocked_site) {
     return getBlacklistPromise().then(blockedSiteList => {
         if (blockedSiteList.addToList(blocked_site)){
-            logToFile(constants.logEventType.changed, blocked_site.url,'added', constants.logType.settings);
+            logToFile(constants.logEventType.changed, blocked_site.domain,'added', constants.logType.settings);
             return setBlacklist(blockedSiteList);
         } else
             return Promise.reject(constants.newUrlNotUniqueError + blocked_site.domain);
@@ -36,7 +36,7 @@ export function addBlockedSiteToStorage(blocked_site) {
 export function removeBlockedSiteFromStorage(blocked_site) {
     return getBlacklistPromise().then(blockedSiteList => {
         blockedSiteList.removeFromList(blocked_site);
-        logToFile(constants.logEventType.changed, blocked_site.url, 'removed', constants.logType.settings);
+        logToFile(constants.logEventType.changed, blocked_site.domain, 'removed', constants.logType.settings);
         return setBlacklist(blockedSiteList);
     });
 }

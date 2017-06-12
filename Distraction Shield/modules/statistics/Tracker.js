@@ -78,7 +78,7 @@ export default class Tracker {
                 } else {
                     this.matchToBlockedSites(tab.url).then((site) => {
                         this.incTimeBlockedSite(site, timeSpent);
-                        logger.logToFile(constants.logEventType.spent, `${tab.url}`, `${timeSpent/1000}`, constants.logType.statistics);
+                        logger.logToFile(constants.logEventType.spent, `${site.domain}`, `${timeSpent/1000}`, constants.logType.statistics);
                     });
                 }
             }
