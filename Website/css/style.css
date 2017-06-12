@@ -41,13 +41,6 @@ ol li {
   margin: 4px 0;
 }
 
-h1 {
-  margin-bottom: 10px;
-  font-size: 34px;
-  font-weight: 300;
-  border-bottom: solid 1px #ddd;
-}
-
 h2 {
   margin-top: 24px;
   margin-bottom: 10px;
@@ -1021,4 +1014,8 @@ table.test-summary .test-target > span:first-child {
 .github-markdown img:not([src*=".svg"]) {
   max-width: 100%;
   box-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+.type-signature {
+  opacity:0.5;
 }

@@ -11,11 +11,13 @@ docs:
         url: /docs/statisticsPage.html
       - page: tooltipPage
         url: /docs/tooltipPage.html
+      - page: init
+        url: /docs/init.html
   - title: Modules
     subfolderitems:
       - page: blockedSiteBuilder
         url: /docs/module-blockedSiteBuilder.html
-      - page: browerserutil
+      - page: browserutil
         url: /docs/module-browserutil.html
       - page: connectDataToHtml
         url: /docs/module-connectDataToHtml.html
@@ -35,3 +37,39 @@ docs:
         url: /docs/module-interception.html
       - page: logger
         url: /docs/module-logger.html
+      - page: storage
+        url: /docs/module-storage.html
+      - page: storageModifier
+        url: /docs/module-storageModifier.html
+      - page: stringutil
+        url: /docs/module-stringutil.html
+      - page: urlFormatter
+        url: /docs/module-urlFormatter.html
+      - page: UUIDGenerator
+        url: /docs/module-UUIDGenerator.html
+  - title: Classes
+    subfolderitems:
+      - page: BasicTable
+        url: /docs/BasicTable.html
+      - page: BlackListStatsTable
+        url: /docs/BlackListStatsTable.html
+      - page: BlackListTable
+        url: /docs/BlackListTable.html
+      - page: BlockedSite
+        url: /docs/BlockedSite.html
+      - page: BlockedSiteList
+        url: /docs/BlockedSiteList.html
+      - page: ExerciseTimeTable
+        url: /docs/ExerciseTimeTable.html
+      - page: GreenToRedSlider
+        url: /docs/GreenToRedSlider.html
+      - page: IntervalSlider
+        url: /docs/IntervalSlider.html
+      - page: StorageListener
+        url: /docs/StorageListener.html
+      - page: Tracker
+        url: /docs/Tracker.html
+      - page: TurnOffSlider
+        url: /docs/TurnOffSlider.html
+      - page: UserSettings
+        url: /docs/UserSettings.html
