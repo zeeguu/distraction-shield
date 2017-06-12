@@ -52,9 +52,9 @@ A diagram without dependencies is presented below, in order to have an overview 
 
 The extension is currently developed only for the Chrome web browser. This means that certain parts of the functionality are dependent on what chrome expects from an extension, and the api that is available to extensions in Chrome.
 
-A Chrome-extension starts with a **manifest **file, where the main structure of the of the extension is defined. Also defined in the manifest are the main properties of the extension and the extensions meta-data such as name, version number, etc. 
+A Chrome-extension starts with a **manifest** file, where the main structure of the of the extension is defined. Also defined in the manifest are the main properties of the extension and the extensions meta-data such as name, version number, etc. 
 
-In the manifest, one or more **background** **scripts or pages **are defined. Everything defined as **background** is run on the **background page**, invisible to the user and having unlimited access to the chrome extension api. The limitation of the **background page** is that it has no access to the webpages the browser displays.
+In the manifest, one or more **background** **scripts or pages** are defined. Everything defined as **background** is run on the **background page**, invisible to the user and having unlimited access to the chrome extension api. The limitation of the **background page** is that it has no access to the webpages the browser displays.
 
 At this point **content** **scripts** come into play. **Content scripts** are scripts that are injected into web pages and therefore have the ability to interact with the pages the user of the extension visits and extending the reach of the extension to those pages. 
 
@@ -82,15 +82,15 @@ In this page the user can customize his/her learning experience by choosing : th
 
 The user can **define which sites** have to be intercepted by the extension by adding or removing sites from a list (the blacklist). The sites can be temporarily disabled by unticking the box near the name of the site. 
 
-The user can choose the** mode**, Lazy or Pro. 	
+The user can choose the **mode**, Lazy or Pro. 	
 
-The user can set** a time interval between intercepts, **which means that after finishing an exercise ( or after pressing the ‘Skip’ button from the Lazy mode) you can enter on sites that are on the blacklist without being intercepted for that certain amount of time. 
+The user can set **a time interval between intercepts**, which means that after finishing an exercise ( or after pressing the ‘Skip’ button from the Lazy mode) you can enter on sites that are on the blacklist without being intercepted for that certain amount of time. 
 
-Also, the user can set** the time between redirections, **which means that the extension will not intercept your browsing for that given time.
+Also, the user can set **the time between redirections**, which means that the extension will not intercept your browsing for that given time.
 
 ### The statistics page
 
-The user can access a dashboard with **statistics **based on: the number of times he/she was intercepted from a certain site and how much time was spent on this site. Also, the amount of time spent on exercises is being tracked.![image alt text](image_3.png)
+The user can access a dashboard with **statistics** based on: the number of times he/she was intercepted from a certain site and how much time was spent on this site. Also, the amount of time spent on exercises is being tracked.![image alt text](image_3.png)
 
 ### The feedback form
 
@@ -108,7 +108,7 @@ In this form users can answer questions related to the :
 
 The form is implemented as a Google form, and can be accessed  through the following link : [https://goo.gl/forms/e1u8uxBeDDezVfPG](https://goo.gl/forms/e1u8uxBeDDezVfPG2)
 
-#### **The interception **
+#### **The interception**
 
 When the user enters a site that is on the list of blocked sites, he/she is redirected to a language exercise. The page where the user is redirected looks like the following image. It should be noticed that in the lower part of the page, the user is presented with information about the reason of redirection and with the option button to Skip. The ‘Skip’ functionality is explained below.
 
@@ -116,9 +116,9 @@ When the user enters a site that is on the list of blocked sites, he/she is redi
 
 Here, the flow depends on the mode that the user previously selected:
 
-*  when the extension is in** "lazy" mode**,  the user has the opportunity to skip the exercise by pressing a button - “ Skip”.
+*  when the extension is in **"lazy" mode**,  the user has the opportunity to skip the exercise by pressing a button - “ Skip”.
 
-*  when the extension is in** "pro" mode**, the user continues with the exercise, and at the end of the exercise they are presented with two possibilities: they can **go back to the original destination** or they ca**n continue to do exercises**. Clicking the “Take me away!” button will take the user to their original destination.
+*  when the extension is in **"pro" mode**, the user continues with the exercise, and at the end of the exercise they are presented with two possibilities: they can **go back to the original destination** or they can **continue to do exercises**. Clicking the “Take me away!” button will take the user to their original destination.
 
 ![image alt text](image_5.png)
 
