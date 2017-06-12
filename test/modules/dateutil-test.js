@@ -1,27 +1,25 @@
-"use strict";
+import test from 'ava';
+import {
+  msToHHMMSS,
+  formatDate,
+  getToday
+} from './dateutil';
 
+test('dateutil | should transform seconds to HH:MM:SS ', t => {
+  let seconds = 5;
+  let date = new Date(seconds * 1000).toISOString().substr(11, 8);
 
-/* eslint-env node */
-let assert = require('assert');
-let dateutil = require('../../dist/modules/dateutil.js');
+  t.is(msToHHMMSS(seconds * 1000), date);
+});
 
-describe('dateutil | unit test', function() {
-    it('should transform seconds to HH:MM:SS ', function() {
-        let seconds = 5;
-        let date    = new Date(seconds*1000).toISOString().substr(11,8);
+test('dateutil | should stringify date', t => {
+  let date = new Date();
+  let stringDate = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+  t.is(formatDate(date), stringDate);
+});
 
-        assert.equal(dateutil.msToHHMMSS(seconds*1000), date);
-    });
-
-    it('should stringify date', function () {
-        let date = new Date();
-        let stringDate = date.getDate()+"/"+(date.getMonth() +1) + "/"+ date.getFullYear();
-        assert.equal(dateutil.formatDate(date), stringDate);
-    });
-
-    it('should get today', function () {
-        let date = new Date();
-        let today = date.getDate()+"/"+(date.getMonth() +1) + "/"+ date.getFullYear();
-        assert.equal(dateutil.getToday(), today);
-    });
+test('dateutil | should get today', t => {
+  let date = new Date();
+  let today = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+  t.is(getToday(), today);
 });

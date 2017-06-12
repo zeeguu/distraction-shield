@@ -64,7 +64,7 @@ let rollup = (tree, entry, dest, format = 'es') => {
       format,
       entry,
       dest,
-      external: [ 'ava' ],
+      external: [ 'ava', 'sinon', 'sinon-chrome' ],
       sourceMap: PROD ? true : 'inline',
       plugins: [
         filesize(),

@@ -1,29 +1,14 @@
-"use strict";
+import test from 'ava';
+import { createNewBlockedSite } from './blockedSiteBuilder';
+import sinon from 'sinon';
 
-/* eslint-env node */
-var assert = require('assert');
-var blockedSiteBuilder = require('../../dist/modules/blockedSiteBuilder');
-var sinon = require('sinon');
+test.before(t => {
+  global.XMLHttpRequest = sinon.useFakeXMLHttpRequest();
+});
 
-
-describe('BlockedSiteBuilder | unit tests', function() {
-    before(function() {
-        global.XMLHttpRequest = sinon.useFakeXMLHttpRequest();
-    });
-
-    it('should get a complete url from the hosting server', function(done) {
-        blockedSiteBuilder.createNewBlockedSite("facebook.com").then(
-            function (blockedSite) {
-                //resolution
-                console.log("ok");
-                assert.ok(/http[s]?:[/]{2}([\w]*.)*/.test(blockedSite));
-                done();
-            },
-            function (error) {
-                //rejection
-                console.log(error);
-                done();
-            });
-    });
-
+test('BlockedSiteBuilder | get complete url from hosting server', (t) => {
+  return createNewBlockedSite("facebook.com").then(
+    (blockedSite) => {
+      t.truthy(/http[s]?:[/]{2}([\w]*.)*/.test(blockedSite));
+    }, (error) => console.error(error));
 });
