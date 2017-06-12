@@ -5,11 +5,12 @@
   "scripts": {
     "start": "broccoli-timepiece dist/",
     "build": "rimraf dist && broccoli build dist",
-    "build:production": "npm run build env=production",
+    "build:production": "npm run build env=production && npm run pack",
     "build:test": "npm run build env=test",
     "test": "npm run build:test && ava dist/tests.js --verbose",
     "test:ci": "npm run build && ava dist/tests.js --verbose",
-    "docs": "rimraf docs && esdoc"
+    "docs": "rimraf docs && esdoc",
+    "pack": "crx pack dist/ -o dist/distraction-shield.crx"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "chalk": "^1.1.3",
     "command-line-args": "^4.0.6",
     "console-ui": "^1.0.3",
+    "crx": "^3.2.1",
     "esdoc": "^0.5.2",
     "gh-pages": "^1.0.0",
     "git-rev-sync": "^1.9.1",
