@@ -42,19 +42,17 @@ const Vendor = new Funnel('bower_components');
 const Test = new Funnel('test');
 
 // Build
+let build = [];
 ui.writeLine(chalk.blue(`Building ${env} project`));
 ui.startProgress('Constructing pipeline...');
 
-// TODO broccoli-asset-rev, broccoli-eslint, stfsy/broccoli-livereload
-
 /* HTML */
-let html;
-{
+if (!TEST) {
   let project = new Funnel(Project, {
     include: [ '**/*.html' ],
     getDestinationPath: (file) => `assets/html/${path.basename(file)}`
   });
-  html = project;
+  build.push(project);
 }
 
 /* JS */
@@ -64,7 +62,7 @@ let rollup = (tree, entry, dest, format = 'es') => {
       format,
       entry,
       dest,
-      external: [ 'ava' ],
+      external: [ 'ava', 'sinon', 'sinon-chrome' ],
       sourceMap: PROD ? true : 'inline',
       plugins: [
         filesize(),
@@ -91,37 +89,38 @@ let transpile = (tree) => {
 let jscomp = (tree, entry, dest, format) =>
   transpile(rollup(tree, entry, dest, format));
 
-let jstrees = [
-  jscomp(Project, 'init.js', 'assets/js/init.js'),
-  jscomp(Project, 'optionsPage/options.js', 'assets/js/options.js'),
-  jscomp(Project, 'tooltipPage/tooltip.js', 'assets/js/tooltip.js'),
-  jscomp(Project, 'statisticsPage/statistics.js', 'assets/js/statistics.js'),
-  jscomp(Project, 'contentInjection/inject.js', 'assets/js/inject.js'),
-  jscomp(Project, 'introTour/introTour.js', 'assets/js/introTour.js')
-];
-if (DEV || TEST)
-  jstrees.push(jscomp(Merge([ Project, Test ]), '**/*-test.js', 'tests.js'));
-let js = Merge(jstrees);
+if (!TEST) {
+  build.push(jscomp(Project, 'init.js', 'assets/js/init.js'));
+  build.push(jscomp(Project, 'optionsPage/options.js', 'assets/js/options.js'));
+  build.push(jscomp(Project, 'tooltipPage/tooltip.js', 'assets/js/tooltip.js'));
+  build.push(jscomp(Project, 'statisticsPage/statistics.js', 'assets/js/statistics.js'));
+  build.push(jscomp(Project, 'contentInjection/inject.js', 'assets/js/inject.js'));
+  build.push(jscomp(Project, 'introTour/introTour.js', 'assets/js/introTour.js'));
+}
 
-let vendorJs = new Concat(Vendor, {
-  inputFiles: [
-    `bootstrap/dist/js/bootstrap${MIN}.js`,
-    `bootstrap-tour/build/js/bootstrap-tour${MIN}.js`,
-    `jquery/dist/jquery${MIN}.js`
-  ],
-  outputFile: 'assets/js/vendor.js',
-  headerFiles: [`jquery/dist/jquery${MIN}.js`] // include jquery before bootstrap
-});
+if (DEV || TEST) {
+  build.push(jscomp(Merge([ Project, Test ]), '**/*-test.js', 'tests.js'));
+}
+
+if (!TEST) {
+  let vendorJs = new Concat(Vendor, {
+    inputFiles: [
+      `bootstrap/dist/js/bootstrap${MIN}.js`,
+      `bootstrap-tour/build/js/bootstrap-tour${MIN}.js`,
+      `jquery/dist/jquery${MIN}.js`
+    ],
+    outputFile: 'assets/js/vendor.js',
+    headerFiles: [`jquery/dist/jquery${MIN}.js`] // include jquery before bootstrap
+  });
+  build.push(vendorJs);
+}
 
 /* CSS */
-let css;
-{
+if (!TEST) {
   let project = new Funnel(Project, {
     include: ['**/*.css']
   });
-  if (PROD) {
-    project = new CleanCss(project);
-  }
+  if (PROD) project = new CleanCss(project);
   let vendor = new Funnel(Vendor, {
     include: [
       `**/*/bootstrap${MIN}.css`,
@@ -129,27 +128,30 @@ let css;
     ]
   });
 
+  let css;
   css = Merge([ project, vendor ]);
   css = new Concat(css, {
     inputFiles: ['**/*.css'],
     outputFile: 'assets/css/distraction-shield.css'
   });
+  build.push(css);
 }
 
 /* Static assets */
-let assets;
-{
+if (!TEST) {
   // project images
   let project = new Funnel(Project, {
     destDir: 'assets/images',
     include: ['**/*.png'],
     getDestinationPath: (file) => path.basename(file)
   });
+  build.push(project);
 
   // manifest
   let manifest = new Funnel(Project, {
     include: ['manifest.json']
   });
+  build.push(manifest);
 
   // bower assets
   let vendor = new Funnel(Vendor, {
@@ -157,11 +159,10 @@ let assets;
     destDir: 'assets',
     include: ['**/*/glyphicons-*']
   });
-
-  assets = Merge([ project, manifest, vendor ]);
+  build.push(vendor);
 }
 
 ui.stopProgress();
 ui.writeLine(chalk.green(`Pipeline constructed. Building...`));
 
-module.exports = new Merge([ html, js, vendorJs, css, assets ]);
+module.exports = new Merge(build);

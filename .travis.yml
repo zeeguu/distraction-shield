@@ -25,7 +25,8 @@ install:
   - bower install
 
 script:
-  - npm test
+  - npm run test:ci
+  - eslint Distraction\ Shield
 
 before_deploy:
   - npm run docs
@@ -35,4 +36,5 @@ deploy:
   skip_cleanup: true
   github_token: $GITHUB_TOKEN
   local_dir: docs
-
+  on:
+    branch: development

@@ -22,6 +22,7 @@ function mainFlow() {
  */
 function initBasis(mode) {
     let message = mode.zeeguuText;
+
     $.ajax({
         url: chrome.extension.getURL('/assets/html/inject.html'),
         type: "GET",
@@ -32,6 +33,10 @@ function initBasis(mode) {
             $("body").after(infoDiv);
             $("#tds_infoDiv").css('max-width', '800px');
             $("#tds_generalInfoText").append(constants.zeeguuInfoText);
+            $("#tds_close").click(function () {
+                this.parentNode.parentNode.removeChild(this.parentNode);
+                return false;
+            });
 
             if (window.location.href.indexOf(constants.zeeguLoginLink) != -1) {
                 if (mode.label == constants.modes.pro.label) {

@@ -97,7 +97,7 @@ function sendLogsTo(data){
         headers: {
             'content-type': 'application/json'
         },
-        url: 'http://127.0.0.1:5000/submit', //TODO get API url to send data to
+        url: constants.loggingApiLink,
         data: JSON.stringify(data),
         type: "POST"
     });

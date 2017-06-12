@@ -109,6 +109,7 @@ function loadBlockedSiteList(blockedSiteList){
 function loadSettings(settings_object){
     connectDataToHtml.loadHtmlMode(settings_object.mode, modeGroup);
     connectDataToHtml.loadHtmlInterval(settings_object.interceptionInterval, intervalSlider);
+    turnOffSlider.updateSettings(settings_object);
 }
 
 /**

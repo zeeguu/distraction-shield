@@ -24,11 +24,10 @@ export default class BasicTable {
 
     /**
      * Constructs a table row element from a BlockedSite
-     * @param dataElement {BlockedSite}
      * @returns {JQuery|jQuery|HTMLElement} table row element
      * @function BasicTable#generateTableRow
      */
-    generateTableRow(dataElement) {
+    generateTableRow() {
         return $("<tr class='table-row'></tr>");
     }
 

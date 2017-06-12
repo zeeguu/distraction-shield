@@ -5,8 +5,11 @@
   "scripts": {
     "start": "broccoli-timepiece dist/",
     "build": "rimraf dist && broccoli build dist",
-    "build:production": "npm run build env=production",
-    "test": "npm run build && ava dist/tests.js --verbose",
+    "build:production": "npm run build env=production && npm run pack",
+    "build:test": "npm run build env=test",
+    "test": "npm run build:test && ava dist/tests.js --verbose",
+    "test:ci": "npm run build && ava dist/tests.js --verbose",
+    "pack": "crx pack dist/ -o dist/distraction-shield.crx",
     "docs": "jsdoc ./\"Distraction Shield\" -c .jsdoc.json",
     "deploy": "node ./scripts/deploy-gh-pages"
   },
@@ -32,16 +35,22 @@
     "chalk": "^1.1.3",
     "command-line-args": "^4.0.6",
     "console-ui": "^1.0.3",
+    "crx": "^3.2.1",
     "esdoc": "^0.5.2",
+    "eslint": "^4.0.0",
     "gh-pages": "^1.0.0",
     "git-rev-sync": "^1.9.1",
+    "jsdoc": "^3.4.3",
     "mocha": "^3.3.0",
+    "rewire": "^2.5.2",
     "rimraf": "^2.6.1",
     "rollup-plugin-commonjs": "^8.0.2",
     "rollup-plugin-filesize": "^1.3.2",
     "rollup-plugin-multi-entry": "^2.0.1",
     "rollup-plugin-node-resolve": "^3.0.0",
-    "jsdoc": "^3.4.3"
+    "sinon": "^2.3.4",
+    "sinon-chrome": "^2.2.1",
+    "uuid": "^3.0.1"
   },
   "dependencies": {
     "jquery": "^3.2.1",

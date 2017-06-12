@@ -54,6 +54,7 @@ export const tdsRedirectRegex = /[?]tds_redirect=(.*)/;
 
 export const loginMessage = "Please log in to get productive!";
 
+export const loggingApiLink = "https://www.zeeguu.unibe.ch/tds_log/submit";
 
 /* ---------- ----- BlockedSiteList ----- ---------- */
 export const newUrlNotUniqueError = "Oops! You already blocked this website: ";
@@ -65,8 +66,8 @@ export const newUrlNotUniqueError = "Oops! You already blocked this website: ";
  * @type {RegExp[]}
  */
 export const whitelist = [
-    "_\/chrome\/newtab",
-    "oauth.*\?.*client_id",
+    "_/chrome/newtab",
+    "oauth.*?.*client_id",
     "zeeguu.unibe.ch"
 ];
 

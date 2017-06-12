@@ -78,7 +78,7 @@ export default class Tracker {
                 } else {
                     this.matchToBlockedSites(tab.url).then((site) => {
                         this.incTimeBlockedSite(site, timeSpent);
-                        logger.logToFile(constants.logEventType.spent, `${tab.url}`, `${timeSpent/1000}`, constants.logType.statistics);
+                        logger.logToFile(constants.logEventType.spent, `${site.domain}`, `${timeSpent/1000}`, constants.logType.statistics);
                     });
                 }
             }
@@ -257,7 +257,7 @@ export default class Tracker {
      * @function Tracker#matchToBlockedSites
      */
     matchToBlockedSites(tabActive) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             let match = this.blockedsites.find((site) => this.compareDomain(tabActive, site.domain));
             if (typeof match !== 'undefined') resolve(match);
         });
@@ -272,7 +272,7 @@ export default class Tracker {
      */
     compareDomain(url, domain) {
         return Tracker.compareUrlToRegex(this.createRegexFromDomain(domain), url);
-    };
+    }
 
     /**
      * Creates a regex string which using the domain of an url.
@@ -282,7 +282,7 @@ export default class Tracker {
      */
     createRegexFromDomain(domain) {
         return "^(http[s]?:\\/\\/)?(.*)" + domain + ".*$";
-    };
+    }
 
     /**
      * Compare regex to url.

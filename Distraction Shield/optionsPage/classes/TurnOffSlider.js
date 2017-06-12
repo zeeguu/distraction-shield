@@ -1,9 +1,7 @@
 import GreenToRedSlider from './GreenToRedSlider'
-import UserSettings from '../../classes/UserSettings'
 import * as constants from '../../constants'
 import * as storage from '../../modules/storage/storage'
 import * as logger from '../../modules/logger'
-import StorageListener from '../../modules/storage/StorageListener'
 
 /**
  * Subclass of the GreenToRedSlider, this also connects a button to the set of html_elements.
@@ -39,12 +37,11 @@ export default class TurnOffSlider extends GreenToRedSlider {
         storage.getSettings(settings_object => {
             this.updateSettings(settings_object);
         });
-        this.addStorageListener();
     }
 
     /**
      * Create the right type of message or slider to be shown next to the turn off/on button.
-     * @param {UserSettings} settings_object the UserSettings on which we decide what to show
+     * @param {UserSettings} settings_object the {@link UserSettings} on which we decide what to show
      * @function TurnOffSlider#toggleShowOffMessage
      * @inner
      */
@@ -74,7 +71,7 @@ export default class TurnOffSlider extends GreenToRedSlider {
     }
 
     /**
-     * Function that overrides the GreenToRedSlider function
+     * Function that overrides the {@link GreenToRedSlider} function
      * @param {int} hours
      * @param {int} minutes
      * @param {int} val the value of the slider
@@ -89,7 +86,7 @@ export default class TurnOffSlider extends GreenToRedSlider {
 
     /**
      * Create the right type of message or slider to be shown next to the turn off/on button.
-     * @param {UserSettings} settings_object the UserSettings that we use to generate the TurnOffMessage
+     * @param {UserSettings} settings_object the {@link UserSettings} that we use to generate the TurnOffMessage
      * @function TurnOffSlider#createOffMessage
      * @inner
      */
@@ -98,8 +95,8 @@ export default class TurnOffSlider extends GreenToRedSlider {
     }
 
     /**
-     * Updater function that updates the slider with the new UserSettings
-     * @param {UserSettings} userSettings the UserSettings on which we want the slider to update
+     * Updater function that updates the slider with the new {@link UserSettings}
+     * @param {UserSettings} userSettings the {@link UserSettings} on which we want the slider to update
      * @function TurnOffSlider#updateSettings
      * @inner
      */
@@ -128,21 +125,6 @@ export default class TurnOffSlider extends GreenToRedSlider {
             storage.setSettings(settings_object);
             logger.logToFile(constants.logEventType.changed, `extension ${(settings_object.isInterceptionOn() ? 'on' : 'off')}`,
                 (!settings_object.isInterceptionOn() ? slider.selectedTime : ``), constants.logType.settings);
-        });
-    }
-
-    /**
-     * Adds the right storage listener to this object
-     * @function TurnOffSlider#addStorageListener
-     * @inner
-     */
-    addStorageListener(){
-        new StorageListener(changes => {
-            if (constants.tds_settings in changes) {
-                chrome.extension.getBackgroundPage().console.log('changed')
-                let newSettings = UserSettings.deserializeSettings(changes[constants.tds_settings].newValue);
-                this.updateSettings(newSettings);
-            }
         });
     }
 

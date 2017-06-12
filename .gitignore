@@ -19,3 +19,5 @@ sampleExtension/.idea
 # Jekyll
 Website/vendor/
 Website/_site/
+Website/.sass-cache/
+Website/.idea
