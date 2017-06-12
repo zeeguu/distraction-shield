@@ -10,122 +10,43 @@ title: Requirements document
 
 ![image alt text](../images/aikido.png)
 
-version 2.1.0
+* version 2.1.0
 
-Team: Team Distraction Shield
+* Team: Team Distraction Shield
 
-Team Contact: [distractionshield.devteam@gmail.com](mailto:distractionshield.devteam@gmail.com)
+* Team Contact: [distractionshield.devteam@gmail.com](mailto:distractionshield.devteam@gmail.com)
 
-The Team:
-* Alex Daffurn-Lewis
-* Pieter Dekker
-* Edser Apperloo
-* Elena Ionescu
-* Erik Voogd
-* Mark Timmerman
-* Rowan van Beckhoven
-* Jeroen Overschie
+* The Team:
+    * Alex Daffurn-Lewis
+    * Pieter Dekker
+    * Edser Apperloo
+    * Elena Ionescu
+    * Erik Voogd
+    * Mark Timmerman
+    * Rowan van Beckhoven
+    * Jeroen Overschie
 
 ## Change Log
 
-<table>
-  <tr>
-    <td>Who</td>
-    <td>When</td>
-    <td>Which section</td>
-    <td>What</td>
-  </tr>
-  <tr>
-    <td>Alex+Pieter</td>
-    <td>22-02-17</td>
-    <td>All</td>
-    <td>Created Doc</td>
-  </tr>
-  <tr>
-    <td>Pieter</td>
-    <td>25-02-17</td>
-    <td>All</td>
-    <td>Processed meeting notes into Requirements Doc (not complete)</td>
-  </tr>
-  <tr>
-    <td>Edser, Erik + Elena</td>
-    <td>25-02-17</td>
-    <td>All</td>
-    <td>Editing Doc</td>
-  </tr>
-  <tr>
-    <td>Alex</td>
-    <td>07-03-17</td>
-    <td>All</td>
-    <td>Updating Doc as per feedback</td>
-  </tr>
-  <tr>
-    <td>Alex</td>
-    <td>23-03-17</td>
-    <td>All</td>
-    <td>Implementing feedback</td>
-  </tr>
-  <tr>
-    <td>Elena</td>
-    <td>10-04-17</td>
-    <td>All</td>
-    <td>Implementing feedback </td>
-  </tr>
-  <tr>
-    <td>Erik, Mark</td>
-    <td>01-05-17</td>
-    <td>All</td>
-    <td>Implementing feedback </td>
-  </tr>
-  <tr>
-    <td>Pieter</td>
-    <td>15-05-17</td>
-    <td>Introduction, Title Page</td>
-    <td>Moved the logo to the Title Page</td>
-  </tr>
-  <tr>
-    <td>Pieter</td>
-    <td>15-05-17</td>
-    <td>Major Features</td>
-    <td>Removed floating pieces of text, revised requirements to not refer to current implementation</td>
-  </tr>
-  <tr>
-    <td>Pieter</td>
-    <td>15-05-17</td>
-    <td>Major Features</td>
-    <td>User requirements are general requirements, moved all the requirements that are out of place to appropriate sections, restructured in general</td>
-  </tr>
-  <tr>
-    <td>Elena</td>
-    <td>15-05-17</td>
-    <td>Weekly progress</td>
-    <td>Added weekly progress</td>
-  </tr>
-  <tr>
-    <td>Alex</td>
-    <td>27-05-17</td>
-    <td>Weekly progress</td>
-    <td>Added weekly progress</td>
-  </tr>
-  <tr>
-    <td>Edser</td>
-    <td>10-06-17</td>
-    <td>Target Users</td>
-    <td>Rewrote the message</td>
-  </tr>
-  <tr>
-    <td>Edser</td>
-    <td>10-06-17</td>
-    <td>Layout</td>
-    <td>Removed random whitespace</td>
-  </tr>
-  <tr>
-    <td>Edser</td>
-    <td>10-06-17</td>
-    <td>All</td>
-    <td>Implement feedback of past iterations</td>
-  </tr>
-</table>
+
+|Who|When|Which section|What|
+|:---|:---|:---|:---|
+|Alex+Pieter|22-02-17|All|Created Doc|
+|Pieter|25-02-17|All|Processed meeting notes into Requirements Doc (not complete)|
+|Edser, Erik + Elena|25-02-17|All|Editing Doc|
+|Alex|07-03-17|All|Updating Doc as per feedback|
+|Alex|23-03-17|All|Implementing feedback|
+|Elena|10-04-17|All|Implementing feedback|
+|Erik, Mark|01-05-17|All|Implementing feedback|
+|Pieter|15-05-17|Introduction, Title Page|Moved the logo to the Title Page|
+|Pieter|15-05-17|Major Features|Removed floating pieces of text, revised requirements to not refer to current implementation|
+|Pieter|15-05-17|Major Features|User requirements are general requirements, moved all the requirements that are out of place to appropriate sections, restructured in general|
+|Elena|15-05-17|Weekly progress|Added weekly progress|
+|Alex|27-05-17|Weekly progress|Added weekly progress|
+|Edser|10-06-17|Target Users|Rewrote the message|
+|Edser|10-06-17|Layout|Removed random whitespace|
+|Edser|10-06-17|All|Implement feedback of past iterations|
+{:.mbtablestyle}
 
 
 ## Introduction
@@ -282,7 +203,7 @@ The main features of the extension are presented in this section. Distinction is
 
 * Users should not be intercepted when they want to use sites from the blacklist with a different goal than to browse them, specific example: the "Log in with Facebook" option that is provided by other applications/ sites.
 
-### Deployment of the application
+## Deployment of the application
 
 * The extension is ready for deployment under the Chrome Extensions store as a beta-run
 

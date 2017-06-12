@@ -5554,6 +5554,12 @@ label, .control-label, .help-block, .checkbox, .radio {
 .panel-default .close, .modal .close {
   color: #222222; }
 
+.mbtablestyle {
+  border-collapse: collapse; }
+  .mbtablestyle > table, .mbtablestyle td, .mbtablestyle th {
+    border: 1px solid #dddddd;
+    padding: 5px; }
+
 .blog-theme-class {
   margin-top: 0.3%;
   padding: 3%;
