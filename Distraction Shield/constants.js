@@ -65,8 +65,8 @@ export const newUrlNotUniqueError = "Oops! You already blocked this website: ";
  * @type {RegExp[]}
  */
 export const whitelist = [
-    "_\/chrome\/newtab",
-    "oauth.*\?.*client_id",
+    "_/chrome/newtab",
+    "oauth.*?.*client_id",
     "zeeguu.unibe.ch"
 ];
 
