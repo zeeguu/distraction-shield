@@ -86,7 +86,7 @@ function toggleBlockedSite(url) {
                     newItem = list[i];
                     newItem.checkboxVal = !newItem.checkboxVal;
                     storageModifier.updateBlockedSiteInStorage(newItem);
-                    logToFile(constants.logEventType.changed, newItem.name, (newItem.checkboxVal ? 'enabled' : 'disabled'), constants.logType.settings);
+                    logToFile(constants.logEventType.changed, newItem.domain, (newItem.checkboxVal ? 'enabled' : 'disabled'), constants.logType.settings);
                     break;
                 }
             }

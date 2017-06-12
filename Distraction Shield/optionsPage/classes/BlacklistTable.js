@@ -70,7 +70,7 @@ export default class BlacklistTable {
             let selected_row = $(clicked_checkbox).closest('tr');
             let selected_blockedSite = selected_row.data('blockedSite');
             selected_blockedSite.checkboxVal = !selected_blockedSite.checkboxVal;
-            logToFile(constants.logEventType.changed, selected_blockedSite.name, (selected_blockedSite.checkboxVal ? 'enabled' : 'disabled'), constants.logType.settings);
+            logToFile(constants.logEventType.changed, selected_blockedSite.domain, (selected_blockedSite.checkboxVal ? 'enabled' : 'disabled'), constants.logType.settings);
             updateBlockedSiteInStorage(selected_blockedSite);
         });
     }

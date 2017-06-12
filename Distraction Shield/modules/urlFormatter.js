@@ -158,7 +158,7 @@ function httpGetAsync(theUrlToGet, onSuccess, onFailure) {
     let xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", theUrlToGet, true); // true for asynchronous
     xmlHttp.onreadystatechange = function () {
-        readyStateChange(xmlHttp, onSuccess, onFailure);
+        readyStateChange(xmlHttp, onSuccess, onFailure, theUrlToGet);
     };
     xmlHttp.send(null);
 }
@@ -171,7 +171,7 @@ function httpGetAsync(theUrlToGet, onSuccess, onFailure) {
  * @method readyStateChange
  * @private
  */
-function readyStateChange(xmlHttp, onSuccess, onFailure) {
+function readyStateChange(xmlHttp, onSuccess, onFailure, theUrlToGet) {
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
         // simple regex to extract data from title tags, ignoring newlines, tabs and returns
         let titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);

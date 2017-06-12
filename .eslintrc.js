@@ -15,6 +15,10 @@ module.exports = {
     'chrome': true,
     '$': true,
     'Promise': true,
-    'Tour': true
+    'Tour': true,
+    'describe': true,
+    'before': true,
+    'it': true,
+    'after': true
   }
 };
