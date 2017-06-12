@@ -37,7 +37,7 @@ const TEST = env === 'test';
 const MIN = PROD ? '.min' : '';
 
 // Folder setup
-const Project = new Funnel('Distraction\ Shield');
+const Project = new Funnel('Distraction Shield');
 const Vendor = new Funnel('bower_components');
 const Test = new Funnel('test');
 
