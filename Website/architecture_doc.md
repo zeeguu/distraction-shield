@@ -2,6 +2,7 @@
 layout: page
 permalink: /architecture_doc/
 title: Architecture document
+id: 5
 ---
 
 # Architecture Document

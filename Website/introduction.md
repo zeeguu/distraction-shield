@@ -2,7 +2,7 @@
 title: Introduction
 layout: page
 permalink: /intro/
-id: 2
+id: 1
 ---
 # Introduction
 
