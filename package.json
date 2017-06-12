@@ -1,6 +1,6 @@
 {
   "name": "distraction-shield",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Distraction Shield!",
   "scripts": {
     "start": "broccoli-timepiece dist/",
@@ -9,9 +9,9 @@
     "build:test": "npm run build env=test",
     "test": "npm run build:test && ava dist/tests.js --verbose",
     "test:ci": "npm run build && ava dist/tests.js --verbose",
-    "pack": "crx pack dist/ -o dist/distraction-shield.crx",
     "docs": "jsdoc ./\"Distraction Shield\" -c .jsdoc.json",
-    "deploy": "node ./scripts/deploy-gh-pages"
+    "deploy": "node ./scripts/deploy-gh-pages",
+    "pack": "crx pack dist/ -o dist/$npm_package_name-$npm_package_version.crx"
   },
   "repository": {
     "type": "git",
