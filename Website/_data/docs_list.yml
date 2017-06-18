@@ -1,0 +1,79 @@
+docs_list_title: Documentation
+docs:
+
+  - title: Scripts
+    subfolderitems:
+      - page: background
+        url: /docs/background.html
+      - page: optionsPage
+        url: /docs/optionsPage.html
+      - page: statisticsPage
+        url: /docs/statisticsPage.html
+      - page: tooltipPage
+        url: /docs/tooltipPage.html
+      - page: init
+        url: /docs/init.html
+  - title: Modules
+    subfolderitems:
+      - page: blockedSiteBuilder
+        url: /docs/module-blockedSiteBuilder.html
+      - page: browserutil
+        url: /docs/module-browserutil.html
+      - page: connectDataToHtml
+        url: /docs/module-connectDataToHtml.html
+      - page: constants
+        url: /docs/module-constants.html
+      - page: dataCollection
+        url: /docs/module-dataCollection.html
+      - page: dateutil
+        url: /docs/module-dateutil.html
+      - page: exerciseTime
+        url: /docs/module-exerciseTime.html
+      - page: htmlFunctionality
+        url: /docs/module-htmlFunctionality.html
+      - page: inject
+        url: /docs/module-inject.html
+      - page: interception
+        url: /docs/module-interception.html
+      - page: logger
+        url: /docs/module-logger.html
+      - page: storage
+        url: /docs/module-storage.html
+      - page: storageModifier
+        url: /docs/module-storageModifier.html
+      - page: stringutil
+        url: /docs/module-stringutil.html
+      - page: urlFormatter
+        url: /docs/module-urlFormatter.html
+      - page: UUIDGenerator
+        url: /docs/module-UUIDGenerator.html
+  - title: Classes
+    subfolderitems:
+      - page: BasicTable
+        url: /docs/BasicTable.html
+      - page: BlackListStatsTable
+        url: /docs/BlackListStatsTable.html
+      - page: BlackListTable
+        url: /docs/BlackListTable.html
+      - page: BlockedSite
+        url: /docs/BlockedSite.html
+      - page: BlockedSiteList
+        url: /docs/BlockedSiteList.html
+      - page: ExerciseTimeTable
+        url: /docs/ExerciseTimeTable.html
+      - page: GreenToRedSlider
+        url: /docs/GreenToRedSlider.html
+      - page: IntervalSlider
+        url: /docs/IntervalSlider.html
+      - page: StorageListener
+        url: /docs/StorageListener.html
+      - page: Tracker
+        url: /docs/Tracker.html
+      - page: TurnOffSlider
+        url: /docs/TurnOffSlider.html
+      - page: UserSettings
+        url: /docs/UserSettings.html
+  - title: Content Scripts
+    subfolderitems:
+      - page: inject
+        url: /docs/module-inject.html

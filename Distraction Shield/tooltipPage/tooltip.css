@@ -1,4 +1,4 @@
-body {
+#tooltip {
     font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
     font-size: 100%;
     background-color: #FFFFFF;
@@ -7,11 +7,11 @@ body {
     text-align: center;
 }
 
-.btn-group-vertical > button {
+#tooltip .btn-group-vertical > button {
     margin-bottom: 10px;
-    border-radius: 7px !important;
+    border-radius: 7px;
 }
 
-.btn {
+#tooltip .btn {
     min-width: 100px;
 }

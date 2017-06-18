@@ -1,14 +1,14 @@
-.panel {
+#statistics .panel {
     padding-top: 5px;
     padding-bottom: 5px;
 }
 
-.panel-primary {
+#statistics .panel-primary {
     padding-top: 0px;
     padding-bottom: 0px;
 }
 
-.page-header {
+#statistics .page-header {
     margin: 0 auto 0 auto;
     text-align: center;
     border-bottom: 2px solid;

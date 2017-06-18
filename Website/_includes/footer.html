@@ -1,0 +1,37 @@
+<!-- Footer -->
+            <div class="row footer">
+              <div class="col-md-2"></div>
+              <div class="col-md-8">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <h4>Github Repositories</h4>
+                      <ul>
+                      {% if site.github_username %}
+                        <li>
+                          <a href="https://github.com/{{ site.github_username }}">
+                            <span class="username">{{ site.github_username }}</span>
+                          </a>
+                        </li>
+                        {% endif %}
+                      </ul>
+                    </div>
+                    <div class="col-md-3">
+                      <h4>Information</h4>
+                      <ul>
+                        <li>
+                          <a href="https://docs.google.com/forms/d/e/1FAIpQLScHTpTaGD19HJd4d7k98FV_20-NwRV0dp9xNMWza7_1KsiGag/viewform">
+                            <span class="feedback">Feedback</span>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="{{ site.baseurl }}/privacy/">
+                            <span class="privacy">Privacy Policy</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-md-2"></div>
+            </div>
+          <!-- End Footer -->
