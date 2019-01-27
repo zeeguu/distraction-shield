@@ -1,6 +1,6 @@
 import * as constants from '../constants'
 import * as storage from '../modules/storage/storage'
-import $ from 'jquery';
+import $ from 'frontend-dependencies/node_modules/jquery';
 
 
 /**
@@ -38,8 +38,8 @@ function initBasis(mode) {
                 return false;
             });
 
-            if (window.location.href.indexOf(constants.zeeguLoginLink) != -1) {
-                if (mode.label == constants.modes.pro.label) {
+            if (window.location.href.indexOf(constants.zeeguLoginLink) !== -1) {
+                if (mode.label === constants.modes.pro.label) {
                     message = constants.loginMessage;
                 } else {
                     message = message +"\n" + constants.loginMessage;

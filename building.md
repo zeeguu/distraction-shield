@@ -12,17 +12,13 @@ In order to build the project you need to complete the following steps.
 Install node.js (https://nodejs.org)
 
 ## Step 2 ###
-Install bower.js (https://bower.io)
-
-## Step 3 ###
 Install packages:
 
 ```
 npm install
-bower install
 ```
 
-## Step 4 ###
+## Step 3 ###
 Build the project!
 
 ```
