@@ -38,7 +38,7 @@ const MIN = PROD ? '.min' : '';
 
 // Folder setup
 const Project = new Funnel('Distraction Shield');
-const Vendor = new Funnel('bower_components');
+const Vendor = new Funnel('frontend_components');
 const Test = new Funnel('test');
 
 // Build
@@ -153,7 +153,7 @@ if (!TEST) {
   });
   build.push(manifest);
 
-  // bower assets
+  // front-end assets
   let vendor = new Funnel(Vendor, {
     srcDir: 'bootstrap/dist',
     destDir: 'assets',

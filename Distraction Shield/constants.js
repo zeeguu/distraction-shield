@@ -40,7 +40,7 @@ export const trackerAlarmFrequency = 1.0;
 export const modes = {
     lazy: {
         label: "lazy",
-        zeeguuText: "You are in lazy mode. Click <a id='originalDestination'>'Skip'</a> any time to continue browsing."
+        zeeguuText: "You are in lazy mode. Click <a id='originalDestination'>'Skip'</a> anytime to continue browsing."
     },
     pro: {
         label: "pro",
@@ -109,7 +109,7 @@ export const logType = {
 };
 
 /* -------------------- Text Messages ----------------------- */
-export const zeeguuInfoText = "Hey, you tried to enter one of the sites you wanted to be protected from!";
+export const zeeguuInfoText = "Hey, you tried to enter one of the blocked sites!";
 
 /* -------------------- Keypress export constants ----------------------- */
 /* ---------- ----- optionsPage/htmlFunctionality ----- ---------- */
