@@ -1,6 +1,6 @@
----
-id: 5
----
+
+[![Build Status](https://travis-ci.org/zeeguu-ecosystem/Distraction-Shield.svg?branch=master)](https://travis-ci.org/zeeguu-ecosystem/Distraction-Shield)
+
 # The Distraction Shield
 
 ### General Information
