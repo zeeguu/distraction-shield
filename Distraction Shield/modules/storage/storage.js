@@ -231,6 +231,23 @@ export function setExerciseTimeList(statList) {
     return setStorage(constants.tds_exerciseTime, statList);
 }
 
+/**
+ * Gets the TotalTime array from the storage
+ * @method getTotalTimeList
+ */
+export function getTotalTimeList()  {
+    return getStorage([constants.tds_totalTime]);
+}
+
+/**
+ * Sets the totalTime array into the storage
+ * @param {array} statList the new value of the totalTime array
+ * @method setTotalTimeList
+ */
+export function setTotalTimeList(statList)  {
+    return setStorage(constants.tds_totalTime, statList);
+}
+
 /* ---------------- Logger --------------- */
 
 /**

@@ -131,5 +131,6 @@ export const tds_settings = "tds_settings";
 export const tds_interceptCounter = "tds_interceptCounter";
 export const tds_interceptDateList = "tds_interceptDateList";
 export const tds_exerciseTime = "tds_exerciseTime";
+export const tds_totalTime = "tds_totalTime";
 export const tds_logs = "tds_logs";
 export const tds_logfile = "tds_logfile";

@@ -23,6 +23,7 @@ chrome.runtime.onInstalled.addListener(details => {
         initInterceptCounter(output.tds_interceptCounter);
         initInterceptDateList(output.tds_interceptDateList);
         initExerciseTime(output.tds_exerciseTime);
+        initTotalTime(output.tds_totalTime);
         initSettings(output.tds_settings);
         initAlarm();
         if (details.reason === 'install') {
@@ -44,8 +45,8 @@ function initBlacklist(list) {
 }
 
 /**
- * Initializes the storage with a BlockedSiteList object.
- * @param settings {?UserSettings} BlockedSiteList received from storage
+ * Initializes the storage with a UserSettings object.
+ * @param settings {?UserSettings} UserSettings received from storage
  * @memberOf init
  */
 function initSettings(settings) {
@@ -57,8 +58,8 @@ function initSettings(settings) {
 }
 
 /**
- * Initializes the storage with a BlockedSiteList object.
- * @param counter {?number} BlockedSiteList received from storage
+ * Initializes the value of interceptCount in the storage.
+ * @param counter {?number} interceptCount received from storage
  * @memberOf init
  */
 function initInterceptCounter(counter) {
@@ -84,6 +85,18 @@ function initInterceptDateList(dateList) {
 function initExerciseTime(exerciseTime) {
     if (exerciseTime == null)
         storage.setExerciseTimeList([]);
+}
+
+/**
+ * Initializes the storage with a list with total time wasted and total time invested
+ * @param totalTime {?Array} total time list received from storage
+ * @memberOf init
+ */
+function initTotalTime(totalTime) {
+    if (totalTime == null) {
+      let initList = [{timeInvested: 0, timeWasted: 0}];
+      storage.setTotalTimeList(initList);
+    }
 }
 
 /**

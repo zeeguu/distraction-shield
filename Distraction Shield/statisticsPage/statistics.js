@@ -1,10 +1,11 @@
 import BlacklistStatsTable from './classes/BlacklistStatsTable'
 import ExerciseTimeTable from './classes/ExerciseTimeTable'
+import TotalTimeTable from './classes/TotalTimeTable'
 import InterceptionCounterTable from './classes/InterceptionCounterTable'
 import BlockedSiteList from '../classes/BlockedSiteList.js'
 import * as storage from '../modules/storage/storage'
 import * as interception from '../modules/statistics/interception'
-import {tds_blacklist, tds_interceptDateList, tds_exerciseTime} from '../constants'
+import {tds_blacklist, tds_interceptDateList, tds_exerciseTime, tds_totalTime} from '../constants'
 import StorageListener from "../modules/storage/StorageListener"
 
 /**
@@ -16,6 +17,7 @@ import StorageListener from "../modules/storage/StorageListener"
 let interceptionCounterTable = null;
 let blacklistTable = null;
 let exerciseTimeTable = null;
+let totalTimeTable = null;
 
 /**
  * initial function that is fired when the page is loaded.
@@ -33,15 +35,17 @@ document.addEventListener("DOMContentLoaded", function () {
  * @memberOf statisticsPage
  */
 function initStatisticsPage() {
-    Promise.all([storage.getInterceptDateList(), storage.getExerciseTimeList(), storage.getBlacklistPromise()])
+    Promise.all([storage.getInterceptDateList(), storage.getExerciseTimeList(), storage.getBlacklistPromise(), storage.getTotalTimeList()])
         .then(function (response) {
             let interceptDateList = response[0].tds_interceptDateList;
             let blockedSiteList = response[2];
             let exerciseTime = response[1];
+            let totalTime = response[3];
 
             setInterceptionCounterTable(interceptDateList);
             blacklistTable.render(blockedSiteList);
             exerciseTimeTable.render(exerciseTime);
+            totalTimeTable.render(totalTime);
         });
 }
 /**
@@ -61,6 +65,7 @@ function connectHtmlFunctionality() {
     interceptionCounterTable = new InterceptionCounterTable();
     blacklistTable = new BlacklistStatsTable($('#interceptTable'));
     exerciseTimeTable = new ExerciseTimeTable($('#exerciseTime'));
+    totalTimeTable = new TotalTimeTable($('#totalTime'));
 }
 
 /**
@@ -81,5 +86,10 @@ new StorageListener((changes) => {
     if (tds_interceptDateList in changes) {
         let newInterceptDateList = changes[tds_interceptDateList].newValue;
         setInterceptionCounterTable(newInterceptDateList);
+    }
+
+    if (tds_totalTime in changes) {
+        let newTotalTime = changes[tds_totalTime].newValue;
+        totalTimeTable.render(newTotalTime);
     }
 });

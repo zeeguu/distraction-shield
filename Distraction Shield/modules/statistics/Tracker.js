@@ -1,5 +1,6 @@
 import * as constants from '../../constants';
 import * as exerciseTime from './exerciseTime';
+import * as updateTotalTime from './updateTotalTime'
 import * as storage from '../storage/storage'
 import BlockedSiteList from '../../classes/BlockedSiteList'
 import StorageListener from "../storage/StorageListener"
@@ -74,10 +75,12 @@ export default class Tracker {
             if(tab) {
                 if (this.compareDomain(tab.url, constants.zeeguuExTracker)) {
                     this.incTimeExercises(timeSpent);
+                    this.incTotalTimeExercises(timeSpent);
                     logger.logToFile(constants.logEventType.spent, `exercises`, `${timeSpent/1000}`, constants.logType.statistics);
                 } else {
                     this.matchToBlockedSites(tab.url).then((site) => {
                         this.incTimeBlockedSite(site, timeSpent);
+                        this.incTotalTimeIntercepts(timeSpent);
                         logger.logToFile(constants.logEventType.spent, `${site.domain}`, `${timeSpent/1000}`, constants.logType.statistics);
                     });
                 }
@@ -237,6 +240,24 @@ export default class Tracker {
      */
     incTimeExercises(timeSpent) {
         exerciseTime.incrementTodayExerciseTime(timeSpent);
+    }
+
+    /**
+     * Updates the total time spent solving practice exercises using the updateTotalTime module
+     * @param timeSpent the amount by which the time invested should be increased
+     * @function Tracker#incTotalTimeExercises
+     */
+    incTotalTimeExercises(timeSpent) {
+        updateTotalTime.updateTotalExerciseTime(timeSpent);
+    }
+
+    /**
+     * Updates the total time wasted on blocked sites using the updateTotalTime module
+     * @param timeSpent the amount by which the time wasted should be increased
+     * @function Tracker#incTotalTimeIntercepts
+     */
+    incTotalTimeIntercepts(timeSpent) {
+        updateTotalTime.updateTotalInterceptTime(timeSpent);
     }
 
     /**
