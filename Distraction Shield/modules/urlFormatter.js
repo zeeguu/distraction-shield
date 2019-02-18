@@ -172,7 +172,10 @@ function httpGetAsync(theUrlToGet, onSuccess, onFailure) {
  * @private
  */
 function readyStateChange(xmlHttp, onSuccess, onFailure, theUrlToGet) {
-    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+
+    // ML: For some reason Twitter returns 403... so we allow it here... 
+    if (xmlHttp.readyState == 4 && (xmlHttp.status == 200 || xmlHttp.status == 403))
+    {
         // simple regex to extract data from title tags, ignoring newlines, tabs and returns
         let titleTags = (/<title.*?>(?:[\t\n\r]*)([\w\W]*?)(?:[\t\n\r]*)<\/title>/m).exec(xmlHttp.responseText);
         if (titleTags != null) {
@@ -181,8 +184,9 @@ function readyStateChange(xmlHttp, onSuccess, onFailure, theUrlToGet) {
         } else {
             onSuccess(xmlHttp.responseURL, theUrlToGet);
         }
-    } else if (xmlHttp.readyState == 4) {
-        onFailure(errorHandler(xmlHttp.status));
+    } else if (xmlHttp.readyState == 4)
+      {
+        onFailure(errorHandler(xmlHttp.status, theUrlToGet));
     }
 }
 
@@ -191,15 +195,15 @@ function readyStateChange(xmlHttp, onSuccess, onFailure, theUrlToGet) {
  * @method errorHandler
  * @private
  */
-function errorHandler(status) {
+function errorHandler(status, url) {
     switch (status) {
         case constants.FILE_NOT_FOUND_ERROR:
-            return (constants.INVALID_URL_MESSAGE + 'File not found');
+            return (url + ": " + constants.INVALID_URL_MESSAGE + 'File not found');
         case constants.SERVER_ERROR:
-            return (constants.INVALID_URL_MESSAGE + 'Server error');
+            return (url + ": " + constants.INVALID_URL_MESSAGE + 'Server error');
         case constants.REQUEST_ABORTED_ERROR:
-            return (constants.INVALID_URL_MESSAGE + 'Request aborted');
+            return (url + ": " + constants.INVALID_URL_MESSAGE + 'Request aborted');
         default:
-            return (constants.INVALID_URL_MESSAGE + 'Unknown error ' + status);
+            return (url + ": " + constants.INVALID_URL_MESSAGE + 'Unknown error ' + status);
     }
 }

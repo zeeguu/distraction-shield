@@ -21,3 +21,7 @@ Website/vendor/
 Website/_site/
 Website/.sass-cache/
 Website/.idea
+
+frontend_components/*
+test-pages/*
+.DS_Store
