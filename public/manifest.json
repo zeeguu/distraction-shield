@@ -1,15 +1,50 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
-  "icons": [
+  "manifest_version": 2,
+  "short_name": "Dist. Shield",
+  "name": "The Distraction Shield",
+  "description": "Divert attention from social media websites towards learning a new language",
+  "version": "2.1.0",
+  "icons": {
+    "128": "/assets/images/aikido.png"
+  },
+  "offline_enabled": false,
+  "options_page": "/assets/html/options.html",
+  "options_ui": {
+    "page": "/assets/html/options.html"
+  },
+  "browser_action": {
+    "default_icon": "/assets/images/aikido.png",
+    "default_title": "Distraction Shield Settings",
+    "default_popup": "/assets/html/tooltip.html"
+  },
+  "background": {
+    "scripts": [
+      "/assets/js/init.js"
+    ]
+  },
+  "content_scripts": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "matches": [
+        "*://www.zeeguu.unibe.ch/practice/get-ex*",
+        "*://www.zeeguu.unibe.ch/login*"
+      ],
+      "js": [
+        "/assets/js/inject.js"
+      ]
     }
   ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "permissions": [
+    "tabs",
+    "storage",
+    "webRequest",
+    "webRequestBlocking",
+    "idle",
+    "alarms",
+    "history",
+    "<all_urls>"
+  ],
+  "web_accessible_resources": [
+    "/assets/html/inject.html",
+    "/assets/images/aikido.png"
+  ]
 }
