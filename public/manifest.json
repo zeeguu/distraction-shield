@@ -10,7 +10,13 @@
   "offline_enabled": false,
   "browser_action": {
     "default_icon": "/images/aikido.png",
-    "default_title": "Distraction Shield Settings"
+    "default_title": "Distraction Shield Settings",
+    "default_popup": "/index.html"
+  },
+  "background": {
+    "scripts": [
+      "/background.js"
+    ]
   },
   "permissions": [
     "tabs",
