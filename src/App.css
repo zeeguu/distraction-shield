@@ -1,4 +1,4 @@
-/* @import '~antd/dist/antd.css'; */
+@import '~antd/dist/antd.css';
 
 .App {
   text-align: center;
@@ -7,12 +7,23 @@
 }
 
 .App-header {
-  padding: 30px;
+  padding: 4px;
+  padding-bottom: 50px;
   font-size: calc(10px + 2vmin);
   color: white;
+  display: flex;
+}
+
+.App-header>* {
+  flex: 1 1 160px;
+  margin: 10px;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+.App-logo {
+  width: 50px;
 }
 
