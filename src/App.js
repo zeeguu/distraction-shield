@@ -3,17 +3,29 @@
 import React from 'react';
 import logo from './aikido.png';
 import './App.css';
-import { Switch, Input, message } from 'antd';
+import { Switch, Input, message, Button } from 'antd';
 import Autolinker from 'autolinker';
 import * as UrlParser from 'url-parse';
 
 let blockButton = new React.createRef();
 
-function blockWebsite(e) {
+function blockFromInput(e) {
   let url = e.target.getAttribute('value');
 
   blockButton.current.setValue('')
 
+  blockWebsite(url);
+}
+
+function blockCurrentWebsite() {
+  if (!(chrome && chrome.tabs)) return; // no chrome env.
+
+  chrome.tabs.getSelected(null, function(tab) {
+    blockWebsite(tab.url);
+  });
+}
+
+function blockWebsite(url) {
   let matches = Autolinker.parse(url, {
     urls: true,
     email: true
@@ -21,7 +33,7 @@ function blockWebsite(e) {
 
   if (!matches.length) return message.error('No valid link.');
 
-  let urls = matches.map(convertToRegex);
+  let urls = matches.map(urlToParser);
 
   if (!(chrome && chrome.storage)) return; // not inside chrome environment.
 
@@ -29,17 +41,25 @@ function blockWebsite(e) {
   chrome.storage.sync.get(['blockedUrls'], function(result) {
     console.log('Value currently is ' + result.blockedUrls);
     let blockedUrls = result.blockedUrls || [];
-    blockedUrls.push(...urls);
-    chrome.storage.sync.set({blockedUrls}, function() {
+    blockedUrls.push(...urls.map(getRegexFromParser));
+    chrome.storage.sync.set({ blockedUrls }, function() {
       console.log('Value is set to ' + blockedUrls);
-      message.success(`Blocked ${url}`);
+      if (urls.length > 1) {
+        message.success(`Blocked ${urls.length} websites`); 
+      } else {
+        message.success(`Blocked ${urls[0].hostname}`);
+      }
     });
   });
 }
 
-function convertToRegex(match) {
+function urlToParser(match) {
   let url = match.getUrl();
   let parser = new UrlParser(url);
+  return parser;
+}
+
+function getRegexFromParser(parser) {
   parser.set('protocol', '*:');
   let regex = `*://*.${parser.hostname}/*`;
   return regex;
@@ -59,9 +79,12 @@ function App() {
           <img src={logo} className="App-logo" alt="logo" />
         </div>
       </header>
+      <Button type="primary" onClick={() => blockCurrentWebsite()}>
+        Block
+      </Button>
       <Input ref={blockButton}
              placeholder="Block website" 
-             onPressEnter={(e) => blockWebsite(e)} />
+             onPressEnter={(e) => blockFromInput(e)} />
     </div>
   );
 }
