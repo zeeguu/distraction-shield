@@ -5,7 +5,7 @@ import App from './App';
 import Options from './Options';
 import * as serviceWorker from './serviceWorker';
 
-let opt = window.location.pathname === '/options';
+let opt = window.location.search === '?options';
 ReactDOM.render(opt ? <Options /> : <App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
