@@ -26,6 +26,7 @@ const columns = [
       <Button type="danger" shape="circle" icon="delete"
         onClick={() => unblockWebsite(hostname)} />
     ),
+    align: 'right'
   },
 ];
 

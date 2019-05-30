@@ -46,17 +46,19 @@ export const blockWebsite = (url) => {
             return !blockedUrls.find(blocked => blocked.regex === url.regex);
         };
         let regexed = urls.map(mapToBlockedUrl);
-        let toBlock = [];
-        regexed.forEach(url => {
-            if (!notBlocked) toBlock.push(url);
+        let blocked = [];
+        regexed.forEach(item => {
+            if (notBlocked(item)) {
+                blockedUrls.push(item)
+                blocked.push(item);
+            };
         });
-        blockedUrls.push(...toBlock);
         
         return setWebsites(blockedUrls).then(() => {
-            if (toBlock.length > 1) {
-                message.success(`Blocked ${toBlock.length} websites`); 
+            if (blocked.length > 1) {
+                message.success(`Blocked ${blocked.length} websites`); 
             } else {
-                message.success(`Blocked ${toBlock[0].hostname}`);
+                message.success(`Blocked ${blocked[0].hostname}`);
             }
         });
     });
