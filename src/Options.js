@@ -2,7 +2,7 @@ import React from 'react';
 import './Options.css';
 import { Table, Button, Input } from 'antd';
 import { blockWebsite, getWebsites,
-  storageChange, unblockWebsite } from './util/block-site';
+  addStorageListener, unblockWebsite } from './util/block-site';
 
 const s2 = 'https://www.google.com/s2/favicons?domain=';
 
@@ -55,7 +55,7 @@ class Options extends React.Component {
   }
 
   componentDidMount() {
-    storageChange(() => this.setup());
+    addStorageListener(() => this.setup());
     this.setup();
   }
 

@@ -4,10 +4,10 @@
   text-align: center;
   background-color: #282c34;
   min-height: 100vh;
+  padding: 5px;
 }
 
 .App-header {
-  padding: 4px;
   padding-bottom: 50px;
   font-size: calc(10px + 2vmin);
   color: white;

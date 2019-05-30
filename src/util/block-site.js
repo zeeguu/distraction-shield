@@ -3,24 +3,44 @@ import Autolinker from 'autolinker';
 import * as UrlParser from 'url-parse';
 import { message } from 'antd';
 
-export function getWebsites() {
-    return new Promise((resolve, reject) => {
-        // get blocked websites
-        if (!(chrome && chrome.storage)) resolve([]); // not inside chrome environment.
+let listeners = [];
 
-        chrome.storage.sync.get(['blockedUrls'], (result) => {
-            let blockedUrls = result.blockedUrls || [];
-            resolve(blockedUrls);
-        });
+function getFromStorage(...keys) {
+    return new Promise(resolve => {
+        if (chrome && chrome.storage) {
+            chrome.storage.sync.get(keys, result => {
+                resolve(result);
+            });
+        } else {
+            let result = keys.reduce((acc, val) => {
+                acc[val] = JSON.parse(localStorage.getItem(val));
+                return acc;
+            }, {});
+
+            resolve(result);
+        }
     });
 }
 
-export function setWebsites(blockedUrls) {
-    return new Promise((resolve, reject) => {
-        if (!(chrome && chrome.storage)) resolve(); // not inside chrome environment.
+function setInStorage(items) {
+    return new Promise(resolve => {
+        if (chrome && chrome.storage) {
+            chrome.storage.sync.set(items, () => {
+                resolve();
+            });
+        } else {
+            Object.keys(items).forEach(key => {
+                localStorage.setItem(key, JSON.stringify(items[key]));
+            });
+            listeners.forEach(callback => callback());
 
-        chrome.storage.sync.set({ blockedUrls }, resolve);
-    });
+            resolve();
+        }
+});
+}
+
+export function getWebsites() {
+    return getFromStorage('blockedUrls').then(res => res.blockedUrls || []);
 }
 
 export const blockCurrentWebsite = () => {
@@ -30,7 +50,7 @@ export const blockCurrentWebsite = () => {
       blockWebsite(tab.url);
     });
 }
-  
+
 export const blockWebsite = (url) => {
     let matches = Autolinker.parse(url, {
       urls: true,
@@ -54,7 +74,7 @@ export const blockWebsite = (url) => {
             };
         });
         
-        return setWebsites(blockedUrls).then(() => {
+        return setInStorage({ blockedUrls }).then(() => {
             if (blocked.length > 1) {
                 message.success(`Blocked ${blocked.length} websites`); 
             } else {
@@ -65,20 +85,26 @@ export const blockWebsite = (url) => {
 }
 
 export const unblockWebsite = (hostname) => {
-    getWebsites().then(blockedUrls => {
-        let newBlockedUrls = blockedUrls.filter(blockedUrl => 
+    getWebsites().then(oldBlockedUrls => {
+        let blockedUrls = oldBlockedUrls.filter(blockedUrl => 
             blockedUrl.hostname !== hostname);
 
-        return setWebsites(newBlockedUrls);
+        return setInStorage({ blockedUrls });
     }).then(() => message.success(`Unblocked ${hostname}`));
 };
 
-export const storageChange = callback => {
-    if (!(chrome && chrome.storage)) return;
-
-    chrome.storage.onChanged.addListener(callback);
+export const addStorageListener = callback => {
+    if (!(chrome && chrome.storage)) {
+        listeners.push(callback);
+        window.addEventListener('storage', callback); // only for external tab
+    } else {
+        chrome.storage.onChanged.addListener(callback);
+    }
 };
 
+export const appEnabled = callback => {
+
+}
 
 // utility functions
 function urlToParser(match) {
