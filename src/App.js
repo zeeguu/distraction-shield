@@ -39,11 +39,9 @@ function blockWebsite(url) {
 
 
   chrome.storage.sync.get(['blockedUrls'], function(result) {
-    console.log('Value currently is ' + result.blockedUrls);
     let blockedUrls = result.blockedUrls || [];
-    blockedUrls.push(...urls.map(getRegexFromParser));
+    blockedUrls.push(...urls.map(mapToBlockedUrl));
     chrome.storage.sync.set({ blockedUrls }, function() {
-      console.log('Value is set to ' + blockedUrls);
       if (urls.length > 1) {
         message.success(`Blocked ${urls.length} websites`); 
       } else {
@@ -59,10 +57,16 @@ function urlToParser(match) {
   return parser;
 }
 
-function getRegexFromParser(parser) {
-  parser.set('protocol', '*:');
+function mapToBlockedUrl(parser) {
   let regex = `*://*.${parser.hostname}/*`;
-  return regex;
+  let { hostname, href, pathname } = parser;
+
+  return {
+    hostname,
+    href,
+    pathname,
+    regex
+  };
 }
 
 function App() {

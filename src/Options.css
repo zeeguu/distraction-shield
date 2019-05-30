@@ -1,0 +1,18 @@
+@import '~antd/dist/antd.css';
+
+.Options {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.Options-header {
+  padding: 4px;
+  padding-bottom: 50px;
+  font-size: calc(10px + 2vmin);
+  text-align: center;
+}
+
+.site-favicon {
+  margin-right: 10px;
+  margin-top: -2px;
+}

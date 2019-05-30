@@ -13,6 +13,8 @@ function setup() {
         console.debug(result.blockedUrls);
         if (!result.blockedUrls) return; // no urls to be blocked.
 
+        let urls = result.blockedUrls.map(blockedUrl => blockedUrl.regex);
+
         // add
         chrome.webRequest.onBeforeRequest.addListener(
             handleInterception
@@ -20,7 +22,7 @@ function setup() {
                 // urls should be of type
                 // https://developer.chrome.com/extensions/match_patterns
                 // 
-                urls: result.blockedUrls
+                urls
                 //*://*.instagram.com/* // format example.
                 , types: ["main_frame"]
             }
