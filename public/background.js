@@ -1,18 +1,15 @@
 chrome.storage.onChanged.addListener(changes => {
-    console.debug('chrome.storage.onChanged', changes);
     setup();
 });
 
 function setup() {
-    console.debug('setup()');
-
     // remove
     chrome.webRequest.onBeforeRequest.removeListener(handleInterception);
 
     chrome.storage.sync.get(['blockedUrls'], function(result) {
-        console.debug(result.blockedUrls);
         if (!result.blockedUrls) return; // no urls to be blocked.
 
+        // let filtr = result.blockedUrls.filter(blockedUrl => blockedUrl.enabled);
         let urls = result.blockedUrls.map(blockedUrl => blockedUrl.regex);
 
         // add
