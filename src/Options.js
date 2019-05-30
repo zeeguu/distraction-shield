@@ -1,8 +1,8 @@
 import React from 'react';
 import './Options.css';
 import { Table, Button, Input } from 'antd';
-import { blockWebsite, getWebsites,
-  addStorageListener, unblockWebsite } from './util/block-site';
+import { blockWebsite, getWebsites, unblockWebsite } from './util/block-site';
+import { addStorageListener } from './util/storage';
 
 const s2 = 'https://www.google.com/s2/favicons?domain=';
 
