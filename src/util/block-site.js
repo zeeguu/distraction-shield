@@ -42,17 +42,43 @@ export const blockWebsite = (url) => {
     let urls = matches.map(urlToParser);
   
     getWebsites().then(blockedUrls => {
-        blockedUrls.push(...urls.map(mapToBlockedUrl));
-        return setWebsites(blockedUrls);
-    }).then(() => {
-        if (urls.length > 1) {
-            message.success(`Blocked ${urls.length} websites`); 
-        } else {
-            message.success(`Blocked ${urls[0].hostname}`);
-        }
+        let notBlocked = url => {
+            return !blockedUrls.find(blocked => blocked.regex === url.regex);
+        };
+        let regexed = urls.map(mapToBlockedUrl);
+        let toBlock = [];
+        regexed.forEach(url => {
+            if (!notBlocked) toBlock.push(url);
+        });
+        blockedUrls.push(...toBlock);
+        
+        return setWebsites(blockedUrls).then(() => {
+            if (toBlock.length > 1) {
+                message.success(`Blocked ${toBlock.length} websites`); 
+            } else {
+                message.success(`Blocked ${toBlock[0].hostname}`);
+            }
+        });
     });
 }
 
+export const unblockWebsite = (hostname) => {
+    getWebsites().then(blockedUrls => {
+        let newBlockedUrls = blockedUrls.filter(blockedUrl => 
+            blockedUrl.hostname !== hostname);
+
+        return setWebsites(newBlockedUrls);
+    }).then(() => message.success(`Unblocked ${hostname}`));
+};
+
+export const storageChange = callback => {
+    if (!(chrome && chrome.storage)) return;
+
+    chrome.storage.onChanged.addListener(callback);
+};
+
+
+// utility functions
 function urlToParser(match) {
   let url = match.getUrl();
   let parser = new UrlParser(url);

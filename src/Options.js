@@ -1,7 +1,8 @@
 import React from 'react';
 import './Options.css';
 import { Table, Button, Input } from 'antd';
-import { blockWebsite, getWebsites } from './util/block-site';
+import { blockWebsite, getWebsites,
+  storageChange, unblockWebsite } from './util/block-site';
 
 const s2 = 'https://www.google.com/s2/favicons?domain=';
 
@@ -19,8 +20,11 @@ const columns = [
   },
   {
     title: '',
-    render: () => (
-      <Button type="danger" shape="circle" icon="delete" />
+    dataIndex: 'hostname',
+    key: 'href',
+    render: hostname => (
+      <Button type="danger" shape="circle" icon="delete"
+        onClick={() => unblockWebsite(hostname)} />
     ),
   },
 ];
@@ -50,6 +54,11 @@ class Options extends React.Component {
   }
 
   componentDidMount() {
+    storageChange(() => this.setup());
+    this.setup();
+  }
+
+  setup() {
     getWebsites().then(blockedUrls => {
       let data = blockedUrls.map(addKeyToObj);
       this.setState({ data });
