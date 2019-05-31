@@ -1,7 +1,8 @@
+/* global chrome */
 import React from 'react';
 import logo from './aikido.png';
 import './App.css';
-import { Switch, Button } from 'antd';
+import { Switch, Button, Icon } from 'antd';
 import { blockCurrentWebsite } from './util/block-site';
 import { getFromStorage, setInStorage } from './util/storage';
 
@@ -22,6 +23,12 @@ class App extends React.Component {
     setInStorage({ enabled });
   }
 
+  openOptionsPage() {
+    if (!(chrome && chrome.runtime && chrome.runtime.openOptionsPage)) return;
+
+    chrome.runtime.openOptionsPage();
+  }
+
   render() {
     return (
       <div className="App">
@@ -39,10 +46,17 @@ class App extends React.Component {
             <img src={logo} className="App-logo" alt="logo" />
           </div>
         </header>
-        <Button ghost={this.state.currentBlocked}
-          type="primary" onClick={() => blockCurrentWebsite()}>
-          Block
-        </Button>
+        <p>
+          <Button ghost={this.state.currentBlocked}
+            type="primary" onClick={() => blockCurrentWebsite()}>
+            Block
+          </Button>
+        </p>
+        <p>
+          <Button type="default" shape="circle" icon="setting" 
+            onClick={() => this.openOptionsPage()}
+            />
+        </p>
       </div>
     );
   }
