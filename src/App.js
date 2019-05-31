@@ -8,7 +8,10 @@ import {
   isCurrentWebsiteBlocked,
   unBlockCurrentWebsite
 } from './util/block-site';
-import { getFromStorage, setInStorage } from './util/storage';
+import {
+  getFromStorage, setInStorage,
+  addStorageListener
+} from './util/storage';
 
 class App extends React.Component {
   state = {
@@ -17,6 +20,11 @@ class App extends React.Component {
   };
 
   componentDidMount() {
+    addStorageListener(() => this.setup());
+    this.setup();
+  }
+
+  setup() {
     getFromStorage('enabled').then((res) => {
       this.setState(res); // enabled: (true | false)
     });
