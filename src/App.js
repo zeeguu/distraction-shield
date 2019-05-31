@@ -2,7 +2,7 @@
 import React from 'react';
 import logo from './aikido.png';
 import './App.css';
-import { Switch, Button, Icon } from 'antd';
+import { Switch, Button } from 'antd';
 import { blockCurrentWebsite } from './util/block-site';
 import { getFromStorage, setInStorage } from './util/storage';
 
@@ -24,9 +24,12 @@ class App extends React.Component {
   }
 
   openOptionsPage() {
-    if (!(chrome && chrome.runtime && chrome.runtime.openOptionsPage)) return;
-
-    chrome.runtime.openOptionsPage();
+    if (chrome && chrome.runtime && chrome.runtime.openOptionsPage) {
+      chrome.runtime.openOptionsPage();
+    } else {
+      window.history.pushState({ urlPath:'?options' }, '', '?options');
+      window.location.reload(); // not ideal, but works.
+    }
   }
 
   render() {

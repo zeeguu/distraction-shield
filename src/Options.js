@@ -1,8 +1,9 @@
 import React from 'react';
 import './Options.css';
-import { Table, Button, Input } from 'antd';
+import { Table, Button, Input, Layout } from 'antd';
 import { blockWebsite, getWebsites, unblockWebsite } from './util/block-site';
 import { addStorageListener } from './util/storage';
+const { Header, Content, Footer } = Layout;
 
 const s2 = 'https://www.google.com/s2/favicons?domain=';
 
@@ -76,20 +77,27 @@ class Options extends React.Component {
 
   render() {
     return (
-      <div className="Options">
-        <header className="Options-header">
-          <p>
+      <Layout className="layout" style={{ background: '#fff' }}>
+        <Header>
+          <header className="Options-header">
             Distraction Shield
-          </p>
-        </header>
-        <Input autoFocus ref={this.blockButton}
-              placeholder="Block website..." 
-              onPressEnter={(e) => this.blockFromInput(e)}
-              className='block-button' />
-        <Table rowSelection={rowSelection}
-               columns={columns}
-               dataSource={this.state.data} />
-      </div>
+          </header>
+        </Header>
+        <Content style={{ padding: '20px 50px' }}>
+          <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
+            <div className="block-input-and-table">
+              <Input autoFocus ref={this.blockButton}
+                    placeholder="Block website..." 
+                    onPressEnter={(e) => this.blockFromInput(e)}
+                    className='block-button' />
+              <Table rowSelection={rowSelection}
+                    columns={columns}
+                    dataSource={this.state.data} />
+            </div>
+          </div>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>University of Groningen © 2019</Footer>
+      </Layout>
     );
   }
 }

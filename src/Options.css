@@ -1,8 +1,7 @@
 @import '~antd/dist/antd.css';
 
-.Options {
+.layout {
   min-height: 100vh;
-  padding: 20px;
 }
 
 .Options-header {
@@ -10,6 +9,12 @@
   padding-bottom: 50px;
   font-size: calc(10px + 2vmin);
   text-align: center;
+  color: white;
+}
+
+.block-input-and-table {
+  padding: 20px;
+  /* max-width: 600px; */
 }
 
 .site-favicon {
