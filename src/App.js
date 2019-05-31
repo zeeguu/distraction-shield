@@ -3,16 +3,34 @@ import logo from './aikido.png';
 import './App.css';
 import { Switch, Button } from 'antd';
 import { blockCurrentWebsite } from './util/block-site';
+import { getFromStorage, setInStorage } from './util/storage';
 
 class App extends React.Component {
-  state = { currentBlocked: false };
+  state = {
+    currentBlocked: false,
+    enabled: undefined
+  };
+
+  componentDidMount() {
+    getFromStorage('enabled').then((res) => {
+      this.setState(res); // enabled: (true | false)
+    });
+  }
+
+  onSwitchChange(enabled) {
+    this.setState({ enabled });
+    setInStorage({ enabled });
+  }
 
   render() {
     return (
       <div className="App">
         <header className="App-header">
           <div>
-            <Switch />
+            <Switch 
+              disabled={this.state.enabled === undefined}
+              checked={this.state.enabled}
+              onChange={checked => this.onSwitchChange(checked)} />
           </div>
           <p>
             Distraction Shield

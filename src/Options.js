@@ -82,7 +82,7 @@ class Options extends React.Component {
             Distraction Shield
           </p>
         </header>
-        <Input ref={this.blockButton}
+        <Input autoFocus ref={this.blockButton}
               placeholder="Block website..." 
               onPressEnter={(e) => this.blockFromInput(e)}
               className='block-button' />

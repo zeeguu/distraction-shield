@@ -6,8 +6,13 @@ function setup() {
     // remove
     chrome.webRequest.onBeforeRequest.removeListener(handleInterception);
 
-    chrome.storage.sync.get(['blockedUrls'], function(result) {
-        if (!result.blockedUrls) return; // no urls to be blocked.
+    // interceptions
+    chrome.storage.sync.get(['enabled', 'blockedUrls'], function(result) {
+        // is app enabled
+        if (result.enabled === false) return;
+
+        // no urls to be blocked.
+        if (!result.blockedUrls) return;
 
         // let filtr = result.blockedUrls.filter(blockedUrl => blockedUrl.enabled);
         let urls = result.blockedUrls.map(blockedUrl => blockedUrl.regex);
