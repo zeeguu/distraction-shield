@@ -10,23 +10,55 @@ export function getWebsites() {
 
 export const blockCurrentWebsite = () => {
     if (!(chrome && chrome.tabs)) return; // no chrome env.
-  
-    chrome.tabs.getSelected(null, function(tab) {
-      blockWebsite(tab.url);
+
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        let tab = tabs[0];
+        blockWebsite(tab.url).then(() => {
+            chrome.tabs.reload(tab.id);
+        });
     });
 }
 
+export const unBlockCurrentWebsite = () => {
+    if (!(chrome && chrome.tabs)) return; // no chrome env.
+
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        let tab = tabs[0];
+        let hostname = new UrlParser(tab.url).hostname;
+        unblockWebsite(hostname);
+    });
+}
+
+export const isCurrentWebsiteBlocked = () => {
+    if (!(chrome && chrome.tabs)) return false; // no chrome env.
+
+    return new Promise((resolve) => {
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            let tab = tabs[0];
+            let hostname = new UrlParser(tab.url).hostname;
+            isWebsiteBlocked(hostname).then(resolve);
+        });
+    });
+};
+
+export const isWebsiteBlocked = hostname => {
+    return getWebsites().then(blockedUrls => {
+        // sidenote: shouldn't we compare regex? let hostname be OK for now..
+        return blockedUrls.find(blocked => blocked.hostname === hostname);
+    });
+};
+
 export const blockWebsite = (url) => {
     let matches = Autolinker.parse(url, {
-      urls: true,
-      email: true
+        urls: true,
+        email: true
     });
-  
+
     if (!matches.length) return message.error('No valid link.');
-  
+
     let urls = matches.map(urlToParser);
-  
-    getWebsites().then(blockedUrls => {
+
+    return getWebsites().then(blockedUrls => {
         let notBlocked = url => {
             return !blockedUrls.find(blocked => blocked.regex === url.regex);
         };
@@ -38,10 +70,10 @@ export const blockWebsite = (url) => {
                 blocked.push(item);
             };
         });
-        
+
         return setInStorage({ blockedUrls }).then(() => {
             if (blocked.length > 1) {
-                message.success(`Blocked ${blocked.length} websites`); 
+                message.success(`Blocked ${blocked.length} websites`);
             } else {
                 message.success(`Blocked ${blocked[0].hostname}`);
             }
@@ -51,32 +83,28 @@ export const blockWebsite = (url) => {
 
 export const unblockWebsite = (hostname) => {
     getWebsites().then(oldBlockedUrls => {
-        let blockedUrls = oldBlockedUrls.filter(blockedUrl => 
+        let blockedUrls = oldBlockedUrls.filter(blockedUrl =>
             blockedUrl.hostname !== hostname);
 
         return setInStorage({ blockedUrls });
     }).then(() => message.success(`Unblocked ${hostname}`));
 };
 
-export const appEnabled = callback => {
-
-}
-
 // utility functions
 function urlToParser(match) {
-  let url = match.getUrl();
-  let parser = new UrlParser(url);
-  return parser;
+    let url = match.getUrl();
+    let parser = new UrlParser(url);
+    return parser;
 }
 
 function mapToBlockedUrl(parser) {
-  let regex = `*://*.${parser.hostname}/*`;
-  let { hostname, href, pathname } = parser;
+    let regex = `*://*.${parser.hostname}/*`;
+    let { hostname, href, pathname } = parser;
 
-  return {
-    hostname,
-    href,
-    pathname,
-    regex
-  };
+    return {
+        hostname,
+        href,
+        pathname,
+        regex
+    };
 }

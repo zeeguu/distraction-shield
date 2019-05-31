@@ -3,7 +3,11 @@ import React from 'react';
 import logo from './aikido.png';
 import './App.css';
 import { Switch, Button } from 'antd';
-import { blockCurrentWebsite } from './util/block-site';
+import {
+  blockCurrentWebsite,
+  isCurrentWebsiteBlocked,
+  unBlockCurrentWebsite
+} from './util/block-site';
 import { getFromStorage, setInStorage } from './util/storage';
 
 class App extends React.Component {
@@ -16,6 +20,9 @@ class App extends React.Component {
     getFromStorage('enabled').then((res) => {
       this.setState(res); // enabled: (true | false)
     });
+    isCurrentWebsiteBlocked().then(currentBlocked => {
+      this.setState({ currentBlocked });
+    });
   }
 
   onSwitchChange(enabled) {
@@ -27,7 +34,7 @@ class App extends React.Component {
     if (chrome && chrome.runtime && chrome.runtime.openOptionsPage) {
       chrome.runtime.openOptionsPage();
     } else {
-      window.history.pushState({ urlPath:'?options' }, '', '?options');
+      window.history.pushState({ urlPath: '?options' }, '', '?options');
       window.location.reload(); // not ideal, but works.
     }
   }
@@ -37,7 +44,7 @@ class App extends React.Component {
       <div className="App">
         <header className="App-header">
           <div>
-            <Switch 
+            <Switch
               disabled={this.state.enabled === undefined}
               checked={this.state.enabled}
               onChange={checked => this.onSwitchChange(checked)} />
@@ -51,14 +58,17 @@ class App extends React.Component {
         </header>
         <p>
           <Button ghost={this.state.currentBlocked}
-            type="primary" onClick={() => blockCurrentWebsite()}>
-            Block
+            type="primary" onClick={() => {
+              !this.state.currentBlocked && blockCurrentWebsite();
+              this.state.currentBlocked && unBlockCurrentWebsite();
+            }}>
+            {this.state.currentBlocked ? 'Unblock' : 'Block'}
           </Button>
         </p>
         <p>
-          <Button type="default" shape="circle" icon="setting" 
+          <Button type="default" shape="circle" icon="setting"
             onClick={() => this.openOptionsPage()}
-            />
+          />
         </p>
       </div>
     );
