@@ -26,7 +26,11 @@ class App extends React.Component {
 
   setup() {
     getFromStorage('enabled').then((res) => {
-      this.setState(res); // enabled: (true | false)
+      this.setState(typeof res.enabled === 'boolean' ? 
+        res : 
+        { enabled: true });
+        // default value is enabled. will still undefined in storage untill one
+        // turns the switch off.
     });
     isCurrentWebsiteBlocked().then(currentBlocked => {
       this.setState({ currentBlocked });
@@ -53,7 +57,7 @@ class App extends React.Component {
         <header className="App-header">
           <div>
             <Switch
-              disabled={this.state.enabled === undefined}
+              loading={this.state.enabled === undefined}
               checked={this.state.enabled}
               onChange={checked => this.onSwitchChange(checked)} />
           </div>

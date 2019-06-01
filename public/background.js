@@ -9,7 +9,7 @@ function setup() {
     // interceptions
     chrome.storage.sync.get(['enabled', 'blockedUrls'], function(result) {
         // is app enabled
-        if (result.enabled === false) return;
+        if (result.enabled === false) return; // can be (undefined | null) too.
 
         // no urls to be blocked.
         if (!result.blockedUrls) return;
