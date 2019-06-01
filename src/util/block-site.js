@@ -30,9 +30,9 @@ export const unBlockCurrentWebsite = () => {
 }
 
 export const isCurrentWebsiteBlocked = () => {
-    if (!(chrome && chrome.tabs)) return false; // no chrome env.
-
     return new Promise((resolve) => {
+        if (!(chrome && chrome.tabs)) return resolve(false); // no chrome env.
+
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             let tab = tabs[0];
             let hostname = new UrlParser(tab.url).hostname;
