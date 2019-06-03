@@ -1,12 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import Options from './Options';
+
+// pages
+import Popup from './pages/Popup';
+import Options from './pages/Options';
+import Intercepted from './pages/Intercepted';
 import * as serviceWorker from './serviceWorker';
 
-let opt = window.location.search === '?options';
-ReactDOM.render(opt ? <Options /> : <App />, document.getElementById('root'));
+function Router() {
+    switch (window.location.search) {
+        case '?options':
+            return <Options />;
+        case '?intercepted':
+            return <Intercepted />;
+        default:
+            return <Popup />;
+    }
+}
+
+ReactDOM.render(<Router /> , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

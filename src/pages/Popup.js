@@ -1,19 +1,19 @@
 /* global chrome */
 import React from 'react';
-import logo from './aikido.png';
-import './App.css';
+import logo from '../aikido.png';
+import './Popup.css';
 import { Switch, Button } from 'antd';
 import {
   blockCurrentWebsite,
   isCurrentWebsiteBlocked,
   unBlockCurrentWebsite
-} from './util/block-site';
+} from '../util/block-site';
 import {
   getFromStorage, setInStorage,
   addStorageListener
-} from './util/storage';
+} from '../util/storage';
 
-class App extends React.Component {
+class Popup extends React.Component {
   state = {
     currentBlocked: false,
     enabled: undefined
@@ -53,8 +53,8 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
+      <div className="Popup">
+        <header className="Popup-header">
           <div>
             <Switch
               loading={this.state.enabled === undefined}
@@ -65,7 +65,7 @@ class App extends React.Component {
             Distraction Shield
           </p>
           <div>
-            <img src={logo} className="App-logo" alt="logo" />
+            <img src={logo} className="Popup-logo" alt="logo" />
           </div>
         </header>
         <p>
@@ -87,4 +87,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default Popup;
