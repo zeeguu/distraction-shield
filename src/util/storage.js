@@ -3,7 +3,7 @@ let listeners = [];
 
 export function getFromStorage(...keys) {
     return new Promise(resolve => {
-        if (chrome && chrome.storage) {
+        if (window.chrome && chrome.storage) {
             chrome.storage.sync.get(keys, result => {
                 resolve(result);
             });
@@ -20,7 +20,7 @@ export function getFromStorage(...keys) {
 
 export function setInStorage(items) {
     return new Promise(resolve => {
-        if (chrome && chrome.storage) {
+        if (window.chrome && chrome.storage) {
             chrome.storage.sync.set(items, () => {
                 resolve();
             });
@@ -36,7 +36,7 @@ export function setInStorage(items) {
 }
 
 export const addStorageListener = callback => {
-    if (chrome && chrome.storage) {
+    if (window.chrome && chrome.storage) {
         chrome.storage.onChanged.addListener(callback);
     } else {
         listeners.push(callback);

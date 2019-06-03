@@ -9,7 +9,7 @@ export function getWebsites() {
 }
 
 export const blockCurrentWebsite = () => {
-    if (!(chrome && chrome.tabs)) return; // no chrome env.
+    if (!(window.chrome && chrome.tabs)) return; // no chrome env.
 
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         let tab = tabs[0];
@@ -20,7 +20,7 @@ export const blockCurrentWebsite = () => {
 }
 
 export const unBlockCurrentWebsite = () => {
-    if (!(chrome && chrome.tabs)) return; // no chrome env.
+    if (!(window.chrome && chrome.tabs)) return; // no chrome env.
 
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         let tab = tabs[0];
@@ -31,7 +31,7 @@ export const unBlockCurrentWebsite = () => {
 
 export const isCurrentWebsiteBlocked = () => {
     return new Promise((resolve) => {
-        if (!(chrome && chrome.tabs)) return resolve(false); // no chrome env.
+        if (!(window.chrome && chrome.tabs)) return resolve(false); // no chrome env.
 
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             let tab = tabs[0];
