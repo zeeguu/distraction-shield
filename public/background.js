@@ -35,9 +35,12 @@ function setup() {
 }
 
 function handleInterception(details) {
-    return {
-        redirectUrl: 'https://www.zeeguu.org/'
-    };
+    // use
+    // new URLSearchParams(url.search.slice(1));
+    // to construct...
+    let redirectUrl = chrome.runtime.getURL('index.html?page=intercepted')
+
+    return { redirectUrl };
 }
 
 setup();

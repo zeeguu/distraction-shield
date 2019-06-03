@@ -46,7 +46,7 @@ class Popup extends React.Component {
     if (chrome && chrome.runtime && chrome.runtime.openOptionsPage) {
       chrome.runtime.openOptionsPage();
     } else {
-      window.history.pushState({ urlPath: '?options' }, '', '?options');
+      window.history.pushState({ urlPath: '?page=options' }, '', '?page=options');
       window.location.reload(); // not ideal, but works.
     }
   }

@@ -8,10 +8,12 @@ import Options from './pages/Options';
 import Intercepted from './pages/Intercepted';
 
 function Router() {
-    switch (window.location.search) {
-        case '?options':
+    let params = (new URL(window.location)).searchParams; // since chrome 51, no IE
+
+    switch (params.get('page')) {
+        case 'options':
             return <Options />;
-        case '?intercepted':
+        case 'intercepted':
             return <Intercepted />;
         default:
             return <Popup />;

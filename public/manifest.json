@@ -31,5 +31,5 @@
   "web_accessible_resources": [
     "/images/aikido.png"
   ],
-  "options_page": "/index.html?options"
+  "options_page": "/index.html?page=options"
 }
