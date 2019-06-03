@@ -36,10 +36,10 @@ export function setInStorage(items) {
 }
 
 export const addStorageListener = callback => {
-    if (!(chrome && chrome.storage)) {
+    if (chrome && chrome.storage) {
+        chrome.storage.onChanged.addListener(callback);
+    } else {
         listeners.push(callback);
         window.addEventListener('storage', callback); // only for external tab
-    } else {
-        chrome.storage.onChanged.addListener(callback);
     }
 };
