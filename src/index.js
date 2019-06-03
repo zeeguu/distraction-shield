@@ -6,7 +6,6 @@ import './index.css';
 import Popup from './pages/Popup';
 import Options from './pages/Options';
 import Intercepted from './pages/Intercepted';
-import * as serviceWorker from './serviceWorker';
 
 function Router() {
     switch (window.location.search) {
