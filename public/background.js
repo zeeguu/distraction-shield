@@ -35,10 +35,12 @@ function setup() {
 }
 
 function handleInterception(details) {
-    // use
-    // new URLSearchParams(url.search.slice(1));
-    // to construct...
-    let redirectUrl = chrome.runtime.getURL('index.html?page=intercepted')
+    let params = new URLSearchParams();
+    params.append('page', 'intercepted');
+    params.append('url', details.url)
+
+    let extensionUrl = chrome.runtime.getURL('index.html');
+    let redirectUrl = `${extensionUrl}?${params.toString()}`
 
     return { redirectUrl };
 }
