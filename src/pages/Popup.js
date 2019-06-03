@@ -61,9 +61,7 @@ class Popup extends React.Component {
               checked={this.state.enabled}
               onChange={checked => this.onSwitchChange(checked)} />
           </div>
-          <p>
-            Distraction Shield
-          </p>
+          <p>Distraction Shield</p>
           <div>
             <img src={logo} className="Popup-logo" alt="logo" />
           </div>

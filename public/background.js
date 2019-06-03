@@ -29,18 +29,27 @@ function setup() {
                 , types: ["main_frame"]
             }
             , ["blocking"]
-        );;
+        );
     });
 
 }
 
 function handleInterception(details) {
+    chrome.storage.sync.get(['intercepts'], function(result) {
+        let intercepts = result.intercepts || {};
+        // @FIXME find out hostname, not just url.
+        let count = intercepts[details.url] + 1 || 1;
+        intercepts[details.url] = count;
+        chrome.storage.sync.set({ intercepts });
+    });
+    
+
     let params = new URLSearchParams();
     params.append('page', 'intercepted');
-    params.append('url', details.url)
+    params.append('url', details.url);
 
     let extensionUrl = chrome.runtime.getURL('index.html');
-    let redirectUrl = `${extensionUrl}?${params.toString()}`
+    let redirectUrl = `${extensionUrl}?${params.toString()}`;
 
     return { redirectUrl };
 }
