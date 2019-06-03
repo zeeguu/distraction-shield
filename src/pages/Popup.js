@@ -1,6 +1,6 @@
 /* global chrome */
 import React from 'react';
-import logo from '../aikido.png';
+import logo from '../images/aikido.png';
 import './Popup.css';
 import { Switch, Button } from 'antd';
 import {
