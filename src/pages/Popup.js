@@ -9,7 +9,8 @@ import {
   unBlockCurrentWebsite
 } from '../util/block-site';
 import {
-  getFromStorage, setInStorage,
+  getFromStorage,
+  setInStorage,
   addStorageListener
 } from '../util/storage';
 
