@@ -1,7 +1,7 @@
 /* global chrome */
+import { message } from 'antd';
 import Autolinker from 'autolinker';
 import UrlParser from 'url-parse';
-import { message } from 'antd';
 import { getFromStorage, setInStorage } from './storage';
 
 export function getWebsites() {
