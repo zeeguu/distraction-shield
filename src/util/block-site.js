@@ -1,6 +1,6 @@
 /* global chrome */
 import Autolinker from 'autolinker';
-import * as UrlParser from 'url-parse';
+import UrlParser from 'url-parse';
 import { message } from 'antd';
 import { getFromStorage, setInStorage } from './storage';
 
