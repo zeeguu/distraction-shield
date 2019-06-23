@@ -51,7 +51,8 @@ export const isWebsiteBlocked = hostname => {
 export const blockWebsite = (url) => {
     let matches = Autolinker.parse(url, {
         urls: true,
-        email: true
+        email: false,
+        phone: false
     });
 
     if (!matches.length) return message.error('No valid link.');
@@ -63,19 +64,16 @@ export const blockWebsite = (url) => {
             return !blockedUrls.find(blocked => blocked.regex === url.regex);
         };
         let regexed = urls.map(mapToBlockedUrl);
-        let blocked = [];
-        regexed.forEach(item => {
-            if (notBlocked(item)) {
-                blockedUrls.push(item)
-                blocked.push(item);
-            };
-        });
+        let blocked = regexed.filter(notBlocked);
+        blockedUrls.push(...blocked);
 
         return setInStorage({ blockedUrls }).then(() => {
             if (blocked.length > 1) {
                 message.success(`Blocked ${blocked.length} websites`);
-            } else {
+            } else if (blocked.length === 1) {
                 message.success(`Blocked ${blocked[0].hostname}`);
+            } else {
+                message.success(`${url} is blocked.`);
             }
         });
     });
