@@ -1,8 +1,9 @@
 import React from 'react';
 import './Options.css';
-import { Table, Button, Input, Layout } from 'antd';
+import { Table, Button, Input, Layout, Row, Col, Radio } from 'antd';
 import { blockWebsite, getWebsites, unblockWebsite } from '../util/block-site';
-import { addStorageListener } from '../util/storage';
+import { addStorageListener, getFromStorage, setInStorage } from '../util/storage';
+import { exerciseSites } from '../util/constants';
 const { Header, Content, Footer } = Layout;
 
 const s2 = 'https://www.google.com/s2/favicons?domain=';
@@ -52,7 +53,8 @@ class Options extends React.Component {
   }
 
   state = {
-    data: []
+    data: [],
+    currentExerciseSite: ''
   }
 
   componentDidMount() {
@@ -65,6 +67,10 @@ class Options extends React.Component {
       let data = blockedUrls.map(addKeyToObj);
       this.setState({ data });
     });
+    getFromStorage('currentExerciseSite').then(res => {
+      let { currentExerciseSite } = res;
+      this.setState({ currentExerciseSite });
+    });
   }
   
   blockFromInput(e) {
@@ -73,6 +79,13 @@ class Options extends React.Component {
     this.blockButton.current.setValue('');
   
     blockWebsite(url);
+  }
+
+  handleExerciseSiteChange(e) {
+    let currentExerciseSite = e.target.value;
+    setInStorage({ currentExerciseSite }).then(() => {
+      this.setState({ currentExerciseSite });
+    });
   }
 
   render() {
@@ -85,15 +98,31 @@ class Options extends React.Component {
         </Header>
         <Content style={{ padding: '20px 50px' }}>
           <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
-            <div className="block-input-and-table">
-              <Input autoFocus ref={this.blockButton}
-                    placeholder="Block website..." 
-                    onPressEnter={(e) => this.blockFromInput(e)}
-                    className='block-button' />
-              <Table rowSelection={rowSelection}
-                    columns={columns}
-                    dataSource={this.state.data} />
-            </div>
+            <Row className="options-grid">
+              <Col span={12} className="grid-col">
+                <Input autoFocus ref={this.blockButton}
+                      placeholder="Block website..." 
+                      onPressEnter={(e) => this.blockFromInput(e)}
+                      className='block-button' />
+                <Table rowSelection={rowSelection}
+                      columns={columns}
+                      dataSource={this.state.data} />
+              </Col>
+              <Col span={12} className="grid-col">
+                <h3>Exercise website:</h3>
+                <Radio.Group value={this.state.currentExerciseSite}
+                            onChange={(e) => this.handleExerciseSiteChange(e)}
+                            size="large">
+                  {exerciseSites.map((site, i) => (
+                    <Radio.Button value={site.name} key={i}>
+                      <img alt={`${site.title}`} src={site.logo}
+                        style={{ width: '25px', height: '25px' }}/>
+                      {site.title}
+                    </Radio.Button>
+                  ))}
+                </Radio.Group>
+              </Col>
+            </Row>
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>University of Groningen © 2019</Footer>
