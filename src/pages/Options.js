@@ -4,6 +4,9 @@ import { Table, Button, Input, Layout, Row, Col, Radio } from 'antd';
 import { blockWebsite, getWebsites, unblockWebsite } from '../util/block-site';
 import { addStorageListener, getFromStorage, setInStorage } from '../util/storage';
 import { exerciseSites } from '../util/constants';
+import {
+  PieChart, Pie, Tooltip
+} from 'recharts';
 const { Header, Content, Footer } = Layout;
 
 const s2 = 'https://www.google.com/s2/favicons?domain=';
@@ -54,7 +57,8 @@ class Options extends React.Component {
 
   state = {
     data: [],
-    currentExerciseSite: ''
+    currentExerciseSite: '',
+    interceptsData: []
   }
 
   componentDidMount() {
@@ -67,9 +71,13 @@ class Options extends React.Component {
       let data = blockedUrls.map(addKeyToObj);
       this.setState({ data });
     });
-    getFromStorage('currentExerciseSite').then(res => {
-      let { currentExerciseSite } = res;
-      this.setState({ currentExerciseSite });
+    getFromStorage('currentExerciseSite', 'intercepts').then(res => {
+      let { currentExerciseSite, intercepts } = res;
+      let interceptsData = Object.keys(intercepts).map(key => ({
+        name: key,
+        value: intercepts[key]
+      }));
+      this.setState({ currentExerciseSite, interceptsData });
     });
   }
   
@@ -121,6 +129,14 @@ class Options extends React.Component {
                     </Radio.Button>
                   ))}
                 </Radio.Group>
+                <br /><br /><br /><br />
+                <h3>Interception statistics:</h3>
+                <PieChart width={200} height={250}>
+                  <Pie dataKey="value" isAnimationActive={false}
+                        data={this.state.interceptsData}
+                        cx={100} cy={100} outerRadius={80} fill="#8884d8" label />
+                  <Tooltip />
+                </PieChart>
               </Col>
             </Row>
           </div>

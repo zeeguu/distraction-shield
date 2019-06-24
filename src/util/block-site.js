@@ -48,23 +48,15 @@ export const isWebsiteBlocked = hostname => {
     });
 };
 
-export const blockWebsite = (url) => {
-    let matches = Autolinker.parse(url, {
-        urls: true,
-        email: false,
-        phone: false
-    });
-
-    if (!matches.length) return message.error('No valid link.');
-
-    let urls = matches.map(urlToParser);
+export const blockWebsite = url => {
+    let urls = autoLink(url).map(urlToParser).map(mapToBlockedUrl);
+    if (!urls.length) return message.error('No valid link.');
 
     return getWebsites().then(blockedUrls => {
         let notBlocked = url => {
             return !blockedUrls.find(blocked => blocked.regex === url.regex);
         };
-        let regexed = urls.map(mapToBlockedUrl);
-        let blocked = regexed.filter(notBlocked);
+        let blocked = urls.filter(notBlocked);
         blockedUrls.push(...blocked);
 
         return setInStorage({ blockedUrls }).then(() => {
@@ -89,13 +81,22 @@ export const unblockWebsite = (hostname) => {
 };
 
 // utility functions
-function urlToParser(match) {
+export const autoLink = url => {
+    let matches = Autolinker.parse(url, {
+        urls: true,
+        email: false,
+        phone: false
+    });
+    return matches;
+}
+
+export const urlToParser = (match) => {
     let url = match.getUrl();
     let parser = new UrlParser(url);
     return parser;
 }
 
-function mapToBlockedUrl(parser) {
+export const mapToBlockedUrl = (parser) => {
     let regex = `*://*.${parser.hostname}/*`;
     let { hostname, href, pathname } = parser;
 

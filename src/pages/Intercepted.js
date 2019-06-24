@@ -1,11 +1,12 @@
 import React from 'react';
 import { Progress, message, Icon, Row, Col, Button } from 'antd';
-import { getFromStorage } from '../util/storage';
+import { getFromStorage, setInStorage } from '../util/storage';
 import { exerciseSites } from '../util/constants';
+import { autoLink, urlToParser } from '../util/block-site';
 
 class Intercepted extends React.Component {
     state = {
-      currentExerciseSite: 'https://dunnkers.com/'
+      currentExerciseSite: ''
     }
 
     componentDidMount() {
@@ -14,16 +15,29 @@ class Intercepted extends React.Component {
             icon: <Icon type="stop" />
         });
 
+        getFromStorage('intercepts').then(res => {
+            let intercepts = res.intercepts || {};
+            let url = this.getUrl();
+            let parsed = autoLink(url).map(urlToParser)[0];
+            let count = intercepts[parsed.hostname] + 1 || 1;
+            intercepts[parsed.hostname] = count;
+            return setInStorage({ intercepts });
+        });
+
         getFromStorage('currentExerciseSite').then(res => {
             let { currentExerciseSite } = res;
             this.setState({ currentExerciseSite });
         });
     }
 
-    render() {
+    getUrl() {
         let params = (new URL(window.location)).searchParams; // since chrome 51, no IE
         let url = params.get('url');
+        return url;
+    }
 
+    render() {
+        let url = this.getUrl();
         let site = exerciseSites.find(site => {
             return site.name === this.state.currentExerciseSite;
         });

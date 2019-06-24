@@ -35,15 +35,6 @@ function setup() {
 }
 
 function handleInterception(details) {
-    chrome.storage.sync.get(['intercepts'], function(result) {
-        let intercepts = result.intercepts || {};
-        // @FIXME find out hostname, not just url.
-        let count = intercepts[details.url] + 1 || 1;
-        intercepts[details.url] = count;
-        chrome.storage.sync.set({ intercepts });
-    });
-    
-
     let params = new URLSearchParams();
     params.append('page', 'intercepted');
     params.append('url', details.url);
