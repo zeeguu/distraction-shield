@@ -14,7 +14,7 @@ export const exerciseSites = [
   {
       name: 'hellotalk',
       title: 'Hello Talk',
-      url: 'https://www.hellotalk.com/',
+      url: 'https://web.hellotalk.com/',
       logo: 'https://i0.wp.com/atkmagazine.com/wp-content/uploads/2016/12/HelloTalk-current-logo.png?fit=398%2C399'
   }
 ];

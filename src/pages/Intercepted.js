@@ -21,8 +21,7 @@ class Intercepted extends React.Component {
 
         getFromStorage('intercepts').then(res => {
             let intercepts = res.intercepts || {};
-            let url = this.getUrl();
-            let parsed = autoLink(url).map(urlToParser)[0];
+            let parsed = this.getParsedUrl();
             let count = intercepts[parsed.hostname] + 1 || 1;
             intercepts[parsed.hostname] = count;
             return setInStorage({ intercepts });
@@ -49,6 +48,12 @@ class Intercepted extends React.Component {
         this.setState({ timer });
     }
 
+    getParsedUrl() {
+        let url = this.getUrl();
+        let parsed = autoLink(url).map(urlToParser)[0];
+        return parsed;
+    }
+
     getUrl() {
         let params = (new URL(window.location)).searchParams; // since chrome 51, no IE
         let url = params.get('url');
@@ -57,6 +62,7 @@ class Intercepted extends React.Component {
 
     render() {
         let url = this.getUrl();
+        let parsedUrl = this.getParsedUrl();
         let site = exerciseSites.find(site => {
             return site.name === this.state.currentExerciseSite;
         });
@@ -84,14 +90,22 @@ class Intercepted extends React.Component {
                 </iframe>
                 <div style={{ height: '9vh' }}>
                     <Row type="flex" justify="space-around" align="middle">
-                        <Col sm={6}>
+                        <Col md={8}>
                             <h3>Time left:</h3>
                             <code>{timeLeftString}</code>
                             <Progress percent={progressPercentage} />
                         </Col>
-                        <Col sm={4}>
-                            <a href={url}>
-                                <Button type="danger" icon="bell">
+                        <Col md={2}>
+                            <a href={parsedUrl.href} style={{ margin: '5px' }}>
+                                <Button icon="login" disabled={this.state.timeLeft > 0}>
+                                    Continue to {url}
+                                </Button>
+                            </a>
+
+                        </Col>
+                        <Col md={4}>
+                            <a href={parsedUrl.href} style={{ margin: '5px' }}>
+                                <Button type="danger" icon="bell" size="small">
                                     Turn off for 10 minutes
                                 </Button>
                             </a>
