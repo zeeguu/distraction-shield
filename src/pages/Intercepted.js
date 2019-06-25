@@ -76,7 +76,7 @@ class Intercepted extends React.Component {
         );
 
         // time left string
-        let padZero = unit => unit < 10 ? `0${unit}` : `${unit}`;
+        let padZero = unit => unit <= 0 ? `00` : (unit < 10 ? `0${unit}` : `${unit}`);
         let timeLeftMoment = duration(this.state.timeLeft);
         let timeLeftString = `${padZero(timeLeftMoment.minutes())}:` +
                                 `${padZero(timeLeftMoment.seconds())}`;
