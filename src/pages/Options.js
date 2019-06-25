@@ -5,8 +5,9 @@ import { blockWebsite, getWebsites, unblockWebsite } from '../util/block-site';
 import { addStorageListener, getFromStorage, setInStorage } from '../util/storage';
 import { exerciseSites } from '../util/constants';
 import {
-  PieChart, Pie, Tooltip
+  PieChart, Pie, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend
 } from 'recharts';
+import { duration } from 'moment';
 const { Header, Content, Footer } = Layout;
 
 const s2 = 'https://www.google.com/s2/favicons?domain=';
@@ -58,7 +59,8 @@ class Options extends React.Component {
   state = {
     data: [],
     currentExerciseSite: '',
-    interceptsData: []
+    interceptsData: [],
+    timeSpentLearningData: []
   }
 
   componentDidMount() {
@@ -71,13 +73,18 @@ class Options extends React.Component {
       let data = blockedUrls.map(addKeyToObj);
       this.setState({ data });
     });
-    getFromStorage('currentExerciseSite', 'intercepts').then(res => {
-      let { currentExerciseSite, intercepts } = res;
+    getFromStorage('currentExerciseSite', 'intercepts', 'timeSpentLearning')
+      .then(res => {
+      let { currentExerciseSite, intercepts, timeSpentLearning } = res;
       let interceptsData = Object.keys(intercepts).map(key => ({
         name: key,
         value: intercepts[key]
       }));
-      this.setState({ currentExerciseSite, interceptsData });
+      let timeSpentLearningData = Object.keys(timeSpentLearning).map(key => ({
+        name: key,
+        value: Math.round(timeSpentLearning[key] / 1000 / 60) // minutes
+      }));
+      this.setState({ currentExerciseSite, interceptsData, timeSpentLearningData });
     });
   }
   
@@ -94,6 +101,10 @@ class Options extends React.Component {
     setInStorage({ currentExerciseSite }).then(() => {
       this.setState({ currentExerciseSite });
     });
+  }
+
+  renderLabel({ value }) {
+    return duration(value).humanize();
   }
 
   render() {
@@ -134,9 +145,27 @@ class Options extends React.Component {
                 <PieChart width={300} height={250}>
                   <Pie dataKey="value" isAnimationActive={false}
                         data={this.state.interceptsData}
-                        cx={150} cy={100} outerRadius={80} fill="#8884d8" label />
+                        cx={150} cy={100} outerRadius={80} fill="#8884d8"
+                        label />
                   <Tooltip />
                 </PieChart>
+                <br /><br />
+                <h3>Time spent on exercises:</h3>
+                <BarChart
+                  width={400}
+                  height={300}
+                  data={this.state.timeSpentLearningData}
+                  margin={{
+                    top: 5, right: 30, left: 20, bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="value" fill="#8884d8" name="Time spent (minutes)" />
+                </BarChart>
                 <br /><br /><br /><br />
                 <Col md={4}>
                   <Button type="danger" icon="bell">

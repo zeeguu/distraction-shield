@@ -34,14 +34,20 @@ class Intercepted extends React.Component {
 
         let timer = setInterval(() => {
             let timestamp = new Date().getTime();
-            let timeLeft = this.state.timeLeft - (
-                timestamp - this.state.timestamp
-            );
+            let timePassed = timestamp - this.state.timestamp;
+            let timeLeft = this.state.timeLeft - timePassed;
             
-            if (timeLeft <= 0) {
-                clearInterval(this.state.timer);
-                console.log('interval cleared.');
-            }
+            if (timeLeft <= 0) clearInterval(this.state.timer)
+
+            // update time spent learning on website
+            getFromStorage('timeSpentLearning').then(res => {
+                let timeSpentLearning = res.timeSpentLearning || {};
+                let site = this.getExerciseSite();
+                let newExerciseTimeSpent = timeSpentLearning[site.name] + timePassed
+                                            || timePassed;
+                timeSpentLearning[site.name] = newExerciseTimeSpent;
+                return setInStorage({ timeSpentLearning });
+            });
 
             this.setState({ timeLeft, timestamp });
         }, 1000);
@@ -60,12 +66,16 @@ class Intercepted extends React.Component {
         return url;
     }
 
+    getExerciseSite() {
+        return exerciseSites.find(site => {
+            return site.name === this.state.currentExerciseSite;
+        });
+    }
+
     render() {
         let url = this.getUrl();
         let parsedUrl = this.getParsedUrl();
-        let site = exerciseSites.find(site => {
-            return site.name === this.state.currentExerciseSite;
-        });
+        let site = this.getExerciseSite();
         let progressPercentage = 100 - Math.round(
             (
                 // convert to seconds first.
