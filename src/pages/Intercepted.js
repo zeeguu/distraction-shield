@@ -1,12 +1,16 @@
 import React from 'react';
 import { Progress, message, Icon, Row, Col, Button } from 'antd';
 import { getFromStorage, setInStorage } from '../util/storage';
-import { exerciseSites } from '../util/constants';
+import { exerciseSites, exerciseTime } from '../util/constants';
 import { autoLink, urlToParser } from '../util/block-site';
+import { duration } from 'moment';
 
 class Intercepted extends React.Component {
     state = {
-      currentExerciseSite: ''
+      currentExerciseSite: '',
+      timeLeft: exerciseTime, // 5 minutes in miliseconds
+      timestamp: new Date().getTime(),
+      timer: null
     }
 
     componentDidMount() {
@@ -28,6 +32,21 @@ class Intercepted extends React.Component {
             let { currentExerciseSite } = res;
             this.setState({ currentExerciseSite });
         });
+
+        let timer = setInterval(() => {
+            let timestamp = new Date().getTime();
+            let timeLeft = this.state.timeLeft - (
+                timestamp - this.state.timestamp
+            );
+            
+            if (timeLeft <= 0) {
+                clearInterval(this.state.timer);
+                console.log('interval cleared.');
+            }
+
+            this.setState({ timeLeft, timestamp });
+        }, 1000);
+        this.setState({ timer });
     }
 
     getUrl() {
@@ -41,6 +60,20 @@ class Intercepted extends React.Component {
         let site = exerciseSites.find(site => {
             return site.name === this.state.currentExerciseSite;
         });
+        let progressPercentage = 100 - Math.round(
+            (
+                // convert to seconds first.
+                Math.round(this.state.timeLeft / 1000)
+                / 
+                Math.round(exerciseTime / 1000)
+            ) * 100
+        );
+
+        // time left string
+        let padZero = unit => unit < 10 ? `0${unit}` : `${unit}`;
+        let timeLeftMoment = duration(this.state.timeLeft);
+        let timeLeftString = `${padZero(timeLeftMoment.minutes())}:` +
+                                `${padZero(timeLeftMoment.seconds())}`;
 
         return (
             <div>
@@ -51,12 +84,12 @@ class Intercepted extends React.Component {
                 </iframe>
                 <div style={{ height: '9vh' }}>
                     <Row type="flex" justify="space-around" align="middle">
-                        <Col span={8} offset={6}>
-                            <h3>Exercises completed:</h3>
-                            <code>1 / 4</code>
-                            <Progress percent={25} />
+                        <Col sm={6}>
+                            <h3>Time left:</h3>
+                            <code>{timeLeftString}</code>
+                            <Progress percent={progressPercentage} />
                         </Col>
-                        <Col span={2}>
+                        <Col sm={4}>
                             <a href={url}>
                                 <Button type="danger" icon="bell">
                                     Turn off for 10 minutes

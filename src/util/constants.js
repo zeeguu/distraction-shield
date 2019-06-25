@@ -18,3 +18,5 @@ export const exerciseSites = [
       logo: 'https://i0.wp.com/atkmagazine.com/wp-content/uploads/2016/12/HelloTalk-current-logo.png?fit=398%2C399'
   }
 ];
+
+export const exerciseTime = 5 * 60 * 1000; // 5 minutes, in ms
