@@ -94,19 +94,16 @@ class Intercepted extends React.Component {
                             <h3>Time left:</h3>
                             <code>{timeLeftString}</code>
                             <Progress percent={progressPercentage} />
+                            {this.state.timeLeft <= 0 &&
+                                <div>Well done! You earned &nbsp;
+                                {duration(exerciseTime).humanize()}
+                                &nbsp;of browsing time.</div>
+                            }
                         </Col>
                         <Col md={2}>
                             <a href={parsedUrl.href} style={{ margin: '5px' }}>
                                 <Button icon="login" disabled={this.state.timeLeft > 0}>
                                     Continue to {url}
-                                </Button>
-                            </a>
-
-                        </Col>
-                        <Col md={4}>
-                            <a href={parsedUrl.href} style={{ margin: '5px' }}>
-                                <Button type="danger" icon="bell" size="small">
-                                    Turn off for 10 minutes
                                 </Button>
                             </a>
                         </Col>

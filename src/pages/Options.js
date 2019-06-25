@@ -131,12 +131,18 @@ class Options extends React.Component {
                 </Radio.Group>
                 <br /><br /><br /><br />
                 <h3>Interception statistics:</h3>
-                <PieChart width={200} height={250}>
+                <PieChart width={300} height={250}>
                   <Pie dataKey="value" isAnimationActive={false}
                         data={this.state.interceptsData}
-                        cx={100} cy={100} outerRadius={80} fill="#8884d8" label />
+                        cx={150} cy={100} outerRadius={80} fill="#8884d8" label />
                   <Tooltip />
                 </PieChart>
+                <br /><br /><br /><br />
+                <Col md={4}>
+                  <Button type="danger" icon="bell">
+                      Turn off for 10 minutes
+                  </Button>
+                </Col>
               </Col>
             </Row>
           </div>
