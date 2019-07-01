@@ -2,7 +2,7 @@ import React from 'react';
 import { Progress, message, Icon, Row, Col, Button } from 'antd';
 import { getFromStorage, setInStorage } from '../util/storage';
 import { exerciseSites, exerciseTime } from '../util/constants';
-import { autoLink, urlToParser } from '../util/block-site';
+import { parseUrls } from '../util/block-site';
 import { duration } from 'moment';
 
 class Intercepted extends React.Component {
@@ -55,9 +55,7 @@ class Intercepted extends React.Component {
     }
 
     getParsedUrl() {
-        let url = this.getUrl();
-        let parsed = autoLink(url).map(urlToParser)[0];
-        return parsed;
+        return parseUrls(this.getUrl())[0];
     }
 
     getUrl() {
@@ -73,8 +71,7 @@ class Intercepted extends React.Component {
     }
 
     render() {
-        let url = this.getUrl();
-        let parsedUrl = this.getParsedUrl();
+        let url = this.getParsedUrl();
         let site = this.getExerciseSite();
         let progressPercentage = 100 - Math.round(
             (
@@ -111,9 +108,9 @@ class Intercepted extends React.Component {
                             }
                         </Col>
                         <Col md={2}>
-                            <a href={parsedUrl.href} style={{ margin: '5px' }}>
+                            <a href={url.href} style={{ margin: '5px' }}>
                                 <Button icon="login" disabled={this.state.timeLeft > 0}>
-                                    Continue to {url}
+                                    Continue to {url.hostname}
                                 </Button>
                             </a>
                         </Col>

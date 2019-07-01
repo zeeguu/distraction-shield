@@ -71,6 +71,12 @@ export const blockWebsite = url => {
     });
 }
 
+export const addExerciseSite = text => {
+    let urls = parseUrls(text);
+    if (!urls.length) return message.error('No valid link.');
+    console.log('Adding exercise websites', urls);
+}
+
 export const unblockWebsite = (hostname) => {
     getWebsites().then(oldBlockedUrls => {
         let blockedUrls = oldBlockedUrls.filter(blockedUrl =>
@@ -81,7 +87,11 @@ export const unblockWebsite = (hostname) => {
 };
 
 // utility functions
-export const autoLink = url => {
+export const parseUrls = text => {
+    return autoLink(text).map(urlToParser).map(mapToBlockedUrl);
+}
+
+const autoLink = url => {
     let matches = Autolinker.parse(url, {
         urls: true,
         email: false,
@@ -90,13 +100,13 @@ export const autoLink = url => {
     return matches;
 }
 
-export const urlToParser = (match) => {
+const urlToParser = (match) => {
     let url = match.getUrl();
     let parser = new UrlParser(url);
     return parser;
 }
 
-export const mapToBlockedUrl = (parser) => {
+const mapToBlockedUrl = (parser) => {
     let regex = `*://*.${parser.hostname}/*`;
     let { hostname, href, pathname } = parser;
 

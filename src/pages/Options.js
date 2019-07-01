@@ -1,16 +1,19 @@
 import React from 'react';
 import './Options.css';
 import { Table, Button, Input, Layout, Row, Col, Radio } from 'antd';
-import { blockWebsite, getWebsites, unblockWebsite } from '../util/block-site';
+import {
+  blockWebsite,
+  getWebsites,
+  unblockWebsite,
+  addExerciseSite
+} from '../util/block-site';
 import { addStorageListener, getFromStorage, setInStorage } from '../util/storage';
-import { exerciseSites } from '../util/constants';
+import { exerciseSites, s2 } from '../util/constants';
 import {
   PieChart, Pie, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend
 } from 'recharts';
 import { duration } from 'moment';
 const { Header, Content, Footer } = Layout;
-
-const s2 = 'https://www.google.com/s2/favicons?domain=';
 
 const columns = [
   {
@@ -53,7 +56,8 @@ function addKeyToObj(obj, key) {
 class Options extends React.Component {
   constructor(props) {
     super(props);
-    this.blockButton = new React.createRef();
+    this.addBlockedWebsiteInput = new React.createRef();
+    this.addExerciseSiteInput = new React.createRef();
   }
 
   state = {
@@ -93,12 +97,16 @@ class Options extends React.Component {
     });
   }
   
-  blockFromInput(e) {
+  didAddBlockedWebsite(e) {
     let url = e.target.getAttribute('value');
-  
-    this.blockButton.current.setValue('');
-  
+    this.addBlockedWebsiteInput.current.setValue('');
     blockWebsite(url);
+  }
+
+  didAddExerciseSite(e) {
+    let url = e.target.getAttribute('value');
+    this.addExerciseSiteInput.current.setValue('');
+    addExerciseSite(url);
   }
 
   handleExerciseSiteChange(e) {
@@ -124,9 +132,9 @@ class Options extends React.Component {
           <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
             <Row className="options-grid">
               <Col span={12} className="grid-col">
-                <Input autoFocus ref={this.blockButton}
+                <Input autoFocus ref={this.addBlockedWebsiteInput}
                       placeholder="Block website..." 
-                      onPressEnter={(e) => this.blockFromInput(e)}
+                      onPressEnter={(e) => this.didAddBlockedWebsite(e)}
                       className='block-button' />
                 <Table rowSelection={rowSelection}
                       columns={columns}
@@ -145,6 +153,11 @@ class Options extends React.Component {
                     </Radio.Button>
                   ))}
                 </Radio.Group>
+                <Input ref={this.addExerciseSiteInput}
+                      placeholder="Add exercise site..." 
+                      onPressEnter={(e) => this.addExerciseSite(e)}
+                      style={{ margin: '20px 0px', width: '50%' }} />
+
                 <br /><br /><br /><br />
                 <h3>Interception statistics:</h3>
                 <PieChart width={300} height={250}>
@@ -171,6 +184,7 @@ class Options extends React.Component {
                   <Legend />
                   <Bar dataKey="value" fill="#8884d8" name="Time spent (minutes)" />
                 </BarChart>
+                
                 <br /><br /><br /><br />
                 <Col md={4}>
                   <Button type="danger" icon="bell">
