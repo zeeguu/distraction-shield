@@ -19,17 +19,21 @@ const { Header, Content, Footer } = Layout;
 const columns = [
   {
     title: 'Blocked websites',
-    dataIndex: 'hostname',
-    key: 'hostname',
-    render: hostname => (
+    dataIndex: 'name',
+    render: (name, site) => (
       <div>
-        <img alt='favicon' className='site-favicon' src={`${s2}${hostname}`} />
-        {hostname}
+        <img alt='favicon' className='site-favicon' src={`${s2}${site.hostname}`} />
+        {name}
       </div>
     ),
   },
   {
-    title: '',
+    dataIndex: 'regex',
+    render: regex => (
+      <code>{regex}</code>
+    )
+  },
+  {
     dataIndex: 'hostname',
     key: 'href',
     render: hostname => (
