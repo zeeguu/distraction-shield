@@ -75,15 +75,20 @@ class Options extends React.Component {
     });
     getFromStorage('currentExerciseSite', 'intercepts', 'timeSpentLearning')
       .then(res => {
-      let { currentExerciseSite, intercepts, timeSpentLearning } = res;
+      let { currentExerciseSite } = res;
+      
+      let intercepts = res.intercepts || {};
       let interceptsData = Object.keys(intercepts).map(key => ({
         name: key,
         value: intercepts[key]
       }));
+
+      let timeSpentLearning = res.timeSpentLearning || {};
       let timeSpentLearningData = Object.keys(timeSpentLearning).map(key => ({
         name: key,
         value: Math.round(timeSpentLearning[key] / 1000 / 60) // minutes
       }));
+
       this.setState({ currentExerciseSite, interceptsData, timeSpentLearningData });
     });
   }
