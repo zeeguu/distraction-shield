@@ -5,8 +5,9 @@ import UrlParser from 'url-parse';
 import parseDomain from 'parse-domain';
 import { getFromStorage, setInStorage } from './storage';
 
-export function getWebsites() {
-    return getFromStorage('blockedUrls').then(res => res.blockedUrls || []);
+export async function getWebsites() {
+    const res = await getFromStorage('blockedUrls');
+    return res.blockedUrls || [];
 }
 
 export const blockCurrentWebsite = () => {
@@ -42,34 +43,35 @@ export const isCurrentWebsiteBlocked = () => {
     });
 };
 
-export const isWebsiteBlocked = hostname => {
-    return getWebsites().then(blockedUrls => {
-        // sidenote: shouldn't we compare regex? let hostname be OK for now..
-        return blockedUrls.find(blocked => blocked.hostname === hostname);
-    });
+export const isWebsiteBlocked = async hostname => {
+    const blockedUrls = await getWebsites();
+    // sidenote: shouldn't we compare regex? let hostname be OK for now..
+    return blockedUrls.find(blocked => blocked.hostname === hostname);
 };
 
-export const blockWebsite = text => {
+export const blockWebsite = async text => {
     let urls = parseUrls(text);
     if (!urls.length) return message.error('No valid link.');
 
-    return getWebsites().then(blockedUrls => {
-        let notBlocked = url => {
-            return !blockedUrls.find(blocked => blocked.regex === url.regex);
-        };
-        let blocked = urls.filter(notBlocked);
-        blockedUrls.push(...blocked);
+    const blockedUrls = await getWebsites();
+    
+    let notBlocked = url => {
+        return !blockedUrls.find(blocked => blocked.regex === url.regex);
+    };
+    let blocked = urls.filter(notBlocked);
+    blockedUrls.push(...blocked);
 
-        return setInStorage({ blockedUrls }).then(() => {
-            if (blocked.length > 1) {
-                message.success(`Blocked ${blocked.length} websites`);
-            } else if (blocked.length === 1) {
-                message.success(`Blocked ${blocked[0].hostname}`);
-            } else {
-                message.success(`${urls[0].hostname} is already blocked.`);
-            }
-        });
-    });
+    await setInStorage({ blockedUrls });
+
+    if (blocked.length > 1) {
+        message.success(`Blocked ${blocked.length} websites`);
+    }
+    else if (blocked.length === 1) {
+        message.success(`Blocked ${blocked[0].hostname}`);
+    }
+    else {
+        message.success(`${urls[0].hostname} is already blocked.`);
+    }
 }
 
 export const addExerciseSite = text => {
