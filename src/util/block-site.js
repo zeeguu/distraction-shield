@@ -2,6 +2,7 @@
 import { message } from 'antd';
 import Autolinker from 'autolinker';
 import UrlParser from 'url-parse';
+import parseDomain from 'parse-domain';
 import { getFromStorage, setInStorage } from './storage';
 
 export function getWebsites() {
@@ -48,8 +49,8 @@ export const isWebsiteBlocked = hostname => {
     });
 };
 
-export const blockWebsite = url => {
-    let urls = autoLink(url).map(urlToParser).map(mapToBlockedUrl);
+export const blockWebsite = text => {
+    let urls = parseUrls(text);
     if (!urls.length) return message.error('No valid link.');
 
     return getWebsites().then(blockedUrls => {
@@ -65,7 +66,7 @@ export const blockWebsite = url => {
             } else if (blocked.length === 1) {
                 message.success(`Blocked ${blocked[0].hostname}`);
             } else {
-                message.success(`${url} is blocked.`);
+                message.success(`${urls[0].hostname} is already blocked.`);
             }
         });
     });
@@ -88,7 +89,25 @@ export const unblockWebsite = (hostname) => {
 
 // utility functions
 export const parseUrls = text => {
-    return autoLink(text).map(urlToParser).map(mapToBlockedUrl);
+    return autoLink(text)
+        .map(urlToParser)
+        .map(mapToBlockedUrl)
+        .map(parseDomainFromUrl);
+}
+
+export const parseUrl = text => parseUrls(text)[0];
+
+const capitalize = string => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+const parseDomainFromUrl = urlObject => {
+    let parsed = parseDomain(urlObject.href);
+    return {
+        ...urlObject,
+        ...parsed, // attaches subdomain, domain, tld
+        name: capitalize(parsed.domain)
+    }
 }
 
 const autoLink = url => {

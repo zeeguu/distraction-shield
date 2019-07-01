@@ -43,6 +43,8 @@ class Intercepted extends React.Component {
             getFromStorage('timeSpentLearning').then(res => {
                 let timeSpentLearning = res.timeSpentLearning || {};
                 let site = this.getExerciseSite();
+                if (!site) return; // not found, do not update.
+
                 let newExerciseTimeSpent = timeSpentLearning[site.name] + timePassed
                                             || timePassed;
                 timeSpentLearning[site.name] = newExerciseTimeSpent;
@@ -92,7 +94,7 @@ class Intercepted extends React.Component {
             <div>
                 <iframe title="Interception page" 
                     width="100%"
-                    src={site ? site.url : 'https://www.babbel.com/'}
+                    src={site ? site.url : ''}
                     style={{ height: '90vh'}}>
                 </iframe>
                 <div style={{ height: '9vh' }}>

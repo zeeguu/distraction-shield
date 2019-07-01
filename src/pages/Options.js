@@ -5,7 +5,8 @@ import {
   blockWebsite,
   getWebsites,
   unblockWebsite,
-  addExerciseSite
+  addExerciseSite,
+  parseUrl
 } from '../util/block-site';
 import { addStorageListener, getFromStorage, setInStorage } from '../util/storage';
 import { exerciseSites, s2 } from '../util/constants';
@@ -145,14 +146,18 @@ class Options extends React.Component {
                 <Radio.Group value={this.state.currentExerciseSite}
                             onChange={(e) => this.handleExerciseSiteChange(e)}
                             size="large">
-                  {exerciseSites.map((site, i) => (
-                    <Radio.Button value={site.name} key={i}>
-                      <img alt={`${site.title}`} src={site.logo}
-                        style={{ width: '25px', height: '25px' }}/>
-                      {site.title}
-                    </Radio.Button>
-                  ))}
+                  {exerciseSites.map(parseUrl).map((site, i) => {
+                      return (
+                        <Radio.Button value={site.domain} key={i}>
+                          <img alt='favicon'
+                            src={`${s2}${site.hostname}`} />&nbsp;
+                          {site.name}
+                        </Radio.Button>
+                      )
+                    }
+                  )}
                 </Radio.Group>
+                <br />
                 <Input ref={this.addExerciseSiteInput}
                       placeholder="Add exercise site..." 
                       onPressEnter={(e) => this.addExerciseSite(e)}
@@ -184,7 +189,7 @@ class Options extends React.Component {
                   <Legend />
                   <Bar dataKey="value" fill="#8884d8" name="Time spent (minutes)" />
                 </BarChart>
-                
+
                 <br /><br /><br /><br />
                 <Col md={4}>
                   <Button type="danger" icon="bell">
