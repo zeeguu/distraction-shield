@@ -1,7 +1,11 @@
 import React from 'react';
 import { Progress, message, Icon, Row, Col, Button } from 'antd';
 import { getFromStorage, setInStorage } from '../util/storage';
-import { exerciseSites, exerciseTime } from '../util/constants';
+import {
+    exerciseTime,
+    defaultExerciseSite,
+    defaultExerciseSites
+} from '../util/constants';
 import { parseUrls } from '../util/block-site';
 import { duration } from 'moment';
 
@@ -10,7 +14,8 @@ class Intercepted extends React.Component {
       currentExerciseSite: '',
       timeLeft: exerciseTime, // 5 minutes in miliseconds
       timestamp: new Date().getTime(),
-      timer: null
+      timer: null,
+      exerciseSites: []
     }
 
     componentDidMount() {
@@ -19,18 +24,7 @@ class Intercepted extends React.Component {
             icon: <Icon type="stop" />
         });
 
-        getFromStorage('intercepts').then(res => {
-            let intercepts = res.intercepts || {};
-            let parsed = this.getParsedUrl();
-            let count = intercepts[parsed.hostname] + 1 || 1;
-            intercepts[parsed.hostname] = count;
-            return setInStorage({ intercepts });
-        });
-
-        getFromStorage('currentExerciseSite').then(res => {
-            let { currentExerciseSite } = res;
-            this.setState({ currentExerciseSite });
-        });
+        this.setup();
 
         let timer = setInterval(() => {
             let timestamp = new Date().getTime();
@@ -56,6 +50,30 @@ class Intercepted extends React.Component {
         this.setState({ timer });
     }
 
+    setup() {
+        getFromStorage('intercepts', 'currentExerciseSite',
+                        'exerciseSites').then(res => {
+            let currentExerciseSite = res.currentExerciseSite || 
+                defaultExerciseSite.name; // @FIXME dont assume.
+            let exerciseSites = res.exerciseSites || defaultExerciseSites;
+
+            this.setState({ currentExerciseSite, exerciseSites });
+
+            let intercepts = res.intercepts || {};
+            let parsed = this.getParsedUrl();
+            let count = intercepts[parsed.hostname] + 1 || 1;
+            intercepts[parsed.hostname] = count;
+
+            return setInStorage({ intercepts });
+        });
+
+        getFromStorage('currentExerciseSite').then(res => {
+            let { currentExerciseSite } = res;
+            this.setState({ currentExerciseSite });
+        });
+
+    }
+
     getParsedUrl() {
         return parseUrls(this.getUrl())[0];
     }
@@ -67,8 +85,8 @@ class Intercepted extends React.Component {
     }
 
     getExerciseSite() {
-        return exerciseSites.find(site => {
-            return site.name === this.state.currentExerciseSite;
+        return this.state.exerciseSites.find(site => {
+            return site.domain === this.state.currentExerciseSite;
         });
     }
 
@@ -94,7 +112,7 @@ class Intercepted extends React.Component {
             <div>
                 <iframe title="Interception page" 
                     width="100%"
-                    src={site ? site.url : ''}
+                    src={site ? site.href : ''}
                     style={{ height: '90vh'}}>
                 </iframe>
                 <div style={{ height: '9vh' }}>

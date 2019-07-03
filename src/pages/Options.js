@@ -5,11 +5,10 @@ import {
   blockWebsite,
   getWebsites,
   unblockWebsite,
-  addExerciseSite,
-  parseUrl
+  addExerciseSite
 } from '../util/block-site';
 import { addStorageListener, getFromStorage, setInStorage } from '../util/storage';
-import { exerciseSites, s2 } from '../util/constants';
+import { defaultExerciseSites, s2 } from '../util/constants';
 import {
   PieChart, Pie, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend
 } from 'recharts';
@@ -69,7 +68,8 @@ class Options extends React.Component {
     data: [],
     currentExerciseSite: '',
     interceptsData: [],
-    timeSpentLearningData: []
+    timeSpentLearningData: [],
+    exerciseSites: []
   }
 
   componentDidMount() {
@@ -82,7 +82,8 @@ class Options extends React.Component {
       let data = blockedUrls.map(addKeyToObj);
       this.setState({ data });
     });
-    getFromStorage('currentExerciseSite', 'intercepts', 'timeSpentLearning')
+    getFromStorage('currentExerciseSite', 'intercepts', 
+                   'timeSpentLearning', 'exerciseSites')
       .then(res => {
       let { currentExerciseSite } = res;
       
@@ -98,7 +99,10 @@ class Options extends React.Component {
         value: Math.round(timeSpentLearning[key] / 1000 / 60) // minutes
       }));
 
-      this.setState({ currentExerciseSite, interceptsData, timeSpentLearningData });
+      let exerciseSites = res.exerciseSites || defaultExerciseSites;
+
+      this.setState({ currentExerciseSite, interceptsData,
+                      timeSpentLearningData, exerciseSites });
     });
   }
   
@@ -150,7 +154,7 @@ class Options extends React.Component {
                 <Radio.Group value={this.state.currentExerciseSite}
                             onChange={(e) => this.handleExerciseSiteChange(e)}
                             size="large">
-                  {exerciseSites.map(parseUrl).map((site, i) => {
+                  {this.state.exerciseSites.map((site, i) => {
                       return (
                         <Radio.Button value={site.domain} key={i}>
                           <img alt='favicon'
@@ -164,7 +168,7 @@ class Options extends React.Component {
                 <br />
                 <Input ref={this.addExerciseSiteInput}
                       placeholder="Add exercise site..." 
-                      onPressEnter={(e) => this.addExerciseSite(e)}
+                      onPressEnter={(e) => this.didAddExerciseSite(e)}
                       style={{ margin: '20px 0px', width: '50%' }} />
 
                 <br /><br /><br /><br />

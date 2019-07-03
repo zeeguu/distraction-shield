@@ -4,6 +4,7 @@ import Autolinker from 'autolinker';
 import UrlParser from 'url-parse';
 import parseDomain from 'parse-domain';
 import { getFromStorage, setInStorage } from './storage';
+import { defaultExerciseSites } from './constants';
 
 export async function getWebsites() {
     const res = await getFromStorage('blockedUrls');
@@ -74,10 +75,22 @@ export const blockWebsite = async text => {
     }
 }
 
-export const addExerciseSite = text => {
+export const addExerciseSite = async text => {
     let urls = parseUrls(text);
     if (!urls.length) return message.error('No valid link.');
     console.log('Adding exercise websites', urls);
+
+    const res = await getFromStorage('exerciseSites');
+    const exerciseSites = res.exerciseSites || defaultExerciseSites;
+
+    urls.forEach(url => {
+        let alreadyIn = exerciseSites.find(site => site.domain === url.domain);
+        if (!alreadyIn) exerciseSites.push(url);
+    })
+
+    await setInStorage({ exerciseSites });
+
+    message.success(`Added exercise site!`); // @TODO make messages like in blockWebsite()
 }
 
 export const unblockWebsite = (hostname) => {
