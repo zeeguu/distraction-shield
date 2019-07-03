@@ -6,7 +6,7 @@ import {
     defaultExerciseSites,
     defaultExerciseTime
 } from '../util/constants';
-import { parseUrls } from '../util/block-site';
+import { parseUrl } from '../util/block-site';
 import { duration } from 'moment';
 
 class Intercepted extends React.Component {
@@ -66,7 +66,7 @@ class Intercepted extends React.Component {
                             exerciseTime, timeLeft });
 
             let intercepts = res.intercepts || {};
-            let parsed = this.getParsedUrl();
+            let parsed = parseUrl(this.getUrl());
             let count = intercepts[parsed.hostname] + 1 || 1;
             intercepts[parsed.hostname] = count;
 
@@ -80,14 +80,9 @@ class Intercepted extends React.Component {
 
     }
 
-    getParsedUrl() {
-        return parseUrls(this.getUrl())[0];
-    }
-
     getUrl() {
         let params = (new URL(window.location)).searchParams; // since chrome 51, no IE
-        let url = params.get('url');
-        return url;
+        return params.get('url');
     }
 
     getExerciseSite() {
@@ -96,8 +91,27 @@ class Intercepted extends React.Component {
         });
     }
 
+    onContinue() {
+        let url = parseUrl(this.getUrl());
+
+        // update timeout for blocked url.
+        getFromStorage('blockedUrls').then(res => {
+            let { blockedUrls } = res; // cant be empty, cause were blocked.
+
+            blockedUrls = blockedUrls.map(blockedUrl => {
+                if (blockedUrl.hostname === url.hostname) {
+                    blockedUrl.timeout = this.state.exerciseTime;
+                } else {
+                    return blockedUrl;
+                }
+            });
+
+            setInStorage({ blockedUrls });
+        });
+    }
+
     render() {
-        let url = this.getParsedUrl();
+        let url = parseUrl(this.getUrl());
         let site = this.getExerciseSite();
         let progressPercentage = 100 - Math.round(
             (
@@ -135,8 +149,11 @@ class Intercepted extends React.Component {
                         </Col>
                         <Col md={2}>
                             <a href={url.href} style={{ margin: '5px' }}>
-                                <Button icon="login" disabled={this.state.timeLeft > 0}>
-                                    Continue to {url.hostname}
+                                <Button icon="login"
+                                    disabled={this.state.timeLeft > 0}
+                                    onClick={() => this.onContinue()}
+                                    >
+                                    Continue to {url.name}
                                 </Button>
                             </a>
                         </Col>
