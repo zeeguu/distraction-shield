@@ -24,6 +24,8 @@ export const defaultExerciseSites = [
 
 export const defaultExerciseSite = defaultExerciseSites[0];
 
+export const defaultExerciseTime = 5; // minutes
+
 export const exerciseTime = 5 * 60 * 1000; // 5 minutes, in ms
 
 export const s2 = 'https://www.google.com/s2/favicons?domain=';

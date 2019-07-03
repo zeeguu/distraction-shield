@@ -1,6 +1,6 @@
 import React from 'react';
 import './Options.css';
-import { Table, Button, Input, Layout, Row, Col, Radio } from 'antd';
+import { Table, Button, Input, Layout, Row, Col, Radio, InputNumber } from 'antd';
 import {
   blockWebsite,
   getWebsites,
@@ -8,7 +8,7 @@ import {
   addExerciseSite
 } from '../util/block-site';
 import { addStorageListener, getFromStorage, setInStorage } from '../util/storage';
-import { defaultExerciseSites, s2 } from '../util/constants';
+import { defaultExerciseSites, s2, defaultExerciseTime, defaultExerciseSite } from '../util/constants';
 import {
   PieChart, Pie, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend
 } from 'recharts';
@@ -69,7 +69,8 @@ class Options extends React.Component {
     currentExerciseSite: '',
     interceptsData: [],
     timeSpentLearningData: [],
-    exerciseSites: []
+    exerciseSites: [],
+    exerciseTime: 0
   }
 
   componentDidMount() {
@@ -83,9 +84,10 @@ class Options extends React.Component {
       this.setState({ data });
     });
     getFromStorage('currentExerciseSite', 'intercepts', 
-                   'timeSpentLearning', 'exerciseSites')
+                   'timeSpentLearning', 'exerciseSites',
+                   'exerciseTime')
       .then(res => {
-      let { currentExerciseSite } = res;
+      let currentExerciseSite = res.currentExerciseSite || defaultExerciseSite.domain;
       
       let intercepts = res.intercepts || {};
       let interceptsData = Object.keys(intercepts).map(key => ({
@@ -101,8 +103,12 @@ class Options extends React.Component {
 
       let exerciseSites = res.exerciseSites || defaultExerciseSites;
 
+      let exerciseTime = res.exerciseTime || defaultExerciseTime;
+
       this.setState({ currentExerciseSite, interceptsData,
-                      timeSpentLearningData, exerciseSites });
+                      timeSpentLearningData, exerciseSites,
+                      exerciseTime
+                    });
     });
   }
   
@@ -127,6 +133,12 @@ class Options extends React.Component {
 
   renderLabel({ value }) {
     return duration(value).humanize();
+  }
+
+  onExerciseTimeChanged(exerciseTime) {
+    setInStorage({ exerciseTime }).then(() => {
+      this.setState({ exerciseTime });
+    });
   }
 
   render() {
@@ -171,7 +183,13 @@ class Options extends React.Component {
                       onPressEnter={(e) => this.didAddExerciseSite(e)}
                       style={{ margin: '20px 0px', width: '50%' }} />
 
+                <h3>Exercise time:</h3>
+                <InputNumber min={1} max={180}
+                  value={this.state.exerciseTime}
+                  onChange={time => this.onExerciseTimeChanged(time)} />
+                  &nbsp;minutes
                 <br /><br /><br /><br />
+
                 <h3>Interception statistics:</h3>
                 <PieChart width={300} height={250}>
                   <Pie dataKey="value" isAnimationActive={false}
@@ -181,6 +199,7 @@ class Options extends React.Component {
                   <Tooltip />
                 </PieChart>
                 <br /><br />
+
                 <h3>Time spent on exercises:</h3>
                 <BarChart
                   width={400}
@@ -198,12 +217,13 @@ class Options extends React.Component {
                   <Bar dataKey="value" fill="#8884d8" name="Time spent (minutes)" />
                 </BarChart>
 
-                <br /><br /><br /><br />
+                {/* <br /><br /><br /><br />
+                <h3>Turn off temporarily</h3>
                 <Col md={4}>
                   <Button type="danger" icon="bell">
                       Turn off for 10 minutes
                   </Button>
-                </Col>
+                </Col> */}
               </Col>
             </Row>
           </div>

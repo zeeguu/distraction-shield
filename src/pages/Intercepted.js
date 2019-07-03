@@ -2,9 +2,9 @@ import React from 'react';
 import { Progress, message, Icon, Row, Col, Button } from 'antd';
 import { getFromStorage, setInStorage } from '../util/storage';
 import {
-    exerciseTime,
     defaultExerciseSite,
-    defaultExerciseSites
+    defaultExerciseSites,
+    defaultExerciseTime
 } from '../util/constants';
 import { parseUrls } from '../util/block-site';
 import { duration } from 'moment';
@@ -12,10 +12,11 @@ import { duration } from 'moment';
 class Intercepted extends React.Component {
     state = {
       currentExerciseSite: '',
-      timeLeft: exerciseTime, // 5 minutes in miliseconds
+      timeLeft: 0,
       timestamp: new Date().getTime(),
       timer: null,
-      exerciseSites: []
+      exerciseSites: [],
+      exerciseTime: 0
     }
 
     componentDidMount() {
@@ -52,12 +53,17 @@ class Intercepted extends React.Component {
 
     setup() {
         getFromStorage('intercepts', 'currentExerciseSite',
-                        'exerciseSites').then(res => {
+                        'exerciseSites', 'exerciseTime').then(res => {
             let currentExerciseSite = res.currentExerciseSite || 
                 defaultExerciseSite.name; // @FIXME dont assume.
             let exerciseSites = res.exerciseSites || defaultExerciseSites;
+            let exerciseTime = (
+                res.exerciseTime || defaultExerciseTime
+            ) * 60 * 1000; // from minutes to milliseconds
+            let timeLeft = exerciseTime; // set initial time
 
-            this.setState({ currentExerciseSite, exerciseSites });
+            this.setState({ currentExerciseSite, exerciseSites,
+                            exerciseTime, timeLeft });
 
             let intercepts = res.intercepts || {};
             let parsed = this.getParsedUrl();
@@ -98,7 +104,7 @@ class Intercepted extends React.Component {
                 // convert to seconds first.
                 Math.round(this.state.timeLeft / 1000)
                 / 
-                Math.round(exerciseTime / 1000)
+                Math.round(this.state.exerciseTime / 1000)
             ) * 100
         );
 
@@ -123,7 +129,7 @@ class Intercepted extends React.Component {
                             <Progress percent={progressPercentage} />
                             {this.state.timeLeft <= 0 &&
                                 <div>Well done! You earned &nbsp;
-                                {duration(exerciseTime).humanize()}
+                                {duration(this.state.exerciseTime).humanize()}
                                 &nbsp;of browsing time.</div>
                             }
                         </Col>
