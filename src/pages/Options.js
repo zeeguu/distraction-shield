@@ -8,7 +8,7 @@ import {
   addExerciseSite
 } from '../util/block-site';
 import { addStorageListener, getFromStorage, setInStorage } from '../util/storage';
-import { defaultExerciseSites, s2, defaultExerciseTime, defaultExerciseSite } from '../util/constants';
+import { defaultExerciseSites, s2, defaultexerciseDuration, defaultExerciseSite } from '../util/constants';
 import {
   PieChart, Pie, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend
 } from 'recharts';
@@ -71,7 +71,7 @@ class Options extends React.Component {
     interceptsData: [],
     timeSpentLearningData: [],
     exerciseSites: [],
-    exerciseTime: 0
+    exerciseDuration: 0
   }
 
   componentDidMount() {
@@ -86,7 +86,7 @@ class Options extends React.Component {
     });
     getFromStorage('currentExerciseSite', 'intercepts', 
                    'timeSpentLearning', 'exerciseSites',
-                   'exerciseTime')
+                   'exerciseDuration')
       .then(res => {
       let currentExerciseSite = res.currentExerciseSite || defaultExerciseSite.domain;
       
@@ -104,11 +104,11 @@ class Options extends React.Component {
 
       let exerciseSites = res.exerciseSites || defaultExerciseSites;
 
-      let exerciseTime = res.exerciseTime || defaultExerciseTime;
+      let exerciseDuration = res.exerciseDuration || defaultexerciseDuration;
 
       this.setState({ currentExerciseSite, interceptsData,
                       timeSpentLearningData, exerciseSites,
-                      exerciseTime
+                      exerciseDuration
                     });
     });
   }
@@ -136,9 +136,11 @@ class Options extends React.Component {
     return duration(value).humanize();
   }
 
-  onExerciseTimeChanged(exerciseTime) {
-    setInStorage({ exerciseTime }).then(() => {
-      this.setState({ exerciseTime });
+  // time is a moment object
+  setExerciseDuration(time) {
+    const exerciseDuration = time.valueOf();
+    setInStorage({ exerciseDuration }).then(() => {
+      this.setState({ exerciseDuration });
     });
   }
 
@@ -188,13 +190,11 @@ class Options extends React.Component {
                 <TimePicker 
                   allowClear={false}
                   defaultValue={moment('12:08', 'mm:ss')}
+                  value={moment(this.state.exerciseDuration)}
                   secondStep={5}
-                  // disabledMinutes={(minute) => minute !== 0}
                   suffixIcon={<Icon type="hourglass" />}
-                  format={'mm:ss'} />
-                <InputNumber min={1} max={180}
-                  value={this.state.exerciseTime}
-                  onChange={time => this.onExerciseTimeChanged(time)} />
+                  format={'mm:ss'}
+                  onChange={time => this.setExerciseDuration(time)} />
                   &nbsp;minutes
                 <br /><br /><br /><br />
 

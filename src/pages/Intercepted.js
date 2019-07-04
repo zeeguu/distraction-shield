@@ -4,7 +4,7 @@ import { getFromStorage, setInStorage } from '../util/storage';
 import {
     defaultExerciseSite,
     defaultExerciseSites,
-    defaultExerciseTime
+    defaultexerciseDuration
 } from '../util/constants';
 import { parseUrl } from '../util/block-site';
 import { duration } from 'moment';
@@ -16,7 +16,7 @@ class Intercepted extends React.Component {
       timestamp: new Date().getTime(),
       timer: null,
       exerciseSites: [],
-      exerciseTime: 0
+      exerciseDuration: 0
     }
 
     componentDidMount() {
@@ -53,17 +53,15 @@ class Intercepted extends React.Component {
 
     setup() {
         getFromStorage('intercepts', 'currentExerciseSite',
-                        'exerciseSites', 'exerciseTime').then(res => {
+                        'exerciseSites', 'exerciseDuration').then(res => {
             let currentExerciseSite = res.currentExerciseSite || 
                 defaultExerciseSite.name; // @FIXME dont assume.
             let exerciseSites = res.exerciseSites || defaultExerciseSites;
-            let exerciseTime = (
-                res.exerciseTime || defaultExerciseTime
-            ) * 60 * 1000; // from minutes to milliseconds
-            let timeLeft = exerciseTime; // set initial time
+            let exerciseDuration = res.exerciseDuration || defaultexerciseDuration
+            let timeLeft = exerciseDuration; // set initial time
 
             this.setState({ currentExerciseSite, exerciseSites,
-                            exerciseTime, timeLeft });
+                            exerciseDuration, timeLeft });
 
             let intercepts = res.intercepts || {};
             let parsed = parseUrl(this.getUrl());
@@ -100,10 +98,10 @@ class Intercepted extends React.Component {
 
             blockedUrls = blockedUrls.map(blockedUrl => {
                 if (blockedUrl.hostname === url.hostname) {
-                    blockedUrl.timeout = this.state.exerciseTime;
-                } else {
-                    return blockedUrl;
+                    blockedUrl.timeout = this.state.exerciseDuration;
                 }
+
+                return blockedUrl;
             });
 
             setInStorage({ blockedUrls });
@@ -118,7 +116,7 @@ class Intercepted extends React.Component {
                 // convert to seconds first.
                 Math.round(this.state.timeLeft / 1000)
                 / 
-                Math.round(this.state.exerciseTime / 1000)
+                Math.round(this.state.exerciseDuration / 1000)
             ) * 100
         );
 
@@ -133,17 +131,17 @@ class Intercepted extends React.Component {
                 <iframe title="Interception page" 
                     width="100%"
                     src={site ? site.href : ''}
-                    style={{ height: '90vh'}}>
+                    style={{ height: '89vh'}}>
                 </iframe>
-                <div style={{ height: '9vh' }}>
+                <div style={{ height: '10vh' }}>
                     <Row type="flex" justify="space-around" align="middle">
                         <Col md={8}>
                             <h3>Time left:</h3>
                             <code>{timeLeftString}</code>
                             <Progress percent={progressPercentage} />
                             {this.state.timeLeft <= 0 &&
-                                <div>Well done! You earned &nbsp;
-                                {duration(this.state.exerciseTime).humanize()}
+                                <div>Well done! You earned&nbsp;
+                                {duration(this.state.exerciseDuration).humanize()}
                                 &nbsp;of browsing time.</div>
                             }
                         </Col>

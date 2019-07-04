@@ -78,7 +78,6 @@ export const blockWebsite = async text => {
 export const addExerciseSite = async text => {
     let urls = parseUrls(text);
     if (!urls.length) return message.error('No valid link.');
-    console.log('Adding exercise websites', urls);
 
     const res = await getFromStorage('exerciseSites');
     const exerciseSites = res.exerciseSites || defaultExerciseSites;
