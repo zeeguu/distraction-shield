@@ -1,6 +1,6 @@
 import React from 'react';
 import './Options.css';
-import { Table, Button, Input, Layout, Row, Col, Radio, InputNumber } from 'antd';
+import { Table, Button, Input, Layout, Row, Col, Radio, InputNumber, TimePicker, Icon } from 'antd';
 import {
   blockWebsite,
   getWebsites,
@@ -13,6 +13,7 @@ import {
   PieChart, Pie, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend
 } from 'recharts';
 import { duration } from 'moment';
+import moment from 'moment';
 const { Header, Content, Footer } = Layout;
 
 const columns = [
@@ -183,7 +184,14 @@ class Options extends React.Component {
                       onPressEnter={(e) => this.didAddExerciseSite(e)}
                       style={{ margin: '20px 0px', width: '50%' }} />
 
-                <h3>Exercise time:</h3>
+                <h3>Exercise duration:</h3>
+                <TimePicker 
+                  allowClear={false}
+                  defaultValue={moment('12:08', 'mm:ss')}
+                  secondStep={5}
+                  // disabledMinutes={(minute) => minute !== 0}
+                  suffixIcon={<Icon type="hourglass" />}
+                  format={'mm:ss'} />
                 <InputNumber min={1} max={180}
                   value={this.state.exerciseTime}
                   onChange={time => this.onExerciseTimeChanged(time)} />
