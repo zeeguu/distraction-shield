@@ -1,6 +1,6 @@
 import React from 'react';
 import './Options.css';
-import { Table, Button, Input, Layout, Row, Col, Radio, InputNumber, TimePicker, Icon } from 'antd';
+import { Table, Button, Input, Layout, Row, Col, Radio, TimePicker, Icon, Tag, Progress, Tooltip } from 'antd';
 import {
   blockWebsite,
   getWebsites,
@@ -10,7 +10,7 @@ import {
 import { addStorageListener, getFromStorage, setInStorage } from '../util/storage';
 import { defaultExerciseSites, s2, defaultexerciseDuration, defaultExerciseSite } from '../util/constants';
 import {
-  PieChart, Pie, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend
+  PieChart, Pie, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend
 } from 'recharts';
 import { duration } from 'moment';
 import moment from 'moment';
@@ -34,8 +34,28 @@ const columns = [
     )
   },
   {
+    dataIndex: 'timeout',
+    render: timeout => {
+      if (!timeout) return;
+
+      const start = moment() // now
+      const end = moment(timeout);
+
+      if (start.isAfter(end)) return;
+      
+      const timeLeftStr = end.from(start, true);
+      
+      return (
+        // <Tooltip title={`${timeLeftStr} left`}>
+        //   <Progress type="circle" percent={30} width={25} showInfo={false}
+        //     strokeWidth={15} />
+        // </Tooltip>
+        <Tag>{timeLeftStr} left</Tag>
+      );
+    }
+  },
+  {
     dataIndex: 'hostname',
-    key: 'href',
     render: hostname => (
       <Button type="danger" shape="circle" icon="delete"
         onClick={() => unblockWebsite(hostname)} />
@@ -153,9 +173,9 @@ class Options extends React.Component {
           </header>
         </Header>
         <Content style={{ padding: '20px 50px' }}>
-          <div style={{ background: '#fff', padding: 24, minHeight: 280 }}>
+          <div style={{ background: '#fff' }}>
             <Row className="options-grid">
-              <Col span={12} className="grid-col">
+              <Col lg={14} className="grid-col">
                 <Input autoFocus ref={this.addBlockedWebsiteInput}
                       placeholder="Block website..." 
                       onPressEnter={(e) => this.didAddBlockedWebsite(e)}
@@ -164,7 +184,7 @@ class Options extends React.Component {
                       columns={columns}
                       dataSource={this.state.data} />
               </Col>
-              <Col span={12} className="grid-col">
+              <Col lg={10} className="grid-col">
                 <h3>Exercise website:</h3>
                 <Radio.Group value={this.state.currentExerciseSite}
                             onChange={(e) => this.handleExerciseSiteChange(e)}
@@ -184,7 +204,7 @@ class Options extends React.Component {
                 <Input ref={this.addExerciseSiteInput}
                       placeholder="Add exercise site..." 
                       onPressEnter={(e) => this.didAddExerciseSite(e)}
-                      style={{ margin: '20px 0px', width: '50%' }} />
+                      style={{ margin: '20px 0px', width: '300px' }} />
 
                 <h3>Exercise duration:</h3>
                 <TimePicker 
@@ -195,7 +215,6 @@ class Options extends React.Component {
                   suffixIcon={<Icon type="hourglass" />}
                   format={'mm:ss'}
                   onChange={time => this.setExerciseDuration(time)} />
-                  &nbsp;minutes
                 <br /><br /><br /><br />
 
                 <h3>Interception statistics:</h3>

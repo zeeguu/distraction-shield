@@ -97,8 +97,11 @@ class Intercepted extends React.Component {
             let { blockedUrls } = res; // cant be empty, cause were blocked.
 
             blockedUrls = blockedUrls.map(blockedUrl => {
-                if (blockedUrl.hostname === url.hostname) {
-                    blockedUrl.timeout = this.state.exerciseDuration;
+                if (blockedUrl.domain === url.domain) {
+                    // compose a date in the future in milliseconds since epoch,
+                    // by adding exercise duration milliseconds
+                    blockedUrl.timeout = new Date().valueOf() +
+                        this.state.exerciseDuration;
                 }
 
                 return blockedUrl;
