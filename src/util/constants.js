@@ -1,8 +1,8 @@
 export const defaultExerciseSites = [
   {
     "hostname": "www.zeeguu.org",
-    "href": "https://www.zeeguu.org/whatnext",
-    "pathname": "/whatnext",
+    "href": "https://www.zeeguu.org/practice/#!/practice/plan/0",
+    "pathname": "//practice/#!/practice/plan/0",
     "regex": "*://*.www.zeeguu.org/*",
     "tld": "org",
     "domain": "zeeguu",
