@@ -23,3 +23,11 @@
 .block-button {
   margin-bottom: 15px;
 }
+
+.remove-button {
+  color: #ff7875;
+}
+
+.remove-button:hover {
+  color: #f5222d;
+}

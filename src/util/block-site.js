@@ -101,6 +101,20 @@ export const unblockWebsite = (hostname) => {
     }).then(() => message.success(`Unblocked ${hostname}`));
 };
 
+export const setTimeout = async (url, timeout) => {
+    let res = await getFromStorage('blockedUrls');
+    let { blockedUrls } = res; // cant be empty, cause were blocked.
+    blockedUrls = blockedUrls.map(blockedUrl => {
+        if (blockedUrl.domain === url.domain) {
+            // compose a date in the future in milliseconds since epoch,
+            // by adding exercise duration milliseconds
+            blockedUrl.timeout = timeout;
+        }
+        return blockedUrl;
+    });
+    return setInStorage({ blockedUrls });
+};
+
 // utility functions
 export const parseUrls = text => {
     return autoLink(text)

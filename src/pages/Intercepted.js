@@ -6,7 +6,7 @@ import {
     defaultExerciseSites,
     defaultexerciseDuration
 } from '../util/constants';
-import { parseUrl } from '../util/block-site';
+import { parseUrl, setTimeout } from '../util/block-site';
 import { duration } from 'moment';
 
 class Intercepted extends React.Component {
@@ -91,24 +91,9 @@ class Intercepted extends React.Component {
 
     onContinue() {
         let url = parseUrl(this.getUrl());
+        let now = new Date().valueOf();
 
-        // update timeout for blocked url.
-        getFromStorage('blockedUrls').then(res => {
-            let { blockedUrls } = res; // cant be empty, cause were blocked.
-
-            blockedUrls = blockedUrls.map(blockedUrl => {
-                if (blockedUrl.domain === url.domain) {
-                    // compose a date in the future in milliseconds since epoch,
-                    // by adding exercise duration milliseconds
-                    blockedUrl.timeout = new Date().valueOf() +
-                        this.state.exerciseDuration;
-                }
-
-                return blockedUrl;
-            });
-
-            return setInStorage({ blockedUrls });
-        }).then(() => {
+        setTimeout(url, now + this.state.exerciseDuration).then(() => {
             window.location.href = url.href;
         });
     }

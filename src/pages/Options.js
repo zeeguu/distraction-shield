@@ -1,16 +1,18 @@
 import React from 'react';
 import './Options.css';
-import { Table, Button, Input, Layout, Row, Col, Radio, TimePicker, Icon, Tag, Tooltip } from 'antd';
+import { Table, Button, Input, Layout, Row, Col, Radio, TimePicker, Icon, 
+  Tag, Switch, Tooltip as AntTooltip } from 'antd';
 import {
   blockWebsite,
   getWebsites,
   unblockWebsite,
-  addExerciseSite
+  addExerciseSite,
+  setTimeout
 } from '../util/block-site';
 import { addStorageListener, getFromStorage, setInStorage } from '../util/storage';
-import { defaultExerciseSites, s2, defaultexerciseDuration, defaultExerciseSite } from '../util/constants';
+import { defaultExerciseSites, s2, defaultexerciseDuration, defaultExerciseSite, defaultTimeout, defaultTimeoutInterval } from '../util/constants';
 import {
-  PieChart, Pie, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend
+  PieChart, Pie, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, Tooltip
 } from 'recharts';
 import { duration } from 'moment';
 import moment from 'moment';
@@ -35,44 +37,71 @@ const columns = [
   },
   {
     dataIndex: 'timeout',
-    render: timeout => {
-      if (!timeout) return;
-
+    render: (timeout, site) => {
+      
       const start = moment() // now
       const end = moment(timeout);
-
-      if (start.isAfter(end)) return;
+      
+      let timedout = timeout && start.isSameOrBefore(end);
       
       const timeLeftStr = end.from(start, true);
+      const tillStr = end.format('HH:mm');
+      
+      let now = new Date().valueOf();
       
       return (
         // <Tooltip title={`${timeLeftStr} left`}>
         //   <Progress type="circle" percent={30} width={25} showInfo={false}
         //     strokeWidth={15} />
         // </Tooltip>
-        <Tag>{timeLeftStr} left</Tag>
+        // <Tag>{timeLeftStr} left</Tag>
+        <div style={{ display: 'flex' }}>
+          <Switch size="small" checked={timedout}
+            onChange={checked => 
+              setTimeout(site, checked ? now + defaultTimeout : now)
+            }
+            style={{ marginRight: '5px' }} />
+          {timedout === true && (
+            <>
+              <small style={{ display: 'flex', flexDirection: 'column' }}>
+                For {timeLeftStr}
+                <Tag color="blue" style={{
+                  borderColor: 'transparent',
+                  backgroundColor: 'transparent'
+                }} >
+                  Till {tillStr}
+                </Tag>
+              </small>
+              <Button icon="minus" size="small" type="link"
+                style={{ color: '#8c8c8c' }}
+                onClick={() => setTimeout(site, timeout - defaultTimeoutInterval)} />
+              <Button icon="plus" size="small" type="link"
+                style={{ color: '#8c8c8c' }}
+                onClick={() => setTimeout(site, timeout + defaultTimeoutInterval)} />
+            </>
+          )}
+        </div>
       );
     }
   },
+  // {
+  //   dataIndex: 'enabled',
+  //   render: enabled => (
+  //     <div>
+  //       <Switch size="small" checked={enabled === false} />
+  //     </div>
+  //   )
+  // },
   {
     dataIndex: 'hostname',
     render: hostname => (
-      <Button type="danger" shape="circle" icon="delete"
-        onClick={() => unblockWebsite(hostname)} />
+      <Button type="link" shape="circle" icon="delete"
+        onClick={() => unblockWebsite(hostname)}
+        className="remove-button" />
     ),
     align: 'right'
   },
 ];
-
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {
-    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-  },
-  getCheckboxProps: record => ({
-    disabled: !record.enabled === 'Disabled User',
-    name: record.name,
-  }),
-};
 
 function addKeyToObj(obj, key) {
   return { ...obj, key };
@@ -180,8 +209,7 @@ class Options extends React.Component {
                       placeholder="Block website..." 
                       onPressEnter={(e) => this.didAddBlockedWebsite(e)}
                       className='block-button' />
-                <Table rowSelection={rowSelection}
-                      columns={columns}
+                <Table columns={columns}
                       dataSource={this.state.data} />
               </Col>
               <Col lg={10} className="grid-col">
