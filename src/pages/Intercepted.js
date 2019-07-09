@@ -107,7 +107,9 @@ class Intercepted extends React.Component {
                 return blockedUrl;
             });
 
-            setInStorage({ blockedUrls });
+            return setInStorage({ blockedUrls });
+        }).then(() => {
+            window.location.href = url.href;
         });
     }
 
@@ -149,14 +151,12 @@ class Intercepted extends React.Component {
                             }
                         </Col>
                         <Col md={2}>
-                            <a href={url.href} style={{ margin: '5px' }}>
-                                <Button icon="login"
-                                    disabled={this.state.timeLeft > 0}
-                                    onClick={() => this.onContinue()}
-                                    >
-                                    Continue to {url.name}
-                                </Button>
-                            </a>
+                            <Button icon="login"
+                                disabled={this.state.timeLeft > 0}
+                                onClick={() => this.onContinue()}
+                                >
+                                Continue to {url.name}
+                            </Button>
                         </Col>
                     </Row>
                 </div>

@@ -8,14 +8,21 @@ function setup() {
 
     // interceptions
     chrome.storage.sync.get(['enabled', 'blockedUrls'], function(result) {
+        let { enabled, blockedUrls } = result;
+
         // is app enabled
-        if (result.enabled === false) return; // can be (undefined | null) too.
+        if (enabled === false) return; // can be (undefined | null) too.
 
         // no urls to be blocked.
-        if (!result.blockedUrls) return;
+        if (!blockedUrls) return;
 
-        // let filtr = result.blockedUrls.filter(blockedUrl => blockedUrl.enabled);
-        let urls = result.blockedUrls.map(blockedUrl => blockedUrl.regex);
+        let urls = blockedUrls
+            .filter(blockedUrl => {
+                let { timeout } = blockedUrl;
+                // filters out blocked urls that currently have a timeout.
+                return !(timeout && new Date().valueOf() <= timeout);
+            })
+            .map(blockedUrl => blockedUrl.regex);
 
         // add
         chrome.webRequest.onBeforeRequest.addListener(

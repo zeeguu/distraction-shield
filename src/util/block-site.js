@@ -120,7 +120,7 @@ const parseDomainFromUrl = urlObject => {
     return {
         ...urlObject,
         ...parsed, // attaches subdomain, domain, tld
-        name: capitalize(parsed.domain)
+        name: parsed && capitalize(parsed.domain)
     }
 }
 

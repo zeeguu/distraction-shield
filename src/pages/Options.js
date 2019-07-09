@@ -1,6 +1,6 @@
 import React from 'react';
 import './Options.css';
-import { Table, Button, Input, Layout, Row, Col, Radio, TimePicker, Icon, Tag, Progress, Tooltip } from 'antd';
+import { Table, Button, Input, Layout, Row, Col, Radio, TimePicker, Icon, Tag, Tooltip } from 'antd';
 import {
   blockWebsite,
   getWebsites,
