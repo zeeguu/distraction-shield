@@ -58,9 +58,10 @@ class ExerciseOptions extends React.Component {
   }
 
   addExerciseSite() {
-    let { currentExerciseSite, newExerciseSite } = this.state;
-    // also set as current if its the first exercise site.
-    if (!currentExerciseSite) this.setCurrentExerciseSite(newExerciseSite.name);
+    let { newExerciseSite } = this.state;
+    
+    // set newly added exercise as current.
+    this.setCurrentExerciseSite(newExerciseSite.name);
 
     addExerciseSite(newExerciseSite);
     this.closeModal();
