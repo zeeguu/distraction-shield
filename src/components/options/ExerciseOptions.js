@@ -1,9 +1,11 @@
 import React from 'react';
 import { addStorageListener, getFromStorage, setInStorage } from '../../util/storage';
 import { defaultExerciseSite, defaultExerciseSites, defaultexerciseDuration, s2 } from '../../util/constants';
-import { addExerciseSite } from '../../util/block-site';
-import { Row, Col, Radio, Input, Divider, TimePicker, Icon } from 'antd';
+import { addExerciseSite, parseUrls } from '../../util/block-site';
+import { Row, Col, Radio, Input, Divider, TimePicker, Icon, Select, Button, Modal } from 'antd';
 import moment from 'moment';
+
+const { Option } = Select;
 
 class ExerciseOptions extends React.Component {
   constructor(props) {
@@ -14,7 +16,10 @@ class ExerciseOptions extends React.Component {
   state = {
     currentExerciseSite: '',
     exerciseSites: [],
-    exerciseDuration: 0 
+    exerciseDuration: 0,
+    addSiteModalVisible: true,
+    newExerciseSiteUrl: '',
+    newExerciseSite: null
   }
 
   componentDidMount() {
@@ -33,14 +38,13 @@ class ExerciseOptions extends React.Component {
     });
   }
 
-  didAddExerciseSite(e) {
-    let url = e.target.getAttribute('value');
-    this.addExerciseSiteInput.current.setValue('');
-    addExerciseSite(url);
-  }
+  // didAddExerciseSite(e) {
+  //   let url = e.target.getAttribute('value');
+  //   this.addExerciseSiteInput.current.setValue('');
+  //   addExerciseSite(url);
+  // }
 
-  handleExerciseSiteChange(e) {
-    let currentExerciseSite = e.target.value;
+  handleExerciseSiteChange(currentExerciseSite) {
     setInStorage({ currentExerciseSite }).then(() => {
       this.setState({ currentExerciseSite });
     });
@@ -54,33 +58,103 @@ class ExerciseOptions extends React.Component {
     });
   }
 
+  setAddSiteModalVisible(visible) {
+    this.setState({ addSiteModalVisible: visible });
+  }
+
+  addExerciseSite() {
+    addExerciseSite(this.state.newExerciseSite);
+    this.setState({ newExerciseSiteUrl: '', newExerciseSite: null });
+    this.setAddSiteModalVisible(false);
+  }
+
+  setExerciseSiteUrl(e) {
+    let newExerciseSiteUrl = e && e.target && e.target.value;
+
+    let { newExerciseSite } = this.state;
+    if (!newExerciseSiteUrl) newExerciseSite = null;
+
+    this.setState({ newExerciseSiteUrl, newExerciseSite });
+  }
+
+  setExerciseSiteName() {
+    if (!this.state.newExerciseSiteUrl) return;
+
+    let urls = parseUrls(this.state.newExerciseSiteUrl);
+
+    if (urls && urls.length === 1) {
+      let newExerciseSite = urls[0];
+      this.setState({ newExerciseSite });
+    } else {
+      
+    }
+  }
+
+  closeModal() {
+    this.setState({ newExerciseSiteUrl: '', newExerciseSite: null });
+    this.setAddSiteModalVisible(false);
+  }
+
   render() {
     return (
       <>
       <Row>
-        <Col span={6}>
+        <Col span={8}>
           Current exercise website
         </Col>
-        <Col span={18} style={{ textAlign: 'right' }}>
-          <Radio.Group value={this.state.currentExerciseSite}
-                      onChange={(e) => this.handleExerciseSiteChange(e)}
-                      size="large">
+        <Col span={16} style={{ textAlign: 'right' }}>
+          <Select
+            value={this.state.currentExerciseSite}
+            style={{ width: 170 }}
+            onChange={(e) => this.handleExerciseSiteChange(e)}
+          >
             {this.state.exerciseSites.map((site, i) => {
                 return (
-                  <Radio.Button value={site.domain} key={i}>
+                  <Option value={site.name} key={i}>
                     <img alt='favicon'
                       src={`${s2}${site.hostname}`} />&nbsp;
                     {site.name}
-                  </Radio.Button>
+                  </Option>
                 )
               }
             )}
-          </Radio.Group>
+          </Select><br/>
+          <Button ghost 
+            onClick={() => this.setAddSiteModalVisible(true)}
+            style={{ margin:'5px', color: '#40a9ff' }}>
+            Add
+          </Button>
+          <Modal
+            title="Add an exercise website"
+            centered
+            visible={this.state.addSiteModalVisible}
+            onOk={() => this.addExerciseSite()}
+            onCancel={() => this.closeModal()}
+            width={350}
+            cancelText=''
+          >
+            <Input placeholder="Exercise site url..."
+                  onChange={e => this.setExerciseSiteUrl(e)}
+                  onBlur={() => this.setExerciseSiteName()}
+                  value={this.state.newExerciseSiteUrl}
+                  style={{ margin: '20px 0px'}}
+                  prefix={<Icon type="global" style={{ color: 'rgba(0,0,0,.25)' }} />}/>
+            <Input placeholder="Name..."
+                  onChange={e => {
+                    let { newExerciseSite } = this.state;
+                    newExerciseSite.name = e.target.value;
+                    this.setState({ newExerciseSite });
+                  }}
+                  value={this.state.newExerciseSite && 
+                          this.state.newExerciseSite.name}
+                  style={{ margin: '20px 0px' }}
+                  prefix={this.state.newExerciseSite &&
+                    <img
+                      alt='favicon'
+                      src={`${s2}${this.state.newExerciseSite.hostname}`} />
+                  }/>
+          </Modal>
         </Col>
-      <Input ref={this.addExerciseSiteInput}
-            placeholder="Add exercise site..." 
-            onPressEnter={(e) => this.didAddExerciseSite(e)}
-            style={{ margin: '20px 0px', width: '300px' }} />
       </Row>
       <Divider />
       <Row>
