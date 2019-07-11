@@ -1,5 +1,5 @@
 import React from 'react';
-import { Progress, message, Icon, Row, Col, Button } from 'antd';
+import { Progress, message, Icon, Row, Col, Button, Empty } from 'antd';
 import { getFromStorage, setInStorage } from '../util/storage';
 import {
     defaultExerciseSite,
@@ -118,14 +118,19 @@ class Intercepted extends React.Component {
 
         return (
             <div>
-                <iframe title="Interception page" 
-                    width="100%"
-                    src={site ? site.href : ''}
-                    style={{ height: '89vh'}}>
-                </iframe>
+                {site ? (
+                    <iframe title="Interception page" 
+                        width="100%"
+                        src={site ? site.href : ''}
+                        style={{ height: '89vh'}}>
+                    </iframe>
+                ) : (
+                    <Empty description="No exercise website"
+                        style={{ height: '89vh', paddingTop: '30vh' }} />
+                )}
                 <div style={{ height: '10vh' }}>
                     <Row type="flex" justify="space-around" align="middle">
-                        <Col md={8}>
+                        <Col sm={12} md={12}>
                             <h3>Time left:</h3>
                             <code>{timeLeftString}</code>
                             <Progress percent={progressPercentage} />
@@ -135,7 +140,7 @@ class Intercepted extends React.Component {
                                 &nbsp;of browsing time.</div>
                             }
                         </Col>
-                        <Col md={2}>
+                        <Col sm={12} md={4}>
                             <Button icon="login"
                                 disabled={this.state.timeLeft > 0}
                                 onClick={() => this.onContinue()}

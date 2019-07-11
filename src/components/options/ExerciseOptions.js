@@ -1,7 +1,7 @@
 import React from 'react';
 import { addStorageListener, getFromStorage, setInStorage } from '../../util/storage';
 import { defaultExerciseSite, defaultExerciseSites, defaultexerciseDuration, s2 } from '../../util/constants';
-import { addExerciseSite, parseUrls } from '../../util/block-site';
+import { addExerciseSite, parseUrls, removeExerciseSite } from '../../util/block-site';
 import { Row, Col, Input, Divider, TimePicker, Icon, Select, Button, Modal } from 'antd';
 import moment from 'moment';
 
@@ -30,15 +30,16 @@ class ExerciseOptions extends React.Component {
   setup() {
     getFromStorage('currentExerciseSite', 'exerciseSites', 'exerciseDuration')
       .then(res => {
-      let currentExerciseSite = res.currentExerciseSite || defaultExerciseSite.domain;
-      let exerciseSites = res.exerciseSites || defaultExerciseSites;
-      let exerciseDuration = res.exerciseDuration || defaultexerciseDuration;
+        let currentExerciseSite = res.currentExerciseSite || defaultExerciseSite.domain;
+        let exerciseSites = res.exerciseSites || defaultExerciseSites;
+        let exerciseDuration = res.exerciseDuration || defaultexerciseDuration;
+        if (exerciseSites.length === 0) currentExerciseSite = '';
 
       this.setState({ currentExerciseSite, exerciseSites, exerciseDuration });
     });
   }
 
-  handleExerciseSiteChange(currentExerciseSite) {
+  setCurrentExerciseSite(currentExerciseSite) {
     setInStorage({ currentExerciseSite }).then(() => {
       this.setState({ currentExerciseSite });
     });
@@ -57,9 +58,12 @@ class ExerciseOptions extends React.Component {
   }
 
   addExerciseSite() {
-    addExerciseSite(this.state.newExerciseSite);
-    this.setState({ newExerciseSiteUrl: '', newExerciseSite: null });
-    this.setAddSiteModalVisible(false);
+    let { currentExerciseSite, newExerciseSite } = this.state;
+    // also set as current if its the first exercise site.
+    if (!currentExerciseSite) this.setCurrentExerciseSite(newExerciseSite.name);
+
+    addExerciseSite(newExerciseSite);
+    this.closeModal();
   }
 
   setExerciseSiteUrl(e) {
@@ -87,6 +91,14 @@ class ExerciseOptions extends React.Component {
     this.setAddSiteModalVisible(false);
   }
 
+  removeCurrentExerciseSite() {
+    const { currentExerciseSite, exerciseSites } = this.state;
+
+    removeExerciseSite(currentExerciseSite);
+    this.setCurrentExerciseSite(exerciseSites && exerciseSites.length > 0 ? 
+        exerciseSites[0].name : '');
+  }
+
   render() {
     return (
       <>
@@ -98,7 +110,7 @@ class ExerciseOptions extends React.Component {
           <Select
             value={this.state.currentExerciseSite}
             style={{ width: 170 }}
-            onChange={(e) => this.handleExerciseSiteChange(e)}
+            onChange={(e) => this.setCurrentExerciseSite(e)}
           >
             {this.state.exerciseSites.map((site, i) => {
                 return (
@@ -115,6 +127,11 @@ class ExerciseOptions extends React.Component {
             onClick={() => this.setAddSiteModalVisible(true)}
             style={{ margin:'5px', color: '#40a9ff' }}>
             Add
+          </Button>
+          <Button ghost 
+            onClick={() => this.removeCurrentExerciseSite()}
+            style={{ margin:'5px', color: '#40a9ff' }}>
+            Remove
           </Button>
           <Modal
             title="Add an exercise website"

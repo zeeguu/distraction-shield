@@ -76,25 +76,27 @@ export const blockWebsite = async text => {
 }
 
 export const addExerciseSite = async url => {
-    // let urls = parseUrls(text);
-    // if (!urls.length) return message.error('No valid link.');
+    if (!url) return;
 
     const res = await getFromStorage('exerciseSites');
     const exerciseSites = res.exerciseSites || defaultExerciseSites;
 
-    // checks for duplicates. disable.
-    // urls.forEach(url => {
-        let alreadyIn = exerciseSites.find(site => site.name === url.name);
-        if (!alreadyIn) {
-            exerciseSites.push(url);
-            message.success(`Added exercise site!`); // @TODO make messages like in blockWebsite()
-        } else {
-            message.error('Duplicate exercise site name');
-        }
-    // })
+    let alreadyIn = exerciseSites.find(site => site.name === url.name);
+    if (!alreadyIn) {
+        exerciseSites.push(url);
+        message.success(`Added exercise site!`); // @TODO make messages like in blockWebsite()
+    } else {
+        message.error('Duplicate exercise site name');
+    }
 
     await setInStorage({ exerciseSites });
+}
 
+export const removeExerciseSite = async name => {
+    const res = await getFromStorage('exerciseSites');
+    let exerciseSites = res.exerciseSites || defaultExerciseSites;
+    exerciseSites = exerciseSites.filter(site => site.name !== name);
+    await setInStorage({ exerciseSites });
 }
 
 export const unblockWebsite = (hostname) => {

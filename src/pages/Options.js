@@ -115,48 +115,46 @@ class Options extends React.Component {
 
   render() {
     return (
-      <Layout className="layout" style={{ background: 'rgb(248, 249, 250)' }}>
+      <Layout style={{ background: 'rgb(248, 249, 250)' }}>
         <Header>
           <header className="Options-header">
             Distraction Shield
           </header>
         </Header>
         <Content style={{ padding: '20px 50px' }}>
-          <div>
-            <Row className="options-grid">
-              <Col lg={16} offset={4} className="grid-col">
-                <h3>Blocked Websites</h3>
-                <Card>
-                  <Input autoFocus ref={this.addBlockedWebsiteInput}
-                        placeholder="Block url..." 
-                        onPressEnter={(e) => this.didAddBlockedWebsite(e)}
-                        className='block-button'
-                        prefix={<Icon type="stop" style={{ color: 'rgba(0,0,0,.25)' }} />}/>
-                  <Table columns={columns}
-                        dataSource={this.state.blockedUrls.map(
-                          (obj, key) => ({ ...obj, key })
-                        )} 
-                        showHeader={false} />
-                </Card>
-              </Col>
-            </Row>
-            <Row>
-              <Col lg={16} offset={4} className="grid-col">
-                <h3>Exercising</h3>
-                <Card>
-                  <ExerciseOptions />
-                </Card>
-              </Col>
-            </Row>
-            <Row>
-              <Col lg={16} offset={4} className="grid-col">
-                <h3>Statistics</h3>
-                <Card>
-                  <Statistics />
-                </Card>
-              </Col>
-            </Row>
-          </div>
+          <Row type="flex" justify="center">
+            <Col className="grid-col">
+              <h3>Blocked Websites</h3>
+              <Card className="grid-card">
+                <Input autoFocus ref={this.addBlockedWebsiteInput}
+                      placeholder="Block url..." 
+                      onPressEnter={(e) => this.didAddBlockedWebsite(e)}
+                      className='block-button'
+                      prefix={<Icon type="stop" style={{ color: 'rgba(0,0,0,.25)' }} />}/>
+                <Table columns={columns}
+                      dataSource={this.state.blockedUrls.map(
+                        (obj, key) => ({ ...obj, key })
+                      )} 
+                      showHeader={false} />
+              </Card>
+            </Col>
+          </Row>
+          <Row type="flex" justify="center">
+            <Col className="grid-col">
+              <h3>Exercising</h3>
+              <Card className="grid-card">
+                <ExerciseOptions />
+              </Card>
+            </Col>
+          </Row>
+          <Row type="flex" justify="center">
+            <Col className="grid-col">
+              <h3>Statistics</h3>
+              <Card className="grid-card">
+                <Statistics />
+              </Card>
+            </Col>
+          </Row>
         </Content>
         <Footer style={{ textAlign: 'center' }}>University of Groningen © 2019</Footer>
       </Layout>
