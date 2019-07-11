@@ -21,8 +21,8 @@ class Intercepted extends React.Component {
 
     componentDidMount() {
         message.open({
-            content: 'You were intercepted!',
-            icon: <Icon type="stop" />
+            content: "Let's do something useful before having fun!",
+            icon: <Icon type="smile" />
         });
 
         this.setup();
