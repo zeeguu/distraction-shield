@@ -1,3 +1,5 @@
+const timeoutHandlers = {};
+
 chrome.storage.onChanged.addListener(changes => {
     setup();
 });
@@ -16,15 +18,45 @@ function setup() {
         // no urls to be blocked.
         if (!blockedUrls) return;
 
+        let willTimeout = [];
         let urls = blockedUrls
+            // filters out blocked urls that currently have a timeout.
             .filter(blockedUrl => {
                 let { timeout } = blockedUrl;
-                // filters out blocked urls that currently have a timeout.
-                return !(timeout && new Date().valueOf() <= timeout);
+
+                if (timeout && new Date().valueOf() <= timeout) {
+                    willTimeout.push(blockedUrl);
+                    return false;
+                } else {
+                    if (timeoutHandlers[blockedUrl.regex]) { // handler still set
+                        console.log('timeout cleared for ', blockedUrl.hostname);
+                        clearTimeout(timeoutHandlers[blockedUrl.regex]);
+                        timeoutHandlers[blockedUrl.regex] = null;
+                    }
+                    return true;
+                }
             })
             .map(blockedUrl => blockedUrl.regex);
+        
+        // set timeout handlers
+        willTimeout.forEach(blockedUrl => {
+            let { timeout, regex } = blockedUrl;
 
-        // add
+            if (timeoutHandlers[regex]) { // handler already set
+                clearTimeout(timeoutHandlers[blockedUrl.regex]);
+                timeoutHandlers[blockedUrl.regex] = null;
+            }
+
+            let timeleft = timeout - new Date().valueOf();
+            console.log('timeout set for ', blockedUrl.hostname);
+            timeoutHandlers[regex] = setTimeout(() => {
+                console.log('timeout triggered for ', blockedUrl.hostname);
+                setup();
+                timeoutHandlers[regex] = null;
+            }, timeleft);
+        });
+
+        // add listener
         chrome.webRequest.onBeforeRequest.addListener(
             handleInterception
             , {
@@ -38,7 +70,6 @@ function setup() {
             , ["blocking"]
         );
     });
-
 }
 
 function handleInterception(details) {
