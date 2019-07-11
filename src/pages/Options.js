@@ -124,7 +124,7 @@ class Options extends React.Component {
         <Content style={{ padding: '20px 50px' }}>
           <Row type="flex" justify="center">
             <Col className="grid-col">
-              <h3>Blocked Websites</h3>
+              <h4 className="grid-col-title">Blocked Websites</h4>
               <Card className="grid-card">
                 <Input autoFocus ref={this.addBlockedWebsiteInput}
                       placeholder="Block url..." 
@@ -141,7 +141,7 @@ class Options extends React.Component {
           </Row>
           <Row type="flex" justify="center">
             <Col className="grid-col">
-              <h3>Exercising</h3>
+              <h4 className="grid-col-title">Exercising</h4>
               <Card className="grid-card">
                 <ExerciseOptions />
               </Card>
@@ -149,7 +149,7 @@ class Options extends React.Component {
           </Row>
           <Row type="flex" justify="center">
             <Col className="grid-col">
-              <h3>Statistics</h3>
+              <h4 className="grid-col-title">Statistics</h4>
               <Card className="grid-card">
                 <Statistics />
               </Card>
