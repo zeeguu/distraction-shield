@@ -2,7 +2,7 @@ import React from 'react';
 import { addStorageListener, getFromStorage, setInStorage } from '../../util/storage';
 import { defaultExerciseSite, defaultExerciseSites, defaultexerciseDuration, s2 } from '../../util/constants';
 import { addExerciseSite, parseUrls } from '../../util/block-site';
-import { Row, Col, Radio, Input, Divider, TimePicker, Icon, Select, Button, Modal } from 'antd';
+import { Row, Col, Input, Divider, TimePicker, Icon, Select, Button, Modal } from 'antd';
 import moment from 'moment';
 
 const { Option } = Select;
@@ -17,7 +17,7 @@ class ExerciseOptions extends React.Component {
     currentExerciseSite: '',
     exerciseSites: [],
     exerciseDuration: 0,
-    addSiteModalVisible: true,
+    addSiteModalVisible: false,
     newExerciseSiteUrl: '',
     newExerciseSite: null
   }
@@ -37,12 +37,6 @@ class ExerciseOptions extends React.Component {
       this.setState({ currentExerciseSite, exerciseSites, exerciseDuration });
     });
   }
-
-  // didAddExerciseSite(e) {
-  //   let url = e.target.getAttribute('value');
-  //   this.addExerciseSiteInput.current.setValue('');
-  //   addExerciseSite(url);
-  // }
 
   handleExerciseSiteChange(currentExerciseSite) {
     setInStorage({ currentExerciseSite }).then(() => {
@@ -85,8 +79,6 @@ class ExerciseOptions extends React.Component {
     if (urls && urls.length === 1) {
       let newExerciseSite = urls[0];
       this.setState({ newExerciseSite });
-    } else {
-      
     }
   }
 

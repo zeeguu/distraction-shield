@@ -85,7 +85,7 @@ class Intercepted extends React.Component {
 
     getExerciseSite() {
         return this.state.exerciseSites.find(site => {
-            return site.domain === this.state.currentExerciseSite;
+            return site.name === this.state.currentExerciseSite;
         });
     }
 
