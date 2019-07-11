@@ -1,18 +1,11 @@
-.layout {
-  min-height: 100vh;
-}
-
 .Options-header {
-  padding: 4px;
-  padding-bottom: 50px;
   font-size: calc(10px + 2vmin);
   text-align: center;
   color: white;
 }
 
-.options-grid .grid-col {
+.grid-col {
   padding: 20px;
-  /* max-width: 600px; */
 }
 
 .site-favicon {
@@ -25,9 +18,11 @@
 }
 
 .remove-button {
-  color: #ff7875;
+  /* color: #ff7875; */
+  color: rgb(130, 130, 130);
 }
 
 .remove-button:hover {
-  color: #f5222d;
+  /* color: #f5222d; */
+  color: rgb(28, 30, 33);
 }

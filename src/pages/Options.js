@@ -1,7 +1,7 @@
 import React from 'react';
 import './Options.css';
 import { Table, Button, Input, Layout, Row, Col, Radio, TimePicker, Icon, 
-  Tag, Switch, Tooltip as AntTooltip } from 'antd';
+  Tag, Switch, Tooltip as AntTooltip, Card, Divider } from 'antd';
 import {
   blockWebsite,
   getWebsites,
@@ -20,7 +20,6 @@ const { Header, Content, Footer } = Layout;
 
 const columns = [
   {
-    title: 'Blocked websites',
     dataIndex: 'name',
     render: (name, site) => (
       <div>
@@ -50,11 +49,6 @@ const columns = [
       let now = new Date().valueOf();
       
       return (
-        // <Tooltip title={`${timeLeftStr} left`}>
-        //   <Progress type="circle" percent={30} width={25} showInfo={false}
-        //     strokeWidth={15} />
-        // </Tooltip>
-        // <Tag>{timeLeftStr} left</Tag>
         <div style={{ display: 'flex' }}>
           <Switch size="small" checked={timedout}
             onChange={checked => 
@@ -84,20 +78,13 @@ const columns = [
       );
     }
   },
-  // {
-  //   dataIndex: 'enabled',
-  //   render: enabled => (
-  //     <div>
-  //       <Switch size="small" checked={enabled === false} />
-  //     </div>
-  //   )
-  // },
   {
     dataIndex: 'hostname',
     render: hostname => (
-      <Button type="link" shape="circle" icon="delete"
+      <Button type="link" shape="circle" icon="close"
         onClick={() => unblockWebsite(hostname)}
-        className="remove-button" />
+        className="remove-button"
+        title="Delete website"/>
     ),
     align: 'right'
   },
@@ -195,90 +182,96 @@ class Options extends React.Component {
 
   render() {
     return (
-      <Layout className="layout" style={{ background: '#fff' }}>
+      <Layout className="layout" style={{ background: 'rgb(248, 249, 250)' }}>
         <Header>
           <header className="Options-header">
             Distraction Shield
           </header>
         </Header>
         <Content style={{ padding: '20px 50px' }}>
-          <div style={{ background: '#fff' }}>
+          <div>
             <Row className="options-grid">
-              <Col lg={14} className="grid-col">
-                <Input autoFocus ref={this.addBlockedWebsiteInput}
-                      placeholder="Block website..." 
-                      onPressEnter={(e) => this.didAddBlockedWebsite(e)}
-                      className='block-button' />
-                <Table columns={columns}
-                      dataSource={this.state.data} />
+              <Col lg={16} offset={4} className="grid-col">
+                <h3>Blocked Websites</h3>
+                <Card>
+                  <Input autoFocus ref={this.addBlockedWebsiteInput}
+                        placeholder="Block url..." 
+                        onPressEnter={(e) => this.didAddBlockedWebsite(e)}
+                        className='block-button'
+                        prefix={<Icon type="stop" style={{ color: 'rgba(0,0,0,.25)' }} />}/>
+                  <Table columns={columns}
+                        dataSource={this.state.data} 
+                        showHeader={false} />
+                </Card>
               </Col>
-              <Col lg={10} className="grid-col">
+            </Row>
+            <Row>
+              <Col lg={16} offset={4} className="grid-col">
                 <h3>Exercise website:</h3>
-                <Radio.Group value={this.state.currentExerciseSite}
-                            onChange={(e) => this.handleExerciseSiteChange(e)}
-                            size="large">
-                  {this.state.exerciseSites.map((site, i) => {
-                      return (
-                        <Radio.Button value={site.domain} key={i}>
-                          <img alt='favicon'
-                            src={`${s2}${site.hostname}`} />&nbsp;
-                          {site.name}
-                        </Radio.Button>
-                      )
-                    }
-                  )}
-                </Radio.Group>
-                <br />
-                <Input ref={this.addExerciseSiteInput}
-                      placeholder="Add exercise site..." 
-                      onPressEnter={(e) => this.didAddExerciseSite(e)}
-                      style={{ margin: '20px 0px', width: '300px' }} />
+                <Card>
+                  <Radio.Group value={this.state.currentExerciseSite}
+                              onChange={(e) => this.handleExerciseSiteChange(e)}
+                              size="large">
+                    {this.state.exerciseSites.map((site, i) => {
+                        return (
+                          <Radio.Button value={site.domain} key={i}>
+                            <img alt='favicon'
+                              src={`${s2}${site.hostname}`} />&nbsp;
+                            {site.name}
+                          </Radio.Button>
+                        )
+                      }
+                    )}
+                  </Radio.Group>
+                  <Input ref={this.addExerciseSiteInput}
+                        placeholder="Add exercise site..." 
+                        onPressEnter={(e) => this.didAddExerciseSite(e)}
+                        style={{ margin: '20px 0px', width: '300px' }} />
 
-                <h3>Exercise duration:</h3>
-                <TimePicker 
-                  allowClear={false}
-                  defaultValue={moment('12:08', 'mm:ss')}
-                  value={moment(this.state.exerciseDuration)}
-                  secondStep={5}
-                  suffixIcon={<Icon type="hourglass" />}
-                  format={'mm:ss'}
-                  onChange={time => this.setExerciseDuration(time)} />
-                <br /><br /><br /><br />
-
+                  <Divider />
+                  <h3>Exercise duration:</h3>
+                  <TimePicker 
+                    allowClear={false}
+                    defaultValue={moment('12:08', 'mm:ss')}
+                    value={moment(this.state.exerciseDuration)}
+                    secondStep={5}
+                    suffixIcon={<Icon type="hourglass" />}
+                    format={'mm:ss'}
+                    onChange={time => this.setExerciseDuration(time)} />
+                </Card>
+              </Col>
+            </Row>
+            <Row>
+              <Col lg={16} offset={4} className="grid-col">
                 <h3>Interception statistics:</h3>
-                <PieChart width={300} height={250}>
-                  <Pie dataKey="value" isAnimationActive={false}
-                        data={this.state.interceptsData}
-                        cx={150} cy={100} outerRadius={80} fill="#8884d8"
-                        label />
-                  <Tooltip />
-                </PieChart>
-                <br /><br />
+                <Card>
 
-                <h3>Time spent on exercises:</h3>
-                <BarChart
-                  width={400}
-                  height={300}
-                  data={this.state.timeSpentLearningData}
-                  margin={{
-                    top: 5, right: 30, left: 20, bottom: 5,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="value" fill="#8884d8" name="Time spent (minutes)" />
-                </BarChart>
+                  <PieChart width={300} height={250}>
+                    <Pie dataKey="value" isAnimationActive={false}
+                          data={this.state.interceptsData}
+                          cx={150} cy={100} outerRadius={80} fill="#8884d8"
+                          label />
+                    <Tooltip />
+                  </PieChart>
+                  <br /><br />
 
-                {/* <br /><br /><br /><br />
-                <h3>Turn off temporarily</h3>
-                <Col md={4}>
-                  <Button type="danger" icon="bell">
-                      Turn off for 10 minutes
-                  </Button>
-                </Col> */}
+                  <h3>Time spent on exercises:</h3>
+                  <BarChart
+                    width={400}
+                    height={300}
+                    data={this.state.timeSpentLearningData}
+                    margin={{
+                      top: 5, right: 30, left: 20, bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="value" fill="#8884d8" name="Time spent (minutes)" />
+                  </BarChart>
+                </Card>
               </Col>
             </Row>
           </div>
