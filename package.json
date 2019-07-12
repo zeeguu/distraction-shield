@@ -1,6 +1,6 @@
 {
   "name": "distraction-shield",
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0-beta.1",
   "private": true,
   "dependencies": {
     "@types/recharts": "^1.1.19",
