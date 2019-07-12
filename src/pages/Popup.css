@@ -1,0 +1,27 @@
+.Popup {
+  text-align: center;
+  background-color: #282c34;
+  min-height: 100vh;
+  padding: 5px;
+}
+
+.Popup-header {
+  padding-bottom: 50px;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  display: flex;
+}
+
+.Popup-header>* {
+  flex: 1 1 160px;
+  margin: 10px;
+}
+
+.Popup-link {
+  color: #61dafb;
+}
+
+.Popup-logo {
+  width: 50px;
+}
+
