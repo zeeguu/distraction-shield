@@ -76,12 +76,6 @@ class Intercepted extends React.Component {
 
             return setInStorage({ intercepts });
         });
-
-        getFromStorage('currentExerciseSite').then(res => {
-            let { currentExerciseSite } = res;
-            this.setState({ currentExerciseSite });
-        });
-
     }
 
     getUrl() {

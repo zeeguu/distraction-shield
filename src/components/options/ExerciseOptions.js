@@ -30,7 +30,7 @@ class ExerciseOptions extends React.Component {
   setup() {
     getFromStorage('currentExerciseSite', 'exerciseSites', 'exerciseDuration')
       .then(res => {
-        let currentExerciseSite = res.currentExerciseSite || defaultExerciseSite.domain;
+        let currentExerciseSite = res.currentExerciseSite || defaultExerciseSite.name;
         let exerciseSites = res.exerciseSites || defaultExerciseSites;
         let exerciseDuration = res.exerciseDuration || defaultexerciseDuration;
         if (exerciseSites.length === 0) currentExerciseSite = '';
