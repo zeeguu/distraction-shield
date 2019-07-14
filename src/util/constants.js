@@ -22,9 +22,9 @@ export const defaultExerciseSites = [
   // 'https://www.brainscape.com/'
 ];
 
-export const defaultExerciseSite = defaultExerciseSites[0];
+export const defaultExerciseSite = defaultExerciseSites[1];
 
-export const defaultexerciseDuration = 5 * 60 * 1000; // 5 minutes
+export const defaultexerciseDuration = 1 * 60 * 1000; // 5 minutes
 
 export const defaultTimeout = 5 * 60 * 1000; // 5 minutes
 
