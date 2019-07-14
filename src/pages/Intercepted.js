@@ -31,28 +31,26 @@ class Intercepted extends React.Component {
             let timestamp = new Date().getTime();
             let timePassed = timestamp - this.state.timestamp;
 
-            isCurrentTab().then(isCurrentTab => {
-                if (!isCurrentTab) timePassed = 0;
+            if (!document.hasFocus()) timePassed = 0;
 
-                let timeLeft = this.state.timeLeft - timePassed;
-                
-                if (timeLeft <= 0) clearInterval(this.state.timer)
-    
-                // update time spent learning on website
-                getFromStorage('timeSpentLearning').then(res => {
-                    let timeSpentLearning = res.timeSpentLearning || {};
-                    let site = this.getExerciseSite();
-    
-                    if (!site) return; // not found, do not update.
-    
-                    let newExerciseTimeSpent = timeSpentLearning[site.name]
-                                                 + timePassed || timePassed;
-                    timeSpentLearning[site.name] = newExerciseTimeSpent;
-                    return setInStorage({ timeSpentLearning });
-                });
-    
-                this.setState({ timeLeft, timestamp });
+            let timeLeft = this.state.timeLeft - timePassed;
+            
+            if (timeLeft <= 0) clearInterval(this.state.timer)
+
+            // update time spent learning on website
+            getFromStorage('timeSpentLearning').then(res => {
+                let timeSpentLearning = res.timeSpentLearning || {};
+                let site = this.getExerciseSite();
+
+                if (!site) return; // not found, do not update.
+
+                let newExerciseTimeSpent = timeSpentLearning[site.name]
+                                                + timePassed || timePassed;
+                timeSpentLearning[site.name] = newExerciseTimeSpent;
+                return setInStorage({ timeSpentLearning });
             });
+
+            this.setState({ timeLeft, timestamp });
         }, 1000);
         this.setState({ timer });
     }
@@ -76,12 +74,6 @@ class Intercepted extends React.Component {
 
             return setInStorage({ intercepts });
         });
-
-        getFromStorage('currentExerciseSite').then(res => {
-            let { currentExerciseSite } = res;
-            this.setState({ currentExerciseSite });
-        });
-
     }
 
     getUrl() {

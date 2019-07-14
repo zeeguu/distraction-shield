@@ -98,7 +98,7 @@ class Options extends React.Component {
 
   setup() {
     getFromStorage('blockedUrls').then(res => {
-      let blockedUrls = res.blockedUrls || {};
+      let blockedUrls = res.blockedUrls || [];
       this.setState({ blockedUrls });
     });
   }
