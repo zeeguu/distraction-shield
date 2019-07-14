@@ -44,21 +44,6 @@ export const isCurrentWebsiteBlocked = () => {
     });
 };
 
-// // Currently not used..
-// export const isCurrentTab = () => {
-//     return new Promise((resolve) => {
-//         if (!(window.chrome && chrome.tabs)) return resolve(true); // no chrome env.
-
-//         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-//             let tab = tabs[0];
-
-//             chrome.tabs.getCurrent(current => {
-//                 resolve(tab.id === current.id);
-//             });
-//         });
-//     });
-// }
-
 export const isWebsiteBlocked = async hostname => {
     const blockedUrls = await getWebsites();
     // sidenote: shouldn't we compare regex? let hostname be OK for now..
