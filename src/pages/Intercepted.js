@@ -6,7 +6,7 @@ import {
     defaultExerciseSites,
     defaultexerciseDuration
 } from '../util/constants';
-import { parseUrl, setTimeout, isCurrentTab } from '../util/block-site';
+import { parseUrl, setTimeout } from '../util/block-site';
 import { duration } from 'moment';
 
 class Intercepted extends React.Component {
@@ -69,6 +69,9 @@ class Intercepted extends React.Component {
 
             let intercepts = res.intercepts || {};
             let parsed = parseUrl(this.getUrl());
+
+            if (!parsed) return; // no url search param
+            
             let count = intercepts[parsed.hostname] + 1 || 1;
             intercepts[parsed.hostname] = count;
 
@@ -78,7 +81,7 @@ class Intercepted extends React.Component {
 
     getUrl() {
         let params = (new URL(window.location)).searchParams; // since chrome 51, no IE
-        return params.get('url');
+        return params.has('url') ? params.get('url') : '';
     }
 
     getExerciseSite() {
@@ -143,7 +146,7 @@ class Intercepted extends React.Component {
                                 disabled={this.state.timeLeft > 0}
                                 onClick={() => this.onContinue()}
                                 >
-                                Continue to {url.name}
+                                Continue to {url && url.name}
                             </Button>
                         </Col>
                     </Row>
