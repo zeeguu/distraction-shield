@@ -8,6 +8,7 @@ import {
 } from '../util/constants';
 import { parseUrl, setTimeout } from '../util/block-site';
 import { duration } from 'moment';
+import './Intercepted.css';
 
 class Intercepted extends React.Component {
     state = {
@@ -123,13 +124,51 @@ class Intercepted extends React.Component {
                     <iframe title="Interception page" 
                         width="100%"
                         src={site ? site.href : ''}
-                        style={{ height: '89vh'}}>
+                        className="full-screen-iframe"
+                        >
                     </iframe>
                 ) : (
                     <Empty description="No exercise website"
                         style={{ height: '89vh', paddingTop: '30vh' }} />
                 )}
-                <div style={{ height: '10vh' }}>
+                <div className="status-footer">
+                    <Row className="status-bar">
+                        <Progress 
+                            percent={progressPercentage}
+                            size="small"
+                            showInfo={false}
+                            strokeWidth={4}
+                            />
+                    </Row>
+                    <Row
+                        className="status-overlay">
+                        <Col span={12} offset={4}>
+                            <div>Time left: &nbsp;
+                                <small>
+                                    <code>{timeLeftString}</code>
+                                </small>
+                            </div>
+                            
+                            {this.state.timeLeft <= 0 &&
+                                <div>Well done! You earned&nbsp;
+                                {duration(this.state.exerciseDuration).humanize()}
+                                &nbsp;of browsing time.</div>
+                            }
+                        </Col>
+                        <Col span={6}>
+                            <Button icon="login"
+                                disabled={this.state.timeLeft > 0}
+                                onClick={() => this.onContinue()}
+                                >
+                                Continue to {url && url.name}
+                            </Button>
+                        </Col>
+                    </Row>
+                    {/* <div style={{ backgroundColor: 'white',
+                        height: '100%', width: '100%', display: 'block' }}>
+                    </div> */}
+                </div>
+                {/* <div style={{ height: '10vh' }}>
                     <Row type="flex" justify="space-around" align="middle">
                         <Col sm={12} md={12}>
                             <h3>Time left:</h3>
@@ -150,7 +189,7 @@ class Intercepted extends React.Component {
                             </Button>
                         </Col>
                     </Row>
-                </div>
+                </div> */}
                 
             </div>
         );
