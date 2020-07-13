@@ -156,7 +156,7 @@ class Options extends React.Component {
             </Col>
           </Row>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>University of Groningen © 2019</Footer>
+        <Footer style={{ textAlign: 'center' }}>University of Groningen © {new Date().getFullYear()}</Footer>
       </Layout>
     );
   }
